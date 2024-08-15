@@ -1,0 +1,735 @@
+{% extends "en-us/PageLayout.htm" %}
+
+{%- block htmTitlePageLayout %}
+{%- block htmTitleBaseResultPage %}
+    <title>{% if searchListBaseResult_ is defined %}{% if baseResultCount == 1 %}{% if id is defined %}{% else %}{% endif %}{% else %}{% endif %}{% else %}{% endif %}</title>
+{%- endblock htmTitleBaseResultPage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+{%- block htmStylesBaseResultPage %}
+{%- endblock htmStylesBaseResultPage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+{{ super() }}
+{%- block htmStyleBaseResultPage %}
+{%- endblock htmStyleBaseResultPage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsBaseResultPage %}
+{%- endblock htmScriptsBaseResultPage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptBaseResultPage %}
+    <script>
+
+      function jsWebsocketBaseResult(id, vars, $response) {
+        {%- block jsWebsocketBaseResultPage %}{%- endblock %}
+      }
+
+      function jsTooltipBaseResult(e, feature) {
+        {%- block jsTooltipBaseResultPage %}{%- endblock %}
+      }
+
+      function htmTooltipBaseResult(feature, layer) {
+        return `{%- block htmTooltipBaseResultPage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.pageUrlPk)}">${feature.properties.objectTitle}</a></h3>
+{%- endblock htmTooltipBaseResultPage %}`;
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('sl-button')
+        , customElements.whenDefined('sl-input')
+      ]).then(() => {
+
+        var pk = {% if pk is defined %}{{pk}}{% else %}null{% endif %};
+
+        if(pk == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          window.baseResult = JSON.parse(document.querySelector('.pageForm .baseResult')?.value);
+        {% if id is defined %}
+        {% endif %}
+        }
+        window.listBaseResult = JSON.parse(document.querySelector('.pageForm .listBaseResult')?.value);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphBaseResult();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qBaseResult_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('BaseResult', event.target, document.querySelector('#qBaseResultDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qBaseResult_rows')?.addEventListener('sl-change', event => {
+          paramChange('BaseResult', event.target, document.querySelector('#qBaseResultDiv_rows'));
+        });
+
+        document.querySelector('#qBaseResult_start')?.addEventListener('sl-change', event => {
+          paramChange('BaseResult', event.target, document.querySelector('#qBaseResultDiv_start'));
+        });
+
+      });
+    </script>
+{%- endblock htmScriptBaseResultPage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketBaseResultPage %}
+        window.eventBus = new EventBus('/eventbus');
+        websocketBaseResult(websocketBaseResultInner);
+{%- endblock websocketBaseResultPage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlBaseResultPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlBaseResultPage %}
+            {%- macro htmBodyAllBaseResultPage() %}
+            <h1>
+              <a href="{{pageUri}}">
+                
+                <span></span>
+              </a>
+            </h1>
+            <div id="site-calendar-box">
+              <div id="site-calendar"><!-- // --></div>
+            </div>
+            {{ htmSearchButtonsBaseResultPage() }}
+            {{ htmFormsBaseResultPage() }}
+            <sl-divider></sl-divider>
+            {{ htmPaginationButtonsBaseResultPage() }}
+            <div class="grid-mode-details border-radius-x-large" id="site-results-grid">
+              {% for item in listBaseResult%}
+              <a href="{{ item.pageUrlPk }}">
+                <div>                  
+{{ item.objectId }}</div>
+                <div><sl-format-date weekday="short" month="short" day="numeric" year="numeric" hour="numeric" minute="numeric" second="numeric" time-zone-name="short" date="{{ formatZonedDateTime(item.created, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></sl-format-date></div>
+                <div>{{ item.objectTitle }}</div>
+              </a>
+              {% endfor %}
+                      {% if getColumnObjectId is defined %}
+                        <div>
+                        </div>
+                      {% endif %}
+                      {% if getColumnCreated is defined %}
+                        <div>
+                        </div>
+                      {% endif %}
+                      {% if getColumnObjectTitle is defined %}
+                        <div>
+                        </div>
+                      {% endif %}
+            </div>
+            {%- endmacro htmBodyAllBaseResultPage() %}
+{%- macro htmSearchButtonsBaseResultPage() %}
+        <div id="htmSearchButtons">
+<sl-button onclick="document.querySelector('#siteSidebarToggleSearch').show(); "><i slot="prefix" class="fad fa-magnifying-glass hover-box-shadow "></i> Search</sl-button><sl-button onclick="document.querySelector('#siteSidebarToggleFilters').show(); "><i slot="prefix" class="fad fa-filters hover-box-shadow "></i> Filters</sl-button><sl-button onclick="document.querySelector('#siteSidebarToggleRange').show(); "><i slot="prefix" class="fad fa-calendar-range hover-box-shadow "></i> Range</sl-button><sl-button onclick="document.querySelector('#siteSidebarTogglePivot').show(); "><i slot="prefix" class="fad fa-table-pivot hover-box-shadow "></i> Pivot</sl-button><sl-button onclick="document.querySelector('#siteSidebarToggleFieldList').show(); "><i slot="prefix" class="fad fa-list-ul hover-box-shadow "></i> FieldList</sl-button><sl-button onclick="document.querySelector('#siteSidebarToggleStats').show(); "><i slot="prefix" class="fad fa-chart-candlestick hover-box-shadow "></i> Stats</sl-button><sl-button onclick="document.querySelector('#siteSidebarToggleApi').show(); " href="{{ apiUri }}{% if pk is defined %}/{{ pk }}{% else %}{% if id is defined %}/{{ id }}{% else %}{{ queryStr }}{% endif %}{% endif %}"><i slot="prefix" class="fad fa-brackets-curly hover-box-shadow "></i> Api</sl-button>        </div>
+{%- endmacro htmSearchButtonsBaseResultPage() %}
+
+{%- macro htmPaginationButtonsBaseResultPage() %}
+            <div id="htmPaginationButtons">
+              <sl-button-group>
+                <sl-tooltip placement="top" content="Show the previous results">
+                  <sl-button pill{% if pagination.pagePrevious is defined %} href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
+                    <i slot="prefix" class="fas fa-arrow-square-left "></i>
+                  </sl-button>
+                </sl-tooltip>
+                <sl-tooltip placement="top" content="Show half the results">
+                  <sl-button{% if pagination.rowsPrevious >= pagination['1L'] %} href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}"{% else %} disabled{% endif %}>
+                    <i slot="prefix" class="fas fa-minus-square "></i>
+                  </sl-button>
+                </sl-tooltip>
+                <sl-tooltip placement="top" content="Show double the results">
+                  <sl-button href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
+                    <i slot="prefix" class="fas fa-plus-square "></i>
+                  </sl-button>
+                </sl-tooltip>
+                <sl-tooltip placement="top" content="Show the next results">
+                  <sl-button pill{% if pagination.pageNext is defined %} href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
+                    <i slot="prefix" class="fas fa-arrow-square-right "></i>
+                  </sl-button>
+                </sl-tooltip>
+              </sl-button-group>
+              <div>{{ pagination.startNum }} –— {{ pagination.endNum }} of {{ pagination.foundNum }}</div>
+            </div>
+{%- endmacro htmPaginationButtonsBaseResultPage() %}
+{%- macro htmFormsBaseResultPage() %}
+  {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
+    {% if "PATCH" in scopes %}
+            <sl-divider></sl-divider>
+            <div id="htmButtonGroup">
+{% if baseResultCount == 1 %}<sl-button id="refreshBaseResultGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'id:{{id}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshBaseResultGenPage')); }, function() { addError(document.querySelector('#refreshBaseResultGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if baseResultCount > 0 %}<sl-button id="refreshBaseResultGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshBaseResultGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshBaseResultGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh </sl-button>{% endif %}{% endif %}{% endif %}            </div>
+{%- endmacro htmFormsBaseResultPage() %}
+
+    {%- block htmBodyStartPageLayout %}
+    {{ super() }}
+    {%- block htmBodyStartBaseResultPage %}
+    {%- endblock htmBodyStartBaseResultPage %}
+    {%- endblock htmBodyStartPageLayout %}
+
+    {%- block htmBodyMiddlePageLayout %}
+    {%- block htmBodyMiddleBaseResultPage %}
+        <div class="htmBodySidebarBaseResultPage ">
+          {%- block htmBodySidebarBaseResultPage %}
+          <sl-drawer placement="end" id="siteSidebarToggleSearch">
+            <div>
+              <span>
+              <i class="fad fa-magnifying-glass "></i> Search</span>
+            </div>
+            <div>
+{%- block htmBodySearchBaseResultPage %}
+              <div>
+                {% for key, value in varsQ.items() %}
+                  <div>
+                    <div>
+                      <label for="qBaseResult_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <sl-input id="qBaseResult_{{ key }}" placeholder="{{ displayName }}" data-var="{{ key }}" autocomplete="off="></sl-input>
+                      <div id="qBaseResultDiv_{{ key }}" class="pageSearchVal "></div>
+                    </div>
+                  </div>
+                {% endfor %}
+                <div>
+                  <div>
+                    <label for="qBaseResult_Start">start<sup> (Long)</sup></label>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <sl-input id="qBaseResult_start" placeholder="{{ displayName }}" class="" data-var="start" autocomplete="off=" value="{{ start }}"></sl-input>
+                    <div id="qBaseResultDiv_start" class="pageSearchVal ">start={{ start }}</div>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <label for="qBaseResult_Rows">rows<sup> (Long)</sup></label>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <sl-input id="qBaseResult_rows" placeholder="{{ displayName }}" class="" data-var="rows" autocomplete="off" value="{{ rows }}"></sl-input>
+                    <div id="qBaseResultDiv_rows" class="pageSearchVal ">rows={{ rows }}</div>
+                  </div>
+                </div>
+              </div>
+              {%- endblock htmBodySearchBaseResultPage %}
+            </div>
+          </sl-drawer>
+          <sl-drawer placement="end" id="siteSidebarToggleFilters">
+            <div>
+              <span>
+              <i class="fad fa-filters "></i> Filters</span>
+            </div>
+            <div>
+              {%- block htmBodyFiltersBaseResultPage %}
+              <div>
+                {% for key, value in varsFq.items() %}
+                  <div class="">
+                    <label for="fqBaseResult_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
+                    <div class="display-flex ">
+                      <sl-button id="buttonFacetBaseResult_{{ key }}" onclick="facetFieldChange('BaseResult', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-input id="fqBaseResult_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('BaseResult', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="pageSearchVal " id="pageSearchVal-fqBaseResult_{{ key }}">{% if val is defined %}fq={{ value.var }}:{{ value.val | urlencode() }}{% endif %}</div>
+                    <div class="pageSearchVal " id="pageSearchVal-buttonFacetBaseResult_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
+                    <ol class="pageFacetField pageFacetFieldBaseResult_{{ key }} " id="pageFacetFieldBaseResult_{{ key }}">
+{% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
+                      <li class="cursor-pointer " data-class="BaseResult" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('BaseResult', facetFieldValue); ">{{ facetFieldKey }}: {{ facetFieldValue }}</li>
+{% endfor %}
+                    </ol>
+                  </div>
+                {% endfor %}
+              </div>
+              {%- endblock htmBodyFiltersBaseResultPage %}
+            </div>
+          </sl-drawer>
+          <sl-drawer placement="end" id="siteSidebarToggleRange">
+            <div>
+              <span>
+              <i class="fad fa-calendar-range "></i> Range</span>
+            </div>
+            <div>
+              {%- block htmBodyRangeBaseResultPage %}
+              <table>
+                <tr>
+                  <td colspan="2">
+                    <div class="pageSearchVal " id="pageSearchVal-pageFacetRangeGap-BaseResult">{% if rangeGap is defined %}facet.range.gap={{ rangeGap | urlencode() }}{% endif %}</div>
+                    <div class="pageSearchVal " id="pageSearchVal-pageFacetRangeStart-BaseResult">{% if rangeStart is defined %}facet.range.start={{ rangeStart | urlencode() }}{% endif %}</div>
+                    <div class="pageSearchVal " id="pageSearchVal-pageFacetRangeEnd-BaseResult">{% if rangeEnd is defined %}facet.range.end={{ rangeEnd | urlencode() }}{% endif %}</div>
+                    <div class="pageSearchVal " id="pageSearchVal-pageFacetRangeVar-BaseResult">{% if defaultRangeVar is defined %}facet.range={!tag=r1}{{ defaultRangeVar | urlencode() }}{% endif %}</div>
+                  </td>
+                </tr>
+              </table>
+              <table>
+                <tr class="">
+                  <td class="">
+                    <span>Range Gap</span>
+                  </td>
+                  <td class="">
+                    <sl-select name="facet.range.gap" id="pageFacetRangeGap-BaseResult" onchange="facetRangeGapChange('BaseResult', this); ">
+                      <sl-option value="+1YEAR"{% if defaultRangeGap == '+1YEAR' %} selected="selected"{% else %}{% endif %}>Year</sl-option>
+                      <sl-option value="+1MONTH"{% if defaultRangeGap == '+1MONTH' %} selected="selected"{% else %}{% endif %}>Month</sl-option>
+                      <sl-option value="+1WEEK"{% if defaultRangeGap == '+1WEEK' %} selected="selected"{% else %}{% endif %}>Week</sl-option>
+                      <sl-option value="+1DAY"{% if defaultRangeGap == '+1DAY' %} selected="selected"{% else %}{% if defaultRangeGap is defined %}{% else %} selected="selected"{% endif %}{% endif %}>Day</sl-option>
+                      <sl-option value="+1HOUR"{% if defaultRangeGap == '+1HOUR' %} selected="selected"{% else %}{% endif %}>Hour</sl-option>
+                      <sl-option value="+1MINUTE"{% if defaultRangeGap == '+1MINUTE' %} selected="selected"{% else %}{% endif %}>Minute</sl-option>
+                      <sl-option value="+1SECOND"{% if defaultRangeGap == '+1SECOND' %} selected="selected"{% else %}{% endif %}>Second</sl-option>
+                    </sl-select>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="" colspan="2">
+                    <span>Range Start</span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="" colspan="2">
+                    <span><sl-input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-BaseResult" value="{{ formatZonedDateTime(defaultRangeStart, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeStartChange('BaseResult', this); "></sl-input></span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="" colspan="2">
+                    <span>Range End</span>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="" colspan="2">
+                    <span><sl-input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-BaseResult" value="{{ formatZonedDateTime(defaultRangeEnd, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeEndChange('BaseResult', this); "></sl-input></span>
+                  </td>
+                </tr>
+              </table>
+              <sl-radio-group>                {% for key, value in varsRange.items() %}
+                <sl-radio name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeBaseResult_{{ key }}" value="{{ value.var }}"{% if defaultRangeVar == var %} checked="checked"{% endif %} onclick="facetRangeChange('BaseResult', value); ">{{ value.displayName }}</sl-radio>
+                {% endfor %}
+              </sl-radio-group>
+              {%- endblock htmBodyRangeBaseResultPage %}
+            </div>
+          </sl-drawer>
+          <sl-drawer placement="end" id="siteSidebarTogglePivot">
+            <div>
+              <span>
+              <i class="fad fa-table-pivot "></i> Pivot</span>
+            </div>
+            <div>
+              {%- block htmBodyPivotBaseResultPage %}
+              <div style="display: none; " id="pageSearchVal-PivotBaseResultHidden">
+                {% for item in defaultPivotVars %}
+                  <div class="pageSearchVal-PivotBaseResultHidden " id="pageSearchVal-PivotBaseResultHidden_{{ item }}">{{ item }}</div>
+                {% endfor %}
+              </div>
+              <div id="pageSearchVal-PivotBaseResult">
+                {% if defaultPivotVars is defined and defaultPivotVars.length > 0 %}
+                  <div class="pageSearchVal pageSearchVal-PivotBaseResult " id="pageSearchVal-PivotBaseResult_1">facet.pivot={!range=r1}{% for item in defaultPivotVars %}{% if loop.index > 0 %},{% endif %}{{ item }}{% endfor %}</div>
+                {% endif %}
+              </div>
+              {% for key, value in varsFq.items() %}
+              <div>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotBaseResult_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('BaseResult', value); ">{{ value.displayName }}</sl-checkbox>
+              </div>
+              {% endfor %}
+              {%- endblock htmBodyPivotBaseResultPage %}
+            </div>
+          </sl-drawer>
+          <sl-drawer placement="end" id="siteSidebarToggleFieldList">
+            <div>
+              <span>
+              <i class="fad fa-list-ul "></i> Field List</span>
+            </div>
+            <div>
+              {%- block htmBodyFieldListBaseResultPage %}
+              <div
+ style="display: none; " id="pageSearchVal-FieldListBaseResultHidden">
+                {% for item in defaultFieldListVars %}
+                  <div class="pageSearchVal-FieldListBaseResultHidden " id="pageSearchVal-FieldListBaseResultHidden_{{ item }}">{{ item }}</div>
+                {% endfor %}
+              </div>
+              {% if defaultFieldListVars is defined and defaultFieldListVars.length > 0 %}
+              <div id="pageSearchVal-FieldListBaseResult">
+                {% if defaultFieldListVars is defined %}
+                  <div class="pageSearchVal pageSearchVal-FieldListBaseResult " id="pageSearchVal-FieldListBaseResult_1">fl={% for item in defaultFieldListVars %}{% if loop.index > 0 %},{% endif %}{{ item }}{% endfor %}</div>
+                {% endif %}
+              </div>
+              {% endif %}
+              {% for key, value in varsFq.items() %}
+              <div>
+                <sl-checkbox name="pageFieldList" class="pageFieldList " id="pageFieldListBaseResult_{{ key }}" value="{{ value.var }}"{% if fieldList is defined %} checked="checked"{% endif %} onclick="facetFieldListChange('BaseResult', value); ">{{ value.displayName }}</sl-checkbox>
+              </div>
+                {% endfor %}
+              {%- endblock htmBodyFieldListBaseResultPage %}
+            </div>
+          </sl-drawer>
+          <sl-drawer placement="end" id="siteSidebarToggleStats">
+            <div>
+              <span>
+                <i class="fad fa-chart-candlestick "></i>                 Stats</span>
+            </div>
+            <div>
+              {%- block htmBodyStatsBaseResultPage %}
+              <div
+ style="display: none; " id="pageSearchVal-StatsBaseResultHidden">
+                {% for item in defaultStatsVars %}
+                  <div class="pageSearchVal-StatsBaseResultHidden " id="pageSearchVal-StatsBaseResultHidden_{{ item }}">{{ item }}</div>
+                {% endfor %}
+              </div>
+              <div id="pageSearchVal-StatsBaseResult">
+                {% if defaultStatsVars is defined %}
+                  {% for item in defaultStatsVars %}
+                    <div class="pageSearchVal pageSearchVal-StatsBaseResult_{{ item }} " id="pageSearchVal-StatsBaseResult_{{ item }}">stats.field={{ item }}                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <table>
+                {% for key, value in varsFq.items() %}
+                  {% if enableStats is defined %}
+                    <tr class="">
+                      <td class="">
+                        <span><sl-checkbox name="pageStats" class="pageStats " id="pageStatsBaseResult_{{ key }}" value="{{ value.var }}"{% if value.stats is defined %} checked="checked"{% endif %} onclick="facetStatsChange('BaseResult', value); ">{{ value.displayName }}</sl-checkbox></span>
+                      </td>
+                      <td>
+                        <div>
+                          <label for="pageStatsBaseResult_{{ key }}">{{ value.displayName }}</label>
+                        </div>
+                        <div class="pageStatsField pageStatsFieldBaseResult_{{ key }} " id="pageStatsFieldBaseResult_{{ key }}">
+                          {% if value.stats is defined %}
+                            {% for item in value.stats %}
+                              {% if item.key == 'name' %}{% else %}
+                                <div data-class="BaseResult" data-var="{{ item.var }}" data-val="{{ item.key }}">{{ item.key }}: {{ item }}</div>
+                              {% endif %}
+                            {% endfor %}
+                            {% if value.stats.max is defined %}
+                              <div>
+                                <span> step </span>
+                                <sl-input id="animateStatsStep" placeholder="step" value="1" style="width: 4em; "></sl-input>
+                                <span> min </span>
+                                <sl-input id="animateStatsMin" placeholder="min" value="{{ value.stats.min }}" style="width: 4em; "></sl-input>
+                                <span> max </span>
+                                <sl-input id="animateStatsMax" placeholder="max" value="{{ value.stats.max }}" style="width: 4em; "></sl-input>
+                                <span> speed in seconds </span>
+                                <sl-input id="animateStatsSpeed" placeholder="speed" value="1" style="width: 4em; "></sl-input>
+                                <sl-button onclick="animateStats(); ">animate</sl-button>
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            {%- endblock htmBodyStatsBaseResultPage %}
+            </div>
+          </sl-drawer>
+          {%- endblock htmBodySidebarBaseResultPage %}
+        </div>
+
+        {%- block htmBodyGraphLocationBaseResultPage %}
+        <div id="htmBodyGraphLocationBaseResultPage" class="htmBodyGraphLocation "></div>
+        {%- endblock htmBodyGraphLocationBaseResultPage %}
+
+        {%- block htmBodyGraphBaseResultPage %}
+        <div id="htmBodyGraphPageLayout" class="htmBodyGraph "></div>
+        {%- endblock htmBodyGraphBaseResultPage %}
+        <div class="pageContent ">
+          <div id="site-calendar-box">
+            <div id="site-calendar"><!-- // --></div>
+          </div>
+{% if baseResultCount == 0 %}
+        <div>
+          <sl-tooltip content="back to ">
+            <sl-button href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1>
+          
+            <span></span>
+        </h1>
+        {{ htmSearchButtonsBaseResultPage() }}
+            {{ htmFormsBaseResultPage() }}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class=""></span>
+          </span>
+        </h2>
+{% else %}
+  {% if baseResultCount == 1 %}
+    {% if id is defined %}
+        <div>
+          <sl-tooltip content="back to ">
+            <sl-button href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1>
+          
+          {{baseResult_.objectTitle}}
+        </h1>
+        {{ htmSearchButtonsBaseResultPage() }}
+            {{ htmFormsBaseResultPage() }}
+    {% else %}
+        {{ htmBodyAllBaseResultPage() }}
+    {% endif %}
+  {% else %}
+        {{ htmBodyAllBaseResultPage() }}
+  {% endif %}
+{% endif %}
+        {%- block htmFormBaseResultPage %}
+        <form action="" id="BaseResultForm" class="pageForm " style="" onsubmit="event.preventDefault(); return false; ">
+{% if id is defined %}
+          <input name="id" class="valueId" type="hidden" value="{{id}}"/>
+          {% endif %}
+          <input name="focusId" type="hidden"/>
+          <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+          <input name="baseResult" id="baseResult" class="baseResult"  value='{{ toJsonObjectStringInApostrophes(baseResult_) }}' type="hidden"/>
+          <input name="listBaseResult" id="listBaseResult" class="listBaseResult"  value='{{ toJsonArrayStringInApostrophes(listBaseResult) }}' type="hidden"/>
+        </form>
+  {% if id is defined %}
+        {{ htmButton_searchpageBaseResult() }}
+        {{ htmForm_searchpageBaseResult() }}
+  {% endif %}
+        {%- endblock htmFormBaseResultPage %}
+      {%- endblock htmBodyMiddleBaseResultPage %}
+      {%- endblock htmBodyMiddlePageLayout %}
+
+      {%- block htmBodyEndPageLayout %}
+      {{ super() }}
+      {%- block htmBodyEndBaseResultPage %}
+      {%- endblock htmBodyEndBaseResultPage %}
+      {%- endblock htmBodyEndPageLayout %}
+{%- block htmSuggestedBaseResultPage %}
+        <div>
+          <div>
+            <span>
+              search : 
+            </span>
+          </div>
+        </div>
+        <div>
+          <sl-input
+              type="text"
+              class="suggestBaseResult "
+              name="suggestBaseResult"
+              id="suggestBaseResult{{id}}"
+              autocomplete="off"
+              oninput="suggestBaseResultObjectSuggest( [ { 'name': 'q', 'value': 'objectSuggest:' + this.value }, { 'name': 'rows', 'value': '10' }, { 'name': 'fl', 'value': 'classCanonicalName,,pageUrlPk,objectTitle' } ], document.querySelector('#suggestListBaseResult{{id}}'), {{id}}; "
+              onkeyup="if (event.keyCode === 13) { event.preventDefault(); window.location.href = 'null?q={{ query1 }}:' + encodeURIComponent(this.value) + '{{fqs}}{{sorts}}&amp;rows={{start2}}&amp;rows={{rows1}}"
+  {% if listBaseResult is defined %}
+              value="{{query2}}"
+  {% endif %}
+              >
+          </sl-input>
+          <sl-button
+              onclick="window.location.href = 'null?q=&quot;, query1, &quot;:' + encodeURIComponent(this.previousElementSibling.value) + '&quot;, fqs, sorts, &quot;&amp;rows=&quot;, start2, &quot;&amp;rows=&quot;, rows1, &quot;'; "
+              >
+            <i class="fas fa-search "></i>
+          </sl-button>
+          <div>
+            <div>
+              <div>
+                <ul id="suggestListBaseResult{{id}}">
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <a href="" class="">
+              see 
+            </a>
+          </div>
+        </div>
+{%- endblock htmSuggestedBaseResultPage %}
+
+{%- macro inputCreatedBaseResultPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form id="PageForm_created">
+  {%- endif %}
+                  <sl-input
+                      type="text"
+                      readonly
+                      placeholder="created"
+                      help-text="A created timestamp for this record in the database"
+                      label="created"
+                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classBaseResult inputBaseResult{{id}}Created "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_created"
+                      value="{%- if baseResult_.created is defined %}{{ formatZonedDateTime(baseResult_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-id="{{ id }}"
+                      >
+                  </sl-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmCreatedBaseResultPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputCreatedBaseResultPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputModifiedBaseResultPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form id="PageForm_modified">
+  {%- endif %}
+                  <sl-input
+                      type="text"
+                      readonly
+                      placeholder="modified"
+                      help-text="A modified timestamp for this record in the database"
+                      label="modified"
+                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classBaseResult inputBaseResult{{id}}Modified "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_modified"
+                      value="{%- if baseResult_.modified is defined %}{{ formatZonedDateTime(baseResult_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-id="{{ id }}"
+                      >
+                  </sl-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmModifiedBaseResultPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputModifiedBaseResultPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputObjectIdBaseResultPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form id="PageForm_objectId">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="ID"
+                      label="ID"
+                      help-text="
+A URL friendly unique ID for this object"
+                      id="{{classApiMethodMethod}}_objectId"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-id="{{ id }}"
+                      class="label-on-left {{classApiMethodMethod}}_objectId setObjectId classBaseResult inputBaseResult{{id}}ObjectId "
+                      name="setObjectId"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_objectId setObjectId classBaseResult inputBaseResult{{id}}ObjectId "
+                      name="setObjectId"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_objectId valueObjectId classBaseResult inputBaseResult{{id}}ObjectId "
+                      name="objectId"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{baseResult_.objectId}}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmObjectIdBaseResultPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputObjectIdBaseResultPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputArchivedBaseResultPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form id="PageForm_archived">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-button
+                      id="{{classApiMethodMethod}}_archived"
+                      placeholder="archived"
+                      label="archived"
+                      help-text="For archiving this record"
+                      class="label-on-left {{classApiMethodMethod}}_archived classBaseResult inputBaseResult{{id}}Archived "
+                      name="setArchived"
+                      data-id="{{ id }}"
+                      data-val="{{ baseResult_.archived }}"
+                      >archived</sl-button>
+  {%- else %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-checkbox
+                      id="{{classApiMethodMethod}}_archived"
+                      value="true"
+  {%- else %}
+                  <sl-select
+                      id="{{classApiMethodMethod}}_archived"
+  {%- endif %}
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="archived"
+                      label="archived"
+                      help-text="For archiving this record"
+  {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classBaseResult inputBaseResult{{id}}Archived "
+                      name="setArchived"
+  {%- else %}
+    {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classBaseResult inputBaseResult{{id}}Archived "
+                      name="setArchived"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classBaseResult inputBaseResult{{id}}Archived "
+                      name="setArchived"
+    {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+    {%- if baseResult_.archived == true %}
+                      checked
+    {%- endif %}
+                      data-id="{{ id }}"
+                      >archived</sl-checkbox>
+  {%- else %}
+                      >
+                    <sl-option value="" selected="selected"></sl-option>
+                    <sl-option value="true">true</sl-option>
+                    <sl-option value="false">false</sl-option>
+                  </sl-select>
+  {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmArchivedBaseResultPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputArchivedBaseResultPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
