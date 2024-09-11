@@ -1,0 +1,6 @@
+- name: "create pom.xml"
+  connection: local
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - keycloak-create-realm

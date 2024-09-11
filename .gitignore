@@ -1,3 +1,5 @@
 target/**
 .flattened-pom.xml
 .vscode
+doc/getting-started/openshift-ai/vars.yaml
+

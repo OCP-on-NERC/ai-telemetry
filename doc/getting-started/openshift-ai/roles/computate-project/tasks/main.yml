@@ -1,0 +1,181 @@
+---
+- name: "Install dependencies as user: {{ SITE_DEPENDENCIES | join(' ') }}"
+  shell: "pkcon install -y {{ item }} | true"
+  loop: "{{ SITE_DEPENDENCIES }}"
+  ignore_errors: true
+
+- name: Check if git binary exists
+  stat:
+    path: /usr/bin/git
+  register: GIT_EXISTS
+- name: Check if javac binary exists
+  stat:
+    path: /usr/bin/javac
+  register: JAVAC_EXISTS
+
+###############
+# Project dir #
+###############
+
+- name: Check for the {{ SITE_NAME }} .git directory
+  stat:
+    path: "{{ SITE_SRC }}/.git"
+  register: SITE_GIT_DIR
+- name: Check for the {{ SITE_NAME }} README.md file
+  stat:
+    path: "{{ SITE_SRC }}/README.md"
+  register: SITE_README
+- name: Create the {{ SITE_NAME }} source directory {{ SITE_SRC }}
+  file:
+    name: "{{ SITE_SRC }}"
+    state: directory
+  when: not SITE_GIT_DIR.stat.exists and not SITE_README.stat.exists
+- name: Clone the {{ SITE_REPO }} source code into {{ SITE_SRC }}
+  git:
+    repo: "{{ SITE_REPO }}"
+    dest: "{{ SITE_SRC }}"
+  when: not SITE_GIT_DIR.stat.exists and not SITE_README.stat.exists
+
+##############
+# Static dir #
+##############
+
+- name: Check for the {{ SITE_STATIC_NAME }} .git directory
+  stat:
+    path: "{{ SITE_SRC }}-static/.git"
+  register: SITE_STATIC_GIT_DIR
+- name: Create the {{ SITE_STATIC_NAME }} source directory {{ SITE_SRC }}-static
+  file:
+    name: "{{ SITE_SRC }}-static"
+    state: directory
+  when: not SITE_STATIC_GIT_DIR.stat.exists
+- name: Clone the {{ SITE_STATIC_REPO }} source code into {{ SITE_SRC }}-static
+  git:
+    repo: "{{ SITE_STATIC_REPO }}"
+    dest: "{{ SITE_SRC }}-static"
+  when: not SITE_STATIC_GIT_DIR.stat.exists
+  ignore_errors: true
+
+- name: Query Apache Solr for all Java classes
+  uri: 
+    url: "{{ SOLR_URL_COMPUTATE }}/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:smartabyar-smartvillage&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&sort=classSort_indexed_int%20asc"
+    url_username: "{{ SOLR_USERNAME }}"
+    url_password: "{{ SOLR_PASSWORD }}"
+    validate_certs: false
+  register: JAVA_CLASSES_RESPONSE
+- name: 
+  set_fact: 
+    JAVA_CLASSES: "{{ JAVA_CLASSES_RESPONSE.json.response.docs }}"
+
+###########
+# Service #
+###########
+
+- name: Create the {{ SITE_NAME }} systemd services. 
+  template:
+    src: project_systemd.service
+    dest: "{{SITE_SYSTEMD }}"
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr != 'homebrew'
+
+############################
+# Lookup OpenShift Secrets #
+############################
+
+- name: Set some facts
+  set_fact:
+    KAFKA_SECURITY_PROTOCOL: SSL
+    KAFKA_SSL_KEYSTORE_TYPE: pkcs12
+    KAFKA_SSL_KEYSTORE_LOCATION: "{{ SITE_SRC }}/config/user.p12"
+    KAFKA_SSL_TRUSTSTORE_TYPE: pkcs12
+    KAFKA_SSL_TRUSTSTORE_LOCATION: "{{ SITE_SRC }}/config/ca.p12"
+- name: Get DATABASE_PASSWORD
+  set_fact:
+    DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=DATABASE_SECRET, namespace=DATABASE_NAMESPACE, validate_certs=false)[0].data.password | b64decode }}"
+  ignore_errors: true
+- name: Get KAFKA_SSL_KEYSTORE_PASSWORD
+  set_fact:
+    KAFKA_SSL_KEYSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=KAFKA_NAMESPACE, validate_certs=false)[0].data['user.password'] | b64decode }}"
+  ignore_errors: true
+- name: Get KAFKA_SSL_KEYSTORE_P12
+  set_fact:
+    KAFKA_SSL_KEYSTORE_P12: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=KAFKA_NAMESPACE, validate_certs=false)[0].data['user.p12'] }}"
+  ignore_errors: true
+- name: Get KAFKA_SSL_TRUSTSTORE_PASSWORD
+  set_fact:
+    KAFKA_SSL_TRUSTSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_TRUSTSTORE_SECRET, namespace=KAFKA_NAMESPACE, validate_certs=false)[0].data['ca.password'] | b64decode }}"
+  ignore_errors: true
+- name: Get KAFKA_SSL_TRUSTSTORE_P12
+  set_fact:
+    KAFKA_SSL_TRUSTSTORE_P12: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_TRUSTSTORE_SECRET, namespace=KAFKA_NAMESPACE, validate_certs=false)[0].data['ca.p12'] }}"
+  ignore_errors: true
+
+#################
+# Create config #
+#################
+
+- name: Write KAFKA_SSL_KEYSTORE_LOCATION
+  copy:
+    dest: "{{ KAFKA_SSL_KEYSTORE_LOCATION }}"
+    content: "{{ KAFKA_SSL_KEYSTORE_P12 | b64decode }}"
+  ignore_errors: true
+- name: Write KAFKA_SSL_TRUSTSTORE_LOCATION
+  copy:
+    dest: "{{ KAFKA_SSL_TRUSTSTORE_LOCATION }}"
+    content: "{{ KAFKA_SSL_TRUSTSTORE_P12 | b64decode }}"
+  ignore_errors: true
+- name: Reload the services. 
+  systemd:
+    daemon_reload: yes
+    scope: "{{ 'system' if ansible_distribution_file_variety == 'RedHat' and (ansible_distribution_major_version | int) <= 7 else 'user' }}"
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr != 'homebrew'
+- name: Start and enable the {{ SITE_NAME }} services. 
+  service:
+    name: "watch-{{ SITE_NAME }}"
+    enabled: yes
+    state: restarted
+    scope: "{{ 'system' if ansible_distribution_file_variety == 'RedHat' and (ansible_distribution_major_version | int) <= 7 else 'user' }}"
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr != 'homebrew'
+- name: Create the {{ SITE_NAME }} launchd service {{ SITE_SYSTEMD }}.
+  template:
+    src: project_launchd_service
+    dest: "~/Library/LaunchAgents/org.project.plist"
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr == 'homebrew'
+- name: Load the {{ SITE_NAME }} launchd service {{ SITE_SYSTEMD }}.
+  shell: launchctl load ~/Library/LaunchAgents/org.project.plist
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr == 'homebrew'
+- name: Start the {{ SITE_NAME }} launchd service {{ SITE_SYSTEMD }}.
+  shell: launchctl start org.project
+  when: (SYSTEMD_ENABLED | bool) and ENABLE_CODE_GENERATION_SERVICE and ansible_pkg_mgr == 'homebrew'
+  changed_when: false
+- name: Output command to run without systemd
+  debug:
+    msg: env SITE_NAME={{ SITE_NAME }} SITE_PATH={{ SITE_SRC }} COMPUTATE_SRC={{ COMPUTATE_SRC }} SITE_LANG={{ SITE_LANG }} {{ COMPUTATE_SRC }}/bin/enUS/watch.sh
+  when: not SYSTEMD_ENABLED
+
+###############
+# Solr Search #
+###############
+
+- name: Create Solr {{ SOLR_COLLECTION }} collection
+  kubernetes.core.k8s_exec:
+    pod: "{{ SOLR_POD_NAME }}"
+    command: >-
+      env SOLR_AUTH_TYPE=basic SOLR_AUTHENTICATION_OPTS="-Dbasicauth={{ SOLR_USERNAME }}:{{ SOLR_PASSWORD }}" /opt/bitnami/solr/bin/solr create_collection -c {{ SOLR_COLLECTION }} -n computate
+    namespace: "{{ SOLR_NAMESPACE }}"
+  register: create_collection
+  ignore_errors: True
+  changed_when: create_collection is not search("already exists")
+- name: Test create {{ SOLR_COLLECTION }} collection success
+  fail:
+    msg: "{{ command_status }}"
+  when: create_collection.failed and create_collection is not search("already exists")
+
+#####################
+# Build application #
+#####################
+
+- name: Build the source code in {{ SITE_SRC }}
+  shell: "mvn clean install -DskipTests"
+  args:
+    chdir: "{{ SITE_SRC }}"
+  when: MAVEN | bool

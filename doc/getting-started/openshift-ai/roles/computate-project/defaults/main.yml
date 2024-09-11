@@ -1,0 +1,376 @@
+---
+
+#############
+# Site vars #
+#############
+
+# The name of this application. 
+SITE_NAME: computate-smart-laptop-challenge
+# A shorter name for the application used for database names, collections, and artifact IDs. 
+SITE_SHORT_NAME: "{{ SITE_NAME }}"
+# The main locale of this application. 
+SITE_LOCALE: en-US
+# A computate specific identifier for the locale and language of the code. 
+SITE_LANG: "{{ SITE_LOCALE | replace('-', '') }}"
+# The GitHub organization for this project. 
+GITHUB_ORG: computate-org
+# The default source code prefix directory for the project. 
+SITE_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
+# The source code directory for the project. 
+SITE_SRC: "{{ SITE_PREFIX }}/src/{{ SITE_NAME }}"
+# A pretty version of the site name. 
+SITE_DISPLAY_NAME: Learn that computer
+# A short description of the site. 
+SITE_DESCRIPTION: "Cloud native web development on your own computer"
+# The domain name of the site. 
+DOMAIN_NAME: "example.com"
+# The main git repository for the project. 
+SITE_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_NAME }}.git"
+# The main git repository for the project via ssh. 
+SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/') }}"
+# The port of the site. 
+SITE_PORT: 8080
+# The host name of the site. 
+SITE_HOST_NAME: "localhost"
+# The base URL of the site. 
+SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"
+# The port of the Zookeeper cluster manager. 
+CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
+# The public facing URL for the site. 
+SITE_PUBLIC_URL: https://www.computate.org
+# The timezone of the site. 
+SITE_ZONE: "America/Denver"
+# Verify SSL connections. 
+SSL_VERIFY: false
+STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
+# The path to the static files. 
+STATIC_PATH: "{{ SITE_SRC }}-static"
+# The path to the template files. 
+TEMPLATE_PATH: "{{ SITE_SRC }}/src/main/resources/templates"
+# The Auth roles required to be an admin in the site. 
+AUTH_ROLES_ADMIN: [ SiteAdmin ]
+FONTAWESOME_KIT: 
+I18N_PATHS: ["{{ SITE_PREFIX }}/computate/src/main/resources/org/computate/i18n/i18n_enUS.yaml"]
+
+################
+# API defaults #
+################
+
+# The API version of this site. 
+API_VERSION: 1.0.0
+# The Site OpenAPI title. 
+API_TITLE: "{{ SITE_DISPLAY_NAME }}"
+# The API contact email. 
+API_CONTACT_EMAIL: "{{ MAILING_LIST_EMAIL }}"
+
+#################
+# Java defaults #
+#################
+
+SITE_POM_GROUP_ID: "{{ DOMAIN_NAME | split('.') | reverse | join('.') }}"
+SITE_POM_ARTIFACT_ID: "site"
+SITE_POM_VERSION_PREFIX: "{{ API_VERSION }}"
+SITE_POM_VERSION_SUFFIX: ""
+SITE_POM_VERSION: "{{ SITE_POM_VERSION_PREFIX }}{{ SITE_POM_VERSION_SUFFIX }}"
+SITE_JAVA_PACKAGE: "{{ SITE_POM_GROUP_ID }}.{{ SITE_POM_ARTIFACT_ID }}"
+SITE_MAIN_VERTICLE_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.verticle"
+SITE_CONFIG_KEYS_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.config"
+SITE_REQUEST_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.request"
+SITE_BASE_MODEL_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.model"
+SITE_PAGE_LAYOUT_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.page"
+SITE_USER_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.user"
+# The /src/main/java folder for the main Java source code. 
+SUFFIX_SRC_MAIN_JAVA: /src/main/java
+# The /src/gen/java folder for the generated Java source code. 
+SUFFIX_SRC_GEN_JAVA: /src/gen/java
+# The relative paths in the project to watch for changes. 
+RELATIVE_PATHS_TO_WATCH: "src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}"
+# The Java main class of the site. 
+JAVA_MAIN_CLASS: "{{ DOMAIN_PACKAGE_NAME }}.vertx.AppVertx"
+# The base URL where the static files will point to.  
+
+ENABLE_QUARKUS: false
+ENABLE_VERTX: true
+
+###################
+# Vert.x defaults #
+###################
+
+SITE_INSTANCES: 2
+WORKER_POOL_SIZE: 2
+VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
+VERTX_MAX_WORKER_EXECUTE_TIME: 6000
+VERTX_WARNING_EXCEPTION_SECONDS: 60
+# The number of background worker executors that may run. 
+NUMBER_EXECUTORS: 5
+
+###################
+# Config defaults #
+###################
+
+CONFIG_TEMPLATE_NAME: template.yaml
+CONFIG_TEMPLATE_PATH: "{{ SITE_SRC }}/local/{{ CONFIG_TEMPLATE_NAME }}"
+CONFIG_VARS_NAME: vars.yaml
+CONFIG_VARS_PATH: "{{ SITE_SRC }}/{{ CONFIG_VARS_NAME }}"
+SOLR_POD_NAME: "solr-solrcloud-0"
+# The default source code directory for the computate application which helps generate and translate most the code. 
+COMPUTATE_SRC_RELATIVE: "{{ SITE_SRC }}/../computate"
+COMPUTATE_SRC: "{{ COMPUTATE_SRC_RELATIVE | realpath }}"
+COMPUTATE_SEARCH_SRC: "{{ (SITE_SRC + '/../computate-search') | realpath }}"
+COMPUTATE_VERTX_SRC: "{{ (SITE_SRC + '/../computate-vertx') | realpath }}"
+# The paths to the internationalization for this project. 
+I18N_PATHS: ["{{ SITE_PREFIX }}/computate/src/main/resources/org/computate/i18n/i18n_enUS.yml"]
+
+###########################
+# project system defaults #
+###########################
+ENABLE_STATIC: true
+ENABLE_ANSIBLE: true
+ENABLE_LAUNCH: true
+ENABLE_VARS_TEMPLATE: true
+
+#########################
+# Mailing list defaults #
+#########################
+
+# The URL to sign up for the mailing list. 
+MAILING_LIST_URL: https://computate.topicbox.com/groups/computate
+# The email address of the mailing list. 
+MAILING_LIST_EMAIL: computate@computate.topicbox.com
+
+####################
+# License defaults #
+####################
+
+# The name of the open source license for the software. 
+SITE_LICENSE_NAME: GNU GENERAL PUBLIC LICENSE, Version 3
+# The URL of the open source license for the software. 
+SITE_LICENSE_URL: https://www.gnu.org/licenses/gpl-3.0.en.html
+
+######################
+# OpenShift defaults #
+######################
+
+OPENSHIFT_APPS_DOMAIN: "apps-crc.testing"
+
+######################
+# Container defaults #
+######################
+
+# The organization within quay.io where the container will be pushed. 
+QUAYIO_ORG: computateorg
+
+###########################
+# Static content defaults #
+###########################
+
+# The name of the repository containing the web static content. 
+SITE_STATIC_NAME: "{{ SITE_NAME }}-static"
+# The static files git repository for the project. 
+SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
+
+######################
+# Developer defaults #
+######################
+
+# The software developer name. 
+DEVELOPER_NAME: Christopher Tate
+# The software organization name. 
+DEVELOPER_ORG_NAME: computate.org
+# The software organization URL. 
+DEVELOPER_ORG_URL: https://www.computate.org/
+
+####################
+# Systemd defaults #
+####################
+
+# The systemd service name for project that generates and translates most of the code. 
+SITE_SERVICE: "watch-{{ SITE_NAME }}"
+# Whether to enable systemd service. 
+SYSTEMD_ENABLED: true
+# The systemd service file for project that generates and translates most of the code. 
+SITE_SYSTEMD: "{{ '/usr/lib/systemd/system' if ansible_distribution_file_variety == 'RedHat' and (ansible_distribution_major_version | int) <= 7 else (lookup('env', 'HOME') + '/.config/systemd/user') }}/{{ SITE_SERVICE }}.service"
+
+#######################
+# Powered by defaults #
+#######################
+
+# The name of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_NAME: Google Kubernetes Engine
+# The URL of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_URL: https://cloud.google.com/kubernetes-engine
+# The static path to the logo of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_IMAGE_URI: /svg/google-gke.svg
+
+######################
+# Zookeeper defaults #
+######################
+
+# The default hostname for the Zookeeper cluster manager. 
+ZOOKEEPER_HOST_NAME: "localhost"
+# The default port that Zookeeper runs to manage the cluster. 
+ZOOKEEPER_PORT: 2181
+
+#################
+# Solr defaults #
+#################
+
+# Name of the solr deployment in OpenShift. 
+SOLR_NAME: solr
+# The host name to connect to Solr in OpenShift. 
+SOLR_HOST_NAME: "solr-solr-solrcloud.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The default port that Solr runs. 
+SOLR_PORT: 443
+# The solr collection to use for the site. 
+SOLR_COLLECTION: "{{ SITE_POM_ARTIFACT_ID }}"
+# The solr configset to use for the site. 
+SOLR_CONFIGSET: "computate"
+# The URL to the Solr collection. 
+SOLR_URL: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/{{ SOLR_COLLECTION }}"
+# The URL to the Solr collection for the watched Java code API. 
+SOLR_URL_COMPUTATE: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/computate"
+# Whether to use SSL when connecting to Solr. 
+SOLR_SSL: true
+
+#####################
+# Database defaults #
+#####################
+
+# The PostgreSQL database host name. 
+DATABASE_HOST: "postgres.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The PostgreSQL database port. 
+DATABASE_PORT: 30432
+# The PostgreSQL database user name of the site. 
+DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}"
+# The PostgreSQL database password of the site. 
+# oc get -n smartvillage secret/postgres-pguser-smartvillage -o 'jsonpath={.data.password}' | base64 -d && echo
+DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='postgres-pguser-keycloak', namespace='keycloak')[0].data['password'] | b64decode }}"
+# The PostgreSQL database name of the site. 
+DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}"
+
+#################
+# Operator vars #
+#################
+
+OPERATOR_NAME: "{{ SITE_NAME }}-operator"
+OPERATOR_PREFIX: "{{ lookup('env', 'HOME') }}/.local"
+OPERATOR_SRC: "{{ OPERATOR_PREFIX }}/src/{{ OPERATOR_NAME  }}"
+OPERATOR_DOMAIN_NAME: "nerc.{{ DOMAIN_NAME }}"
+OPERATOR_PYTHON_DEPENDENCY_LIST:
+  - openshift
+  - jmespath
+  - jinja2
+  - configparser
+OPERATOR_REDHAT_DEPENDENCY_LIST:
+  - git
+  - tcl
+  - tk
+OPERATOR_SYSTEM_DEPENDENCY_LIST: "{{ OPERATOR_REDHAT_DEPENDENCY_LIST if ansible_distribution_file_variety == 'RedHat' else OPERATOR_REDHAT_DEPENDENCY_LIST }}"
+OPERATOR_REPO: git@github.com:zdia/gorilla.git
+
+#######################################
+# OpenID Connect auth server defaults #
+#######################################
+
+# The Auth host name. 
+AUTH_HOST_NAME: "keycloak.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The Auth port. 
+AUTH_PORT: 443
+# Whether the Auth server uses SSL. 
+AUTH_SSL: true
+# Whether the Auth server requires SSL. 
+AUTH_SSL_REQUIRED: all
+# The Auth realm. 
+AUTH_REALM: "{{ DOMAIN_NAME | upper }}"
+# The Auth client. 
+AUTH_CLIENT: "{{ SITE_SHORT_NAME }}"
+# The Auth secret. 
+AUTH_SECRET: 
+# The Auth URL. 
+AUTH_URL: "https://{{ AUTH_HOST_NAME }}"
+# The Auth URL to retrieve tokens. 
+AUTH_TOKEN_URI: "/auth/realms/{{ AUTH_REALM }}/protocol/openid-connect/token"
+# The OpenAPI ID for the openId spec. 
+AUTH_OPEN_API_ID: openIdConnect
+# The auth callback URI. 
+AUTH_CALLBACK_URI: /callback
+# The auth logout URI. 
+AUTH_LOGOUT_URI: /logout
+# Enables authorization fine-grained resource permissions. 
+AUTH_FINE_GRAINED_POLICY_PERMISSIONS: true
+
+# Enable the code generation service for the project
+ENABLE_CODE_GENERATION_SERVICE: true
+# Set the userKey of the user creating an object in the database. 
+ENABLE_USER_KEY: true
+# Set the sessionId of the user session creating an object in the database. 
+ENABLE_SESSION_ID: true
+# Enable an object in the database to be deleted. 
+ENABLE_DELETED: true
+# Enable an object in the database to be archived. 
+ENABLE_ARCHIVED: true
+# Enable an admin role. 
+ENABLE_ROLE_ADMIN: true
+# Enable a super admin role. 
+ENABLE_ROLE_SUPER_ADMIN: true
+# Enable an OpenID Connect Authentication. 
+ENABLE_OPENID_CONNECT: true
+# Write API code into the project. 
+WRITE_API: true
+# Write code comments into generated code. 
+WRITE_COMMENTS: true
+# Enable data import in the site. 
+ENABLE_IMPORT_DATA: true
+ENABLE_ZOOKEEPER_CLUSTER: false
+OPEN_TELEMETRY_ENABLED: false
+MQTT_ENABLED: false
+DATABASE_ENABLED: false
+
+############################
+# OpenShift Secret Details #
+############################
+
+OPENSHIFT_NAMESPACE: smartvillage
+DATABASE_NAMESPACE: postgres
+SOLR_NAMESPACE: solr
+ZOOKEEPER_NAMESPACE: zookeeper
+KAFKA_NAMESPACE: kafka
+DATABASE_SECRET: postgres-pguser-smartvillage
+KAFKA_SSL_KEYSTORE_SECRET: "{{ SITE_SHORT_NAME }}-kafka"
+KAFKA_SSL_TRUSTSTORE_SECRET: default-cluster-ca-cert
+KAFKA_PORT: 9093
+SITE_VOLUME_SIZE: 30Gi
+SITE_VOLUME_NAME: "{{ SITE_NAME }}"
+SITE_VOLUME_MOUNT_PATH: "/var/{{ SITE_NAME }}"
+SITE_LIMITS_MEMORY: "1500Mi"
+SITE_LIMITS_CPU: "700m"
+SITE_REQUESTS_MEMORY: "1500Mi"
+SITE_REQUESTS_CPU: "700m"
+SITE_REPLICAS: 1
+ENABLE_LOGIN: false
+
+####################
+# Ansible defaults #
+####################
+
+# Add to an ansible-vault the username of your user on your computer (echo $HOSTNAME). 
+USER_NAME: "{{ lookup('env', 'USER') }}"
+# Run mvn clean install
+MAVEN: true
+
+#######################
+# System dependencies #
+#######################
+
+# The system dependencies for an Ubuntu or Debian Linux Operating System. 
+SITE_DEPENDENCIES_DEBIAN:
+  - openjdk-17-jdk
+# The system dependencies for a Fedora, CentOS Stream, or RHEL Linux Operating System. 
+SITE_DEPENDENCIES_REDHAT:
+  - java-17-openjdk
+# The computed system dependencies for the Operating System. 
+SITE_DEPENDENCIES: "{{ SITE_DEPENDENCIES_REDHAT if ansible_distribution_file_variety == 'RedHat' else (SITE_DEPENDENCIES_DEBIAN if ansible_distribution_file_variety == 'Debian' else SITE_DEPENDENCIES_REDHAT) }}"
+# The path to the system python binary. 
+SYSTEM_PYTHON: "{{ '/usr/bin/python' if lookup('file', '/usr/bin/python', errors='ignore') else '/usr/bin/python3' }}"
+# The path to the application python binary. 
+SITE_PYTHON: "~/python/bin/python"
