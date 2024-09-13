@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="{{ SITE_LOCALE }}" class="sl-theme-{{ SITE_THEME }}">
+<html lang="\{\{ SITE_LOCALE \}\}" class="sl-theme-\{\{ SITE_THEME \}\}">
   <head>
-{% block htmHeadPageLayout %}
+\{\% block htmHeadPageLayout \%\}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-{% block htmMetaPageLayout %}
-{% endblock htmMetaPageLayout %}
-{% block htmTitlePageLayout %}
+\{\% block htmMetaPageLayout \%\}
+\{\% endblock htmMetaPageLayout \%\}
+\{\% block htmTitlePageLayout \%\}
     <title>computate-smart-laptop-challenge</title>
-{% endblock htmTitlePageLayout %}
-{% block htmStylesPageLayout %}
-    <link rel="icon" href="{{ STATIC_BASE_URL }}/favicon.ico" />
-    <!-- <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/w3.css">  -->
+\{\% endblock htmTitlePageLayout \%\}
+\{\% block htmStylesPageLayout \%\}
+    <link rel="icon" href="\{\{ STATIC_BASE_URL \}\}/favicon.ico" />
+    <!-- <link rel="stylesheet" href="\{\{ STATIC_BASE_URL \}\}/css/w3.css">  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/dark.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/site.css"/>
-{% endblock htmStylesPageLayout %}
+    <link rel="stylesheet" href="\{\{ STATIC_BASE_URL \}\}/css/site.css"/>
+\{\% endblock htmStylesPageLayout \%\}
 
     <style>
-{% block htmStylePageLayout %}
-{% endblock htmStylePageLayout %}
+\{\% block htmStylePageLayout \%\}
+\{\% endblock htmStylePageLayout \%\}
     </style>
 
-{% block htmScriptsPageLayout %}
-{% if FONTAWESOME_KIT is defined %}
-    {{ FONTAWESOME_KIT }}
-{% endif %}
+\{\% block htmScriptsPageLayout \%\}
+\{\% if FONTAWESOME_KIT is defined \%\}
+    \{\{ FONTAWESOME_KIT \}\}
+\{\% endif \%\}
     <script>
 
       function addGlow($input) {
@@ -100,104 +100,58 @@
       });
     </script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
-    <script src="{{ STATIC_BASE_URL }}/js/site.js"></script>
-    <script type="module" src="{{ STATIC_BASE_URL }}/js/siteModule.js"></script>
-    <script src="{{ STATIC_BASE_URL }}/js/sockjs.js"></script>
-    <script src="{{ STATIC_BASE_URL }}/js/vertx-eventbus.js"></script>
-    <script src="{{ STATIC_BASE_URL }}/js/plotly-2.9.0.min.js"></script>
+    <script src="\{\{ STATIC_BASE_URL \}\}/js/site.js"></script>
+    <script type="module" src="\{\{ STATIC_BASE_URL \}\}/js/siteModule.js"></script>
+    <script src="\{\{ STATIC_BASE_URL \}\}/js/sockjs.js"></script>
+    <script src="\{\{ STATIC_BASE_URL \}\}/js/vertx-eventbus.js"></script>
+    <script src="\{\{ STATIC_BASE_URL \}\}/js/plotly-2.9.0.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-{% endblock htmScriptsPageLayout %}
-{% block htmScriptPageLayout %}
-{% endblock htmScriptPageLayout %}
-{% endblock htmHeadPageLayout %}
+\{\% endblock htmScriptsPageLayout \%\}
+\{\% block htmScriptPageLayout \%\}
+\{\% endblock htmScriptPageLayout \%\}
+\{\% endblock htmHeadPageLayout \%\}
 
     <script>
-{%- block websocketPageLayout %}{%- endblock websocketPageLayout %}
+\{\%- block websocketPageLayout \%\}\{\%- endblock websocketPageLayout \%\}
     </script>
   </head>
   <body>
     <div id="site-grid">
-{% block htmBodyPageLayout %}
-{% block htmBodyStartPageLayout %}
+\{\% block htmBodyPageLayout \%\}
+\{\% block htmBodyStartPageLayout \%\}
       <aside id="site-aside-left" class="hide-mobile ">
         <a id="img-keys-a" href="/">
-          <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
+          <img id="site-aside-left-img-logo" src="\{\{ STATIC_BASE_URL \}\}\{\{ SITE_LOGO_URI \}\}"/>
         </a>
         <sl-button id="site-aside-left-close-button" label="Close" data-drawer="close" class="hide-desktop">
           <i slot="prefix" class="fas fa-xmark"></i>
         </sl-button>
         <ul>
           <li>
-            <sl-button id="home-button" href="{{ SITE_BASE_URL }}">
+            <sl-button id="home-button" href="\{\{ SITE_BASE_URL \}\}">
               <i class="fa-regular fa-house"></i>
               home
             </sl-button>
           </li>
+{% for JAVA_MODEL in JAVA_MODELS %}
           <li>
-            <sl-tooltip placement="right" content="Read the latest articles to learn more">
-              <sl-button href="{{ SITE_BASE_URL }}/page">
-                <i class="fa-duotone fa-solid fa-newspaper"></i>
-                articles
+            <sl-tooltip placement="right" content="{{ JAVA_MODEL.classeDescription_enUS_stored_string }}">
+              <sl-button href="\{\{ SITE_BASE_URL \}\}{{ JAVA_MODEL.classeApiUriSearchPage_enUS_stored_string }}">
+                {{ JAVA_MODEL.classeIcone_stored_string | default('') }}
+                {{ JAVA_MODEL.classeNomAdjectifPluriel_enUS_stored_string }}
               </sl-button>
             </sl-tooltip>
           </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift cluster containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-cluster">
-                <i class="fa-regular fa-server"></i>
-                AI clusters
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift node containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-node">
-                <i class="fa-regular fa-computer"></i>
-                AI nodes
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift GPU device containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/gpu-device">
-                <i class="fa-regular fa-memory"></i>
-                GPU devices
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A GPU inside a GPU device">
-              <sl-button href="{{ SITE_BASE_URL }}/gpu">
-                <i class="fa-regular fa-microchip"></i>
-                GPUs
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A GPU slice inside a GPU">
-              <sl-button href="{{ SITE_BASE_URL }}/gpu-slice">
-                <i class="fa-regular fa-cake-slice"></i>
-                GPU slices
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A research project using AI and GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-project">
-                <i class="fa-regular fa-school"></i>
-                AI projects
-              </sl-button>
-            </sl-tooltip>
-          </li>
-{% if userName is defined %}
+{% endfor %}
+\{\% if userName is defined \%\}
           <li>
             <sl-details>
               <div slot="summary">
                 <sl-avatar label="user"></sl-avatar>
-                user: {{userName}}
+                user: \{\{userName\}\}
               </div>
-              <div>{{ userFullName }}</div>
-              <div>{{ userEmail }}</div>
+              <div>\{\{ userFullName \}\}</div>
+              <div>\{\{ userEmail \}\}</div>
               <div>
                 <sl-tooltip placement="right" content="see or change your user profile">
                   <sl-button href="/user" label="see or change your user profile">
@@ -206,7 +160,7 @@
                   </sl-button>
                 </sl-tooltip>
                 <sl-tooltip placement="right" content="sign out">
-                  <sl-button href="{{ logoutUrl }}" label="sign out">
+                  <sl-button href="\{\{ logoutUrl \}\}" label="sign out">
                     <i slot="prefix" class="fa-duotone fa-person-from-portal"></i>
                     <span>sign out</span>
                   </sl-button>
@@ -214,13 +168,13 @@
               </div>
             </sl-details>
           </li>
-{% else %}
+\{\% else \%\}
           <li>
-            <sl-button href="{{ SITE_BASE_URL }}/user">
+            <sl-button href="\{\{ SITE_BASE_URL \}\}/user">
               <i class="fa-duotone fa-person-to-portal"></i> login
             </sl-button>
           </li>
-{% endif %}
+\{\% endif \%\}
         </ul>
       </aside>
       <main>
@@ -237,17 +191,17 @@
           </sl-menu>
         </sl-dropdown>
         </header>
-{% endblock htmBodyStartPageLayout %}
-{% block htmBodyMiddlePageLayout %}
+\{\% endblock htmBodyStartPageLayout \%\}
+\{\% block htmBodyMiddlePageLayout \%\}
         <div class="pageContent w3-content ">
           put stuff here
         </div>
-{% endblock htmBodyMiddlePageLayout %}
-{% block htmBodyEndPageLayout %}
+\{\% endblock htmBodyMiddlePageLayout \%\}
+\{\% block htmBodyEndPageLayout \%\}
       </main>
       <footer id="site-footer" class="split-block round-first-and-last-column-x-large ">
-        {% if GITHUB_ORG is defined %}
-        <sl-button size="large" id="footer-open-source" target="_blank" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/">
+        \{\% if GITHUB_ORG is defined \%\}
+        <sl-button size="large" id="footer-open-source" target="_blank" href="https://github.com/\{\{ GITHUB_ORG \}\}/\{\{ SITE_NAME \}\}/">
           <div>
             <i class="fa-brands fa-github fa-5x "></i>
           </div>
@@ -255,30 +209,30 @@
             This site is open source. 
           </div>
         </sl-button>
-        {% endif %}
+        \{\% endif \%\}
         <sl-button size="large" id="footer-generated-by" href="https://www.computate.org/" target="_blank">
           <div>
             <div>Generated with </div>
             <div>
-              <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg"/>
+              <img id="site-aside-left-img-logo" src="\{\{ STATIC_BASE_URL \}\}/svg/computate-keys.svg"/>
             </div>
           </div>
         </sl-button>
-        {% if SITE_POWERED_BY_URL is defined %}
-        <sl-button size="large" id="footer-powered-by" href="{{ SITE_POWERED_BY_URL }}" target="_blank">
+        \{\% if SITE_POWERED_BY_URL is defined \%\}
+        <sl-button size="large" id="footer-powered-by" href="\{\{ SITE_POWERED_BY_URL \}\}" target="_blank">
           <div>
             <div>
-              <img src="{{ STATIC_BASE_URL }}{{ SITE_POWERED_BY_IMAGE_URI }}"/>
+              <img src="\{\{ STATIC_BASE_URL \}\}\{\{ SITE_POWERED_BY_IMAGE_URI \}\}"/>
             </div>
             <div>
-              Powered by {{ SITE_POWERED_BY_NAME }}
+              Powered by \{\{ SITE_POWERED_BY_NAME \}\}
             </div>
           </div>
         </sl-button>
-        {% endif %}
+        \{\% endif \%\}
       </footer>
     </div>
-{% endblock htmBodyEndPageLayout %}
-{% endblock htmBodyPageLayout %}
+\{\% endblock htmBodyEndPageLayout \%\}
+\{\% endblock htmBodyPageLayout \%\}
   </body>
 </html>

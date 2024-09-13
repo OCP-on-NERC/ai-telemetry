@@ -1,0 +1,6 @@
+---
+- name: Install the project locally
+  connection: local
+  hosts: localhost
+  roles:
+    - computate-project

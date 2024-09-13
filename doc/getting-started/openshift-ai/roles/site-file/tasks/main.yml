@@ -1,0 +1,44 @@
+---
+- name: Query Apache Solr for all Java classes
+  uri:
+    url: "{{ SOLR_URL_COMPUTATE + '/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:' + SITE_NAME + (('+OR+siteNom_indexed_string:' + SITE_POM_ARTIFACT_ID) if SITE_POM_ARTIFACT_ID is defined else '') + '&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&sort=classeOrdre_indexed_int%20asc' }}"
+    url_username: "{{ SOLR_USERNAME }}"
+    url_password: "{{ SOLR_PASSWORD }}"
+    validate_certs: false
+  register: JAVA_MODELS_RESPONSE
+- name: Query Apache Solr for all public Java classes
+  uri:
+    url: "{{ SOLR_URL_COMPUTATE + '/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:' + SITE_NAME + (('+OR+siteNom_indexed_string:' + SITE_POM_ARTIFACT_ID) if SITE_POM_ARTIFACT_ID is defined else '') + '&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&fq=classePublicLire_indexed_boolean:true&sort=classeOrdre_indexed_int%20asc' }}"
+    url_username: "{{ SOLR_USERNAME }}"
+    url_password: "{{ SOLR_PASSWORD }}"
+    validate_certs: false
+  register: PUBLIC_MODELS_RESPONSE
+- name: Query Apache Solr for all Java page templates
+  uri:
+    url: "{{ SOLR_URL_COMPUTATE + '/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:' + SITE_NAME + (('+OR+siteNom_indexed_string:' + SITE_POM_ARTIFACT_ID) if SITE_POM_ARTIFACT_ID is defined else '') + '&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&fq=classePageTemplates_enUS_indexed_string:%5B%2A%20TO%20%2A%5D&sort=classeOrdre_indexed_int%20asc' }}"
+    url_username: "{{ SOLR_USERNAME }}"
+    url_password: "{{ SOLR_PASSWORD }}"
+    validate_certs: false
+  register: JAVA_PAGES_RESPONSE
+- name:
+  set_fact:
+    JAVA_MODELS: "{{ JAVA_MODELS_RESPONSE.json.response.docs }}"
+    PUBLIC_MODELS: "{{ PUBLIC_MODELS_RESPONSE.json.response.docs }}"
+    JAVA_PAGES: "{{ JAVA_PAGES_RESPONSE.json.response.docs }}"
+- name: "Create the project file directory {{ FILE_PATH | dirname }}"
+  file:
+    state: directory
+    path: "{{ FILE_PATH | dirname }}"
+- name: "Check for the project file {{ FILE_TEMPLATE }}"
+  stat: 
+    path: "{{ FILE_PATH }}"
+  register: FILE_EXISTS
+- name: "Apply the template {{ FILE_TEMPLATE }} the project file {{ FILE_PATH }}"
+  copy:
+    content: "{{ lookup('template', FILE_TEMPLATE) | replace('\\{\\{\\{','{{{') | replace('\\{\\{\\>','{{>') | replace('\\{\\{\\#','{{#') | replace('\\{\\%','{%') | replace('\\{\\{','{{') | replace('\\}\\}\\}', '}}}') | replace('\\}\\}', '}}') | replace('\\%\\}', '%}') }}"
+    dest: "{{ FILE_PATH }}"
+    mode: "{{ 'u+rwx' if FILE_PATH.endswith('.sh') else 'u+rw' }}"
+  when: FILE_TEMPLATE is defined and ((FILE_ONCE is not defined or FILE_ONCE == false) or FILE_EXISTS.stat.exists == false)
+- name: "Copy the file {{ FILE_COPY_FROM }} to file {{ FILE_PATH }}"
+  shell: cp "{{ FILE_COPY_FROM }}" "{{ FILE_PATH }}"
+  when: FILE_COPY_FROM is defined and ((FILE_ONCE is not defined or FILE_ONCE == false) or FILE_EXISTS.stat.exists == false)

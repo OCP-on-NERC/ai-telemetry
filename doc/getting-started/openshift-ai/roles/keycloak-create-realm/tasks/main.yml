@@ -1,0 +1,54 @@
+---
+- name: Get Keycloak auth token
+  ansible.builtin.uri:
+    url: "{{ AUTH_URL }}/realms/master/protocol/openid-connect/token"
+    method: POST
+    body_format: form-urlencoded
+    body:
+      username: "{{ AUTH_ADMIN_USERNAME }}"
+      password: "{{ AUTH_ADMIN_PASSWORD }}"
+      grant_type: password
+      client_id: admin-cli
+    validate_certs: "{{ SSL_VERIFY }}"
+    status_code:
+      - 200
+  register: AUTH_TOKEN
+  ignore_errors: "{{  DELETE_CRD is defined and DELETE_CRD }}"
+- name: Create Keycloak Realm
+  ansible.builtin.uri:
+    url: "{{ AUTH_URL }}/admin/realms"
+    validate_certs: "{{ SSL_VERIFY }}"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ AUTH_TOKEN.json.access_token }}"
+    status_code:
+      - 201
+      - 409
+    body_format: json
+    body: "{{ lookup('template', 'keycloakrealmimport.yaml') | from_yaml | to_json }}"
+- name: Get rsa-enc-generated Key Provider
+  ansible.builtin.uri:
+    url: "{{ AUTH_URL }}/admin/realms/{{ AUTH_REALM }}/components"
+    validate_certs: "{{ SSL_VERIFY }}"
+    headers:
+      Authorization: "Bearer {{ AUTH_TOKEN.json.access_token }}"
+    status_code:
+      - 200
+    body_format: json
+    body: "{{ lookup('template', 'keycloakrealmimport.yaml') | from_yaml | to_json }}"
+  register: keycloak_realm_components
+- name: Delete rsa-enc-generated Key Provider
+  ansible.builtin.uri:
+    url: "{{ AUTH_URL }}/admin/realms/{{ AUTH_REALM }}/components/{{ keycloak_realm_components.json | json_query(current_query) | first | default('') }}"
+    validate_certs: "{{ SSL_VERIFY }}"
+    method: DELETE
+    headers:
+      Authorization: "Bearer {{ AUTH_TOKEN.json.access_token }}"
+    status_code:
+      - 202
+      - 204
+    body_format: json
+    body: "{{ lookup('template', 'keycloakrealmimport.yaml') | from_yaml | to_json }}"
+  vars:
+    current_query: "[?name=='rsa-enc-generated'].id"
+  when: (keycloak_realm_components.json | json_query(current_query) | length) > 0
