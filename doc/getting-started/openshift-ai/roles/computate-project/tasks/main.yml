@@ -56,17 +56,6 @@
   when: not SITE_STATIC_GIT_DIR.stat.exists
   ignore_errors: true
 
-- name: Query Apache Solr for all Java classes
-  uri: 
-    url: "{{ SOLR_URL_COMPUTATE }}/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:smartabyar-smartvillage&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&sort=classSort_indexed_int%20asc"
-    url_username: "{{ SOLR_USERNAME }}"
-    url_password: "{{ SOLR_PASSWORD }}"
-    validate_certs: false
-  register: JAVA_CLASSES_RESPONSE
-- name: 
-  set_fact: 
-    JAVA_CLASSES: "{{ JAVA_CLASSES_RESPONSE.json.response.docs }}"
-
 ###########
 # Service #
 ###########
@@ -165,10 +154,11 @@
   register: create_collection
   ignore_errors: True
   changed_when: create_collection is not search("already exists")
+  when: SITE_NAME not in ('computate-search', 'computate-vertx')
 - name: Test create {{ SOLR_COLLECTION }} collection success
   fail:
     msg: "{{ command_status }}"
-  when: create_collection.failed and create_collection is not search("already exists")
+  when: SITE_NAME not in ('computate-search', 'computate-vertx') and create_collection.failed and create_collection is not search("already exists")
 
 #####################
 # Build application #

@@ -1,0 +1,42 @@
+---
+SITE_NAMESPACE: "ai-telemetry-cbca60"
+SITE_NAME: computate-vertx
+# The source code directory for the project. 
+SITE_SRC: "{{ lookup('env', 'HOME') }}/{{ SITE_NAME }}"
+DOMAIN_NAME: computate.org
+SITE_POM_ARTIFACT_ID: vertx
+DOMAIN_PACKAGE_NAME: "org.computate.vertx"
+RELATIVE_PATHS_TO_WATCH: "src/main/java/org/computate/vertx"
+SITE_BASE_URL: "http://localhost:10200"
+SITE_ZONE: "America/Denver"
+SITE_LOCALE: "en-US"
+# The Auth roles required to be a super admin in the site. 
+AUTH_ROLE_SUPER_ADMIN: SiteAdmin
+# The Auth roles required to be an admin in the site. 
+AUTH_ROLE_ADMIN: SiteAdmin
+AUTH_FINE_GRAINED_POLICY_PERMISSIONS: True
+# Write API code into the project. 
+WRITE_API: true
+# Write code comments into generated code. 
+WRITE_COMMENTS: true
+ENABLE_LOG: true
+ENABLE_DELETED: true
+ENABLE_ARCHIVED: true
+ENABLE_USER_KEY: false
+ENABLE_SESSION_ID: true
+ENABLE_ROLE_ADMIN: true
+ENABLE_OPENID_CONNECT: true
+ENABLE_QUARKUS: false
+ENABLE_VERTX: true
+
+ZOOKEEPER_HOST_NAME: "localhost"
+ZOOKEEPER_PORT: 2181
+
+SOLR_HOST_NAME: "solr"
+SOLR_PORT: 8983
+SOLR_SSL: false
+SOLR_COLLECTION: "{{ lookup('env', 'SOLR_COLLECTION_COMPUTATE') }}"
+SOLR_USERNAME: admin
+SOLR_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr', namespace=SITE_NAMESPACE)[0].data['solr-password'] | b64decode }}"
+SOLR_URL: "http://solr:8983/solr/{{ SOLR_COLLECTION }}"
+SOLR_URL_COMPUTATE: "http://solr:8983/solr/{{ SOLR_COLLECTION }}"

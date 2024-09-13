@@ -424,7 +424,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_RABBITMQ))) {
 				try {
 					RabbitMQOptions options = new RabbitMQOptions()
-							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST))
+							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST_NAME))
 							.setPort(config().getInteger(ConfigKeys.RABBITMQ_PORT))
 							.setUser(config().getString(ConfigKeys.RABBITMQ_USER))
 							.setPassword(config().getString(ConfigKeys.RABBITMQ_PASSWORD))

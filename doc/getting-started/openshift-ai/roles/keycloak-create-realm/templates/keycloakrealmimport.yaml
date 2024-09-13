@@ -4,10 +4,10 @@ enabled: true
 displayName: {{ AUTH_REALM }}
 registrationAllowed: true
 resetPasswordAllowed: true
-editUsernameAllowed: true
+editUsernameAllowed: false
 rememberMe: true
-verifyEmail: true
-loginWithEmailAllowed: true
+verifyEmail: false
+loginWithEmailAllowed: false
 identityProviders:
   - displayName: GitHub
     enabled: true
