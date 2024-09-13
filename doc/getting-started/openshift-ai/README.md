@@ -57,7 +57,7 @@ You will want to create your own fork of the [ai-telemetry repo](https://github.
 
 - Create a [new GitHub personal acces token here](https://github.com/settings/personal-access-tokens/new) to your repo. 
 - Select "Only select repositories", and select your ai-telemetry fork repo. 
-- Under "Content", select "Access: Read and Write". 
+- Under "Contents" (within "Repository permissions"), select "Access: Read and Write". 
 - Copy the token to the clipboard, then set up the following environment variables in a Terminal in RHODS: 
 
 ```bash
@@ -68,6 +68,11 @@ git config --global user.name '...'
 echo "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
 git config --global credential.helper store
 ```
+
+# Install VSCode extensions
+
+- `Jupyter` by ms-toolsai
+- `Language Support for Java(TM) by Red Hat`
 
 ## Disable Java autobuild
 
