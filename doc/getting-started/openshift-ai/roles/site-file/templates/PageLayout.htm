@@ -112,7 +112,7 @@
 \{\% endblock htmHeadPageLayout \%\}
 
     <script>
-{%- block websocketPageLayout %}{%- endblock websocketPageLayout %}
+\{\%- block websocketPageLayout \%\}\{\%- endblock websocketPageLayout \%\}
     </script>
   </head>
   <body>
@@ -128,7 +128,7 @@
         </sl-button>
         <ul>
           <li>
-            <sl-button href="\{\{ SITE_BASE_URL \}\}">
+            <sl-button id="home-button" href="\{\{ SITE_BASE_URL \}\}">
               <i class="fa-regular fa-house"></i>
               home
             </sl-button>
