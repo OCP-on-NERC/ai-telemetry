@@ -145,6 +145,7 @@
 {%- block websocketBaseResultPage %}
 {%- block websocketSitePagePage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketSitePage(websocketSitePageInner);
 {%- endblock websocketSitePagePage %}
 {%- endblock websocketBaseResultPage %}
@@ -161,7 +162,7 @@
 
 {%- macro htmForm_patchSitePage() %}
         <sl-dialog id="patchSitePageDialog" label="Modify article">
-          <form id="htmForm_patchSitePage">
+          <form id="htmForm_patchSitePage" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -280,7 +281,7 @@
 
 {%- macro htmForm_postSitePage() %}
         <sl-dialog id="postSitePageDialog" label="Create an article">
-          <form id="htmForm_postSitePage">
+          <form id="htmForm_postSitePage" class="round-first-and-last-row-x-large ">
             <div class="">You can override any default values below: </div>
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -400,7 +401,7 @@
 
 {%- macro htmForm_putimportSitePage() %}
         <sl-dialog id="putimportSitePageDialog" label="Import articles">
-          <form id="htmForm_putimportSitePage">
+          <form id="htmForm_putimportSitePage" class="round-first-and-last-row-x-large ">
             <div>
               <sl-textarea
                   class="PUTImport_searchList "
@@ -424,7 +425,7 @@
 
 {%- macro htmForm_searchpageSitePage() %}
         <div id="searchpageSitePageDialog" label="Search articles">
-          <div id="htmForm_searchpageSitePage">
+          <div id="htmForm_searchpageSitePage" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -716,7 +717,7 @@
                   <div class="">
                     <label for="fqSitePage_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetSitePage_{{ key }}" onclick="facetFieldChange('SitePage', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetSitePage_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqSitePage_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('SitePage', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -815,7 +816,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSitePage_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('SitePage', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSitePage_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotSitePagePage %}
@@ -913,12 +914,8 @@
           {%- endblock htmBodySidebarSitePagePage %}
         </div>
 
-        {%- block htmBodyGraphLocationSitePagePage %}
-        <div id="htmBodyGraphLocationSitePagePage" class="htmBodyGraphLocation "></div>
-        {%- endblock htmBodyGraphLocationSitePagePage %}
-
         {%- block htmBodyGraphSitePagePage %}
-        <div id="htmBodyGraphBaseResultPage" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphSitePagePage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -1052,7 +1049,7 @@
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if sitePage_.created is defined %}{{ formatZonedDateTime(sitePage_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if sitePage_.created is defined %}{{ formatZonedDateTime(sitePage_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-id="{{ id }}"
@@ -1081,7 +1078,7 @@
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if sitePage_.modified is defined %}{{ formatZonedDateTime(sitePage_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if sitePage_.modified is defined %}{{ formatZonedDateTime(sitePage_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-id="{{ id }}"
@@ -1121,7 +1118,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.objectId}}"
+                      value="{{sitePage_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1222,7 +1219,7 @@ The ID for this page. "
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.pageId}}"
+                      value="{{sitePage_.pageId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1260,7 +1257,7 @@ The relative URI for this page. "
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.uri}}"
+                      value="{{sitePage_.uri | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1298,7 +1295,7 @@ The URL for this page. "
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.url}}"
+                      value="{{sitePage_.url | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1336,7 +1333,7 @@ The author"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.author}}"
+                      value="{{sitePage_.author | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1374,7 +1371,7 @@ The page image URI"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{sitePage_.pageImageUri}}"
+                      value="{{sitePage_.pageImageUri | e }}"
   {%- endif %}
                       ></sl-input>
 

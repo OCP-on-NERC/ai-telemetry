@@ -10,6 +10,7 @@ import org.computate.vertx.api.BaseApiServiceImpl;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Objects;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.pgclient.PgPool;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
@@ -57,7 +58,6 @@ import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
-import io.vertx.core.Vertx;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import io.vertx.ext.reactivestreams.ReactiveWriteStream;
 import io.vertx.core.MultiMap;
@@ -112,8 +112,8 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	protected static final Logger LOG = LoggerFactory.getLogger(SitePageEnUSGenApiServiceImpl.class);
 
-	public SitePageEnUSGenApiServiceImpl(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(eventBus, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+	public SitePageEnUSGenApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
+		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 	}
 
 	// Search //

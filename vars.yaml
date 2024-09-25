@@ -1,0 +1,512 @@
+
+#############
+# Site vars #
+#############
+
+# The name of this application. 
+SITE_NAME: ai-telemetry
+# The source code directory for the project. 
+SITE_SRC: "{{ lookup('env', 'HOME') }}/.local/src/{{ SITE_NAME }}"
+# The parent source directory. 
+PARENT_SRC: "{{ (SITE_SRC + '/..') | realpath }}"
+# The vars.yaml filename to load when running in development. 
+VARS_FILENAME: vars.yaml
+# The vars.yaml path to load when running in development. 
+VARS_PATH: "{{ SITE_SRC }}/{{ VARS_FILENAME }}"
+# A shorter name for the application used for database names, collections, and artifact IDs. 
+SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | replace('.', '') | lower }}"
+# A pretty version of the site name. 
+SITE_DISPLAY_NAME: Learn that computer
+# A short description of the site. 
+SITE_DESCRIPTION: "AI telemetry on OpenShift dashboards"
+# The main locale of this application. 
+SITE_LOCALE: en-US
+# A computate specific identifier for the locale and language of the code. 
+SITE_LANG: "{{ SITE_LOCALE | replace('-', '') }}"
+# The timezone of the site. 
+SITE_ZONE: "America/New_York"
+# The domain name of the site. 
+DOMAIN_NAME: mghpcc.org
+# The GitHub organization for this project. 
+GITHUB_ORG: OCP-on-NERC
+# The main git repository for the project. 
+SITE_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_NAME }}.git"
+# The main git repository for the project via ssh. 
+SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/') }}"
+# The port of the site. 
+SITE_PORT: 10210
+# The host name of the site. 
+SITE_HOST_NAME: "localhost"
+# The base URL of the site. 
+SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"
+# The public facing URL for the site. 
+SITE_PUBLIC_URL: "https://ai-telemetry.{{ DOMAIN_NAME }}"
+# The port of the Zookeeper cluster manager. 
+CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
+# Verify SSL connections. 
+SSL_VERIFY: false
+# The namespace in OpenShift where the site will run. 
+SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
+
+#########################
+# Mailing list defaults #
+#########################
+
+# The URL to sign up for the mailing list. 
+MAILING_LIST_URL: https://computate.topicbox.com/groups/computate
+# The email address of the mailing list. 
+MAILING_LIST_EMAIL: computate@computate.topicbox.com
+
+################
+# API defaults #
+################
+
+# The API version of this site. 
+API_VERSION: 1.0.0
+# The Site OpenAPI title. 
+API_TITLE: "{{ SITE_DISPLAY_NAME }}"
+# The API contact email. 
+API_CONTACT_EMAIL: "{{ MAILING_LIST_EMAIL }}"
+
+#################
+# Java defaults #
+#################
+
+# The Maven group ID of the project. 
+SITE_POM_GROUP_ID: "{{ DOMAIN_NAME | split('.') | reverse | join('.') }}"
+# The Maven artifact ID of the project. 
+SITE_POM_ARTIFACT_ID: "aitelemetry"
+# The current Maven version of the project. 
+SITE_POM_VERSION: "{{ API_VERSION }}"
+# The base Java Package for the project based on Maven group ID and artifact ID. 
+SITE_JAVA_PACKAGE: "{{ SITE_POM_GROUP_ID }}.{{ SITE_POM_ARTIFACT_ID }}"
+# The Java Package containing the project main verticle class. 
+SITE_MAIN_VERTICLE_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.verticle"
+# The Java Package containing the project configuration keys class. 
+SITE_CONFIG_KEYS_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.config"
+# The Java Package containing the project site request class. 
+SITE_REQUEST_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.request"
+# The Java Package containing the project base model class. 
+SITE_BASE_MODEL_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.model"
+# The Java Package containing the project base result class. 
+SITE_BASE_RESULT_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.result"
+# The Java Package containing the project page layout class. 
+SITE_PAGE_LAYOUT_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.page"
+# The Java Package containing the project site page reader class. 
+SITE_PAGE_READER_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.page.reader"
+# The Java Package containing the project site user class. 
+SITE_USER_PACKAGE: "{{ SITE_JAVA_PACKAGE }}.user"
+# The /src/main/java folder for the main Java source code. 
+SUFFIX_SRC_MAIN_JAVA: /src/main/java
+# The /src/gen/java folder for the generated Java source code. 
+SUFFIX_SRC_GEN_JAVA: /src/gen/java
+# The relative paths in the project to watch for changes. 
+RELATIVE_PATHS_TO_WATCH: "src/main/java/{{ SITE_JAVA_PACKAGE | replace('.', '/') }}"
+# The default source code directory for the computate application which helps generate and translate most the code. 
+COMPUTATE_SRC: "{{ (PARENT_SRC + '/computate') | realpath }}"
+# The default source code directory for the computate-search application. 
+COMPUTATE_SEARCH_SRC: "{{ (PARENT_SRC + '/computate-search') | realpath }}"
+# The default source code directory for the computate-vertx application. 
+COMPUTATE_VERTX_SRC: "{{ (PARENT_SRC + '/computate-vertx') | realpath }}"
+# The paths to the internationalization for this project. 
+I18N_PATHS: ["{{ SITE_PREFIX }}/computate/src/main/resources/org/computate/i18n/i18n_enUS.yaml"]
+# The Java main class of the site. 
+JAVA_MAIN_CLASS: "{{ SITE_MAIN_VERTICLE_PACKAGE }}.AppVertx"
+# Enables Vert.x reactive APIs. 
+ENABLE_VERTX: true
+# Enables a Quarkus application to also be created in addition to the Vert.x main verticle. 
+ENABLE_QUARKUS: false
+
+###################
+# Vert.x defaults #
+###################
+
+# The number of Vert.x instances to run per pod. 
+SITE_INSTANCES: 2
+# The number of Vert.x worker instances to run per pod. 
+WORKER_POOL_SIZE: 2
+# The max event loop execute time in seconds. 
+VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
+# The max worker execute time in seconds. 
+VERTX_MAX_WORKER_EXECUTE_TIME: 6000
+# The time before showing a warning of blocking threads in seconds. 
+VERTX_WARNING_EXCEPTION_SECONDS: 60
+# The number of background worker executors that may run. 
+NUMBER_EXECUTORS: 2
+
+####################
+# License defaults #
+####################
+
+# The name of the open source license for the software. 
+SITE_LICENSE_NAME: GNU GENERAL PUBLIC LICENSE, Version 3
+# The URL of the open source license for the software. 
+SITE_LICENSE_URL: https://www.gnu.org/licenses/gpl-3.0.en.html
+
+######################
+# OpenShift defaults #
+######################
+
+# The wildcard domain suffix where OpenShift Routes are available by default. 
+OPENSHIFT_APPS_DOMAIN: "apps-crc.testing"
+
+######################
+# Container defaults #
+######################
+
+# The container registry where the container will be pushed. 
+CONTAINER_REGISTRY: quay.io
+# The organization within quay.io where the container will be pushed. 
+CONTAINER_ORG: computateorg
+# The container name where the container will be pushed. 
+CONTAINER_NAME: "{{ SITE_NAME }}"
+# The container version where the container will be pushed. 
+CONTAINER_VERSION: "latest"
+# The container URI where the container will be pushed. 
+CONTAINER_URI: "{{ CONTAINER_REGISTRY }}/{{ CONTAINER_ORG }}/{{ CONTAINER_NAME }}:{{ CONTAINER_VERSION }}"
+
+###########################
+# Static content defaults #
+###########################
+
+# The name of the repository containing the web static content. 
+SITE_STATIC_NAME: "{{ SITE_NAME }}-static"
+# The static files git repository for the project. 
+SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
+# The path to the static files. 
+STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
+# The base URL to the static files. 
+STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
+# The site logo relative URI
+SITE_LOGO_URI: "/png/nerc-logo.png"
+# The path to the template files. 
+TEMPLATE_PATH: "{{ SITE_SRC }}/src/main/resources/templates"
+# The path to the site page templates. 
+DYNAMIC_PAGE_PATHS:
+  - "en-us/article"
+# An optional FontAwesome Pro Kit for additional FontAwesome icons. 
+FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
+# Site default theme, light or dark. 
+SITE_THEME: dark
+
+######################
+# Developer defaults #
+######################
+
+# The software developer name. 
+DEVELOPER_NAME: Christopher Tate
+# The software organization name. 
+DEVELOPER_ORG_NAME: computate.org
+# The software organization URL. 
+DEVELOPER_ORG_URL: https://www.computate.org/
+
+####################
+# Service defaults #
+####################
+
+# The systemd service name for project that generates and translates most of the code. 
+SITE_SERVICE: "watch-{{ SITE_NAME }}"
+# The systemd service file for project that generates and translates most of the code. 
+SITE_SYSTEMD: "{{ '/usr/lib/systemd/system' if ansible_distribution_file_variety == 'RedHat' and (ansible_distribution_major_version | int) <= 7 else (lookup('env', 'HOME') + '/.config/systemd/user') }}/{{ SITE_SERVICE }}.service"
+
+#######################
+# Powered by defaults #
+#######################
+
+# The name of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_NAME: New England Research Cloud
+# The URL of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_URL: https://nerc.mghpcc.org/
+# The static path to the logo of the cloud provider where the public site is deployed. 
+SITE_POWERED_BY_IMAGE_URI: /png/nerc-logo.png
+
+######################
+# Zookeeper defaults #
+######################
+
+# The namespace in OpenShift where Zookeeper will run. 
+ZOOKEEPER_NAMESPACE: zookeeper
+# The default hostname for the Zookeeper cluster manager. 
+ZOOKEEPER_HOST_NAME: "zookeeper.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The default port that Zookeeper runs to manage the cluster. 
+ZOOKEEPER_PORT: 30081
+ZOOKEEPER_MAX_RETRIES: 0
+ZOOKEEPER_BASE_SLEEP_TIME_MILLIS: 5000
+ZOOKEEPER_MAX_SLEEP_MILLIS: 5000
+ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS: 3000
+ZOOKEEPER_SESSION_TIMEOUT_MILLIS: 5000
+
+#################
+# Solr defaults #
+#################
+
+# Name of the solr deployment in OpenShift. 
+SOLR_NAME: solr
+# Whether to use SSL when connecting to Solr. 
+SOLR_SSL: true
+# The host name to connect to Solr in OpenShift. 
+SOLR_HOST_NAME: "solr.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The default port that Solr runs. 
+SOLR_PORT: 443
+# The solr pod name to connect and create Solr configsets and collections. 
+SOLR_POD_NAME: "solr-0"
+# The solr collection to use for the site. 
+SOLR_COLLECTION: "{{ SITE_SHORT_NAME }}"
+# The solr configset to use for the site. 
+SOLR_CONFIGSET: "computate"
+# The Solr admin username
+SOLR_USERNAME: admin
+# The Solr admin password
+SOLR_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr', namespace='solr')[0].data['solr-password'] | b64decode }}"
+# The URL to the Solr collection. 
+SOLR_URL: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/{{ SOLR_COLLECTION }}"
+# Whether to use SSL when connecting to Solr. 
+SOLR_SSL_COMPUTATE: true
+# The host name to connect to Solr in OpenShift. 
+SOLR_HOST_NAME_COMPUTATE: "solr.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The default port that Solr runs. 
+SOLR_PORT_COMPUTATE: 443
+# The solr collection to use for the site. 
+SOLR_COLLECTION_COMPUTATE: computate
+# The URL to the Solr collection for the watched Java code API. 
+SOLR_URL_COMPUTATE: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/{{ SOLR_COLLECTION_COMPUTATE }}"
+# The namespace in OpenShift where Solr will run. 
+SOLR_NAMESPACE: solr
+
+#####################
+# Database defaults #
+#####################
+
+# Enable the connections to the database. 
+ENABLE_DATABASE: true
+# The namespace of the database in OpenShift. 
+DATABASE_NAMESPACE: postgres
+# The database secret containing the user password to connect to the database. 
+DATABASE_SECRET: postgres-pguser-smartvillage
+# The PostgreSQL database host name. 
+DATABASE_HOST: "postgres.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The PostgreSQL database port. 
+DATABASE_PORT: 30432
+# The PostgreSQL database user name of the site. 
+DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}"
+# The PostgreSQL database password of the site. 
+DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + DATABASE_USERNAME), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
+# The PostgreSQL database name of the site. 
+DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}"
+
+#####################################
+# Authentication/authorization vars #
+#####################################
+
+# The namespace in OpenShift where Keycloak will run. 
+AUTH_NAMESPACE: keycloak
+# The Auth host name. 
+AUTH_HOST_NAME: "keycloak.{{ OPENSHIFT_APPS_DOMAIN }}"
+# The Auth port. 
+AUTH_PORT: 443
+# Whether the Auth server uses SSL. 
+AUTH_SSL: true
+# Whether the Auth server requires SSL. 
+AUTH_SSL_REQUIRED: all
+# The Auth realm. 
+AUTH_REALM: "NERC"
+# The Auth client. 
+AUTH_CLIENT: "nerc"
+# The Auth secret. 
+AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.secret | b64decode }}"
+# The Auth admin username. 
+AUTH_ADMIN_USERNAME: admin
+# The Auth admin password. 
+AUTH_ADMIN_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='keycloak-initial-admin', namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+# The Auth URL. 
+AUTH_URL: "https://{{ AUTH_HOST_NAME }}"
+# The Auth URL to retrieve tokens. 
+AUTH_TOKEN_URI: "/realms/{{ AUTH_REALM }}/protocol/openid-connect/token"
+# The OpenAPI ID for the openId spec. 
+AUTH_OPEN_API_ID: openIdConnect
+# The auth callback URI. 
+AUTH_CALLBACK_URI: /callback
+# The auth logout URI. 
+AUTH_LOGOUT_URI: /logout
+# The Auth scope required to be an admin in the site. 
+AUTH_SCOPE_ADMIN: Admin
+# The Auth scope required to be a super-admin in the site. 
+AUTH_SCOPE_SUPER_ADMIN: SuperAdmin
+# Enables authorization fine-grained resource permissions. 
+AUTH_FINE_GRAINED_POLICY_PERMISSIONS: true
+
+#################
+# Operator vars #
+#################
+
+# The name of the operator used to deploy data as YAML. 
+OPERATOR_NAME: "{{ SITE_NAME }}-operator"
+# The name of the operator used to deploy data as YAML. 
+OPERATOR_SRC: "{{ (PARENT_SRC + '/' + OPERATOR_NAME) | realpath }}"
+OPERATOR_DOMAIN_NAME: "{{ DOMAIN_NAME }}"
+OPERATOR_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ OPERATOR_NAME }}.git"
+OPERATOR_PYTHON_DEPENDENCY_LIST:
+  - openshift
+  - jmespath
+  - jinja2
+  - configparser
+OPERATOR_REDHAT_DEPENDENCY_LIST:
+  - git
+  - tcl
+  - tk
+OPERATOR_SYSTEM_DEPENDENCY_LIST: "{{ OPERATOR_REDHAT_DEPENDENCY_LIST if ansible_distribution_file_variety == 'RedHat' else OPERATOR_REDHAT_DEPENDENCY_LIST }}"
+
+###############
+# FIWARE vars #
+###############
+
+# Enable FIWARE Smart Data Model integrations. 
+ENABLE_FIWARE: false
+# FIWARE Smart Data Model source code directory. 
+SMART_DATA_MODELS_SRC: "{{ (PARENT_SRC + '/smart-data-models') | realpath }}"
+# Map default latitude,longitude. 
+DEFAULT_MAP_LOCATION: "55.63379,13.49261"
+# Map default zoom level. 
+DEFAULT_MAP_ZOOM: "17"
+
+##############
+# Kafka vars #
+##############
+
+# Enable Kafka message integration. 
+ENABLE_KAFKA: false
+# The namespace in OpenShift where Kafka will run. 
+KAFKA_NAMESPACE: kafka
+# The Kafka SSL KeyStore secret name. 
+KAFKA_SSL_KEYSTORE_SECRET: "{{ SITE_SHORT_NAME }}-kafka"
+# The Kafka SSL TrustStore secret name. 
+KAFKA_SSL_TRUSTSTORE_SECRET: default-cluster-ca-cert
+# The Kafka port. 
+KAFKA_PORT: 9093
+KAFKA_BROKERS: "127.0.0.1:39275"
+KAFKA_GROUP: "{{ SITE_SHORT_NAME }}-kafka"
+KAFKA_SECURITY_PROTOCOL: "SSL"
+KAFKA_SSL_KEYSTORE_TYPE: "pkcs12"
+KAFKA_SSL_KEYSTORE_LOCATION: ""
+KAFKA_SSL_KEYSTORE_PASSWORD: ""
+KAFKA_SSL_TRUSTSTORE_TYPE: "pkcs12"
+KAFKA_SSL_TRUSTSTORE_LOCATION: ""
+KAFKA_SSL_TRUSTSTORE_PASSWORD: ""
+
+#############
+# IoT Agent #
+#############
+
+# Whether to use SSL when connecting to the IoT Agent. 
+IOT_AGENT_SSL: false
+# The host name to connect to the IoT Agent in OpenShift. 
+IOT_AGENT_HOST_NAME: "iotagent-json.iotagent.svc"
+# The default port that the IoT Agent runs. 
+IOT_AGENT_PORT: 4041
+
+##################
+# Context Broker #
+##################
+
+# Whether to use SSL when connecting to the Context Broker. 
+CONTEXT_BROKER_SSL: false
+# The host name to connect to the Context Broker in OpenShift. 
+CONTEXT_BROKER_HOST_NAME: "scorpiobroker.scorpiobroker.svc"
+# The default port that the Context Broker runs. 
+CONTEXT_BROKER_PORT: 9090
+
+#############
+# MQTT vars #
+#############
+
+# Enable MQTT message integration. 
+ENABLE_MQTT: false
+
+#############
+# AMQP vars #
+#############
+
+# Enable AMQP message integration. 
+ENABLE_AMQP: false
+# The namespace in OpenShift where the AMQP message broker will run. 
+AMQP_NAMESPACE: rabbitmq
+# The AMQP port. 
+AMQP_PORT: 5672
+# The AMQP host name. 
+AMQP_HOST_NAME: "rabbitmq.{{ AMQP_NAMESPACE }}.svc"
+# The AMQP user. 
+AMQP_HOST_USER: "user"
+# The AMQP password. 
+AMQP_HOST_PASSWORD: ""
+#AMQP_HOST_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
+# The AMQP virtual host. 
+AMQP_VIRTUAL_HOST: "%2F"
+
+#################
+# RabbitMQ vars #
+#################
+
+# Enable RabbitMQ message integration. 
+ENABLE_RABBITMQ: false
+# The namespace in OpenShift where the AMQP message broker will run. 
+RABBITMQ_NAMESPACE: rabbitmq
+# The AMQP port. 
+RABBITMQ_PORT: 5672
+# The AMQP host name. 
+RABBITMQ_HOST_NAME: "rabbitmq.{{ AMQP_NAMESPACE }}.svc"
+# The AMQP user. 
+RABBITMQ_HOST_USER: "user"
+# The AMQP password. 
+RABBITMQ_HOST_PASSWORD: ""
+#RABBITMQ_HOST_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
+# The AMQP virtual host. 
+RABBITMQ_VIRTUAL_HOST: "%2F"
+
+################################
+# OpenShift Deployment Details #
+################################
+
+# The amount of memory requested when the pod is first created in OpenShift. 
+SITE_REQUESTS_MEMORY: "500Mi"
+# The amount of total memory that can be used by the pod in OpenShift. 
+SITE_LIMITS_MEMORY: "1500Mi"
+# The amount of cpus requested when the pod is first created in OpenShift. 
+SITE_REQUESTS_CPU: "700m"
+# The amount of total cpus that can be used by the pod in OpenShift. 
+SITE_LIMITS_CPU: "1"
+# The number of pod replicas to run the site in OpenShift. 
+SITE_REPLICAS: 1
+
+########################
+# Enabled feature vars #
+########################
+
+# Enable data import in the site. 
+ENABLE_IMPORT_DATA: true
+# Enable the Zookeeper cluster manager. 
+ENABLE_ZOOKEEPER_CLUSTER: false
+# Enable support for Open Telemetry in the application. 
+ENABLE_OPEN_TELEMETRY: false
+# Enable a login link and Keycloak integration in the application. 
+ENABLE_LOGIN: true
+# Enable the code generation service for the project
+ENABLE_CODE_GENERATION_SERVICE: true
+# Set the userKey of the user creating an object in the database. 
+ENABLE_USER_KEY: true
+# Set the sessionId of the user session creating an object in the database. 
+ENABLE_SESSION_ID: true
+# Enable an object in the database to be deleted. 
+ENABLE_DELETED: true
+# Enable an object in the database to be archived. 
+ENABLE_ARCHIVED: true
+# Enable an admin role. 
+ENABLE_ROLE_ADMIN: true
+# Enable a super admin role. 
+ENABLE_ROLE_SUPER_ADMIN: true
+# Enable an OpenID Connect Authentication. 
+ENABLE_OPENID_CONNECT: true
+# Write API code into the project. 
+WRITE_API: true
+# Write code comments into generated code. 
+WRITE_COMMENTS: true
+

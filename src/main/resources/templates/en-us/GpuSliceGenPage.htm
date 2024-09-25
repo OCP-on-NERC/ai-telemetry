@@ -218,6 +218,7 @@
 {%- block websocketBaseModelPage %}
 {%- block websocketGpuSlicePage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketGpuSlice(websocketGpuSliceInner);
 {%- endblock websocketGpuSlicePage %}
 {%- endblock websocketBaseModelPage %}
@@ -234,7 +235,7 @@
 
 {%- macro htmForm_patchGpuSlice() %}
         <sl-dialog id="patchGpuSliceDialog" label="Modify GPU slice">
-          <form id="htmForm_patchGpuSlice">
+          <form id="htmForm_patchGpuSlice" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -358,7 +359,7 @@
 
 {%- macro htmForm_postGpuSlice() %}
         <sl-dialog id="postGpuSliceDialog" label="Create a GPU slice">
-          <form id="htmForm_postGpuSlice">
+          <form id="htmForm_postGpuSlice" class="round-first-and-last-row-x-large ">
             <div class="">You can override any default values below: </div>
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -483,7 +484,7 @@
 
 {%- macro htmForm_putimportGpuSlice() %}
         <sl-dialog id="putimportGpuSliceDialog" label="Import GPU slices">
-          <form id="htmForm_putimportGpuSlice">
+          <form id="htmForm_putimportGpuSlice" class="round-first-and-last-row-x-large ">
             <div>
               <sl-textarea
                   class="PUTImport_searchList "
@@ -507,7 +508,7 @@
 
 {%- macro htmForm_searchpageGpuSlice() %}
         <div id="searchpageGpuSliceDialog" label="Search GPU slices">
-          <div id="htmForm_searchpageGpuSlice">
+          <div id="htmForm_searchpageGpuSlice" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -794,7 +795,7 @@
                   <div class="">
                     <label for="fqGpuSlice_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetGpuSlice_{{ key }}" onclick="facetFieldChange('GpuSlice', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetGpuSlice_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqGpuSlice_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('GpuSlice', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -893,7 +894,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotGpuSlice_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('GpuSlice', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotGpuSlice_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotGpuSlicePage %}
@@ -996,7 +997,7 @@
         {%- endblock htmBodyGraphLocationGpuSlicePage %}
 
         {%- block htmBodyGraphGpuSlicePage %}
-        <div id="htmBodyGraphBaseModelPage" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphGpuSlicePage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphGpuSlicePage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -1141,7 +1142,7 @@ The primary key of this object in the database"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuSlice_.pk}}"
+                      value="{{gpuSlice_.pk | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1179,7 +1180,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuSlice_.objectId}}"
+                      value="{{gpuSlice_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1206,7 +1207,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if gpuSlice_.created is defined %}{{ formatZonedDateTime(gpuSlice_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if gpuSlice_.created is defined %}{{ formatZonedDateTime(gpuSlice_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1235,7 +1236,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if gpuSlice_.modified is defined %}{{ formatZonedDateTime(gpuSlice_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if gpuSlice_.modified is defined %}{{ formatZonedDateTime(gpuSlice_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1338,7 +1339,7 @@ The name of this GPU slice"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuSlice_.name}}"
+                      value="{{gpuSlice_.name | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1376,7 +1377,7 @@ A description of this GPU device"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuSlice_.description}}"
+                      value="{{gpuSlice_.description | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1414,7 +1415,7 @@ A unique ID for this Smart Data Model"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuSlice_.entityId}}"
+                      value="{{gpuSlice_.entityId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1452,7 +1453,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(gpuSlice_.location) }}"
+                      value="{{ toJsonObjectString(gpuSlice_.location) | e }}"
   {%- endif %}
                       ></sl-input>
 

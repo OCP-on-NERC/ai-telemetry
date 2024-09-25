@@ -218,6 +218,7 @@
 {%- block websocketBaseModelPage %}
 {%- block websocketAiClusterPage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketAiCluster(websocketAiClusterInner);
 {%- endblock websocketAiClusterPage %}
 {%- endblock websocketBaseModelPage %}
@@ -234,7 +235,7 @@
 
 {%- macro htmForm_patchAiCluster() %}
         <sl-dialog id="patchAiClusterDialog" label="Modify AI cluster">
-          <form id="htmForm_patchAiCluster">
+          <form id="htmForm_patchAiCluster" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -358,7 +359,7 @@
 
 {%- macro htmForm_postAiCluster() %}
         <sl-dialog id="postAiClusterDialog" label="Create an AI cluster">
-          <form id="htmForm_postAiCluster">
+          <form id="htmForm_postAiCluster" class="round-first-and-last-row-x-large ">
             <div class="">You can override any default values below: </div>
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -483,7 +484,7 @@
 
 {%- macro htmForm_putimportAiCluster() %}
         <sl-dialog id="putimportAiClusterDialog" label="Import AI clusters">
-          <form id="htmForm_putimportAiCluster">
+          <form id="htmForm_putimportAiCluster" class="round-first-and-last-row-x-large ">
             <div>
               <sl-textarea
                   class="PUTImport_searchList "
@@ -507,7 +508,7 @@
 
 {%- macro htmForm_searchpageAiCluster() %}
         <div id="searchpageAiClusterDialog" label="Search AI clusters">
-          <div id="htmForm_searchpageAiCluster">
+          <div id="htmForm_searchpageAiCluster" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -794,7 +795,7 @@
                   <div class="">
                     <label for="fqAiCluster_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetAiCluster_{{ key }}" onclick="facetFieldChange('AiCluster', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetAiCluster_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqAiCluster_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('AiCluster', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -893,7 +894,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotAiCluster_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('AiCluster', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotAiCluster_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotAiClusterPage %}
@@ -996,7 +997,7 @@
         {%- endblock htmBodyGraphLocationAiClusterPage %}
 
         {%- block htmBodyGraphAiClusterPage %}
-        <div id="htmBodyGraphBaseModelPage" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphAiClusterPage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphAiClusterPage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -1141,7 +1142,7 @@ The primary key of this object in the database"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiCluster_.pk}}"
+                      value="{{aiCluster_.pk | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1179,7 +1180,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiCluster_.objectId}}"
+                      value="{{aiCluster_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1206,7 +1207,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if aiCluster_.created is defined %}{{ formatZonedDateTime(aiCluster_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if aiCluster_.created is defined %}{{ formatZonedDateTime(aiCluster_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1235,7 +1236,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if aiCluster_.modified is defined %}{{ formatZonedDateTime(aiCluster_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if aiCluster_.modified is defined %}{{ formatZonedDateTime(aiCluster_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1338,7 +1339,7 @@ The name of this cluster"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiCluster_.name}}"
+                      value="{{aiCluster_.name | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1376,7 +1377,7 @@ A description of this cluster"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiCluster_.description}}"
+                      value="{{aiCluster_.description | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1414,7 +1415,7 @@ A unique ID for this Smart Data Model"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiCluster_.entityId}}"
+                      value="{{aiCluster_.entityId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1452,7 +1453,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(aiCluster_.location) }}"
+                      value="{{ toJsonObjectString(aiCluster_.location) | e }}"
   {%- endif %}
                       ></sl-input>
 

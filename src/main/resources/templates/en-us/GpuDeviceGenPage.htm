@@ -218,6 +218,7 @@
 {%- block websocketBaseModelPage %}
 {%- block websocketGpuDevicePage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketGpuDevice(websocketGpuDeviceInner);
 {%- endblock websocketGpuDevicePage %}
 {%- endblock websocketBaseModelPage %}
@@ -234,7 +235,7 @@
 
 {%- macro htmForm_patchGpuDevice() %}
         <sl-dialog id="patchGpuDeviceDialog" label="Modify GPU device">
-          <form id="htmForm_patchGpuDevice">
+          <form id="htmForm_patchGpuDevice" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -358,7 +359,7 @@
 
 {%- macro htmForm_postGpuDevice() %}
         <sl-dialog id="postGpuDeviceDialog" label="Create a GPU device">
-          <form id="htmForm_postGpuDevice">
+          <form id="htmForm_postGpuDevice" class="round-first-and-last-row-x-large ">
             <div class="">You can override any default values below: </div>
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -483,7 +484,7 @@
 
 {%- macro htmForm_putimportGpuDevice() %}
         <sl-dialog id="putimportGpuDeviceDialog" label="Import GPU devices">
-          <form id="htmForm_putimportGpuDevice">
+          <form id="htmForm_putimportGpuDevice" class="round-first-and-last-row-x-large ">
             <div>
               <sl-textarea
                   class="PUTImport_searchList "
@@ -507,7 +508,7 @@
 
 {%- macro htmForm_searchpageGpuDevice() %}
         <div id="searchpageGpuDeviceDialog" label="Search GPU devices">
-          <div id="htmForm_searchpageGpuDevice">
+          <div id="htmForm_searchpageGpuDevice" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -794,7 +795,7 @@
                   <div class="">
                     <label for="fqGpuDevice_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetGpuDevice_{{ key }}" onclick="facetFieldChange('GpuDevice', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetGpuDevice_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqGpuDevice_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('GpuDevice', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -893,7 +894,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotGpuDevice_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('GpuDevice', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotGpuDevice_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotGpuDevicePage %}
@@ -996,7 +997,7 @@
         {%- endblock htmBodyGraphLocationGpuDevicePage %}
 
         {%- block htmBodyGraphGpuDevicePage %}
-        <div id="htmBodyGraphBaseModelPage" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphGpuDevicePage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphGpuDevicePage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -1141,7 +1142,7 @@ The primary key of this object in the database"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.pk}}"
+                      value="{{gpuDevice_.pk | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1179,7 +1180,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.objectId}}"
+                      value="{{gpuDevice_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1206,7 +1207,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if gpuDevice_.created is defined %}{{ formatZonedDateTime(gpuDevice_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if gpuDevice_.created is defined %}{{ formatZonedDateTime(gpuDevice_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1235,7 +1236,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if gpuDevice_.modified is defined %}{{ formatZonedDateTime(gpuDevice_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if gpuDevice_.modified is defined %}{{ formatZonedDateTime(gpuDevice_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1338,7 +1339,7 @@ The name of this GPU device"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.name}}"
+                      value="{{gpuDevice_.name | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1376,7 +1377,7 @@ A description of this GPU device"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.description}}"
+                      value="{{gpuDevice_.description | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1414,7 +1415,7 @@ A unique ID for this Smart Data Model"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.entityId}}"
+                      value="{{gpuDevice_.entityId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1452,7 +1453,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(gpuDevice_.location) }}"
+                      value="{{ toJsonObjectString(gpuDevice_.location) | e }}"
   {%- endif %}
                       ></sl-input>
 
