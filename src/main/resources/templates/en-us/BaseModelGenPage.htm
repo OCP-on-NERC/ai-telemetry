@@ -103,6 +103,7 @@
 {%- block websocketPageLayout %}
 {%- block websocketBaseModelPage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketBaseModel(websocketBaseModelInner);
 {%- endblock websocketBaseModelPage %}
 {%- endblock websocketPageLayout %}
@@ -249,7 +250,7 @@
                   <div class="">
                     <label for="fqBaseModel_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetBaseModel_{{ key }}" onclick="facetFieldChange('BaseModel', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetBaseModel_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqBaseModel_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('BaseModel', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -348,7 +349,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotBaseModel_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('BaseModel', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotBaseModel_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotBaseModelPage %}
@@ -446,12 +447,8 @@
           {%- endblock htmBodySidebarBaseModelPage %}
         </div>
 
-        {%- block htmBodyGraphLocationBaseModelPage %}
-        <div id="htmBodyGraphLocationBaseModelPage" class="htmBodyGraphLocation "></div>
-        {%- endblock htmBodyGraphLocationBaseModelPage %}
-
         {%- block htmBodyGraphBaseModelPage %}
-        <div id="htmBodyGraphPageLayout" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphBaseModelPage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphBaseModelPage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -595,7 +592,7 @@ The primary key of this object in the database"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{baseModel_.pk}}"
+                      value="{{baseModel_.pk | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -633,7 +630,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{baseModel_.objectId}}"
+                      value="{{baseModel_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -660,7 +657,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if baseModel_.created is defined %}{{ formatZonedDateTime(baseModel_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if baseModel_.created is defined %}{{ formatZonedDateTime(baseModel_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -689,7 +686,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if baseModel_.modified is defined %}{{ formatZonedDateTime(baseModel_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if baseModel_.modified is defined %}{{ formatZonedDateTime(baseModel_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"

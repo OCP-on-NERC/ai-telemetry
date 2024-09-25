@@ -103,6 +103,7 @@
 {%- block websocketPageLayout %}
 {%- block websocketBaseResultPage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketBaseResult(websocketBaseResultInner);
 {%- endblock websocketBaseResultPage %}
 {%- endblock websocketPageLayout %}
@@ -254,7 +255,7 @@
                   <div class="">
                     <label for="fqBaseResult_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetBaseResult_{{ key }}" onclick="facetFieldChange('BaseResult', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetBaseResult_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqBaseResult_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('BaseResult', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -353,7 +354,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotBaseResult_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('BaseResult', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotBaseResult_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotBaseResultPage %}
@@ -451,12 +452,8 @@
           {%- endblock htmBodySidebarBaseResultPage %}
         </div>
 
-        {%- block htmBodyGraphLocationBaseResultPage %}
-        <div id="htmBodyGraphLocationBaseResultPage" class="htmBodyGraphLocation "></div>
-        {%- endblock htmBodyGraphLocationBaseResultPage %}
-
         {%- block htmBodyGraphBaseResultPage %}
-        <div id="htmBodyGraphPageLayout" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphBaseResultPage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphBaseResultPage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -589,7 +586,7 @@
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if baseResult_.created is defined %}{{ formatZonedDateTime(baseResult_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if baseResult_.created is defined %}{{ formatZonedDateTime(baseResult_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-id="{{ id }}"
@@ -618,7 +615,7 @@
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if baseResult_.modified is defined %}{{ formatZonedDateTime(baseResult_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if baseResult_.modified is defined %}{{ formatZonedDateTime(baseResult_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-id="{{ id }}"
@@ -658,7 +655,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{baseResult_.objectId}}"
+                      value="{{baseResult_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 

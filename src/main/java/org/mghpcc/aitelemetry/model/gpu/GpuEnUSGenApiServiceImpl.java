@@ -10,6 +10,7 @@ import org.computate.vertx.api.BaseApiServiceImpl;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Objects;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.pgclient.PgPool;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
@@ -57,7 +58,6 @@ import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
-import io.vertx.core.Vertx;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import io.vertx.ext.reactivestreams.ReactiveWriteStream;
 import io.vertx.core.MultiMap;
@@ -112,8 +112,8 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 
 	protected static final Logger LOG = LoggerFactory.getLogger(GpuEnUSGenApiServiceImpl.class);
 
-	public GpuEnUSGenApiServiceImpl(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(eventBus, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+	public GpuEnUSGenApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
+		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 	}
 
 	// Search //
@@ -606,7 +606,7 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 				siteRequest.setSqlConnection(sqlConnection);
 				varsGpu(siteRequest).onSuccess(a -> {
 					sqlPATCHGpu(o, inheritPk).onSuccess(gpu -> {
-						persistGpu(gpu).onSuccess(c -> {
+						persistGpu(gpu, true).onSuccess(c -> {
 							relateGpu(gpu).onSuccess(d -> {
 								indexGpu(gpu).onSuccess(o2 -> {
 									if(apiRequest != null) {
@@ -972,7 +972,7 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 				varsGpu(siteRequest).onSuccess(a -> {
 					createGpu(siteRequest).onSuccess(gpu -> {
 						sqlPOSTGpu(gpu, inheritPk).onSuccess(b -> {
-							persistGpu(gpu).onSuccess(c -> {
+							persistGpu(gpu, false).onSuccess(c -> {
 								relateGpu(gpu).onSuccess(d -> {
 									indexGpu(gpu).onSuccess(o2 -> {
 										promise1.complete(gpu);
@@ -1031,8 +1031,8 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 		return promise.future();
 	}
 
-	public Future<Void> sqlPOSTGpu(Gpu o, Boolean inheritPk) {
-		Promise<Void> promise = Promise.promise();
+	public Future<Gpu> sqlPOSTGpu(Gpu o, Boolean inheritPk) {
+		Promise<Gpu> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1172,7 +1172,7 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					promise.complete();
+					promise.complete(o2);
 				}).onFailure(ex -> {
 					LOG.error(String.format("sqlPOSTGpu failed. "), ex);
 					promise.fail(ex);
@@ -2064,7 +2064,7 @@ public class GpuEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuE
 	public void searchGpu2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Gpu> searchList) {
 	}
 
-	public Future<Void> persistGpu(Gpu o) {
+	public Future<Void> persistGpu(Gpu o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();

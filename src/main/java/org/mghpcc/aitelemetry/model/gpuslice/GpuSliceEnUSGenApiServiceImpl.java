@@ -10,6 +10,7 @@ import org.computate.vertx.api.BaseApiServiceImpl;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Objects;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.pgclient.PgPool;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
@@ -57,7 +58,6 @@ import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
-import io.vertx.core.Vertx;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import io.vertx.ext.reactivestreams.ReactiveWriteStream;
 import io.vertx.core.MultiMap;
@@ -112,8 +112,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	protected static final Logger LOG = LoggerFactory.getLogger(GpuSliceEnUSGenApiServiceImpl.class);
 
-	public GpuSliceEnUSGenApiServiceImpl(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(eventBus, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+	public GpuSliceEnUSGenApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
+		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 	}
 
 	// Search //
@@ -606,7 +606,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				siteRequest.setSqlConnection(sqlConnection);
 				varsGpuSlice(siteRequest).onSuccess(a -> {
 					sqlPATCHGpuSlice(o, inheritPk).onSuccess(gpuSlice -> {
-						persistGpuSlice(gpuSlice).onSuccess(c -> {
+						persistGpuSlice(gpuSlice, true).onSuccess(c -> {
 							relateGpuSlice(gpuSlice).onSuccess(d -> {
 								indexGpuSlice(gpuSlice).onSuccess(o2 -> {
 									if(apiRequest != null) {
@@ -972,7 +972,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				varsGpuSlice(siteRequest).onSuccess(a -> {
 					createGpuSlice(siteRequest).onSuccess(gpuSlice -> {
 						sqlPOSTGpuSlice(gpuSlice, inheritPk).onSuccess(b -> {
-							persistGpuSlice(gpuSlice).onSuccess(c -> {
+							persistGpuSlice(gpuSlice, false).onSuccess(c -> {
 								relateGpuSlice(gpuSlice).onSuccess(d -> {
 									indexGpuSlice(gpuSlice).onSuccess(o2 -> {
 										promise1.complete(gpuSlice);
@@ -1031,8 +1031,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		return promise.future();
 	}
 
-	public Future<Void> sqlPOSTGpuSlice(GpuSlice o, Boolean inheritPk) {
-		Promise<Void> promise = Promise.promise();
+	public Future<GpuSlice> sqlPOSTGpuSlice(GpuSlice o, Boolean inheritPk) {
+		Promise<GpuSlice> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1172,7 +1172,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					promise.complete();
+					promise.complete(o2);
 				}).onFailure(ex -> {
 					LOG.error(String.format("sqlPOSTGpuSlice failed. "), ex);
 					promise.fail(ex);
@@ -2064,7 +2064,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	public void searchGpuSlice2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<GpuSlice> searchList) {
 	}
 
-	public Future<Void> persistGpuSlice(GpuSlice o) {
+	public Future<Void> persistGpuSlice(GpuSlice o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();

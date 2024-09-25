@@ -218,6 +218,7 @@
 {%- block websocketBaseModelPage %}
 {%- block websocketAiProjectPage %}
         window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
         websocketAiProject(websocketAiProjectInner);
 {%- endblock websocketAiProjectPage %}
 {%- endblock websocketBaseModelPage %}
@@ -234,7 +235,7 @@
 
 {%- macro htmForm_patchAiProject() %}
         <sl-dialog id="patchAiProjectDialog" label="Modify AI project">
-          <form id="htmForm_patchAiProject">
+          <form id="htmForm_patchAiProject" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -358,7 +359,7 @@
 
 {%- macro htmForm_postAiProject() %}
         <sl-dialog id="postAiProjectDialog" label="Create an AI project">
-          <form id="htmForm_postAiProject">
+          <form id="htmForm_postAiProject" class="round-first-and-last-row-x-large ">
             <div class="">You can override any default values below: </div>
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -483,7 +484,7 @@
 
 {%- macro htmForm_putimportAiProject() %}
         <sl-dialog id="putimportAiProjectDialog" label="Import AI projects">
-          <form id="htmForm_putimportAiProject">
+          <form id="htmForm_putimportAiProject" class="round-first-and-last-row-x-large ">
             <div>
               <sl-textarea
                   class="PUTImport_searchList "
@@ -507,7 +508,7 @@
 
 {%- macro htmForm_searchpageAiProject() %}
         <div id="searchpageAiProjectDialog" label="Search AI projects">
-          <div id="htmForm_searchpageAiProject">
+          <div id="htmForm_searchpageAiProject" class="round-first-and-last-row-x-large ">
             <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
@@ -794,7 +795,7 @@
                   <div class="">
                     <label for="fqAiProject_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <div class="display-flex ">
-                      <sl-button id="buttonFacetAiProject_{{ key }}" onclick="facetFieldChange('AiProject', this); " title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
+                      <sl-button id="buttonFacetAiProject_{{ key }}" title="see values " data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
                       <sl-input id="fqAiProject_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('AiProject', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
                     </div>
                   </div>
@@ -893,7 +894,7 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotAiProject_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %} onclick="facetPivotChange('AiProject', value); ">{{ value.displayName }}</sl-checkbox>
+                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotAiProject_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotAiProjectPage %}
@@ -996,7 +997,7 @@
         {%- endblock htmBodyGraphLocationAiProjectPage %}
 
         {%- block htmBodyGraphAiProjectPage %}
-        <div id="htmBodyGraphBaseModelPage" class="htmBodyGraph "></div>
+        <div id="htmBodyGraphAiProjectPage" class="htmBodyGraph "></div>
         {%- endblock htmBodyGraphAiProjectPage %}
         <div class="pageContent ">
           <div id="site-calendar-box">
@@ -1141,7 +1142,7 @@ The primary key of this object in the database"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiProject_.pk}}"
+                      value="{{aiProject_.pk | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1179,7 +1180,7 @@ A URL friendly unique ID for this object"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiProject_.objectId}}"
+                      value="{{aiProject_.objectId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1206,7 +1207,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
-                      value="{%- if aiProject_.created is defined %}{{ formatZonedDateTime(aiProject_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if aiProject_.created is defined %}{{ formatZonedDateTime(aiProject_.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1235,7 +1236,7 @@ A URL friendly unique ID for this object"
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
-                      value="{%- if aiProject_.modified is defined %}{{ formatZonedDateTime(aiProject_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) }}{%- endif %}"
+                      value="{%- if aiProject_.modified is defined %}{{ formatZonedDateTime(aiProject_.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
                       data-pk="{{ pk }}"
@@ -1338,7 +1339,7 @@ The name of this AI project"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiProject_.name}}"
+                      value="{{aiProject_.name | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1376,7 +1377,7 @@ A description of this AI project"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiProject_.description}}"
+                      value="{{aiProject_.description | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1414,7 +1415,7 @@ A unique ID for this Smart Data Model"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiProject_.entityId}}"
+                      value="{{aiProject_.entityId | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1452,7 +1453,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(aiProject_.location) }}"
+                      value="{{ toJsonObjectString(aiProject_.location) | e }}"
   {%- endif %}
                       ></sl-input>
 

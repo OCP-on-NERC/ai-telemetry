@@ -10,6 +10,7 @@ import org.computate.vertx.api.BaseApiServiceImpl;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Objects;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.pgclient.PgPool;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
@@ -57,7 +58,6 @@ import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
-import io.vertx.core.Vertx;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import io.vertx.ext.reactivestreams.ReactiveWriteStream;
 import io.vertx.core.MultiMap;
@@ -112,8 +112,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AiProjectEnUSGenApiServiceImpl.class);
 
-	public AiProjectEnUSGenApiServiceImpl(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(eventBus, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+	public AiProjectEnUSGenApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
+		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 	}
 
 	// Search //
@@ -606,7 +606,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiProject(siteRequest).onSuccess(a -> {
 					sqlPATCHAiProject(o, inheritPk).onSuccess(aiProject -> {
-						persistAiProject(aiProject).onSuccess(c -> {
+						persistAiProject(aiProject, true).onSuccess(c -> {
 							relateAiProject(aiProject).onSuccess(d -> {
 								indexAiProject(aiProject).onSuccess(o2 -> {
 									if(apiRequest != null) {
@@ -972,7 +972,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				varsAiProject(siteRequest).onSuccess(a -> {
 					createAiProject(siteRequest).onSuccess(aiProject -> {
 						sqlPOSTAiProject(aiProject, inheritPk).onSuccess(b -> {
-							persistAiProject(aiProject).onSuccess(c -> {
+							persistAiProject(aiProject, false).onSuccess(c -> {
 								relateAiProject(aiProject).onSuccess(d -> {
 									indexAiProject(aiProject).onSuccess(o2 -> {
 										promise1.complete(aiProject);
@@ -1031,8 +1031,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<Void> sqlPOSTAiProject(AiProject o, Boolean inheritPk) {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean inheritPk) {
+		Promise<AiProject> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1172,7 +1172,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					promise.complete();
+					promise.complete(o2);
 				}).onFailure(ex -> {
 					LOG.error(String.format("sqlPOSTAiProject failed. "), ex);
 					promise.fail(ex);
@@ -2064,7 +2064,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void searchAiProject2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<AiProject> searchList) {
 	}
 
-	public Future<Void> persistAiProject(AiProject o) {
+	public Future<Void> persistAiProject(AiProject o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();

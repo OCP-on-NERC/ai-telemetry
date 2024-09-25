@@ -10,6 +10,7 @@ import org.computate.vertx.api.BaseApiServiceImpl;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Objects;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.pgclient.PgPool;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
@@ -57,7 +58,6 @@ import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
-import io.vertx.core.Vertx;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import io.vertx.ext.reactivestreams.ReactiveWriteStream;
 import io.vertx.core.MultiMap;
@@ -112,8 +112,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	protected static final Logger LOG = LoggerFactory.getLogger(AiClusterEnUSGenApiServiceImpl.class);
 
-	public AiClusterEnUSGenApiServiceImpl(EventBus eventBus, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(eventBus, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+	public AiClusterEnUSGenApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
+		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 	}
 
 	// Search //
@@ -606,7 +606,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiCluster(siteRequest).onSuccess(a -> {
 					sqlPATCHAiCluster(o, inheritPk).onSuccess(aiCluster -> {
-						persistAiCluster(aiCluster).onSuccess(c -> {
+						persistAiCluster(aiCluster, true).onSuccess(c -> {
 							relateAiCluster(aiCluster).onSuccess(d -> {
 								indexAiCluster(aiCluster).onSuccess(o2 -> {
 									if(apiRequest != null) {
@@ -972,7 +972,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				varsAiCluster(siteRequest).onSuccess(a -> {
 					createAiCluster(siteRequest).onSuccess(aiCluster -> {
 						sqlPOSTAiCluster(aiCluster, inheritPk).onSuccess(b -> {
-							persistAiCluster(aiCluster).onSuccess(c -> {
+							persistAiCluster(aiCluster, false).onSuccess(c -> {
 								relateAiCluster(aiCluster).onSuccess(d -> {
 									indexAiCluster(aiCluster).onSuccess(o2 -> {
 										promise1.complete(aiCluster);
@@ -1031,8 +1031,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<Void> sqlPOSTAiCluster(AiCluster o, Boolean inheritPk) {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiCluster> sqlPOSTAiCluster(AiCluster o, Boolean inheritPk) {
+		Promise<AiCluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1172,7 +1172,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					promise.complete();
+					promise.complete(o2);
 				}).onFailure(ex -> {
 					LOG.error(String.format("sqlPOSTAiCluster failed. "), ex);
 					promise.fail(ex);
@@ -2064,7 +2064,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void searchAiCluster2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<AiCluster> searchList) {
 	}
 
-	public Future<Void> persistAiCluster(AiCluster o) {
+	public Future<Void> persistAiCluster(AiCluster o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
