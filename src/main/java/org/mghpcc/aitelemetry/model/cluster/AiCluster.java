@@ -23,6 +23,7 @@ import io.vertx.pgclient.data.Polygon;
  * Model: true
  * Api: true
  * Page: true
+ * UserPageTemplates: /en-us/user/ai-cluster
  * SuperPage: BaseModelPage
  * Indexed: true
  * Order: 3
