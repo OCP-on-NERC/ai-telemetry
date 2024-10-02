@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
+import java.lang.Integer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -761,6 +762,70 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return AiCluster.staticSearchEntityShortId(siteRequest_, AiCluster.staticSetEntityShortId(siteRequest_, o)).toString();
 	}
 
+	///////////////////
+	// gpuNodesTotal //
+	///////////////////
+
+
+	/**	 The entity gpuNodesTotal
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer gpuNodesTotal;
+
+	/**	<br> The entity gpuNodesTotal
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:gpuNodesTotal">Find the entity gpuNodesTotal in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _gpuNodesTotal(Wrap<Integer> w);
+
+	public Integer getGpuNodesTotal() {
+		return gpuNodesTotal;
+	}
+
+	public void setGpuNodesTotal(Integer gpuNodesTotal) {
+		this.gpuNodesTotal = gpuNodesTotal;
+	}
+	@JsonIgnore
+	public void setGpuNodesTotal(String o) {
+		this.gpuNodesTotal = AiCluster.staticSetGpuNodesTotal(siteRequest_, o);
+	}
+	public static Integer staticSetGpuNodesTotal(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected AiCluster gpuNodesTotalInit() {
+		Wrap<Integer> gpuNodesTotalWrap = new Wrap<Integer>().var("gpuNodesTotal");
+		if(gpuNodesTotal == null) {
+			_gpuNodesTotal(gpuNodesTotalWrap);
+			Optional.ofNullable(gpuNodesTotalWrap.getO()).ifPresent(o -> {
+				setGpuNodesTotal(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static Integer staticSearchGpuNodesTotal(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrGpuNodesTotal(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqGpuNodesTotal(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchGpuNodesTotal(siteRequest_, AiCluster.staticSetGpuNodesTotal(siteRequest_, o)).toString();
+	}
+
+	public Integer sqlGpuNodesTotal() {
+		return gpuNodesTotal;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -798,6 +863,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				locationInit();
 				entityIdInit();
 				entityShortIdInit();
+				gpuNodesTotalInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -867,6 +933,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return oAiCluster.entityId;
 			case "entityShortId":
 				return oAiCluster.entityShortId;
+			case "gpuNodesTotal":
+				return oAiCluster.gpuNodesTotal;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -922,6 +990,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSetEntityId(siteRequest_, o);
 		case "entityShortId":
 			return AiCluster.staticSetEntityShortId(siteRequest_, o);
+		case "gpuNodesTotal":
+			return AiCluster.staticSetGpuNodesTotal(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -952,6 +1022,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchEntityId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiCluster.staticSearchEntityShortId(siteRequest_, (String)o);
+		case "gpuNodesTotal":
+			return AiCluster.staticSearchGpuNodesTotal(siteRequest_, (Integer)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -982,6 +1054,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchStrEntityId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiCluster.staticSearchStrEntityShortId(siteRequest_, (String)o);
+		case "gpuNodesTotal":
+			return AiCluster.staticSearchStrGpuNodesTotal(siteRequest_, (Integer)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1012,6 +1086,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchFqEntityId(siteRequest_, o);
 		case "entityShortId":
 			return AiCluster.staticSearchFqEntityShortId(siteRequest_, o);
+		case "gpuNodesTotal":
+			return AiCluster.staticSearchFqGpuNodesTotal(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1063,6 +1139,14 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 					setEntityId((String)val);
 				}
 				saves.add("entityId");
+				return val;
+			} else if("gpunodestotal".equals(varLower)) {
+				if(val instanceof Integer) {
+					setGpuNodesTotal((Integer)val);
+				} else {
+					setGpuNodesTotal(val == null ? null : val.toString());
+				}
+				saves.add("gpuNodesTotal");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -1122,6 +1206,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				if(entityId != null)
 					oAiCluster.setEntityId(entityId);
 			}
+
+			if(saves.contains("gpuNodesTotal")) {
+				Integer gpuNodesTotal = (Integer)doc.get("gpuNodesTotal_docvalues_int");
+				if(gpuNodesTotal != null)
+					oAiCluster.setGpuNodesTotal(gpuNodesTotal);
+			}
 		}
 
 		super.populateBaseModel(doc);
@@ -1161,6 +1251,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		if(entityId != null) {
 			doc.put("entityId_docvalues_string", entityId);
 		}
+		if(gpuNodesTotal != null) {
+			doc.put("gpuNodesTotal_docvalues_int", gpuNodesTotal);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1181,6 +1274,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "location_docvalues_location";
 			case "entityId":
 				return "entityId_docvalues_string";
+			case "gpuNodesTotal":
+				return "gpuNodesTotal_docvalues_int";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1202,6 +1297,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "location_docvalues_location";
 			case "entityId":
 				return "entityId_docvalues_string";
+			case "gpuNodesTotal":
+				return "gpuNodesTotal_docvalues_int";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1223,6 +1320,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "location";
 			case "entityId_docvalues_string":
 				return "entityId";
+			case "gpuNodesTotal_docvalues_int":
+				return "gpuNodesTotal";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1266,6 +1365,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		});
 		oAiCluster.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setGpuNodesTotal(Optional.ofNullable(doc.get("gpuNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1293,6 +1393,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				apiRequest.addVars("location");
 			if(!Objects.equals(entityId, original.getEntityId()))
 				apiRequest.addVars("entityId");
+			if(!Objects.equals(gpuNodesTotal, original.getGpuNodesTotal()))
+				apiRequest.addVars("gpuNodesTotal");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1311,6 +1413,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(locationLinks).map(v -> "locationLinks: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(gpuNodesTotal).map(v -> "gpuNodesTotal: " + v + "\n").orElse(""));
 		return sb.toString();
 	}
 
@@ -1327,6 +1430,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String VAR_location = "location";
 	public static final String VAR_entityId = "entityId";
 	public static final String VAR_entityShortId = "entityShortId";
+	public static final String VAR_gpuNodesTotal = "gpuNodesTotal";
 
 	public static List<String> varsQForClass() {
 		return AiCluster.varsQAiCluster(new ArrayList<String>());
@@ -1344,6 +1448,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		vars.add(VAR_description);
 		vars.add(VAR_location);
 		vars.add(VAR_entityId);
+		vars.add(VAR_gpuNodesTotal);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1353,6 +1458,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	public static List<String> varsRangeAiCluster(List<String> vars) {
 		vars.add(VAR_location);
+		vars.add(VAR_gpuNodesTotal);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -1365,6 +1471,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_location = "location";
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
+	public static final String DISPLAY_NAME_gpuNodesTotal = "GPU nodes total";
 
 	public static String displayNameForClass(String var) {
 		return AiCluster.displayNameAiCluster(var);
@@ -1387,6 +1494,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_entityId;
 		case VAR_entityShortId:
 			return DISPLAY_NAME_entityShortId;
+		case VAR_gpuNodesTotal:
+			return DISPLAY_NAME_gpuNodesTotal;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1410,6 +1519,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "A unique ID for this Smart Data Model";
 		case VAR_entityShortId:
 			return "A short ID for this Smart Data Model";
+		case VAR_gpuNodesTotal:
+			return "The total number of GPU nodes on this cluster. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1433,6 +1544,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_entityShortId:
 			return "String";
+		case VAR_gpuNodesTotal:
+			return "Integer";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1455,6 +1568,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_entityId:
 			return "Property";
 		case VAR_entityShortId:
+			return "Property";
+		case VAR_gpuNodesTotal:
 			return "Property";
 			default:
 				return null;
@@ -1482,6 +1597,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return 10;
 		case VAR_entityId:
 			return 3;
+		case VAR_gpuNodesTotal:
+			return 4;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1497,6 +1614,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return 1;
 		case VAR_entityId:
 			return 4;
+		case VAR_gpuNodesTotal:
+			return 1;
 			default:
 				return BaseModel.htmCellBaseModel(var);
 		}

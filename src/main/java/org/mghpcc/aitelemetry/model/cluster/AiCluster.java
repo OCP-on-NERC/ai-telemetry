@@ -154,6 +154,19 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU nodes total
+	 * Description: The total number of GPU nodes on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _gpuNodesTotal(Wrap<Integer> w) {
+	}
+
 	@Override
 	protected void _objectTitle(Wrap<String> w) {
 		StringBuilder b = new StringBuilder();

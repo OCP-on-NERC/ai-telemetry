@@ -752,6 +752,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlEntityId());
 						break;
+					case "setGpuNodesTotal":
+							o2.setGpuNodesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_gpuNodesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuNodesTotal());
+						break;
 				}
 			}
 			bSql.append(" WHERE pk=$" + num);
@@ -1150,6 +1158,15 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiCluster.VAR_entityId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlEntityId());
+						break;
+					case AiCluster.VAR_gpuNodesTotal:
+						o2.setGpuNodesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_gpuNodesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuNodesTotal());
 						break;
 					}
 				}
