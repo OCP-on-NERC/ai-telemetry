@@ -23,6 +23,7 @@ import io.vertx.pgclient.data.Polygon;
  * Model: true
  * Api: true
  * Page: true
+ * UserPageTemplates: /en-us/user/ai-cluster
  * SuperPage: BaseModelPage
  * Indexed: true
  * Order: 3
@@ -151,6 +152,19 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 		if(entityId != null) {
 			w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU nodes total
+	 * Description: The total number of GPU nodes on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _gpuNodesTotal(Wrap<Integer> w) {
 	}
 
 	@Override

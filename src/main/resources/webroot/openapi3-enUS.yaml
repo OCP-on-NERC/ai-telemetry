@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: "Learn that computer"
+  title: "AI Telemetry"
   version: 3.0.0
 paths:
   /ai-cluster/{id}:
@@ -5998,7 +5998,7 @@ components:
   securitySchemes:
     openIdConnect:
       type: openIdConnect
-      openIdConnectUrl: https://keycloak.apps-crc.testing/realms/NERC/.well-known/openid-configuration
+      openIdConnectUrl: https://keycloak.apps.obs.nerc.mghpcc.org/realms/NERC/.well-known/openid-configuration
   requestBodies:
     SearchPageAiClusterResponse:
       content:
@@ -6399,6 +6399,8 @@ components:
                     type: string
                   entityShortId:
                     type: string
+                  gpuNodesTotal:
+                    type: string
                   objectTitle:
                     type: string
                   objectId:
@@ -6492,6 +6494,13 @@ components:
             removeEntityShortId:
               type: string
             removeAllEntityShortId:
+              type: string
+            setGpuNodesTotal:
+              type: string
+              nullable: true
+            removeGpuNodesTotal:
+              type: string
+            removeAllGpuNodesTotal:
               type: string
             setObjectTitle:
               type: string
@@ -6597,6 +6606,13 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setGpuNodesTotal:
+              type: string
+              nullable: true
+            removeGpuNodesTotal:
+              type: string
+            removeAllGpuNodesTotal:
+              type: string
             setObjectTitle:
               type: string
               nullable: true
@@ -6637,6 +6653,8 @@ components:
               type: string
             entityShortId:
               type: string
+            gpuNodesTotal:
+              type: string
             objectTitle:
               type: string
             objectId:
@@ -6666,6 +6684,8 @@ components:
             entityId:
               type: string
             entityShortId:
+              type: string
+            gpuNodesTotal:
               type: string
             objectTitle:
               type: string
@@ -6702,6 +6722,8 @@ components:
                     type: string
                   entityShortId:
                     type: string
+                  gpuNodesTotal:
+                    type: string
                   objectTitle:
                     type: string
                   objectId:
@@ -6732,6 +6754,8 @@ components:
                     type: string
                   entityShortId:
                     type: string
+                  gpuNodesTotal:
+                    type: string
                   objectTitle:
                     type: string
                   objectId:
@@ -6761,6 +6785,8 @@ components:
             entityId:
               type: string
             entityShortId:
+              type: string
+            gpuNodesTotal:
               type: string
             objectTitle:
               type: string

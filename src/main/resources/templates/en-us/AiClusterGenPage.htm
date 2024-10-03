@@ -334,6 +334,18 @@
               <div stuff="cluster details-cluster details">
 
               {%- if "PATCH" in scopes %}
+                {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div stuff="cluster details-cluster details">
+
+              {%- if "PATCH" in scopes %}
                 {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
@@ -453,6 +465,18 @@
                   {{ htmEntityIdAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div stuff="cluster details-cluster details">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -601,6 +625,18 @@
                   {{ htmEntityIdAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div stuff="cluster details-cluster details">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -800,13 +836,15 @@
                     </div>
                   </div>
                   <div>
-                    <div class="pageSearchVal " id="pageSearchVal-fqAiCluster_{{ key }}">{% if val is defined %}fq={{ value.var }}:{{ value.val | urlencode() }}{% endif %}</div>
+                    <div class="pageSearchVal " id="pageSearchVal-fqAiCluster_{{ key }}">{% if value.val is defined %}fq={{ value.var }}:{{ value.val | urlencode() }}{% endif %}</div>
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetAiCluster_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
-                    <ol class="pageFacetField pageFacetFieldAiCluster_{{ key }} " id="pageFacetFieldAiCluster_{{ key }}">
+                    <div class="pageFacetField pageFacetFieldAiCluster_{{ key }} " id="pageFacetFieldAiCluster_{{ key }}">
 {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <li class="cursor-pointer " data-class="AiCluster" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('AiCluster', facetFieldValue); ">{{ facetFieldKey }}: {{ facetFieldValue }}</li>
+                      <sl-tooltip content="{{ facetFieldValue | e }} AI cluster total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                        <div class="cursor-pointer " data-class="AiCluster" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('AiCluster', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
+                      </sl-tooltip>
 {% endfor %}
-                    </ol>
+                    </div>
                   </div>
                 {% endfor %}
               </div>
@@ -1426,6 +1464,44 @@ A unique ID for this Smart Data Model"
 
 {%- macro htmEntityIdAiClusterPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
                             {{ inputEntityIdAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputGpuNodesTotalAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form id="PageForm_gpuNodesTotal">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="GPU nodes total"
+                      label="GPU nodes total"
+                      help-text="
+The total number of GPU nodes on this cluster. "
+                      id="{{classApiMethodMethod}}_gpuNodesTotal"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_gpuNodesTotal setGpuNodesTotal classAiCluster inputAiCluster{{pk}}GpuNodesTotal "
+                      name="setGpuNodesTotal"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuNodesTotal setGpuNodesTotal classAiCluster inputAiCluster{{pk}}GpuNodesTotal "
+                      name="setGpuNodesTotal"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuNodesTotal valueGpuNodesTotal classAiCluster inputAiCluster{{pk}}GpuNodesTotal "
+                      name="gpuNodesTotal"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{aiCluster_.gpuNodesTotal | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGpuNodesTotalAiClusterPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputGpuNodesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
 {%- macro inputLocationAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
