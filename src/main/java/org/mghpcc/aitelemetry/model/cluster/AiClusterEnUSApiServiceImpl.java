@@ -3,18 +3,24 @@ package org.mghpcc.aitelemetry.model.cluster;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.http.HttpResponseExpectation;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.pgclient.PgPool;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
@@ -54,23 +60,73 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 						.sendForm(form)
 						.expecting(HttpResponseExpectation.SC_OK)
 						.onSuccess(requestAuthResponse -> {
-					String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-					Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
-					String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
-					Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
-					String promKeycloakProxyUri = String.format("/api/v1/query?query=gpu_operator_gpu_nodes_total");
+					try {
+						String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
+						Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
+						String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
+						Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
+						String promKeycloakProxyUri = String.format("/api/v1/query?query=gpu_operator_gpu_nodes_total");
 
-					webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
-							.putHeader("Authorization", String.format("Bearer %s", accessToken))
-							.send()
-							.expecting(HttpResponseExpectation.SC_OK)
-							.onSuccess(metricsResponse -> {
-						LOG.info(String.format("metrics: %s", metricsResponse.bodyAsJsonObject().encodePrettily()));
-						promise.complete();
-					}).onFailure(ex -> {
+						webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
+								.putHeader("Authorization", String.format("Bearer %s", accessToken))
+								.send()
+								.expecting(HttpResponseExpectation.SC_OK)
+								.onSuccess(metricsResponse -> {
+							LOG.info(String.format("metrics: %s", metricsResponse.bodyAsJsonObject().encodePrettily()));
+
+							JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
+							JsonArray dataResult = metricsBody.getJsonObject("data").getJsonArray("result");
+							List<Future<?>> futures = new ArrayList<>();
+							dataResult.stream().map(o -> (JsonObject)o).forEach(clusterResult -> {
+								futures.add(Future.future(promise1 -> {
+									try {
+										JsonObject clusterMetric = clusterResult.getJsonObject("metric");
+										JsonArray clusterValue = clusterResult.getJsonArray("value");
+										String name = clusterMetric.getString("cluster");
+										String gpuNodesTotal = clusterValue.getString(1);
+										JsonObject body = new JsonObject();
+										body.put(AiCluster.VAR_pk, name);
+										body.put(AiCluster.VAR_name, name);
+										body.put(AiCluster.VAR_gpuNodesTotal, gpuNodesTotal);
+
+										JsonObject pageParams = new JsonObject();
+										pageParams.put("body", body);
+										pageParams.put("path", new JsonObject());
+										pageParams.put("cookie", new JsonObject());
+										pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+										JsonObject pageContext = new JsonObject().put("params", pageParams);
+										JsonObject pageRequest = new JsonObject().put("context", pageContext);
+
+										vertx.eventBus().request(classApiAddress, pageRequest, new DeliveryOptions()
+												.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
+												.addHeader("action", String.format("putimport%sFuture", classSimpleName))
+												).onSuccess(message -> {
+											LOG.info(String.format("Imported %s AI cluster", name));
+											promise1.complete();
+										}).onFailure(ex -> {
+											LOG.error(String.format(importDataFail, classSimpleName), ex);
+											promise.fail(ex);
+										});
+									} catch(Exception ex) {
+										LOG.error(String.format(importDataFail, classSimpleName), ex);
+										promise1.fail(ex);
+									}
+								}));
+							});
+							Future.all(futures).onSuccess(b -> {
+								promise.complete();
+							}).onFailure(ex -> {
+								LOG.error(String.format(importDataFail, classSimpleName), ex);
+								promise.fail(ex);
+							});
+						}).onFailure(ex -> {
+							LOG.error(String.format(importDataFail, classSimpleName), ex);
+							promise.fail(ex);
+						});
+					} catch(Throwable ex) {
 						LOG.error(String.format(importDataFail, classSimpleName), ex);
 						promise.fail(ex);
-					});
+					}
 				}).onFailure(ex -> {
 					LOG.error(String.format(importDataFail, classSimpleName), ex);
 					promise.fail(ex);
