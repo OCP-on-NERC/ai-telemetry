@@ -72,8 +72,6 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 								.send()
 								.expecting(HttpResponseExpectation.SC_OK)
 								.onSuccess(metricsResponse -> {
-							LOG.info(String.format("metrics: %s", metricsResponse.bodyAsJsonObject().encodePrettily()));
-
 							JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
 							JsonArray dataResult = metricsBody.getJsonObject("data").getJsonArray("result");
 							List<Future<?>> futures = new ArrayList<>();

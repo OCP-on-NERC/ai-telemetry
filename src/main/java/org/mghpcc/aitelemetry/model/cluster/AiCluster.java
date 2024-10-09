@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
+import org.computate.vertx.api.BaseApiServiceImpl;
 import org.computate.vertx.search.list.SearchList;
+import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
 import io.vertx.core.Promise;
@@ -58,7 +60,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 1
-	 * HtmRowTitle: cluster details
+	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
 	 **/
 	protected void _name(Wrap<String> w) {}
@@ -121,7 +123,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: location
 	 * Description: Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
-	 * HtmRow: 10
+	 * HtmRow: 4
 	 * HtmCell: 1
 	 * Facet: true
 	 **/
@@ -160,11 +162,32 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: GPU nodes total
 	 * Description: The total number of GPU nodes on this cluster. 
-	 * HtmRow: 4
+	 * HtmRow: 5
 	 * HtmCell: 1
 	 * Facet: true
 	 */
 	protected void _gpuNodesTotal(Wrap<Integer> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * DisplayName: Grafana GPU utilization URL
+	 * Description: The Grafana URL to explore this cluster's GPU utilization. 
+	 * HtmRow: 6
+	 * HtmRowTitle: Useful URLs
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _grafanaUrl(Wrap<String> w) {
+		w.o(String.format("%s/explore?orgId=1&left=%s"
+				, siteRequest_.getConfig().getString(ConfigKeys.GRAFANA_BASE_URL, ConfigKeys.GRAFANA_BASE_URL)
+				, BaseApiServiceImpl.urlEncode(
+						String.format("[\"now-1h\",\"now\",\"observability-metrics\",{\"exemplar\":true,\"expr\":\"DCGM_FI_DEV_GPU_UTIL{cluster=\\\"%s\\\"}\"}]"
+								, BaseApiServiceImpl.urlEncode(name)
+						)
+				)
+		));
 	}
 
 	@Override

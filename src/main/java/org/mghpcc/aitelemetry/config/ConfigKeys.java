@@ -10,4 +10,5 @@ public class ConfigKeys extends ComputateConfigKeys {
     public static final String PROM_KEYCLOAK_PROXY_PORT = "PROM_KEYCLOAK_PROXY_PORT";
     public static final String PROM_KEYCLOAK_PROXY_HOST_NAME = "PROM_KEYCLOAK_PROXY_HOST_NAME";
     public static final String PROM_KEYCLOAK_PROXY_SSL = "PROM_KEYCLOAK_PROXY_SSL";
+    public static final String GRAFANA_BASE_URL = "GRAFANA_BASE_URL";
 }

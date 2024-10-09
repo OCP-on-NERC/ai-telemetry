@@ -240,7 +240,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -282,7 +282,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -295,11 +295,11 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="cluster-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -331,7 +331,19 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -343,15 +355,20 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+            </sl-details>
+            <sl-details class="HtmRow" id="useful-urls">
+              <div slot="summary">
+                <span>Useful URLs</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -377,7 +394,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -419,7 +436,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -432,11 +449,11 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="cluster-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -468,7 +485,19 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -480,15 +509,20 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+            </sl-details>
+            <sl-details class="HtmRow" id="useful-urls">
+              <div slot="summary">
+                <span>Useful URLs</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -537,7 +571,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -579,7 +613,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -592,11 +626,11 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="cluster-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -628,7 +662,19 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmGpuNodesTotalAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -640,15 +686,20 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="cluster details-cluster details">
+            </sl-details>
+            <sl-details class="HtmRow" id="useful-urls">
+              <div slot="summary">
+                <span>Useful URLs</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmLocationAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmGrafanaUrlAiClusterPage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -1157,7 +1208,7 @@
 
 {%- macro inputPkAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pk">
+                <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
                   <sl-input
                       readonly
@@ -1195,7 +1246,7 @@ The primary key of this object in the database"
 
 {%- macro inputObjectIdAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_objectId">
+                <form class="subgrid-2col " id="PageForm_objectId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1233,7 +1284,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputCreatedAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_created">
+                <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1262,7 +1313,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputModifiedAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_modified">
+                <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1291,7 +1342,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputArchivedAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_archived">
+                <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-button
@@ -1354,7 +1405,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputNameAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_name">
+                <form class="subgrid-2col " id="PageForm_name">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1392,7 +1443,7 @@ The name of this cluster"
 
 {%- macro inputDescriptionAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_description">
+                <form class="subgrid-2col " id="PageForm_description">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1430,7 +1481,7 @@ A description of this cluster"
 
 {%- macro inputEntityIdAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_entityId">
+                <form class="subgrid-2col " id="PageForm_entityId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1466,9 +1517,47 @@ A unique ID for this Smart Data Model"
                             {{ inputEntityIdAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
+{%- macro inputLocationAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_location">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="location"
+                      label="location"
+                      help-text="
+Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                      id="{{classApiMethodMethod}}_location"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{pk}}Location "
+                      name="setLocation"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{pk}}Location "
+                      name="setLocation"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiCluster inputAiCluster{{pk}}Location "
+                      name="location"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{ toJsonObjectString(aiCluster_.location) | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmLocationAiClusterPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputLocationAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
 {%- macro inputGpuNodesTotalAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_gpuNodesTotal">
+                <form class="subgrid-2col " id="PageForm_gpuNodesTotal">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1504,32 +1593,32 @@ The total number of GPU nodes on this cluster. "
                             {{ inputGpuNodesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
-{%- macro inputLocationAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+{%- macro inputGrafanaUrlAiClusterPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_location">
+                <form class="subgrid-2col " id="PageForm_grafanaUrl">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="location"
-                      label="location"
+                      placeholder="Grafana GPU utilization URL"
+                      label="Grafana GPU utilization URL"
                       help-text="
-Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
-                      id="{{classApiMethodMethod}}_location"
+The Grafana URL to explore this cluster's GPU utilization. "
+                      id="{{classApiMethodMethod}}_grafanaUrl"
   {%- if "Page" == classApiMethodMethod %}
                       data-pk="{{ pk }}"
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{pk}}Location "
-                      name="setLocation"
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{pk}}GrafanaUrl "
+                      name="setGrafanaUrl"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{pk}}Location "
-                      name="setLocation"
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{pk}}GrafanaUrl "
+                      name="setGrafanaUrl"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiCluster inputAiCluster{{pk}}Location "
-                      name="location"
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl valueGrafanaUrl classAiCluster inputAiCluster{{pk}}GrafanaUrl "
+                      name="grafanaUrl"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(aiCluster_.location) | e }}"
+                      value="{{aiCluster_.grafanaUrl | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1538,6 +1627,6 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
   {%- endif %}
 {%- endmacro %}
 
-{%- macro htmLocationAiClusterPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
-                            {{ inputLocationAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- macro htmGrafanaUrlAiClusterPage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputGrafanaUrlAiClusterPage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}

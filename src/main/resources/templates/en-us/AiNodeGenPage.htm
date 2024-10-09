@@ -240,7 +240,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -282,7 +282,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -299,7 +299,7 @@
               <div slot="summary">
                 <span>AI node details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -331,7 +331,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="AI node details-AI node details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmLocationAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -365,7 +365,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -407,7 +407,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -424,7 +424,7 @@
               <div slot="summary">
                 <span>AI node details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -456,7 +456,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="AI node details-AI node details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmLocationAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -513,7 +513,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -555,7 +555,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -572,7 +572,7 @@
               <div slot="summary">
                 <span>AI node details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -604,7 +604,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="AI node details-AI node details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmLocationAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -1121,7 +1121,7 @@
 
 {%- macro inputPkAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pk">
+                <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
                   <sl-input
                       readonly
@@ -1159,7 +1159,7 @@ The primary key of this object in the database"
 
 {%- macro inputObjectIdAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_objectId">
+                <form class="subgrid-2col " id="PageForm_objectId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1197,7 +1197,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputCreatedAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_created">
+                <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1226,7 +1226,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputModifiedAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_modified">
+                <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1255,7 +1255,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputArchivedAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_archived">
+                <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-button
@@ -1318,7 +1318,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputNameAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_name">
+                <form class="subgrid-2col " id="PageForm_name">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1356,7 +1356,7 @@ The name of this node"
 
 {%- macro inputDescriptionAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_description">
+                <form class="subgrid-2col " id="PageForm_description">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1394,7 +1394,7 @@ A description of this node"
 
 {%- macro inputEntityIdAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_entityId">
+                <form class="subgrid-2col " id="PageForm_entityId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1432,7 +1432,7 @@ A unique ID for this Smart Data Model"
 
 {%- macro inputLocationAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_location">
+                <form class="subgrid-2col " id="PageForm_location">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
