@@ -172,12 +172,13 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
-	 * DisplayName: Grafana GPU utilization URL
-	 * Description: The Grafana URL to explore this cluster's GPU utilization. 
+	 * DisplayName: Grafana GPU utilization
+	 * Description: Explore this cluster's GPU utilization in Grafana. 
 	 * HtmRow: 6
-	 * HtmRowTitle: Useful URLs
+	 * HtmRowTitleOpen: Useful URLs
 	 * HtmCell: 1
 	 * Facet: true
+	 * Link: true
 	 */
 	protected void _grafanaUrl(Wrap<String> w) {
 		w.o(String.format("%s/explore?orgId=1&left=%s"

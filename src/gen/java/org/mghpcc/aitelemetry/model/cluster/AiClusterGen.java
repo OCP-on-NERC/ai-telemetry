@@ -1556,7 +1556,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
 	public static final String DISPLAY_NAME_gpuNodesTotal = "GPU nodes total";
-	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization URL";
+	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization";
 
 	public static String displayNameForClass(String var) {
 		return AiCluster.displayNameAiCluster(var);
@@ -1609,7 +1609,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_gpuNodesTotal:
 			return "The total number of GPU nodes on this cluster. ";
 		case VAR_grafanaUrl:
-			return "The Grafana URL to explore this cluster's GPU utilization. ";
+			return "Explore this cluster's GPU utilization in Grafana. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}

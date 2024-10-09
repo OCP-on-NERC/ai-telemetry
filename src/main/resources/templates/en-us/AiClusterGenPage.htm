@@ -356,7 +356,7 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="useful-urls">
+            <sl-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -510,7 +510,7 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="useful-urls">
+            <sl-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -687,7 +687,7 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="useful-urls">
+            <sl-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -1353,7 +1353,7 @@ A URL friendly unique ID for this object"
                       class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{pk}}Archived "
                       name="setArchived"
                       data-pk="{{ pk }}"
-                      data-val="{{ aiCluster_.archived }}"
+                      data-val="{{ aiCluster_.archived | e }}"
                       >archive</sl-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -1597,12 +1597,24 @@ The total number of GPU nodes on this cluster. "
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_grafanaUrl">
   {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-button
+                      id="{{classApiMethodMethod}}_grafanaUrl"
+                      placeholder="Grafana GPU utilization"
+                      label="Grafana GPU utilization"
+                      help-text="Explore this cluster's GPU utilization in Grafana. "
+                      class="button-on-left {{classApiMethodMethod}}_grafanaUrl classAiCluster inputAiCluster{{pk}}GrafanaUrl "
+                      name="setGrafanaUrl"
+                      href="{{ aiCluster_.grafanaUrl | e }}"
+                      >Grafana GPU utilization</sl-button>
+                      <div class="button-description-on-right ">Explore this cluster's GPU utilization in Grafana. </div>
+  {%- else %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="Grafana GPU utilization URL"
-                      label="Grafana GPU utilization URL"
+                      placeholder="Grafana GPU utilization"
+                      label="Grafana GPU utilization"
                       help-text="
-The Grafana URL to explore this cluster's GPU utilization. "
+Explore this cluster's GPU utilization in Grafana. "
                       id="{{classApiMethodMethod}}_grafanaUrl"
   {%- if "Page" == classApiMethodMethod %}
                       data-pk="{{ pk }}"
@@ -1622,6 +1634,7 @@ The Grafana URL to explore this cluster's GPU utilization. "
   {%- endif %}
                       ></sl-input>
 
+  {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
   {%- endif %}
