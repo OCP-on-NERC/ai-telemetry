@@ -148,7 +148,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity searchListGpuSlice_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:searchListGpuSlice_">Find the entity searchListGpuSlice_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:searchListGpuSlice_">Find the entity searchListGpuSlice_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -189,7 +189,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity listGpuSlice
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:listGpuSlice">Find the entity listGpuSlice in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:listGpuSlice">Find the entity listGpuSlice in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -244,7 +244,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity gpuSliceCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSliceCount">Find the entity gpuSliceCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSliceCount">Find the entity gpuSliceCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -303,7 +303,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity gpuSlice_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSlice_">Find the entity gpuSlice_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSlice_">Find the entity gpuSlice_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -345,7 +345,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -404,7 +404,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -456,7 +456,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pageUriGpuSlice
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:pageUriGpuSlice">Find the entity pageUriGpuSlice in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:pageUriGpuSlice">Find the entity pageUriGpuSlice in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/

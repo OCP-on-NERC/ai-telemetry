@@ -135,7 +135,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity searchListBaseModel_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:searchListBaseModel_">Find the entity searchListBaseModel_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:searchListBaseModel_">Find the entity searchListBaseModel_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -176,7 +176,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity listBaseModel
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:listBaseModel">Find the entity listBaseModel in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:listBaseModel">Find the entity listBaseModel in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -231,7 +231,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity baseModelCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:baseModelCount">Find the entity baseModelCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:baseModelCount">Find the entity baseModelCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -290,7 +290,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity baseModel_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:baseModel_">Find the entity baseModel_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:baseModel_">Find the entity baseModel_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -332,7 +332,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -391,7 +391,7 @@ public abstract class BaseModelGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModelGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/

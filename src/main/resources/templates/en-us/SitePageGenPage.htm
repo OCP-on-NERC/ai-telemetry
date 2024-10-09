@@ -167,7 +167,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmCreatedSitePagePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -199,7 +199,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSitePagePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -211,7 +211,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageIdSitePagePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -253,7 +253,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageImageUriSitePagePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -287,7 +287,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmCreatedSitePagePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -319,7 +319,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSitePagePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -331,7 +331,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageIdSitePagePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -373,7 +373,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageImageUriSitePagePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -430,7 +430,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmCreatedSitePagePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -462,7 +462,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSitePagePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -474,7 +474,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageIdSitePagePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -516,7 +516,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPageImageUriSitePagePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -1039,7 +1039,7 @@
 
 {%- macro inputCreatedSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_created">
+                <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1068,7 +1068,7 @@
 
 {%- macro inputModifiedSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_modified">
+                <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1097,7 +1097,7 @@
 
 {%- macro inputObjectIdSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_objectId">
+                <form class="subgrid-2col " id="PageForm_objectId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1135,7 +1135,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputArchivedSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_archived">
+                <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-button
@@ -1198,7 +1198,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputPageIdSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pageId">
+                <form class="subgrid-2col " id="PageForm_pageId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1236,7 +1236,7 @@ The ID for this page. "
 
 {%- macro inputUriSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_uri">
+                <form class="subgrid-2col " id="PageForm_uri">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1274,7 +1274,7 @@ The relative URI for this page. "
 
 {%- macro inputUrlSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_url">
+                <form class="subgrid-2col " id="PageForm_url">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1312,7 +1312,7 @@ The URL for this page. "
 
 {%- macro inputAuthorSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_author">
+                <form class="subgrid-2col " id="PageForm_author">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1350,7 +1350,7 @@ The author"
 
 {%- macro inputPageImageUriSitePagePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pageImageUri">
+                <form class="subgrid-2col " id="PageForm_pageImageUri">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}

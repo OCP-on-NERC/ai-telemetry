@@ -225,7 +225,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userKeys
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userKeys">Find the entity userKeys in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userKeys">Find the entity userKeys in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -308,7 +308,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userId">Find the entity userId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userId">Find the entity userId in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -364,7 +364,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userName">Find the entity userName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userName">Find the entity userName in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -420,7 +420,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userEmail
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userEmail">Find the entity userEmail in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userEmail">Find the entity userEmail in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -476,7 +476,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userFirstName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userFirstName">Find the entity userFirstName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userFirstName">Find the entity userFirstName in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -532,7 +532,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userLastName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userLastName">Find the entity userLastName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userLastName">Find the entity userLastName in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -588,7 +588,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity userFullName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userFullName">Find the entity userFullName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:userFullName">Find the entity userFullName in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -644,7 +644,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity seeArchived
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:seeArchived">Find the entity seeArchived in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:seeArchived">Find the entity seeArchived in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -705,7 +705,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	/**	<br> The entity seeDeleted
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:seeDeleted">Find the entity seeDeleted in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:seeDeleted">Find the entity seeDeleted in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/

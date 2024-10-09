@@ -571,7 +571,7 @@
 
 {%- macro inputPkBaseModelPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pk">
+                <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
                   <sl-input
                       readonly
@@ -609,7 +609,7 @@ The primary key of this object in the database"
 
 {%- macro inputObjectIdBaseModelPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_objectId">
+                <form class="subgrid-2col " id="PageForm_objectId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -647,7 +647,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputCreatedBaseModelPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_created">
+                <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -676,7 +676,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputModifiedBaseModelPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_modified">
+                <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -705,7 +705,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputArchivedBaseModelPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_archived">
+                <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-button

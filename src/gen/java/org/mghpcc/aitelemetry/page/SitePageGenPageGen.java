@@ -148,7 +148,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity searchListSitePage_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:searchListSitePage_">Find the entity searchListSitePage_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:searchListSitePage_">Find the entity searchListSitePage_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -189,7 +189,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity listSitePage
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:listSitePage">Find the entity listSitePage in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:listSitePage">Find the entity listSitePage in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -244,7 +244,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity sitePageCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:sitePageCount">Find the entity sitePageCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:sitePageCount">Find the entity sitePageCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -303,7 +303,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity sitePage_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:sitePage_">Find the entity sitePage_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:sitePage_">Find the entity sitePage_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -344,7 +344,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -396,7 +396,7 @@ public abstract class SitePageGenPageGen<DEV> extends BaseResultPage {
 
 	/**	<br> The entity pageUriSitePage
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:pageUriSitePage">Find the entity pageUriSitePage in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePageGenPage&fq=entiteVar_enUS_indexed_string:pageUriSitePage">Find the entity pageUriSitePage in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/

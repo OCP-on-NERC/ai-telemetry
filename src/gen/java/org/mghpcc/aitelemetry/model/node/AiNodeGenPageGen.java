@@ -148,7 +148,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity searchListAiNode_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:searchListAiNode_">Find the entity searchListAiNode_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:searchListAiNode_">Find the entity searchListAiNode_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -189,7 +189,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity listAiNode
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:listAiNode">Find the entity listAiNode in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:listAiNode">Find the entity listAiNode in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -244,7 +244,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity aiNodeCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNodeCount">Find the entity aiNodeCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNodeCount">Find the entity aiNodeCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -303,7 +303,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity aiNode_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNode_">Find the entity aiNode_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNode_">Find the entity aiNode_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -345,7 +345,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -404,7 +404,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -456,7 +456,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pageUriAiNode
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pageUriAiNode">Find the entity pageUriAiNode in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pageUriAiNode">Find the entity pageUriAiNode in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/

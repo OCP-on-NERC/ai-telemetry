@@ -167,7 +167,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkSiteUserPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -209,7 +209,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSiteUserPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -226,7 +226,7 @@
               <div slot="summary">
                 <span>user options</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmSeeArchivedSiteUserPage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
@@ -270,7 +270,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkSiteUserPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -312,7 +312,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSiteUserPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -329,7 +329,7 @@
               <div slot="summary">
                 <span>user options</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmSeeArchivedSiteUserPage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
@@ -396,7 +396,7 @@
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmPkSiteUserPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -438,7 +438,7 @@
                 {%- endif %}
               {%- endif %}
               </div>
-              <div stuff="primary key, ID, created, modified, archive details-primary key, ID, created, modified, archive details">
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmArchivedSiteUserPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -455,7 +455,7 @@
               <div slot="summary">
                 <span>user options</span>
               </div>
-              <div>
+              <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
                 {{ htmSeeArchivedSiteUserPage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
@@ -968,7 +968,7 @@
 
 {%- macro inputPkSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_pk">
+                <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
                   <sl-input
                       readonly
@@ -1006,7 +1006,7 @@ The primary key of this object in the database"
 
 {%- macro inputObjectIdSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_objectId">
+                <form class="subgrid-2col " id="PageForm_objectId">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -1044,7 +1044,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputCreatedSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_created">
+                <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1073,7 +1073,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputModifiedSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_modified">
+                <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
                   <sl-input
                       type="text"
@@ -1102,7 +1102,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputArchivedSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_archived">
+                <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-button
@@ -1165,7 +1165,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputSeeArchivedSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_seeArchived">
+                <form class="subgrid-2col " id="PageForm_seeArchived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-checkbox
@@ -1215,7 +1215,7 @@ A URL friendly unique ID for this object"
 
 {%- macro inputSeeDeletedSiteUserPage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form id="PageForm_seeDeleted">
+                <form class="subgrid-2col " id="PageForm_seeDeleted">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                   <sl-checkbox

@@ -148,7 +148,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity searchListSiteUser_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:searchListSiteUser_">Find the entity searchListSiteUser_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:searchListSiteUser_">Find the entity searchListSiteUser_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -189,7 +189,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity listSiteUser
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:listSiteUser">Find the entity listSiteUser in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:listSiteUser">Find the entity listSiteUser in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -244,7 +244,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity siteUserCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:siteUserCount">Find the entity siteUserCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:siteUserCount">Find the entity siteUserCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -303,7 +303,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity siteUser_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:siteUser_">Find the entity siteUser_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:siteUser_">Find the entity siteUser_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -345,7 +345,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -404,7 +404,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -456,7 +456,7 @@ public abstract class SiteUserGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pageUriSiteUser
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:pageUriSiteUser">Find the entity pageUriSiteUser in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUserGenPage&fq=entiteVar_enUS_indexed_string:pageUriSiteUser">Find the entity pageUriSiteUser in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/

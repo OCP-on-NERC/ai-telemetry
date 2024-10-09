@@ -231,7 +231,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity name
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -287,7 +287,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity description
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -344,7 +344,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationColors
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -418,7 +418,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationTitles
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -492,7 +492,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationLinks
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -567,7 +567,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity location
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -668,7 +668,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -724,7 +724,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityShortId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -777,7 +777,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity gpuNodesTotal
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:gpuNodesTotal">Find the entity gpuNodesTotal in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:gpuNodesTotal">Find the entity gpuNodesTotal in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -826,6 +826,58 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return gpuNodesTotal;
 	}
 
+	////////////////
+	// grafanaUrl //
+	////////////////
+
+
+	/**	 The entity grafanaUrl
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String grafanaUrl;
+
+	/**	<br> The entity grafanaUrl
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:grafanaUrl">Find the entity grafanaUrl in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _grafanaUrl(Wrap<String> w);
+
+	public String getGrafanaUrl() {
+		return grafanaUrl;
+	}
+	public void setGrafanaUrl(String o) {
+		this.grafanaUrl = AiCluster.staticSetGrafanaUrl(siteRequest_, o);
+	}
+	public static String staticSetGrafanaUrl(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiCluster grafanaUrlInit() {
+		Wrap<String> grafanaUrlWrap = new Wrap<String>().var("grafanaUrl");
+		if(grafanaUrl == null) {
+			_grafanaUrl(grafanaUrlWrap);
+			Optional.ofNullable(grafanaUrlWrap.getO()).ifPresent(o -> {
+				setGrafanaUrl(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static String staticSearchGrafanaUrl(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrGrafanaUrl(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqGrafanaUrl(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchGrafanaUrl(siteRequest_, AiCluster.staticSetGrafanaUrl(siteRequest_, o)).toString();
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -864,6 +916,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				entityIdInit();
 				entityShortIdInit();
 				gpuNodesTotalInit();
+				grafanaUrlInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -935,6 +988,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return oAiCluster.entityShortId;
 			case "gpuNodesTotal":
 				return oAiCluster.gpuNodesTotal;
+			case "grafanaUrl":
+				return oAiCluster.grafanaUrl;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -992,6 +1047,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSetEntityShortId(siteRequest_, o);
 		case "gpuNodesTotal":
 			return AiCluster.staticSetGpuNodesTotal(siteRequest_, o);
+		case "grafanaUrl":
+			return AiCluster.staticSetGrafanaUrl(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1024,6 +1081,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchEntityShortId(siteRequest_, (String)o);
 		case "gpuNodesTotal":
 			return AiCluster.staticSearchGpuNodesTotal(siteRequest_, (Integer)o);
+		case "grafanaUrl":
+			return AiCluster.staticSearchGrafanaUrl(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1056,6 +1115,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchStrEntityShortId(siteRequest_, (String)o);
 		case "gpuNodesTotal":
 			return AiCluster.staticSearchStrGpuNodesTotal(siteRequest_, (Integer)o);
+		case "grafanaUrl":
+			return AiCluster.staticSearchStrGrafanaUrl(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1088,6 +1149,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchFqEntityShortId(siteRequest_, o);
 		case "gpuNodesTotal":
 			return AiCluster.staticSearchFqGpuNodesTotal(siteRequest_, o);
+		case "grafanaUrl":
+			return AiCluster.staticSearchFqGrafanaUrl(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1212,6 +1275,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				if(gpuNodesTotal != null)
 					oAiCluster.setGpuNodesTotal(gpuNodesTotal);
 			}
+
+			if(saves.contains("grafanaUrl")) {
+				String grafanaUrl = (String)doc.get("grafanaUrl_docvalues_string");
+				if(grafanaUrl != null)
+					oAiCluster.setGrafanaUrl(grafanaUrl);
+			}
 		}
 
 		super.populateBaseModel(doc);
@@ -1254,6 +1323,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		if(gpuNodesTotal != null) {
 			doc.put("gpuNodesTotal_docvalues_int", gpuNodesTotal);
 		}
+		if(grafanaUrl != null) {
+			doc.put("grafanaUrl_docvalues_string", grafanaUrl);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1276,6 +1348,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "entityId_docvalues_string";
 			case "gpuNodesTotal":
 				return "gpuNodesTotal_docvalues_int";
+			case "grafanaUrl":
+				return "grafanaUrl_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1299,6 +1373,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "entityId_docvalues_string";
 			case "gpuNodesTotal":
 				return "gpuNodesTotal_docvalues_int";
+			case "grafanaUrl":
+				return "grafanaUrl_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1322,6 +1398,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "entityId";
 			case "gpuNodesTotal_docvalues_int":
 				return "gpuNodesTotal";
+			case "grafanaUrl_docvalues_string":
+				return "grafanaUrl";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1366,6 +1444,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		oAiCluster.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setGpuNodesTotal(Optional.ofNullable(doc.get("gpuNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setGrafanaUrl(Optional.ofNullable(doc.get("grafanaUrl_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1395,6 +1474,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				apiRequest.addVars("entityId");
 			if(!Objects.equals(gpuNodesTotal, original.getGpuNodesTotal()))
 				apiRequest.addVars("gpuNodesTotal");
+			if(!Objects.equals(grafanaUrl, original.getGrafanaUrl()))
+				apiRequest.addVars("grafanaUrl");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1414,6 +1495,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(gpuNodesTotal).map(v -> "gpuNodesTotal: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(grafanaUrl).map(v -> "grafanaUrl: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -1431,6 +1513,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String VAR_entityId = "entityId";
 	public static final String VAR_entityShortId = "entityShortId";
 	public static final String VAR_gpuNodesTotal = "gpuNodesTotal";
+	public static final String VAR_grafanaUrl = "grafanaUrl";
 
 	public static List<String> varsQForClass() {
 		return AiCluster.varsQAiCluster(new ArrayList<String>());
@@ -1449,6 +1532,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		vars.add(VAR_location);
 		vars.add(VAR_entityId);
 		vars.add(VAR_gpuNodesTotal);
+		vars.add(VAR_grafanaUrl);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1472,6 +1556,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
 	public static final String DISPLAY_NAME_gpuNodesTotal = "GPU nodes total";
+	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization URL";
 
 	public static String displayNameForClass(String var) {
 		return AiCluster.displayNameAiCluster(var);
@@ -1496,6 +1581,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_entityShortId;
 		case VAR_gpuNodesTotal:
 			return DISPLAY_NAME_gpuNodesTotal;
+		case VAR_grafanaUrl:
+			return DISPLAY_NAME_grafanaUrl;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1521,6 +1608,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "A short ID for this Smart Data Model";
 		case VAR_gpuNodesTotal:
 			return "The total number of GPU nodes on this cluster. ";
+		case VAR_grafanaUrl:
+			return "The Grafana URL to explore this cluster's GPU utilization. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1546,6 +1635,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_gpuNodesTotal:
 			return "Integer";
+		case VAR_grafanaUrl:
+			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1571,6 +1662,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "Property";
 		case VAR_gpuNodesTotal:
 			return "Property";
+		case VAR_grafanaUrl:
+			return "Property";
 			default:
 				return null;
 		}
@@ -1594,11 +1687,13 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_description:
 			return 3;
 		case VAR_location:
-			return 10;
+			return 4;
 		case VAR_entityId:
 			return 3;
 		case VAR_gpuNodesTotal:
-			return 4;
+			return 5;
+		case VAR_grafanaUrl:
+			return 6;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1615,6 +1710,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_entityId:
 			return 4;
 		case VAR_gpuNodesTotal:
+			return 1;
+		case VAR_grafanaUrl:
 			return 1;
 			default:
 				return BaseModel.htmCellBaseModel(var);
