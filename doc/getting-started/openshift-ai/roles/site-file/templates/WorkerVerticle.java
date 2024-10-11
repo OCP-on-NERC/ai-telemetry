@@ -461,7 +461,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 {% endfor %}
 {% for JAVA_PAGE in JAVA_PAGES %}
 {% if JAVA_PAGE.classePageTemplates_enUS_stored_string is defined or JAVA_PAGE.classePageTemplatesUtilisateur_enUS_stored_string is defined %}
-{% for n in range(loop.index) %}	{% endfor %}		api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.importTimer(Paths.get(templatePath, "{{ JAVA_PAGE.classePageTemplatesUtilisateur_enUS_stored_string }}"), vertx, siteRequest, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_SIMPLE_NAME, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_API_ADDRESS_{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}).onSuccess(q{{ loop.index }} -> {
+{% for n in range(loop.index) %}	{% endfor %}		api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.importTimer(Paths.get(templatePath, "{{ JAVA_PAGE.classePageTemplates_enUS_stored_string | default(JAVA_PAGE.classePageTemplatesUtilisateur_enUS_stored_string) }}"), vertx, siteRequest, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_SIMPLE_NAME, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_API_ADDRESS_{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}).onSuccess(q{{ loop.index }} -> {
 {% endif %}
 {% endfor %}
 {% for n in range(JAVA_PAGES|length) %}	{% endfor %}			LOG.info("data import complete");

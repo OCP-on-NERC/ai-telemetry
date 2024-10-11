@@ -295,19 +295,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="ai-node-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI node details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -328,6 +338,16 @@
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -420,19 +440,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="ai-node-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI node details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -453,6 +483,16 @@
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -568,19 +608,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="ai-node-details">
+            <sl-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI node details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -601,6 +651,16 @@
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDevicesTotalAiNodePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -638,30 +698,20 @@
               {% for item in listAiNode%}
               <a href="{{ item.pageUrlPk }}">
                 <div>                  <i class="fa-regular fa-computer"></i>
-<sl-format-date weekday="short" month="short" day="numeric" year="numeric" hour="numeric" minute="numeric" second="numeric" time-zone-name="short" date="{{ formatZonedDateTime(item.created, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></sl-format-date></div>
-                <div>{{ item.name }}</div>
-                <div>{{ item.objectTitle }}</div>
+{{ item.nodeName }}</div>
+                <div>{{ item.clusterName }}</div>
                 <div>{{ item.description }}</div>
-                <div>{{ item.objectTitle }}</div>
               </a>
               {% endfor %}
-                      {% if getColumnCreated is defined %}
+                      {% if getColumnNodeName is defined %}
                         <div>
                         </div>
                       {% endif %}
-                      {% if getColumnName is defined %}
-                        <div>
-                        </div>
-                      {% endif %}
-                      {% if getColumnObjectTitle is defined %}
+                      {% if getColumnClusterName is defined %}
                         <div>
                         </div>
                       {% endif %}
                       {% if getColumnDescription is defined %}
-                        <div>
-                        </div>
-                      {% endif %}
-                      {% if getColumnObjectTitle is defined %}
                         <div>
                         </div>
                       {% endif %}
@@ -1266,7 +1316,7 @@ A URL friendly unique ID for this object"
                       class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{pk}}Archived "
                       name="setArchived"
                       data-pk="{{ pk }}"
-                      data-val="{{ aiNode_.archived }}"
+                      data-val="{{ aiNode_.archived | e }}"
                       >archive</sl-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -1316,32 +1366,32 @@ A URL friendly unique ID for this object"
                             {{ inputArchivedAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
-{%- macro inputNameAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+{%- macro inputClusterNameAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_name">
+                <form class="subgrid-2col " id="PageForm_clusterName">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="name"
-                      label="name"
+                      placeholder="cluster name"
+                      label="cluster name"
                       help-text="
-The name of this node"
-                      id="{{classApiMethodMethod}}_name"
+The name of this cluster"
+                      id="{{classApiMethodMethod}}_clusterName"
   {%- if "Page" == classApiMethodMethod %}
                       data-pk="{{ pk }}"
-                      class="label-on-left {{classApiMethodMethod}}_name setName classAiNode inputAiNode{{pk}}Name "
-                      name="setName"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{pk}}ClusterName "
+                      name="setClusterName"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_name setName classAiNode inputAiNode{{pk}}Name "
-                      name="setName"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{pk}}ClusterName "
+                      name="setClusterName"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_name valueName classAiNode inputAiNode{{pk}}Name "
-                      name="name"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiNode inputAiNode{{pk}}ClusterName "
+                      name="clusterName"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{aiNode_.name | e }}"
+                      value="{{aiNode_.clusterName | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1350,8 +1400,46 @@ The name of this node"
   {%- endif %}
 {%- endmacro %}
 
-{%- macro htmNameAiNodePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
-                            {{ inputNameAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- macro htmClusterNameAiNodePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputClusterNameAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputNodeNameAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_nodeName">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="node name"
+                      label="node name"
+                      help-text="
+The name of this node"
+                      id="{{classApiMethodMethod}}_nodeName"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{pk}}NodeName "
+                      name="setNodeName"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{pk}}NodeName "
+                      name="setNodeName"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_nodeName valueNodeName classAiNode inputAiNode{{pk}}NodeName "
+                      name="nodeName"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{aiNode_.nodeName | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNodeNameAiNodePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputNodeNameAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
 {%- macro inputDescriptionAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
@@ -1428,6 +1516,44 @@ A unique ID for this Smart Data Model"
 
 {%- macro htmEntityIdAiNodePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
                             {{ inputEntityIdAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputGpuDevicesTotalAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_gpuDevicesTotal">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="GPU devices total"
+                      label="GPU devices total"
+                      help-text="
+The total number of GPU devices on this cluster. "
+                      id="{{classApiMethodMethod}}_gpuDevicesTotal"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{pk}}GpuDevicesTotal "
+                      name="setGpuDevicesTotal"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{pk}}GpuDevicesTotal "
+                      name="setGpuDevicesTotal"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal valueGpuDevicesTotal classAiNode inputAiNode{{pk}}GpuDevicesTotal "
+                      name="gpuDevicesTotal"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{aiNode_.gpuDevicesTotal | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGpuDevicesTotalAiNodePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputGpuDevicesTotalAiNodePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
 {%- macro inputLocationAiNodePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}

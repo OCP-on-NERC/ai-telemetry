@@ -1266,7 +1266,7 @@ A URL friendly unique ID for this object"
                       class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{pk}}Archived "
                       name="setArchived"
                       data-pk="{{ pk }}"
-                      data-val="{{ gpuDevice_.archived }}"
+                      data-val="{{ gpuDevice_.archived | e }}"
                       >archive</sl-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}

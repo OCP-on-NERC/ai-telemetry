@@ -22,6 +22,7 @@ import io.vertx.pgclient.data.Polygon;
  * Model: true
  * Api: true
  * Page: true
+ * UserPageTemplates: /en-us/user/gpu-device
  * SuperPage: BaseModelPage
  * Indexed: true
  * Order: 5

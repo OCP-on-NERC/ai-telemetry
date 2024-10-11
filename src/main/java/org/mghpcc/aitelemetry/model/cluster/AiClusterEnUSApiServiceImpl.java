@@ -62,57 +62,51 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 						.onSuccess(requestAuthResponse -> {
 					try {
 						String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-						Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
-						String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
-						Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
-						String promKeycloakProxyUri = String.format("/api/v1/query?query=gpu_operator_gpu_nodes_total");
+						queryAiNodesTotal(classSimpleName, accessToken).onSuccess(aiNodesTotal -> {
+							queryGpuDevicesTotal(classSimpleName, accessToken).onSuccess(gpuDevicesTotal -> {
+								List<Future<?>> futures = new ArrayList<>();
+								for(Integer i = 0; i < aiNodesTotal.size(); i++) {
+									JsonObject aiNodeResult = aiNodesTotal.getJsonObject(i);
+									JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
+									futures.add(Future.future(promise1 -> {
+										try {
+											String clusterName = aiNodeResult.getJsonObject("metric").getString("cluster");
+											JsonObject body = new JsonObject();
+											body.put(AiCluster.VAR_pk, clusterName);
+											body.put(AiCluster.VAR_clusterName, clusterName);
+											body.put(AiCluster.VAR_aiNodesTotal, aiNodeResult.getJsonArray("value").getString(1));
+											body.put(AiCluster.VAR_gpuDevicesTotal, gpuDeviceResult.getJsonArray("value").getString(1));
 
-						webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
-								.putHeader("Authorization", String.format("Bearer %s", accessToken))
-								.send()
-								.expecting(HttpResponseExpectation.SC_OK)
-								.onSuccess(metricsResponse -> {
-							JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
-							JsonArray dataResult = metricsBody.getJsonObject("data").getJsonArray("result");
-							List<Future<?>> futures = new ArrayList<>();
-							dataResult.stream().map(o -> (JsonObject)o).forEach(clusterResult -> {
-								futures.add(Future.future(promise1 -> {
-									try {
-										JsonObject clusterMetric = clusterResult.getJsonObject("metric");
-										JsonArray clusterValue = clusterResult.getJsonArray("value");
-										String name = clusterMetric.getString("cluster");
-										String gpuNodesTotal = clusterValue.getString(1);
-										JsonObject body = new JsonObject();
-										body.put(AiCluster.VAR_pk, name);
-										body.put(AiCluster.VAR_name, name);
-										body.put(AiCluster.VAR_gpuNodesTotal, gpuNodesTotal);
+											JsonObject pageParams = new JsonObject();
+											pageParams.put("body", body);
+											pageParams.put("path", new JsonObject());
+											pageParams.put("cookie", new JsonObject());
+											pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+											JsonObject pageContext = new JsonObject().put("params", pageParams);
+											JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-										JsonObject pageParams = new JsonObject();
-										pageParams.put("body", body);
-										pageParams.put("path", new JsonObject());
-										pageParams.put("cookie", new JsonObject());
-										pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
-										JsonObject pageContext = new JsonObject().put("params", pageParams);
-										JsonObject pageRequest = new JsonObject().put("context", pageContext);
-
-										vertx.eventBus().request(classApiAddress, pageRequest, new DeliveryOptions()
-												.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
-												.addHeader("action", String.format("putimport%sFuture", classSimpleName))
-												).onSuccess(message -> {
-											LOG.info(String.format("Imported %s AI cluster", name));
-											promise1.complete();
-										}).onFailure(ex -> {
+											vertx.eventBus().request(classApiAddress, pageRequest, new DeliveryOptions()
+													.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
+													.addHeader("action", String.format("putimport%sFuture", classSimpleName))
+													).onSuccess(message -> {
+												LOG.info(String.format("Imported %s AI cluster", clusterName));
+												promise1.complete();
+											}).onFailure(ex -> {
+												LOG.error(String.format(importDataFail, classSimpleName), ex);
+												promise.fail(ex);
+											});
+										} catch(Exception ex) {
 											LOG.error(String.format(importDataFail, classSimpleName), ex);
-											promise.fail(ex);
-										});
-									} catch(Exception ex) {
-										LOG.error(String.format(importDataFail, classSimpleName), ex);
-										promise1.fail(ex);
-									}
-								}));
-							});
-							Future.all(futures).onSuccess(b -> {
-								promise.complete();
+											promise1.fail(ex);
+										}
+									}));
+								}
+								Future.all(futures).onSuccess(b -> {
+									promise.complete();
+								}).onFailure(ex -> {
+									LOG.error(String.format(importDataFail, classSimpleName), ex);
+									promise.fail(ex);
+								});
 							}).onFailure(ex -> {
 								LOG.error(String.format(importDataFail, classSimpleName), ex);
 								promise.fail(ex);
@@ -137,6 +131,58 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 			LOG.error(String.format(importDataFail, classSimpleName), ex);
 			promise.fail(ex);
 		});
+		return promise.future();
+	}
+
+	protected Future<JsonArray> queryAiNodesTotal(String classSimpleName, String accessToken) {
+		Promise<JsonArray> promise = Promise.promise();
+		try {
+			Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
+			String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
+			Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
+			String promKeycloakProxyUri = String.format("/api/v1/query?query=gpu_operator_gpu_nodes_total");
+
+			webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
+					.putHeader("Authorization", String.format("Bearer %s", accessToken))
+					.send()
+					.expecting(HttpResponseExpectation.SC_OK)
+					.onSuccess(metricsResponse -> {
+				JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
+				promise.complete(metricsBody.getJsonObject("data").getJsonArray("result"));
+			}).onFailure(ex -> {
+				LOG.error(String.format(importDataFail, classSimpleName), ex);
+				promise.fail(ex);
+			});
+		} catch(Throwable ex) {
+			LOG.error(String.format(importDataFail, classSimpleName), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	protected Future<JsonArray> queryGpuDevicesTotal(String classSimpleName, String accessToken) {
+		Promise<JsonArray> promise = Promise.promise();
+		try {
+			Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
+			String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
+			Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
+			String promKeycloakProxyUri = String.format("/api/v1/query?query=%s", urlEncode("sum by (cluster) (gpu_operator_nvidia_pci_devices_total)"));
+
+			webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
+					.putHeader("Authorization", String.format("Bearer %s", accessToken))
+					.send()
+					.expecting(HttpResponseExpectation.SC_OK)
+					.onSuccess(metricsResponse -> {
+				JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
+				promise.complete(metricsBody.getJsonObject("data").getJsonArray("result"));
+			}).onFailure(ex -> {
+				LOG.error(String.format(importDataFail, classSimpleName), ex);
+				promise.fail(ex);
+			});
+		} catch(Throwable ex) {
+			LOG.error(String.format(importDataFail, classSimpleName), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 }

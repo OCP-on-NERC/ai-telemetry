@@ -50,12 +50,11 @@ import io.vertx.pgclient.data.Polygon;
  **/
 public class AiCluster extends AiClusterGen<BaseModel> {
 
-
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: name
+	 * DisplayName: cluster name
 	 * Description: The name of this cluster
 	 * HtmRow: 3
 	 * HtmCell: 1
@@ -63,7 +62,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
 	 **/
-	protected void _name(Wrap<String> w) {}
+	protected void _clusterName(Wrap<String> w) {}
 
 
 	/**
@@ -74,10 +73,11 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Description: A description of this cluster
 	 * HtmRow: 3
 	 * HtmCell: 2
-	 * Facet: true
 	 * HtmColumn: 2
 	 **/
-	protected void _description(Wrap<String> w) {}
+	protected void _description(Wrap<String> w) {
+		w.o(String.format("Contains %s AI nodes and %s GPU devices", aiNodesTotal, gpuDevicesTotal));
+	}
 
 
 	/**
@@ -123,8 +123,8 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: location
 	 * Description: Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
-	 * HtmRow: 4
-	 * HtmCell: 1
+	 * HtmRow: 3
+	 * HtmCell: 5
 	 * Facet: true
 	 **/
 	protected void _location(Wrap<Point> w) {}
@@ -141,7 +141,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Facet: true
 	 */
 	protected void _entityId(Wrap<String> w) {
-		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(clusterName)));
 	}
 
 	/**
@@ -160,21 +160,33 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: GPU nodes total
-	 * Description: The total number of GPU nodes on this cluster. 
-	 * HtmRow: 5
+	 * DisplayName: AI nodes total
+	 * Description: The total number of AI nodes on this cluster. 
+	 * HtmRowTitleOpen: cluster totals
+	 * HtmRow: 4
 	 * HtmCell: 1
 	 * Facet: true
 	 */
-	protected void _gpuNodesTotal(Wrap<Integer> w) {
-	}
+	protected void _aiNodesTotal(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU devices total
+	 * Description: The total number of GPU devices on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 2
+	 * Facet: true
+	 */
+	protected void _gpuDevicesTotal(Wrap<Integer> w) {}
 
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * DisplayName: Grafana GPU utilization
 	 * Description: Explore this cluster's GPU utilization in Grafana. 
-	 * HtmRow: 6
+	 * HtmRow: 5
 	 * HtmRowTitleOpen: Useful URLs
 	 * HtmCell: 1
 	 * Facet: true
@@ -185,7 +197,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 				, siteRequest_.getConfig().getString(ConfigKeys.GRAFANA_BASE_URL, ConfigKeys.GRAFANA_BASE_URL)
 				, BaseApiServiceImpl.urlEncode(
 						String.format("[\"now-1h\",\"now\",\"observability-metrics\",{\"exemplar\":true,\"expr\":\"DCGM_FI_DEV_GPU_UTIL{cluster=\\\"%s\\\"}\"}]"
-								, BaseApiServiceImpl.urlEncode(name)
+								, BaseApiServiceImpl.urlEncode(clusterName)
 						)
 				)
 		));

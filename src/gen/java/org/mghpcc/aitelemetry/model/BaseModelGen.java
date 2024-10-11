@@ -2536,10 +2536,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	public static Integer htmColumnBaseModel(String var) {
 		switch(var) {
-		case VAR_created:
-			return 1;
-		case VAR_objectTitle:
-			return 2;
 			default:
 				return null;
 		}

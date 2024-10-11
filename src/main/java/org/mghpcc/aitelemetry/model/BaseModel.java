@@ -66,7 +66,6 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * VarCreated: true
 	 * HtmRow: 1
 	 * HtmCell: 3
-	 * HtmColumn: 1
 	 * DisplayName.enUS: created
 	 * FormatHtm: MMM d, yyyy h:mm:ss a
 	 * Description: A created timestamp for this record in the database
@@ -177,7 +176,6 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * VarTitle: true
-	 * HtmColumn: 2
 	 * Description: The title of this object
 	 */
 	protected void _objectTitle(Wrap<String> w) {
