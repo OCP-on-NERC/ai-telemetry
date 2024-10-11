@@ -22,6 +22,7 @@ import io.vertx.pgclient.data.Polygon;
  * Model: true
  * Api: true
  * Page: true
+ * UserPageTemplates: /en-us/user/ai-node
  * SuperPage: BaseModelPage
  * Indexed: true
  * Order: 4
@@ -46,20 +47,33 @@ import io.vertx.pgclient.data.Polygon;
  **/
 public class AiNode extends AiNodeGen<BaseModel> {
 
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: cluster name
+	 * Description: The name of this cluster
+	 * HtmRow: 3
+	 * HtmCell: 1
+	 * HtmColumn: 2
+	 * HtmRowTitleOpen: cluster details
+	 * Facet: true
+	 **/
+	protected void _clusterName(Wrap<String> w) {}
 
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: name
+	 * DisplayName: node name
 	 * Description: The name of this node
 	 * HtmRow: 3
 	 * HtmCell: 1
-	 * HtmColumn: 1
 	 * HtmRowTitle: AI node details
+	 * HtmColumn: 1
 	 * Facet: true
 	 **/
-	protected void _name(Wrap<String> w) {}
+	protected void _nodeName(Wrap<String> w) {}
 
 
 	/**
@@ -70,10 +84,11 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * Description: A description of this node
 	 * HtmRow: 3
 	 * HtmCell: 2
-	 * Facet: true
-	 * HtmColumn: 2
+	 * HtmColumn: 3
 	 **/
-	protected void _description(Wrap<String> w) {}
+	protected void _description(Wrap<String> w) {
+		w.o(String.format("Contains %s GPU devices", gpuDevicesTotal));
+	}
 
 
 	/**
@@ -125,6 +140,17 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 **/
 	protected void _location(Wrap<Point> w) {}
 
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU devices total
+	 * Description: The total number of GPU devices on this cluster. 
+	 * HtmRow: 3
+	 * HtmCell: 6
+	 * Facet: true
+	 */
+	protected void _gpuDevicesTotal(Wrap<Integer> w) {}
 
 	/**
 	 * {@inheritDoc}
@@ -137,7 +163,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * Facet: true
 	 */
 	protected void _entityId(Wrap<String> w) {
-		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(String.format("%s-%s", clusterName, nodeName))));
 	}
 
 	/**

@@ -42,10 +42,10 @@ import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
-import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpu.Gpu;
 import org.mghpcc.aitelemetry.model.gpu.GpuEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
+import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProject;
@@ -468,10 +468,16 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
 			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
 			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
+			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
 			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/article"), vertx, siteRequest, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage).onSuccess(q1 -> {
 				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster).onSuccess(q2 -> {
-					LOG.info("data import complete");
-					promise.complete();
+					apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode).onSuccess(q3 -> {
+						apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice).onSuccess(q4 -> {
+							LOG.info("data import complete");
+							promise.complete();
+						}).onFailure(ex -> promise.fail(ex));
+					}).onFailure(ex -> promise.fail(ex));
 				}).onFailure(ex -> promise.fail(ex));
 			}).onFailure(ex -> promise.fail(ex));
 		}

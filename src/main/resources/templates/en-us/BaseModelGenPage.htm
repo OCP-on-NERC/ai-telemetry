@@ -126,19 +126,8 @@
             <div class="grid-mode-details border-radius-x-large" id="site-results-grid">
               {% for item in listBaseModel%}
               <a href="{{ item.pageUrlPk }}">
-                <div>                  
-<sl-format-date weekday="short" month="short" day="numeric" year="numeric" hour="numeric" minute="numeric" second="numeric" time-zone-name="short" date="{{ formatZonedDateTime(item.created, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></sl-format-date></div>
-                <div>{{ item.objectTitle }}</div>
               </a>
               {% endfor %}
-                      {% if getColumnCreated is defined %}
-                        <div>
-                        </div>
-                      {% endif %}
-                      {% if getColumnObjectTitle is defined %}
-                        <div>
-                        </div>
-                      {% endif %}
             </div>
             {%- endmacro htmBodyAllBaseModelPage() %}
 {%- macro htmSearchButtonsBaseModelPage() %}
@@ -716,7 +705,7 @@ A URL friendly unique ID for this object"
                       class="label-on-left {{classApiMethodMethod}}_archived classBaseModel inputBaseModel{{pk}}Archived "
                       name="setArchived"
                       data-pk="{{ pk }}"
-                      data-val="{{ baseModel_.archived }}"
+                      data-val="{{ baseModel_.archived | e }}"
                       >archive</sl-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}

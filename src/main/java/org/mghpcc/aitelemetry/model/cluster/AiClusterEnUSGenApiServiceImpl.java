@@ -720,13 +720,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setName":
-							o2.setName(jsonObject.getString(entityVar));
+					case "setClusterName":
+							o2.setClusterName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_name + "=$" + num);
+							bSql.append(AiCluster.VAR_clusterName + "=$" + num);
 							num++;
-							bParams.add(o2.sqlName());
+							bParams.add(o2.sqlClusterName());
 						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
@@ -752,13 +752,21 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlEntityId());
 						break;
-					case "setGpuNodesTotal":
-							o2.setGpuNodesTotal(jsonObject.getString(entityVar));
+					case "setAiNodesTotal":
+							o2.setAiNodesTotal(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_gpuNodesTotal + "=$" + num);
+							bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
 							num++;
-							bParams.add(o2.sqlGpuNodesTotal());
+							bParams.add(o2.sqlAiNodesTotal());
+						break;
+					case "setGpuDevicesTotal":
+							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 				}
 			}
@@ -1123,14 +1131,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiCluster.VAR_name:
-						o2.setName(jsonObject.getString(entityVar));
+					case AiCluster.VAR_clusterName:
+						o2.setClusterName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_name + "=$" + num);
+						bSql.append(AiCluster.VAR_clusterName + "=$" + num);
 						num++;
-						bParams.add(o2.sqlName());
+						bParams.add(o2.sqlClusterName());
 						break;
 					case AiCluster.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
@@ -1159,14 +1167,23 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlEntityId());
 						break;
-					case AiCluster.VAR_gpuNodesTotal:
-						o2.setGpuNodesTotal(jsonObject.getString(entityVar));
+					case AiCluster.VAR_aiNodesTotal:
+						o2.setAiNodesTotal(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_gpuNodesTotal + "=$" + num);
+						bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
 						num++;
-						bParams.add(o2.sqlGpuNodesTotal());
+						bParams.add(o2.sqlAiNodesTotal());
+						break;
+					case AiCluster.VAR_gpuDevicesTotal:
+						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 					}
 				}

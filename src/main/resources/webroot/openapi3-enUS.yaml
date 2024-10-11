@@ -6377,7 +6377,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  clusterName:
                     type: string
                   description:
                     type: string
@@ -6399,7 +6399,11 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  gpuNodesTotal:
+                  aiNodesTotal:
+                    type: string
+                  gpuDevicesTotal:
+                    type: string
+                  grafanaUrl:
                     type: string
                   objectTitle:
                     type: string
@@ -6409,12 +6413,12 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setClusterName:
               type: string
               nullable: true
-            removeName:
+            removeClusterName:
               type: string
-            removeAllName:
+            removeAllClusterName:
               type: string
             setDescription:
               type: string
@@ -6495,12 +6499,26 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setGpuNodesTotal:
+            setAiNodesTotal:
               type: string
               nullable: true
-            removeGpuNodesTotal:
+            removeAiNodesTotal:
               type: string
-            removeAllGpuNodesTotal:
+            removeAllAiNodesTotal:
+              type: string
+            setGpuDevicesTotal:
+              type: string
+              nullable: true
+            removeGpuDevicesTotal:
+              type: string
+            removeAllGpuDevicesTotal:
+              type: string
+            setGrafanaUrl:
+              type: string
+              nullable: true
+            removeGrafanaUrl:
+              type: string
+            removeAllGrafanaUrl:
               type: string
             setObjectTitle:
               type: string
@@ -6520,12 +6538,12 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setClusterName:
               type: string
               nullable: true
-            removeName:
+            removeClusterName:
               type: string
-            removeAllName:
+            removeAllClusterName:
               type: string
             setDescription:
               type: string
@@ -6606,12 +6624,26 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setGpuNodesTotal:
+            setAiNodesTotal:
               type: string
               nullable: true
-            removeGpuNodesTotal:
+            removeAiNodesTotal:
               type: string
-            removeAllGpuNodesTotal:
+            removeAllAiNodesTotal:
+              type: string
+            setGpuDevicesTotal:
+              type: string
+              nullable: true
+            removeGpuDevicesTotal:
+              type: string
+            removeAllGpuDevicesTotal:
+              type: string
+            setGrafanaUrl:
+              type: string
+              nullable: true
+            removeGrafanaUrl:
+              type: string
+            removeAllGrafanaUrl:
               type: string
             setObjectTitle:
               type: string
@@ -6631,7 +6663,7 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
               type: string
             description:
               type: string
@@ -6653,7 +6685,11 @@ components:
               type: string
             entityShortId:
               type: string
-            gpuNodesTotal:
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
               type: string
             objectTitle:
               type: string
@@ -6663,7 +6699,7 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
               type: string
             description:
               type: string
@@ -6685,7 +6721,11 @@ components:
               type: string
             entityShortId:
               type: string
-            gpuNodesTotal:
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
               type: string
             objectTitle:
               type: string
@@ -6700,7 +6740,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  clusterName:
                     type: string
                   description:
                     type: string
@@ -6722,7 +6762,11 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  gpuNodesTotal:
+                  aiNodesTotal:
+                    type: string
+                  gpuDevicesTotal:
+                    type: string
+                  grafanaUrl:
                     type: string
                   objectTitle:
                     type: string
@@ -6732,7 +6776,7 @@ components:
       allOf:
         - type: object
           properties:
-                  name:
+                  clusterName:
                     type: string
                   description:
                     type: string
@@ -6754,7 +6798,11 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  gpuNodesTotal:
+                  aiNodesTotal:
+                    type: string
+                  gpuDevicesTotal:
+                    type: string
+                  grafanaUrl:
                     type: string
                   objectTitle:
                     type: string
@@ -6764,7 +6812,7 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
               type: string
             description:
               type: string
@@ -6786,7 +6834,11 @@ components:
               type: string
             entityShortId:
               type: string
-            gpuNodesTotal:
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
               type: string
             objectTitle:
               type: string
@@ -8043,7 +8095,9 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  clusterName:
+                    type: string
+                  nodeName:
                     type: string
                   description:
                     type: string
@@ -8061,6 +8115,8 @@ components:
                       type: string
                   location:
                     type: object
+                  gpuDevicesTotal:
+                    type: string
                   entityId:
                     type: string
                   entityShortId:
@@ -8073,12 +8129,19 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setClusterName:
               type: string
               nullable: true
-            removeName:
+            removeClusterName:
               type: string
-            removeAllName:
+            removeAllClusterName:
+              type: string
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
               type: string
             setDescription:
               type: string
@@ -8145,6 +8208,13 @@ components:
               type: object
             removeAllLocation:
               type: object
+            setGpuDevicesTotal:
+              type: string
+              nullable: true
+            removeGpuDevicesTotal:
+              type: string
+            removeAllGpuDevicesTotal:
+              type: string
             setEntityId:
               type: string
               nullable: true
@@ -8177,12 +8247,19 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setClusterName:
               type: string
               nullable: true
-            removeName:
+            removeClusterName:
               type: string
-            removeAllName:
+            removeAllClusterName:
+              type: string
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
               type: string
             setDescription:
               type: string
@@ -8249,6 +8326,13 @@ components:
               type: object
             removeAllLocation:
               type: object
+            setGpuDevicesTotal:
+              type: string
+              nullable: true
+            removeGpuDevicesTotal:
+              type: string
+            removeAllGpuDevicesTotal:
+              type: string
             setEntityId:
               type: string
               nullable: true
@@ -8281,7 +8365,9 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
+              type: string
+            nodeName:
               type: string
             description:
               type: string
@@ -8299,6 +8385,8 @@ components:
                 type: string
             location:
               type: object
+            gpuDevicesTotal:
+              type: string
             entityId:
               type: string
             entityShortId:
@@ -8311,7 +8399,9 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
+              type: string
+            nodeName:
               type: string
             description:
               type: string
@@ -8329,6 +8419,8 @@ components:
                 type: string
             location:
               type: object
+            gpuDevicesTotal:
+              type: string
             entityId:
               type: string
             entityShortId:
@@ -8346,7 +8438,9 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  clusterName:
+                    type: string
+                  nodeName:
                     type: string
                   description:
                     type: string
@@ -8364,6 +8458,8 @@ components:
                       type: string
                   location:
                     type: object
+                  gpuDevicesTotal:
+                    type: string
                   entityId:
                     type: string
                   entityShortId:
@@ -8376,7 +8472,9 @@ components:
       allOf:
         - type: object
           properties:
-                  name:
+                  clusterName:
+                    type: string
+                  nodeName:
                     type: string
                   description:
                     type: string
@@ -8394,6 +8492,8 @@ components:
                       type: string
                   location:
                     type: object
+                  gpuDevicesTotal:
+                    type: string
                   entityId:
                     type: string
                   entityShortId:
@@ -8406,7 +8506,9 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            clusterName:
+              type: string
+            nodeName:
               type: string
             description:
               type: string
@@ -8424,6 +8526,8 @@ components:
                 type: string
             location:
               type: object
+            gpuDevicesTotal:
+              type: string
             entityId:
               type: string
             entityShortId:
