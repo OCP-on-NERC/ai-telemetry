@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import java.lang.String;
+import java.lang.Integer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.pgclient.data.Point;
 import org.computate.vertx.serialize.pgclient.PgClientPointSerializer;
@@ -216,60 +217,300 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static final String GpuDevice_Icon = "<i class=\"fa-regular fa-memory\"></i>";
 
-	//////////
-	// name //
-	//////////
+	/////////////////
+	// gpuDeviceId //
+	/////////////////
 
 
-	/**	 The entity name
+	/**	 The entity gpuDeviceId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String name;
+	protected String gpuDeviceId;
 
-	/**	<br> The entity name
+	/**	<br> The entity gpuDeviceId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:gpuDeviceId">Find the entity gpuDeviceId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _name(Wrap<String> w);
+	protected abstract void _gpuDeviceId(Wrap<String> w);
 
-	public String getName() {
-		return name;
+	public String getGpuDeviceId() {
+		return gpuDeviceId;
 	}
-	public void setName(String o) {
-		this.name = GpuDevice.staticSetName(siteRequest_, o);
+	public void setGpuDeviceId(String o) {
+		this.gpuDeviceId = GpuDevice.staticSetGpuDeviceId(siteRequest_, o);
 	}
-	public static String staticSetName(SiteRequest siteRequest_, String o) {
+	public static String staticSetGpuDeviceId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected GpuDevice nameInit() {
-		Wrap<String> nameWrap = new Wrap<String>().var("name");
-		if(name == null) {
-			_name(nameWrap);
-			Optional.ofNullable(nameWrap.getO()).ifPresent(o -> {
-				setName(o);
+	protected GpuDevice gpuDeviceIdInit() {
+		Wrap<String> gpuDeviceIdWrap = new Wrap<String>().var("gpuDeviceId");
+		if(gpuDeviceId == null) {
+			_gpuDeviceId(gpuDeviceIdWrap);
+			Optional.ofNullable(gpuDeviceIdWrap.getO()).ifPresent(o -> {
+				setGpuDeviceId(o);
 			});
 		}
 		return (GpuDevice)this;
 	}
 
-	public static String staticSearchName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchGpuDeviceId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrGpuDeviceId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqName(SiteRequest siteRequest_, String o) {
-		return GpuDevice.staticSearchName(siteRequest_, GpuDevice.staticSetName(siteRequest_, o)).toString();
+	public static String staticSearchFqGpuDeviceId(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchGpuDeviceId(siteRequest_, GpuDevice.staticSetGpuDeviceId(siteRequest_, o)).toString();
 	}
 
-	public String sqlName() {
-		return name;
+	public String sqlGpuDeviceId() {
+		return gpuDeviceId;
+	}
+
+	/////////////////
+	// clusterName //
+	/////////////////
+
+
+	/**	 The entity clusterName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String clusterName;
+
+	/**	<br> The entity clusterName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:clusterName">Find the entity clusterName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _clusterName(Wrap<String> w);
+
+	public String getClusterName() {
+		return clusterName;
+	}
+	public void setClusterName(String o) {
+		this.clusterName = GpuDevice.staticSetClusterName(siteRequest_, o);
+	}
+	public static String staticSetClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuDevice clusterNameInit() {
+		Wrap<String> clusterNameWrap = new Wrap<String>().var("clusterName");
+		if(clusterName == null) {
+			_clusterName(clusterNameWrap);
+			Optional.ofNullable(clusterNameWrap.getO()).ifPresent(o -> {
+				setClusterName(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static String staticSearchClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrClusterName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqClusterName(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchClusterName(siteRequest_, GpuDevice.staticSetClusterName(siteRequest_, o)).toString();
+	}
+
+	public String sqlClusterName() {
+		return clusterName;
+	}
+
+	//////////////
+	// nodeName //
+	//////////////
+
+
+	/**	 The entity nodeName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String nodeName;
+
+	/**	<br> The entity nodeName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:nodeName">Find the entity nodeName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _nodeName(Wrap<String> w);
+
+	public String getNodeName() {
+		return nodeName;
+	}
+	public void setNodeName(String o) {
+		this.nodeName = GpuDevice.staticSetNodeName(siteRequest_, o);
+	}
+	public static String staticSetNodeName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuDevice nodeNameInit() {
+		Wrap<String> nodeNameWrap = new Wrap<String>().var("nodeName");
+		if(nodeName == null) {
+			_nodeName(nodeNameWrap);
+			Optional.ofNullable(nodeNameWrap.getO()).ifPresent(o -> {
+				setNodeName(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static String staticSearchNodeName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNodeName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNodeName(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchNodeName(siteRequest_, GpuDevice.staticSetNodeName(siteRequest_, o)).toString();
+	}
+
+	public String sqlNodeName() {
+		return nodeName;
+	}
+
+	/////////////////////
+	// gpuDeviceNumber //
+	/////////////////////
+
+
+	/**	 The entity gpuDeviceNumber
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer gpuDeviceNumber;
+
+	/**	<br> The entity gpuDeviceNumber
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:gpuDeviceNumber">Find the entity gpuDeviceNumber in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _gpuDeviceNumber(Wrap<Integer> w);
+
+	public Integer getGpuDeviceNumber() {
+		return gpuDeviceNumber;
+	}
+
+	public void setGpuDeviceNumber(Integer gpuDeviceNumber) {
+		this.gpuDeviceNumber = gpuDeviceNumber;
+	}
+	@JsonIgnore
+	public void setGpuDeviceNumber(String o) {
+		this.gpuDeviceNumber = GpuDevice.staticSetGpuDeviceNumber(siteRequest_, o);
+	}
+	public static Integer staticSetGpuDeviceNumber(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected GpuDevice gpuDeviceNumberInit() {
+		Wrap<Integer> gpuDeviceNumberWrap = new Wrap<Integer>().var("gpuDeviceNumber");
+		if(gpuDeviceNumber == null) {
+			_gpuDeviceNumber(gpuDeviceNumberWrap);
+			Optional.ofNullable(gpuDeviceNumberWrap.getO()).ifPresent(o -> {
+				setGpuDeviceNumber(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static Integer staticSearchGpuDeviceNumber(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrGpuDeviceNumber(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqGpuDeviceNumber(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchGpuDeviceNumber(siteRequest_, GpuDevice.staticSetGpuDeviceNumber(siteRequest_, o)).toString();
+	}
+
+	public Integer sqlGpuDeviceNumber() {
+		return gpuDeviceNumber;
+	}
+
+	//////////////////////////
+	// gpuDeviceUtilization //
+	//////////////////////////
+
+
+	/**	 The entity gpuDeviceUtilization
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer gpuDeviceUtilization;
+
+	/**	<br> The entity gpuDeviceUtilization
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:gpuDeviceUtilization">Find the entity gpuDeviceUtilization in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _gpuDeviceUtilization(Wrap<Integer> w);
+
+	public Integer getGpuDeviceUtilization() {
+		return gpuDeviceUtilization;
+	}
+
+	public void setGpuDeviceUtilization(Integer gpuDeviceUtilization) {
+		this.gpuDeviceUtilization = gpuDeviceUtilization;
+	}
+	@JsonIgnore
+	public void setGpuDeviceUtilization(String o) {
+		this.gpuDeviceUtilization = GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, o);
+	}
+	public static Integer staticSetGpuDeviceUtilization(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected GpuDevice gpuDeviceUtilizationInit() {
+		Wrap<Integer> gpuDeviceUtilizationWrap = new Wrap<Integer>().var("gpuDeviceUtilization");
+		if(gpuDeviceUtilization == null) {
+			_gpuDeviceUtilization(gpuDeviceUtilizationWrap);
+			Optional.ofNullable(gpuDeviceUtilizationWrap.getO()).ifPresent(o -> {
+				setGpuDeviceUtilization(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static Integer staticSearchGpuDeviceUtilization(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrGpuDeviceUtilization(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqGpuDeviceUtilization(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchGpuDeviceUtilization(siteRequest_, GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, o)).toString();
+	}
+
+	public Integer sqlGpuDeviceUtilization() {
+		return gpuDeviceUtilization;
 	}
 
 	/////////////////
@@ -790,7 +1031,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
-				nameInit();
+				gpuDeviceIdInit();
+				clusterNameInit();
+				nodeNameInit();
+				gpuDeviceNumberInit();
+				gpuDeviceUtilizationInit();
 				descriptionInit();
 				locationColorsInit();
 				locationTitlesInit();
@@ -851,8 +1096,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public Object obtainGpuDevice(String var) {
 		GpuDevice oGpuDevice = (GpuDevice)this;
 		switch(var) {
-			case "name":
-				return oGpuDevice.name;
+			case "gpuDeviceId":
+				return oGpuDevice.gpuDeviceId;
+			case "clusterName":
+				return oGpuDevice.clusterName;
+			case "nodeName":
+				return oGpuDevice.nodeName;
+			case "gpuDeviceNumber":
+				return oGpuDevice.gpuDeviceNumber;
+			case "gpuDeviceUtilization":
+				return oGpuDevice.gpuDeviceUtilization;
 			case "description":
 				return oGpuDevice.description;
 			case "locationColors":
@@ -906,8 +1159,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public static Object staticSetGpuDevice(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return GpuDevice.staticSetName(siteRequest_, o);
+		case "gpuDeviceId":
+			return GpuDevice.staticSetGpuDeviceId(siteRequest_, o);
+		case "clusterName":
+			return GpuDevice.staticSetClusterName(siteRequest_, o);
+		case "nodeName":
+			return GpuDevice.staticSetNodeName(siteRequest_, o);
+		case "gpuDeviceNumber":
+			return GpuDevice.staticSetGpuDeviceNumber(siteRequest_, o);
+		case "gpuDeviceUtilization":
+			return GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, o);
 		case "description":
 			return GpuDevice.staticSetDescription(siteRequest_, o);
 		case "locationColors":
@@ -936,8 +1197,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public static Object staticSearchGpuDevice(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return GpuDevice.staticSearchName(siteRequest_, (String)o);
+		case "gpuDeviceId":
+			return GpuDevice.staticSearchGpuDeviceId(siteRequest_, (String)o);
+		case "clusterName":
+			return GpuDevice.staticSearchClusterName(siteRequest_, (String)o);
+		case "nodeName":
+			return GpuDevice.staticSearchNodeName(siteRequest_, (String)o);
+		case "gpuDeviceNumber":
+			return GpuDevice.staticSearchGpuDeviceNumber(siteRequest_, (Integer)o);
+		case "gpuDeviceUtilization":
+			return GpuDevice.staticSearchGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
 			return GpuDevice.staticSearchDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -966,8 +1235,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchStrGpuDevice(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return GpuDevice.staticSearchStrName(siteRequest_, (String)o);
+		case "gpuDeviceId":
+			return GpuDevice.staticSearchStrGpuDeviceId(siteRequest_, (String)o);
+		case "clusterName":
+			return GpuDevice.staticSearchStrClusterName(siteRequest_, (String)o);
+		case "nodeName":
+			return GpuDevice.staticSearchStrNodeName(siteRequest_, (String)o);
+		case "gpuDeviceNumber":
+			return GpuDevice.staticSearchStrGpuDeviceNumber(siteRequest_, (Integer)o);
+		case "gpuDeviceUtilization":
+			return GpuDevice.staticSearchStrGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
 			return GpuDevice.staticSearchStrDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -996,8 +1273,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchFqGpuDevice(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return GpuDevice.staticSearchFqName(siteRequest_, o);
+		case "gpuDeviceId":
+			return GpuDevice.staticSearchFqGpuDeviceId(siteRequest_, o);
+		case "clusterName":
+			return GpuDevice.staticSearchFqClusterName(siteRequest_, o);
+		case "nodeName":
+			return GpuDevice.staticSearchFqNodeName(siteRequest_, o);
+		case "gpuDeviceNumber":
+			return GpuDevice.staticSearchFqGpuDeviceNumber(siteRequest_, o);
+		case "gpuDeviceUtilization":
+			return GpuDevice.staticSearchFqGpuDeviceUtilization(siteRequest_, o);
 		case "description":
 			return GpuDevice.staticSearchFqDescription(siteRequest_, o);
 		case "locationColors":
@@ -1038,11 +1323,39 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public Object persistGpuDevice(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("name".equals(varLower)) {
+			if("gpudeviceid".equals(varLower)) {
 				if(val instanceof String) {
-					setName((String)val);
+					setGpuDeviceId((String)val);
 				}
-				saves.add("name");
+				saves.add("gpuDeviceId");
+				return val;
+			} else if("clustername".equals(varLower)) {
+				if(val instanceof String) {
+					setClusterName((String)val);
+				}
+				saves.add("clusterName");
+				return val;
+			} else if("nodename".equals(varLower)) {
+				if(val instanceof String) {
+					setNodeName((String)val);
+				}
+				saves.add("nodeName");
+				return val;
+			} else if("gpudevicenumber".equals(varLower)) {
+				if(val instanceof Integer) {
+					setGpuDeviceNumber((Integer)val);
+				} else {
+					setGpuDeviceNumber(val == null ? null : val.toString());
+				}
+				saves.add("gpuDeviceNumber");
+				return val;
+			} else if("gpudeviceutilization".equals(varLower)) {
+				if(val instanceof Integer) {
+					setGpuDeviceUtilization((Integer)val);
+				} else {
+					setGpuDeviceUtilization(val == null ? null : val.toString());
+				}
+				saves.add("gpuDeviceUtilization");
 				return val;
 			} else if("description".equals(varLower)) {
 				if(val instanceof String) {
@@ -1081,10 +1394,34 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
 
-			if(saves.contains("name")) {
-				String name = (String)doc.get("name_docvalues_string");
-				if(name != null)
-					oGpuDevice.setName(name);
+			if(saves.contains("gpuDeviceId")) {
+				String gpuDeviceId = (String)doc.get("gpuDeviceId_docvalues_string");
+				if(gpuDeviceId != null)
+					oGpuDevice.setGpuDeviceId(gpuDeviceId);
+			}
+
+			if(saves.contains("clusterName")) {
+				String clusterName = (String)doc.get("clusterName_docvalues_string");
+				if(clusterName != null)
+					oGpuDevice.setClusterName(clusterName);
+			}
+
+			if(saves.contains("nodeName")) {
+				String nodeName = (String)doc.get("nodeName_docvalues_string");
+				if(nodeName != null)
+					oGpuDevice.setNodeName(nodeName);
+			}
+
+			if(saves.contains("gpuDeviceNumber")) {
+				Integer gpuDeviceNumber = (Integer)doc.get("gpuDeviceNumber_docvalues_int");
+				if(gpuDeviceNumber != null)
+					oGpuDevice.setGpuDeviceNumber(gpuDeviceNumber);
+			}
+
+			if(saves.contains("gpuDeviceUtilization")) {
+				Integer gpuDeviceUtilization = (Integer)doc.get("gpuDeviceUtilization_docvalues_int");
+				if(gpuDeviceUtilization != null)
+					oGpuDevice.setGpuDeviceUtilization(gpuDeviceUtilization);
 			}
 
 			if(saves.contains("description")) {
@@ -1128,8 +1465,20 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 
 	public void indexGpuDevice(JsonObject doc) {
-		if(name != null) {
-			doc.put("name_docvalues_string", name);
+		if(gpuDeviceId != null) {
+			doc.put("gpuDeviceId_docvalues_string", gpuDeviceId);
+		}
+		if(clusterName != null) {
+			doc.put("clusterName_docvalues_string", clusterName);
+		}
+		if(nodeName != null) {
+			doc.put("nodeName_docvalues_string", nodeName);
+		}
+		if(gpuDeviceNumber != null) {
+			doc.put("gpuDeviceNumber_docvalues_int", gpuDeviceNumber);
+		}
+		if(gpuDeviceUtilization != null) {
+			doc.put("gpuDeviceUtilization_docvalues_int", gpuDeviceUtilization);
 		}
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
@@ -1167,8 +1516,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String varStoredGpuDevice(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "gpuDeviceId":
+				return "gpuDeviceId_docvalues_string";
+			case "clusterName":
+				return "clusterName_docvalues_string";
+			case "nodeName":
+				return "nodeName_docvalues_string";
+			case "gpuDeviceNumber":
+				return "gpuDeviceNumber_docvalues_int";
+			case "gpuDeviceUtilization":
+				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1188,8 +1545,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String varIndexedGpuDevice(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "gpuDeviceId":
+				return "gpuDeviceId_docvalues_string";
+			case "clusterName":
+				return "clusterName_docvalues_string";
+			case "nodeName":
+				return "nodeName_docvalues_string";
+			case "gpuDeviceNumber":
+				return "gpuDeviceNumber_docvalues_int";
+			case "gpuDeviceUtilization":
+				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1209,8 +1574,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String searchVarGpuDevice(String searchVar) {
 		switch(searchVar) {
-			case "name_docvalues_string":
-				return "name";
+			case "gpuDeviceId_docvalues_string":
+				return "gpuDeviceId";
+			case "clusterName_docvalues_string":
+				return "clusterName";
+			case "nodeName_docvalues_string":
+				return "nodeName";
+			case "gpuDeviceNumber_docvalues_int":
+				return "gpuDeviceNumber";
+			case "gpuDeviceUtilization_docvalues_int":
+				return "gpuDeviceUtilization";
 			case "description_docvalues_string":
 				return "description";
 			case "locationColors_indexedstored_strings":
@@ -1253,7 +1626,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		GpuDevice oGpuDevice = (GpuDevice)this;
 		SiteRequest siteRequest = oGpuDevice.getSiteRequest_();
 
-		oGpuDevice.setName(Optional.ofNullable(doc.get("name_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setGpuDeviceId(Optional.ofNullable(doc.get("gpuDeviceId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setNodeName(Optional.ofNullable(doc.get("nodeName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setGpuDeviceNumber(Optional.ofNullable(doc.get("gpuDeviceNumber_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setGpuDeviceUtilization(Optional.ofNullable(doc.get("gpuDeviceUtilization_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oGpuDevice.addLocationColors(GpuDevice.staticSetLocationColors(siteRequest, v.toString()));
@@ -1279,8 +1656,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
 		if(o != null && o instanceof GpuDevice) {
 			GpuDevice original = (GpuDevice)o;
-			if(!Objects.equals(name, original.getName()))
-				apiRequest.addVars("name");
+			if(!Objects.equals(gpuDeviceId, original.getGpuDeviceId()))
+				apiRequest.addVars("gpuDeviceId");
+			if(!Objects.equals(clusterName, original.getClusterName()))
+				apiRequest.addVars("clusterName");
+			if(!Objects.equals(nodeName, original.getNodeName()))
+				apiRequest.addVars("nodeName");
+			if(!Objects.equals(gpuDeviceNumber, original.getGpuDeviceNumber()))
+				apiRequest.addVars("gpuDeviceNumber");
+			if(!Objects.equals(gpuDeviceUtilization, original.getGpuDeviceUtilization()))
+				apiRequest.addVars("gpuDeviceUtilization");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
 			if(!Objects.equals(locationColors, original.getLocationColors()))
@@ -1304,7 +1689,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
-		sb.append(Optional.ofNullable(name).map(v -> "name: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(gpuDeviceId).map(v -> "gpuDeviceId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(clusterName).map(v -> "clusterName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(nodeName).map(v -> "nodeName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(gpuDeviceNumber).map(v -> "gpuDeviceNumber: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(gpuDeviceUtilization).map(v -> "gpuDeviceUtilization: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
@@ -1319,7 +1708,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_GpuDevice;
 	}
-	public static final String VAR_name = "name";
+	public static final String VAR_gpuDeviceId = "gpuDeviceId";
+	public static final String VAR_clusterName = "clusterName";
+	public static final String VAR_nodeName = "nodeName";
+	public static final String VAR_gpuDeviceNumber = "gpuDeviceNumber";
+	public static final String VAR_gpuDeviceUtilization = "gpuDeviceUtilization";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
 	public static final String VAR_locationTitles = "locationTitles";
@@ -1340,7 +1733,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		return GpuDevice.varsFqGpuDevice(new ArrayList<String>());
 	}
 	public static List<String> varsFqGpuDevice(List<String> vars) {
-		vars.add(VAR_name);
+		vars.add(VAR_gpuDeviceId);
+		vars.add(VAR_clusterName);
+		vars.add(VAR_nodeName);
+		vars.add(VAR_gpuDeviceNumber);
+		vars.add(VAR_gpuDeviceUtilization);
 		vars.add(VAR_description);
 		vars.add(VAR_location);
 		vars.add(VAR_entityId);
@@ -1352,12 +1749,18 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		return GpuDevice.varsRangeGpuDevice(new ArrayList<String>());
 	}
 	public static List<String> varsRangeGpuDevice(List<String> vars) {
+		vars.add(VAR_gpuDeviceNumber);
+		vars.add(VAR_gpuDeviceUtilization);
 		vars.add(VAR_location);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
 
-	public static final String DISPLAY_NAME_name = "name";
+	public static final String DISPLAY_NAME_gpuDeviceId = "GPU device ID";
+	public static final String DISPLAY_NAME_clusterName = "cluster name";
+	public static final String DISPLAY_NAME_nodeName = "node name";
+	public static final String DISPLAY_NAME_gpuDeviceNumber = "GPU device number";
+	public static final String DISPLAY_NAME_gpuDeviceUtilization = "GPU device utilization";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
 	public static final String DISPLAY_NAME_locationTitles = "area served titles";
@@ -1371,8 +1774,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 	public static String displayNameGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
-			return DISPLAY_NAME_name;
+		case VAR_gpuDeviceId:
+			return DISPLAY_NAME_gpuDeviceId;
+		case VAR_clusterName:
+			return DISPLAY_NAME_clusterName;
+		case VAR_nodeName:
+			return DISPLAY_NAME_nodeName;
+		case VAR_gpuDeviceNumber:
+			return DISPLAY_NAME_gpuDeviceNumber;
+		case VAR_gpuDeviceUtilization:
+			return DISPLAY_NAME_gpuDeviceUtilization;
 		case VAR_description:
 			return DISPLAY_NAME_description;
 		case VAR_locationColors:
@@ -1394,8 +1805,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String descriptionGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
-			return "The name of this GPU device";
+		case VAR_gpuDeviceId:
+			return "A unique ID for a gpu device per cluster, and node. ";
+		case VAR_clusterName:
+			return "The cluster name of this GPU device";
+		case VAR_nodeName:
+			return "The node name of this GPU device";
+		case VAR_gpuDeviceNumber:
+			return "The number of this GPU device";
+		case VAR_gpuDeviceUtilization:
+			return "Current utilization of the GPU device. ";
 		case VAR_description:
 			return "A description of this GPU device";
 		case VAR_locationColors:
@@ -1417,8 +1836,16 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String classSimpleNameGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_gpuDeviceId:
 			return "String";
+		case VAR_clusterName:
+			return "String";
+		case VAR_nodeName:
+			return "String";
+		case VAR_gpuDeviceNumber:
+			return "Integer";
+		case VAR_gpuDeviceUtilization:
+			return "Integer";
 		case VAR_description:
 			return "String";
 		case VAR_locationColors:
@@ -1440,7 +1867,15 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String ngsiType(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_gpuDeviceId:
+			return "Property";
+		case VAR_clusterName:
+			return "Property";
+		case VAR_nodeName:
+			return "Property";
+		case VAR_gpuDeviceNumber:
+			return "Property";
+		case VAR_gpuDeviceUtilization:
 			return "Property";
 		case VAR_description:
 			return "Property";
@@ -1463,8 +1898,12 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
 			return 1;
+		case VAR_nodeName:
+			return 2;
+		case VAR_gpuDeviceNumber:
+			return 3;
 		case VAR_description:
 			return 2;
 			default:
@@ -1474,8 +1913,14 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static Integer htmRowGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
 			return 3;
+		case VAR_nodeName:
+			return 3;
+		case VAR_gpuDeviceNumber:
+			return 3;
+		case VAR_gpuDeviceUtilization:
+			return 4;
 		case VAR_description:
 			return 3;
 		case VAR_location:
@@ -1489,7 +1934,13 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static Integer htmCellGpuDevice(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return 1;
+		case VAR_nodeName:
+			return 2;
+		case VAR_gpuDeviceNumber:
+			return 3;
+		case VAR_gpuDeviceUtilization:
 			return 1;
 		case VAR_description:
 			return 2;
