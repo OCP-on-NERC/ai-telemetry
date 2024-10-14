@@ -618,7 +618,7 @@
                   </sl-button>
                 </sl-tooltip>
               </sl-button-group>
-              <div>{{ pagination.startNum }} –— {{ pagination.endNum }} of {{ pagination.foundNum }}</div>
+            <div>{{ pagination.startNum }} – {{ pagination.endNum }} of {{ pagination.foundNum }}</div>
             </div>
 {%- endmacro htmPaginationButtonsSitePagePage() %}
 {%- macro htmFormsSitePagePage() %}
@@ -1146,7 +1146,7 @@ A URL friendly unique ID for this object"
                       class="label-on-left {{classApiMethodMethod}}_archived classSitePage inputSitePage{{id}}Archived "
                       name="setArchived"
                       data-id="{{ id }}"
-                      data-val="{{ sitePage_.archived }}"
+                      data-val="{{ sitePage_.archived | e }}"
                       >archived</sl-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}
