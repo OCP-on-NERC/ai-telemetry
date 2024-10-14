@@ -295,19 +295,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="gpu-device-details">
+            <sl-details open class="HtmRow" id="gpu-device-details">
               <div slot="summary">
                 <span>GPU device details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -322,12 +332,39 @@
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmEntityIdGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+            </sl-details>
+            <sl-details open class="HtmRow" id="gpu-device-utilization-stats">
+              <div slot="summary">
+                <span>GPU device utilization stats</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='PATCH', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -420,19 +457,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="gpu-device-details">
+            <sl-details open class="HtmRow" id="gpu-device-details">
               <div slot="summary">
                 <span>GPU device details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -447,12 +494,39 @@
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmEntityIdGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+            </sl-details>
+            <sl-details open class="HtmRow" id="gpu-device-utilization-stats">
+              <div slot="summary">
+                <span>GPU device utilization stats</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='POST', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -568,19 +642,29 @@
               {%- endif %}
               </div>
             </sl-details>
-            <sl-details class="HtmRow" id="gpu-device-details">
+            <sl-details open class="HtmRow" id="gpu-device-details">
               <div slot="summary">
                 <span>GPU device details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+                {{ htmClusterNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
-                  {{ htmNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                  {{ htmClusterNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNodeNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmNodeNameGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -595,12 +679,39 @@
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmEntityIdGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
                 {%- else %}
                   {{ htmEntityIdGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+            </sl-details>
+            <sl-details open class="HtmRow" id="gpu-device-utilization-stats">
+              <div slot="summary">
+                <span>GPU device utilization stats</span>
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=true, roleForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=true) }}
+                {%- else %}
+                  {{ htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod='Page', roleForWriteBool=false, roleForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -638,15 +749,25 @@
               {% for item in listGpuDevice%}
               <a href="{{ item.pageUrlPk }}">
                 <div>                  <i class="fa-regular fa-memory"></i>
-{{ item.name }}</div>
+{{ item.clusterName }}</div>
+                <div>{{ item.nodeName }}</div>
                 <div>{{ item.description }}</div>
+                <div>{{ item.gpuDeviceNumber }}</div>
               </a>
               {% endfor %}
-                      {% if getColumnName is defined %}
+                      {% if getColumnClusterName is defined %}
+                        <div>
+                        </div>
+                      {% endif %}
+                      {% if getColumnNodeName is defined %}
                         <div>
                         </div>
                       {% endif %}
                       {% if getColumnDescription is defined %}
+                        <div>
+                        </div>
+                      {% endif %}
+                      {% if getColumnGpuDeviceNumber is defined %}
                         <div>
                         </div>
                       {% endif %}
@@ -1301,32 +1422,32 @@ A URL friendly unique ID for this object"
                             {{ inputArchivedGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
-{%- macro inputNameGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+{%- macro inputClusterNameGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_name">
+                <form class="subgrid-2col " id="PageForm_clusterName">
   {%- endif %}
                   <sl-input
                       {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="name"
-                      label="name"
+                      placeholder="cluster name"
+                      label="cluster name"
                       help-text="
-The name of this GPU device"
-                      id="{{classApiMethodMethod}}_name"
+The cluster name of this GPU device"
+                      id="{{classApiMethodMethod}}_clusterName"
   {%- if "Page" == classApiMethodMethod %}
                       data-pk="{{ pk }}"
-                      class="label-on-left {{classApiMethodMethod}}_name setName classGpuDevice inputGpuDevice{{pk}}Name "
-                      name="setName"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classGpuDevice inputGpuDevice{{pk}}ClusterName "
+                      name="setClusterName"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_name setName classGpuDevice inputGpuDevice{{pk}}Name "
-                      name="setName"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classGpuDevice inputGpuDevice{{pk}}ClusterName "
+                      name="setClusterName"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_name valueName classGpuDevice inputGpuDevice{{pk}}Name "
-                      name="name"
+                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classGpuDevice inputGpuDevice{{pk}}ClusterName "
+                      name="clusterName"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{gpuDevice_.name | e }}"
+                      value="{{gpuDevice_.clusterName | e }}"
   {%- endif %}
                       ></sl-input>
 
@@ -1335,8 +1456,46 @@ The name of this GPU device"
   {%- endif %}
 {%- endmacro %}
 
-{%- macro htmNameGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
-                            {{ inputNameGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- macro htmClusterNameGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputClusterNameGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputNodeNameGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_nodeName">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="node name"
+                      label="node name"
+                      help-text="
+The node name of this GPU device"
+                      id="{{classApiMethodMethod}}_nodeName"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classGpuDevice inputGpuDevice{{pk}}NodeName "
+                      name="setNodeName"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classGpuDevice inputGpuDevice{{pk}}NodeName "
+                      name="setNodeName"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_nodeName valueNodeName classGpuDevice inputGpuDevice{{pk}}NodeName "
+                      name="nodeName"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{gpuDevice_.nodeName | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNodeNameGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputNodeNameGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
 {%- macro inputDescriptionGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
@@ -1377,6 +1536,44 @@ A description of this GPU device"
                             {{ inputDescriptionGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
+{%- macro inputGpuDeviceNumberGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_gpuDeviceNumber">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="GPU device number"
+                      label="GPU device number"
+                      help-text="
+The number of this GPU device"
+                      id="{{classApiMethodMethod}}_gpuDeviceNumber"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber setGpuDeviceNumber classGpuDevice inputGpuDevice{{pk}}GpuDeviceNumber "
+                      name="setGpuDeviceNumber"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber setGpuDeviceNumber classGpuDevice inputGpuDevice{{pk}}GpuDeviceNumber "
+                      name="setGpuDeviceNumber"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber valueGpuDeviceNumber classGpuDevice inputGpuDevice{{pk}}GpuDeviceNumber "
+                      name="gpuDeviceNumber"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{gpuDevice_.gpuDeviceNumber | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputGpuDeviceNumberGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
 {%- macro inputEntityIdGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_entityId">
@@ -1413,6 +1610,44 @@ A unique ID for this Smart Data Model"
 
 {%- macro htmEntityIdGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
                             {{ inputEntityIdGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
+{%- endmacro %}
+
+{%- macro inputGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_gpuDeviceUtilization">
+  {%- endif %}
+                  <sl-input
+                      {% if roleForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="GPU device utilization"
+                      label="GPU device utilization"
+                      help-text="
+Current utilization of the GPU device. "
+                      id="{{classApiMethodMethod}}_gpuDeviceUtilization"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-pk="{{ pk }}"
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization setGpuDeviceUtilization classGpuDevice inputGpuDevice{{pk}}GpuDeviceUtilization "
+                      name="setGpuDeviceUtilization"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization setGpuDeviceUtilization classGpuDevice inputGpuDevice{{pk}}GpuDeviceUtilization "
+                      name="setGpuDeviceUtilization"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization valueGpuDeviceUtilization classGpuDevice inputGpuDevice{{pk}}GpuDeviceUtilization "
+                      name="gpuDeviceUtilization"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{gpuDevice_.gpuDeviceUtilization | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod, roleForWriteBool=false, roleForReadBool=false) %}
+                            {{ inputGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod=classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) }}
 {%- endmacro %}
 
 {%- macro inputLocationGpuDevicePage(classApiMethodMethod, roleForWrite=roleForWrite, roleForRead=roleForRead) %}

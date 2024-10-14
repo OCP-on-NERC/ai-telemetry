@@ -7272,7 +7272,15 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  gpuDeviceId:
+                    type: string
+                  clusterName:
+                    type: string
+                  nodeName:
+                    type: string
+                  gpuDeviceNumber:
+                    type: string
+                  gpuDeviceUtilization:
                     type: string
                   description:
                     type: string
@@ -7302,12 +7310,40 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setGpuDeviceId:
               type: string
               nullable: true
-            removeName:
+            removeGpuDeviceId:
               type: string
-            removeAllName:
+            removeAllGpuDeviceId:
+              type: string
+            setClusterName:
+              type: string
+              nullable: true
+            removeClusterName:
+              type: string
+            removeAllClusterName:
+              type: string
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
+              type: string
+            setGpuDeviceNumber:
+              type: string
+              nullable: true
+            removeGpuDeviceNumber:
+              type: string
+            removeAllGpuDeviceNumber:
+              type: string
+            setGpuDeviceUtilization:
+              type: string
+              nullable: true
+            removeGpuDeviceUtilization:
+              type: string
+            removeAllGpuDeviceUtilization:
               type: string
             setDescription:
               type: string
@@ -7406,12 +7442,40 @@ components:
       allOf:
         - type: object
           properties:
-            setName:
+            setGpuDeviceId:
               type: string
               nullable: true
-            removeName:
+            removeGpuDeviceId:
               type: string
-            removeAllName:
+            removeAllGpuDeviceId:
+              type: string
+            setClusterName:
+              type: string
+              nullable: true
+            removeClusterName:
+              type: string
+            removeAllClusterName:
+              type: string
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
+              type: string
+            setGpuDeviceNumber:
+              type: string
+              nullable: true
+            removeGpuDeviceNumber:
+              type: string
+            removeAllGpuDeviceNumber:
+              type: string
+            setGpuDeviceUtilization:
+              type: string
+              nullable: true
+            removeGpuDeviceUtilization:
+              type: string
+            removeAllGpuDeviceUtilization:
               type: string
             setDescription:
               type: string
@@ -7510,7 +7574,15 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            gpuDeviceId:
+              type: string
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceUtilization:
               type: string
             description:
               type: string
@@ -7540,7 +7612,15 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            gpuDeviceId:
+              type: string
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceUtilization:
               type: string
             description:
               type: string
@@ -7575,7 +7655,15 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  gpuDeviceId:
+                    type: string
+                  clusterName:
+                    type: string
+                  nodeName:
+                    type: string
+                  gpuDeviceNumber:
+                    type: string
+                  gpuDeviceUtilization:
                     type: string
                   description:
                     type: string
@@ -7605,7 +7693,15 @@ components:
       allOf:
         - type: object
           properties:
-                  name:
+                  gpuDeviceId:
+                    type: string
+                  clusterName:
+                    type: string
+                  nodeName:
+                    type: string
+                  gpuDeviceNumber:
+                    type: string
+                  gpuDeviceUtilization:
                     type: string
                   description:
                     type: string
@@ -7635,7 +7731,15 @@ components:
       allOf:
         - type: object
           properties:
-            name:
+            gpuDeviceId:
+              type: string
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceUtilization:
               type: string
             description:
               type: string

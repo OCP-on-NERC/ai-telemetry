@@ -51,15 +51,64 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: name
-	 * Description: The name of this GPU device
+	 * DisplayName: GPU device ID
+	 * Description: A unique ID for a gpu device per cluster, and node. 
+	 * Facet: true
+	 **/
+	protected void _gpuDeviceId(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: cluster name
+	 * Description: The cluster name of this GPU device
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 1
-	 * HtmRowTitle: GPU device details
+	 * HtmRowTitleOpen: GPU device details
 	 * Facet: true
 	 **/
-	protected void _name(Wrap<String> w) {}
+	protected void _clusterName(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: node name
+	 * Description: The node name of this GPU device
+	 * HtmRow: 3
+	 * HtmCell: 2
+	 * HtmColumn: 2
+	 * Facet: true
+	 **/
+	protected void _nodeName(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU device number
+	 * Description: The number of this GPU device
+	 * HtmRow: 3
+	 * HtmCell: 3
+	 * HtmColumn: 3
+	 * Facet: true
+	 **/
+	protected void _gpuDeviceNumber(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU device utilization
+	 * Description: Current utilization of the GPU device. 
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * HtmRowTitleOpen: GPU device utilization stats
+	 * Facet: true
+	 **/
+	protected void _gpuDeviceUtilization(Wrap<Integer> w) {}
 
 	/**
 	 * {@inheritDoc}
@@ -136,7 +185,7 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * Facet: true
 	 */
 	protected void _entityId(Wrap<String> w) {
-		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(gpuDeviceId)));
 	}
 
 	/**

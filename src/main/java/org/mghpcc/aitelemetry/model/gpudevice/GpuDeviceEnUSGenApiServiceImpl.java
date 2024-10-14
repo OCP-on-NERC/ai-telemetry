@@ -720,13 +720,45 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setName":
-							o2.setName(jsonObject.getString(entityVar));
+					case "setGpuDeviceId":
+							o2.setGpuDeviceId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_name + "=$" + num);
+							bSql.append(GpuDevice.VAR_gpuDeviceId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlName());
+							bParams.add(o2.sqlGpuDeviceId());
+						break;
+					case "setClusterName":
+							o2.setClusterName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlClusterName());
+						break;
+					case "setNodeName":
+							o2.setNodeName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNodeName());
+						break;
+					case "setGpuDeviceNumber":
+							o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDeviceNumber());
+						break;
+					case "setGpuDeviceUtilization":
+							o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDeviceUtilization());
 						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
@@ -1115,14 +1147,50 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case GpuDevice.VAR_name:
-						o2.setName(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_gpuDeviceId:
+						o2.setGpuDeviceId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_name + "=$" + num);
+						bSql.append(GpuDevice.VAR_gpuDeviceId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlName());
+						bParams.add(o2.sqlGpuDeviceId());
+						break;
+					case GpuDevice.VAR_clusterName:
+						o2.setClusterName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlClusterName());
+						break;
+					case GpuDevice.VAR_nodeName:
+						o2.setNodeName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNodeName());
+						break;
+					case GpuDevice.VAR_gpuDeviceNumber:
+						o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDeviceNumber());
+						break;
+					case GpuDevice.VAR_gpuDeviceUtilization:
+						o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDeviceUtilization());
 						break;
 					case GpuDevice.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
