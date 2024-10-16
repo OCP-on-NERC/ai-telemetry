@@ -22,7 +22,7 @@ in building the platform through the Red Hat Internal Gig Program.
 
 ## Solution overview
 
-![AI Telemetry in the New England Research Cloud OpenShift environment overview](doc/design/ai-telemetry-overview.png)
+![AI Telemetry in the New England Research Cloud OpenShift environment overview](doc/design/ai-telemetry-overview-v2.svg)
 
 The AI Telemetry architecture represents several components that are already in place, 
 and several components that will be developed as part of this project: 
