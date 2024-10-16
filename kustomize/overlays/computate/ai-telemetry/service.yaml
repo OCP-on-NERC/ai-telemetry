@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: vscode-computate
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: dev
+      protocol: TCP
+      port: 10210
+      targetPort: 10210
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    notebook-name: computate

@@ -47,7 +47,7 @@ SITE_PORT: 10210
 # The host name of the site. 
 SITE_HOST_NAME: "0.0.0.0"
 # The base URL of the site. 
-SITE_BASE_URL: "https://vscode-{{ OPENSHIFT_AI_WORKBENCH }}-ai-telemetry-cbca60.apps.shift.nerc.mghpcc.org"
+SITE_BASE_URL: "https://{{ OPENSHIFT_AI_WORKBENCH }}-ai-telemetry.apps.shift.nerc.mghpcc.org"
 # The public facing URL for the site. 
 SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
