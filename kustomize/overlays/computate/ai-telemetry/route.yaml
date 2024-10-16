@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: vscode-computate
+  labels:
+    notebook-name: computate
+spec:
+  host: computate-ai-telemetry.apps.shift.nerc.mghpcc.org
+  to:
+    kind: Service
+    name: vscode-computate
+    weight: 100
+  port:
+    targetPort: 10210
+  tls:
+    termination: edge
+  wildcardPolicy: None
