@@ -191,6 +191,16 @@
           return false;
         });
 
+        var submitForm_deleteAiNode = document.querySelector('#htmForm_deleteAiNode')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteAiNode')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteAiNode(null, document.querySelector('#htmForm_deleteAiNode'), document.querySelector('#htmFormButton_deleteAiNode'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportAiNode = document.querySelector('#htmForm_putimportAiNode')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -514,6 +524,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteAiNode() %}<sl-button id="htmButton_deleteAiNode" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteAiNode() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteAiNode"
+                >Delete AI node</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteAiNode() %}
+        <sl-dialog id="deleteAiNodeDialog" label="Delete AI node">
+          <form id="htmForm_deleteAiNode" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteAiNode() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportAiNode() %}<sl-button id="htmButton_putimportAiNode" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiNode() %}
@@ -754,7 +780,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if aiNodeCount == 1 %}<sl-button id="refreshThisAiNodeGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiNodeGenPage')); }, function() { addError(document.querySelector('#refreshThisAiNodeGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiNodeCount > 0 %}<sl-button id="refreshAllAiNodeGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiNodeGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiNodeGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiNodeCount > 0 %}{{ htmButton_patchAiNode() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiNodeCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiNode() }}{%- else %}{{ htmButton_postAiNode() }}{%- endif %}{%- else %}{{ htmButton_postAiNode() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiNode() }}{%- endif %}            </div>
+{% if aiNodeCount == 1 %}<sl-button id="refreshThisAiNodeGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiNodeGenPage')); }, function() { addError(document.querySelector('#refreshThisAiNodeGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiNodeCount > 0 %}<sl-button id="refreshAllAiNodeGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiNodeGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiNodeGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiNodeCount > 0 %}{{ htmButton_patchAiNode() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiNodeCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiNode() }}{%- else %}{{ htmButton_postAiNode() }}{%- endif %}{%- else %}{{ htmButton_postAiNode() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiNodeCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteAiNode() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiNode() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if aiNodeCount > 0 %}
         {{ htmForm_patchAiNode() }}
@@ -769,6 +795,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postAiNode() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if aiNodeCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteAiNode() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}

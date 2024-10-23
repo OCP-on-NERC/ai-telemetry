@@ -95,6 +95,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: POST</h2>
  * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
  * </p>
+ * <h2>ApiMethode: DELETE</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETE"</b>, which creates an API "DELETE". 
+ * </p>
  * <h2>ApiMethode: PUTImport</h2>
  * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
  * </p>
@@ -209,6 +212,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static final String PATCH_enUS_ImageUri = "/png/api/ai-project-999.png";
 	public static final String POST_enUS_Uri = "/api/ai-project";
 	public static final String POST_enUS_ImageUri = "/png/api/ai-project-999.png";
+	public static final String DELETE_enUS_Uri = "/api/ai-project";
+	public static final String DELETE_enUS_ImageUri = "/png/api/ai-project-999.png";
 	public static final String PUTImport_enUS_Uri = "/api/ai-project-import";
 	public static final String PUTImport_enUS_ImageUri = "/png/api/ai-project-import-999.png";
 	public static final String SearchPage_enUS_Uri = "/ai-project";

@@ -118,6 +118,16 @@
           return false;
         });
 
+        var submitForm_deleteSitePage = document.querySelector('#htmForm_deleteSitePage')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteSitePage')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteSitePage(null, document.querySelector('#htmForm_deleteSitePage'), document.querySelector('#htmFormButton_deleteSitePage'), event.target.getAttribute('data-id'));
+          return false;
+        });
+
         var submitForm_putimportSitePage = document.querySelector('#htmForm_putimportSitePage')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -391,6 +401,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteSitePage() %}<sl-button id="htmButton_deleteSitePage" data-id="{{ id }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteSitePage() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteSitePage"
+                >Delete article</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteSitePage() %}
+        <sl-dialog id="deleteSitePageDialog" label="Delete article">
+          <form id="htmForm_deleteSitePage" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteSitePage() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportSitePage() %}<sl-button id="htmButton_putimportSitePage" data-id="{{ id }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportSitePage() %}
@@ -626,7 +652,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if sitePageCount == 1 %}<sl-button id="refreshThisSitePageGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'id:{{id}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSitePageGenPage')); }, function() { addError(document.querySelector('#refreshThisSitePageGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if sitePageCount > 0 %}<sl-button id="refreshAllSitePageGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSitePageGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllSitePageGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if sitePageCount > 0 %}{{ htmButton_patchSitePage() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if sitePageCount == 1 %}{%- if id is defined %}{{ htmButton_postSitePage() }}{%- else %}{{ htmButton_postSitePage() }}{%- endif %}{%- else %}{{ htmButton_postSitePage() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportSitePage() }}{%- endif %}            </div>
+{% if sitePageCount == 1 %}<sl-button id="refreshThisSitePageGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'id:{{id}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSitePageGenPage')); }, function() { addError(document.querySelector('#refreshThisSitePageGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if sitePageCount > 0 %}<sl-button id="refreshAllSitePageGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSitePageGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllSitePageGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if sitePageCount > 0 %}{{ htmButton_patchSitePage() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if sitePageCount == 1 %}{%- if id is defined %}{{ htmButton_postSitePage() }}{%- else %}{{ htmButton_postSitePage() }}{%- endif %}{%- else %}{{ htmButton_postSitePage() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if sitePageCount == 1 %}{%- if id is defined %}{{ htmButton_deleteSitePage() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportSitePage() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if sitePageCount > 0 %}
         {{ htmForm_patchSitePage() }}
@@ -641,6 +667,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postSitePage() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if sitePageCount == 1 %}
+      {%- if id is defined %}
+        {{ htmForm_deleteSitePage() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}

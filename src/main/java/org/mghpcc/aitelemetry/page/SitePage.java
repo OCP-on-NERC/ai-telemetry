@@ -44,6 +44,7 @@ import io.vertx.core.Promise;
  *   GET:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
  *   SearchPage:
  *     Page: SitePagePage

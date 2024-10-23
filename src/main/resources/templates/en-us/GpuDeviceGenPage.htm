@@ -191,6 +191,16 @@
           return false;
         });
 
+        var submitForm_deleteGpuDevice = document.querySelector('#htmForm_deleteGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteGpuDevice(null, document.querySelector('#htmForm_deleteGpuDevice'), document.querySelector('#htmFormButton_deleteGpuDevice'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportGpuDevice = document.querySelector('#htmForm_putimportGpuDevice')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -548,6 +558,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteGpuDevice() %}<sl-button id="htmButton_deleteGpuDevice" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteGpuDevice() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteGpuDevice"
+                >Delete GPU device</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteGpuDevice() %}
+        <sl-dialog id="deleteGpuDeviceDialog" label="Delete GPU device">
+          <form id="htmForm_deleteGpuDevice" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteGpuDevice() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportGpuDevice() %}<sl-button id="htmButton_putimportGpuDevice" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportGpuDevice() %}
@@ -810,7 +836,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if gpuDeviceCount == 1 %}<sl-button id="refreshThisGpuDeviceGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisGpuDeviceGenPage')); }, function() { addError(document.querySelector('#refreshThisGpuDeviceGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if gpuDeviceCount > 0 %}<sl-button id="refreshAllGpuDeviceGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllGpuDeviceGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllGpuDeviceGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if gpuDeviceCount > 0 %}{{ htmButton_patchGpuDevice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuDeviceCount == 1 %}{%- if pk is defined %}{{ htmButton_postGpuDevice() }}{%- else %}{{ htmButton_postGpuDevice() }}{%- endif %}{%- else %}{{ htmButton_postGpuDevice() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportGpuDevice() }}{%- endif %}            </div>
+{% if gpuDeviceCount == 1 %}<sl-button id="refreshThisGpuDeviceGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisGpuDeviceGenPage')); }, function() { addError(document.querySelector('#refreshThisGpuDeviceGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if gpuDeviceCount > 0 %}<sl-button id="refreshAllGpuDeviceGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllGpuDeviceGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllGpuDeviceGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if gpuDeviceCount > 0 %}{{ htmButton_patchGpuDevice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuDeviceCount == 1 %}{%- if pk is defined %}{{ htmButton_postGpuDevice() }}{%- else %}{{ htmButton_postGpuDevice() }}{%- endif %}{%- else %}{{ htmButton_postGpuDevice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuDeviceCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteGpuDevice() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportGpuDevice() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if gpuDeviceCount > 0 %}
         {{ htmForm_patchGpuDevice() }}
@@ -825,6 +851,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postGpuDevice() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if gpuDeviceCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteGpuDevice() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
