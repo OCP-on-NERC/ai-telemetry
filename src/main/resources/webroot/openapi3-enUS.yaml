@@ -699,6 +699,71 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiClusterResponse'
+    delete:
+      operationId: deleteAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI cluster
+      parameters:
+        - name: Fiware-Service
+          in: header
+          schema:
+            type: string
+        - name: Fiware-ServicePath
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Tenant
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Path
+          in: header
+          schema:
+            type: string
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEAiClusterResponse'
   /api/ai-cluster-import:
     put:
       operationId: putimportAiCluster
@@ -1137,6 +1202,71 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    delete:
+      operationId: deleteGpuDevice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU device
+      parameters:
+        - name: Fiware-Service
+          in: header
+          schema:
+            type: string
+        - name: Fiware-ServicePath
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Tenant
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Path
+          in: header
+          schema:
+            type: string
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEGpuDeviceResponse'
   /api/gpu-device-import:
     put:
       operationId: putimportGpuDevice
@@ -1898,6 +2028,55 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuSliceResponse'
+    delete:
+      operationId: deleteGpuSlice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU slice
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEGpuSliceResponse'
   /api/gpu-slice-import:
     put:
       operationId: putimportGpuSlice
@@ -3048,6 +3227,71 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiNodeResponse'
+    delete:
+      operationId: deleteAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI node
+      parameters:
+        - name: Fiware-Service
+          in: header
+          schema:
+            type: string
+        - name: Fiware-ServicePath
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Tenant
+          in: header
+          schema:
+            type: string
+        - name: NGSILD-Path
+          in: header
+          schema:
+            type: string
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEAiNodeResponse'
   /api/ai-node-import:
     put:
       operationId: putimportAiNode
@@ -3793,6 +4037,55 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiProjectResponse'
+    delete:
+      operationId: deleteAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI project
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEAiProjectResponse'
   /api/ai-project-import:
     put:
       operationId: putimportAiProject
@@ -4139,6 +4432,55 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTSitePageResponse'
+    delete:
+      operationId: deleteSitePage
+      x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - Page
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETESitePageResponse'
   /api/page-import:
     put:
       operationId: putimportSitePage
@@ -4837,6 +5179,52 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTSiteUserResponse'
+    delete:
+      operationId: deleteSiteUser
+      x-vertx-event-bus: ai-telemetry-enUS-SiteUser
+      description: >+
+      summary: >+
+      tags:
+        - User
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETESiteUserResponse'
   /api/user-import:
     put:
       operationId: putimportSiteUser
@@ -5317,6 +5705,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiClusterResponse'
+    DELETEAiClusterResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiClusterResponse'
     PUTImportAiClusterRequest:
       content:
         application/json:
@@ -5357,6 +5750,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    DELETEGpuDeviceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEGpuDeviceResponse'
     PUTImportGpuDeviceRequest:
       content:
         application/json:
@@ -5402,6 +5800,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuSliceResponse'
+    DELETEGpuSliceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEGpuSliceResponse'
     PUTImportGpuSliceRequest:
       content:
         application/json:
@@ -5452,6 +5855,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiNodeResponse'
+    DELETEAiNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiNodeResponse'
     PUTImportAiNodeRequest:
       content:
         application/json:
@@ -5497,6 +5905,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiProjectResponse'
+    DELETEAiProjectResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiProjectResponse'
     PUTImportAiProjectRequest:
       content:
         application/json:
@@ -5537,6 +5950,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTSitePageResponse'
+    DELETESitePageResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETESitePageResponse'
     PUTImportSitePageRequest:
       content:
         application/json:
@@ -5582,6 +6000,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTSiteUserResponse'
+    DELETESiteUserResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETESiteUserResponse'
     PUTImportSiteUserRequest:
       content:
         application/json:
@@ -5973,6 +6396,42 @@ components:
               type: string
             objectId:
               type: string
+    DELETEAiClusterResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
     PUTImportAiClusterRequest:
       allOf:
         - type: object
@@ -6478,6 +6937,44 @@ components:
               type: string
             objectId:
               type: string
+    DELETEGpuDeviceResponse:
+      allOf:
+        - type: object
+          properties:
+            gpuDeviceId:
+              type: string
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceUtilization:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
     PUTImportGpuDeviceRequest:
       allOf:
         - type: object
@@ -6883,6 +7380,36 @@ components:
             objectId:
               type: string
     POSTGpuSliceResponse:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
+    DELETEGpuSliceResponse:
       allOf:
         - type: object
           properties:
@@ -7365,6 +7892,40 @@ components:
               type: string
             objectId:
               type: string
+    DELETEAiNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            gpuDevicesTotal:
+              type: string
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -7758,6 +8319,36 @@ components:
             objectId:
               type: string
     POSTAiProjectResponse:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
+    DELETEAiProjectResponse:
       allOf:
         - type: object
           properties:
@@ -8453,6 +9044,70 @@ components:
             pageUrlId:
               type: string
     POSTSitePageResponse:
+      allOf:
+        - type: object
+          properties:
+            article:
+              type: boolean
+            githubOrg:
+              type: string
+            siteName:
+              type: string
+            siteDisplayName:
+              type: string
+            sitePublicUrl:
+              type: string
+            mailingListUrl:
+              type: string
+            quayioOrg:
+              type: string
+            sitePomGroupId:
+              type: string
+            staticBaseUrl:
+              type: string
+            staticPath:
+              type: string
+            siteBaseUrl:
+              type: string
+            courseNum:
+              type: string
+            lessonNum:
+              type: string
+            title:
+              type: string
+            author:
+              type: string
+            pageId:
+              type: string
+            resourceUri:
+              type: string
+            templateUri:
+              type: string
+            uri:
+              type: string
+            url:
+              type: string
+            h1:
+              type: string
+            h2:
+              type: string
+            pageImageUri:
+              type: string
+            pageImageWidth:
+              type: string
+            pageImageHeight:
+              type: string
+            pageImageType:
+              type: string
+            objectTitle:
+              type: string
+            objectId:
+              type: string
+            id:
+              type: string
+            pageUrlId:
+              type: string
+    DELETESitePageResponse:
       allOf:
         - type: object
           properties:
@@ -8951,6 +9606,32 @@ components:
             objectTitle:
               type: string
     POSTSiteUserResponse:
+      allOf:
+        - type: object
+          properties:
+            userKeys:
+              type: array
+              items:
+                type: string
+            userId:
+              type: string
+            userName:
+              type: string
+            userEmail:
+              type: string
+            userFirstName:
+              type: string
+            userLastName:
+              type: string
+            userFullName:
+              type: string
+            seeArchived:
+              type: boolean
+            seeDeleted:
+              type: boolean
+            objectTitle:
+              type: string
+    DELETESiteUserResponse:
       allOf:
         - type: object
           properties:

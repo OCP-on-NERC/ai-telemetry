@@ -118,6 +118,16 @@
           return false;
         });
 
+        var submitForm_deleteSiteUser = document.querySelector('#htmForm_deleteSiteUser')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteSiteUser')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteSiteUser(null, document.querySelector('#htmForm_deleteSiteUser'), document.querySelector('#htmFormButton_deleteSiteUser'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportSiteUser = document.querySelector('#htmForm_putimportSiteUser')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -357,6 +367,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteSiteUser() %}<sl-button id="htmButton_deleteSiteUser" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteSiteUser() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteSiteUser"
+                >Delete site user</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteSiteUser() %}
+        <sl-dialog id="deleteSiteUserDialog" label="Delete site user">
+          <form id="htmForm_deleteSiteUser" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteSiteUser() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportSiteUser() %}<sl-button id="htmButton_putimportSiteUser" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportSiteUser() %}
@@ -539,7 +565,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if siteUserCount == 1 %}<sl-button id="refreshThisSiteUserGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSiteUserGenPage')); }, function() { addError(document.querySelector('#refreshThisSiteUserGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if siteUserCount > 0 %}<sl-button id="refreshAllSiteUserGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSiteUserGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllSiteUserGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if siteUserCount > 0 %}{{ htmButton_patchSiteUser() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if siteUserCount == 1 %}{%- if pk is defined %}{{ htmButton_postSiteUser() }}{%- else %}{{ htmButton_postSiteUser() }}{%- endif %}{%- else %}{{ htmButton_postSiteUser() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportSiteUser() }}{%- endif %}            </div>
+{% if siteUserCount == 1 %}<sl-button id="refreshThisSiteUserGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSiteUserGenPage')); }, function() { addError(document.querySelector('#refreshThisSiteUserGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if siteUserCount > 0 %}<sl-button id="refreshAllSiteUserGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSiteUserGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllSiteUserGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if siteUserCount > 0 %}{{ htmButton_patchSiteUser() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if siteUserCount == 1 %}{%- if pk is defined %}{{ htmButton_postSiteUser() }}{%- else %}{{ htmButton_postSiteUser() }}{%- endif %}{%- else %}{{ htmButton_postSiteUser() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if siteUserCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteSiteUser() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportSiteUser() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if siteUserCount > 0 %}
         {{ htmForm_patchSiteUser() }}
@@ -554,6 +580,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postSiteUser() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if siteUserCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteSiteUser() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}

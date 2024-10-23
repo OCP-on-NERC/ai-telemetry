@@ -24,6 +24,7 @@ import org.mghpcc.aitelemetry.request.SiteRequest;
  *   Search:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
  *   SearchPage:
  *     Page: SiteUserPage

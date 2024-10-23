@@ -191,6 +191,16 @@
           return false;
         });
 
+        var submitForm_deleteAiCluster = document.querySelector('#htmForm_deleteAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteAiCluster(null, document.querySelector('#htmForm_deleteAiCluster'), document.querySelector('#htmFormButton_deleteAiCluster'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportAiCluster = document.querySelector('#htmForm_putimportAiCluster')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -558,6 +568,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteAiCluster() %}<sl-button id="htmButton_deleteAiCluster" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteAiCluster() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteAiCluster"
+                >Delete AI cluster</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteAiCluster() %}
+        <sl-dialog id="deleteAiClusterDialog" label="Delete AI cluster">
+          <form id="htmForm_deleteAiCluster" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteAiCluster() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportAiCluster() %}<sl-button id="htmButton_putimportAiCluster" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiCluster() %}
@@ -815,7 +841,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if aiClusterCount == 1 %}<sl-button id="refreshThisAiClusterGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiClusterGenPage')); }, function() { addError(document.querySelector('#refreshThisAiClusterGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiClusterCount > 0 %}<sl-button id="refreshAllAiClusterGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiClusterGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiClusterGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiClusterCount > 0 %}{{ htmButton_patchAiCluster() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiClusterCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiCluster() }}{%- else %}{{ htmButton_postAiCluster() }}{%- endif %}{%- else %}{{ htmButton_postAiCluster() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiCluster() }}{%- endif %}            </div>
+{% if aiClusterCount == 1 %}<sl-button id="refreshThisAiClusterGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiClusterGenPage')); }, function() { addError(document.querySelector('#refreshThisAiClusterGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiClusterCount > 0 %}<sl-button id="refreshAllAiClusterGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiClusterGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiClusterGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiClusterCount > 0 %}{{ htmButton_patchAiCluster() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiClusterCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiCluster() }}{%- else %}{{ htmButton_postAiCluster() }}{%- endif %}{%- else %}{{ htmButton_postAiCluster() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiClusterCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteAiCluster() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiCluster() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if aiClusterCount > 0 %}
         {{ htmForm_patchAiCluster() }}
@@ -830,6 +856,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postAiCluster() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if aiClusterCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteAiCluster() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
