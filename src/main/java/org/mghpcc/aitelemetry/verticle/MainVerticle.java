@@ -61,7 +61,6 @@ import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.LongCounterBuilder;
 import io.opentelemetry.api.metrics.MeterBuilder;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
@@ -164,10 +163,10 @@ import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpu.GpuEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.gpu.GpuEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
@@ -1086,7 +1085,7 @@ public class MainVerticle extends AbstractVerticle {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","Gpu","GpuSlice","AiProject");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject");
 			List<String> publicResources = Arrays.asList("SitePage");
 			SiteUserEnUSGenApiServiceImpl apiSiteUser = SiteUserEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 			apiSiteUser.configureUserSearchApi("/user-search", router, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, config(), webClient, authResources);
@@ -1098,11 +1097,11 @@ public class MainVerticle extends AbstractVerticle {
 			AiClusterEnUSApiServiceImpl apiAiCluster = AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 			apiAiCluster.configureUserUiModel(router, AiCluster.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-cluster");
 
-			AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			AiNodeEnUSApiServiceImpl apiAiNode = AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			apiAiNode.configureUserUiModel(router, AiNode.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-node");
 
-			GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-
-			GpuEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			apiGpuDevice.configureUserUiModel(router, GpuDevice.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/gpu-device");
 
 			GpuSliceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 

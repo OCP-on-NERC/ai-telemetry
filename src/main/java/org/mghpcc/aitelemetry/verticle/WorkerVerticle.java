@@ -42,8 +42,6 @@ import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpu.Gpu;
-import org.mghpcc.aitelemetry.model.gpu.GpuEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
