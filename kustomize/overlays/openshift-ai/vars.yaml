@@ -306,7 +306,7 @@ DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ OPENSHIFT_AI_WORKBENCH }}"
 # The namespace in OpenShift where Keycloak will run. 
 AUTH_NAMESPACE: "{{ SITE_NAMESPACE }}"
 # The Auth host name. 
-AUTH_HOST_NAME: "ai-telemetry-keycloak.apps.shift.nerc.mghpcc.org"
+AUTH_HOST_NAME: "keycloak.apps.obs.nerc.mghpcc.org"
 # The Auth port. 
 AUTH_PORT: 443
 # Whether the Auth server uses SSL. 
@@ -316,7 +316,7 @@ AUTH_SSL_REQUIRED: all
 # The Auth realm. 
 AUTH_REALM: "NERC"
 # The Auth client. 
-AUTH_CLIENT: "nerc"
+AUTH_CLIENT: "ai-telemetry"
 # The Auth secret. 
 AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.secret | b64decode }}"
 # The Auth admin username. 
