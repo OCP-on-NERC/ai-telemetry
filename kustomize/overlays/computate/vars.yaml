@@ -298,6 +298,7 @@ DATABASE_SECRET: "postgres-pguser-{{ DATABASE_USERNAME }}"
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=DATABASE_SECRET, namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
 DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ OPENSHIFT_AI_WORKBENCH }}"
+DATABASE_MAX_WAIT_QUEUE_SIZE: 100
 
 #####################################
 # Authentication/authorization vars #
@@ -437,6 +438,9 @@ SITE_REPLICAS: 1
 
 # Enable data import in the site. 
 ENABLE_IMPORT_DATA: true
+ENABLE_IMPORT_DATA_AiCluster: false
+ENABLE_IMPORT_DATA_AiNode: false
+ENABLE_IMPORT_DATA_GpuDevice: true
 # Enable the Zookeeper cluster manager. 
 ENABLE_ZOOKEEPER_CLUSTER: false
 # Enable support for Open Telemetry in the application. 
@@ -479,3 +483,6 @@ PROM_KEYCLOAK_PROXY_SSL: true
 # grafana #
 ###########
 GRAFANA_BASE_URL: https://grafana.apps.obs.nerc.mghpcc.org
+
+#IMPORT_DATA_START_TIME_AiCluster: 10:13 America/Denver
+#IMPORT_DATA_PERIOD_AiCluster: 1 Minute

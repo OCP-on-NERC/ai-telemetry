@@ -485,4 +485,75 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		}
 		return promise.future();
 	}
+
+	// /**
+	//  * Val.Scheduling.enUS:Scheduling the %s import at %s
+	//  * Val.Skip.enUS:Skip importing %s data. 
+	//  * Val.Fail.enUS:Scheduling the import of %s data failed. 
+	//  */
+	// public Future<Void> importTimer(Vertx vertx, ComputateSiteRequest siteRequest, String classSimpleName, String classApiAddress) {
+	// 	Promise<Void> promise = Promise.promise();
+	// 	if(config.getBoolean(String.format("%s_%s", ComputateConfigKeys.ENABLE_IMPORT_DATA, classSimpleName), true)) {
+	// 		// Load the import start time and period configuration. 
+	// 		String importStartTime = config.getString(String.format("%s_%s", ComputateConfigKeys.IMPORT_DATA_START_TIME, classSimpleName));
+	// 		String importPeriod = config.getString(String.format("%s_%s", ComputateConfigKeys.IMPORT_DATA_PERIOD, classSimpleName));
+	// 		// Get the duration of the import period. 
+	// 		// Calculate the next start time, or the next start time after that, if the start time is in less than a minute, 
+	// 		// to give the following code enough time to complete it's calculations to ensure the import starts correctly. 
+
+	// 		Duration nextStartDuration = null;
+	// 		ZonedDateTime nextStartTime = null;
+	// 		if(importPeriod != null) {
+	// 			Duration duration = TimeTool.parseNextDuration(importPeriod);
+	// 			if(importStartTime == null) {
+	// 				nextStartTime = Optional.of(ZonedDateTime.now(ZoneId.of(config.getString(ComputateConfigKeys.SITE_ZONE))))
+	// 						.map(t -> Duration.between(Instant.now(), t).toMinutes() < 1L ? t.plus(duration) : t).get();
+	// 			} else {
+	// 				nextStartTime = TimeTool.parseNextZonedTime(importStartTime);
+	// 			}
+
+	// 			// Get the time now for the import start time zone. 
+	// 			ZonedDateTime now = ZonedDateTime.now(nextStartTime.getZone());
+	// 			BigDecimal[] divideAndRemainder = BigDecimal.valueOf(Duration.between(now, nextStartTime).toMillis())
+	// 					.divideAndRemainder(BigDecimal.valueOf(duration.toMillis()));
+	// 			nextStartDuration = Duration.between(now, nextStartTime);
+	// 			if(divideAndRemainder[0].compareTo(BigDecimal.ONE) >= 0) {
+	// 				nextStartDuration = Duration.ofMillis(divideAndRemainder[1].longValueExact());
+	// 				nextStartTime = now.plus(nextStartDuration);
+	// 			}
+	// 			LOG.info(String.format(importTimerScheduling, classSimpleName, nextStartTime.format(TIME_FORMAT)));
+	// 		}
+	// 		ZonedDateTime nextStartTime2 = nextStartTime;
+
+	// 		if(importStartTime == null) {
+	// 			try {
+	// 				vertx.setTimer(1, a -> {
+	// 					workerExecutor.executeBlocking(() -> {
+	// 						return importBlocking(pagePath, vertx, siteRequest, classSimpleName, classApiAddress, null);
+	// 					});
+	// 				});
+	// 				promise.complete();
+	// 			} catch(Exception ex) {
+	// 				LOG.error(String.format(importTimerFail, classSimpleName), ex);
+	// 				promise.fail(ex);
+	// 			}
+	// 		} else {
+	// 			try {
+	// 				vertx.setTimer(nextStartDuration.toMillis(), a -> {
+	// 					workerExecutor.executeBlocking(() -> {
+	// 						return importBlocking(pagePath, vertx, siteRequest, classSimpleName, classApiAddress, nextStartTime2);
+	// 					});
+	// 				});
+	// 				promise.complete();
+	// 			} catch(Exception ex) {
+	// 				LOG.error(String.format(importTimerFail, classSimpleName), ex);
+	// 				promise.fail(ex);
+	// 			}
+	// 		}
+	// 	} else {
+	// 		LOG.info(String.format(importTimerSkip, classSimpleName));
+	// 		promise.complete();
+	// 	}
+	// 	return promise.future();
+	// }
 }
