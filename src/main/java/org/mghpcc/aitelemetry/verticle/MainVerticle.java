@@ -173,6 +173,7 @@ import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
 
 
+
 /**
  * Description: A Java class to start the Vert.x application as a main method. 
  * Keyword: classSimpleNameVerticle
@@ -215,7 +216,6 @@ public class MainVerticle extends AbstractVerticle {
 	private RabbitMQClient rabbitmqClient;
 
 	private Jinjava jinjava;
-
 
 	/**	
 	 *	The main method for the Vert.x application that runs the Vert.x Runner class
@@ -483,7 +483,9 @@ public class MainVerticle extends AbstractVerticle {
 													configureJinjava().onSuccess(k -> 
 															configureApi().onSuccess(m -> 
 																configureUi().onSuccess(n -> 
-																	startServer().onSuccess(o -> startPromise.complete())
+																	configureCamel().onSuccess(o -> 
+																		startServer().onSuccess(p -> startPromise.complete())
+																	).onFailure(ex -> startPromise.fail(ex))
 																).onFailure(ex -> startPromise.fail(ex))
 															).onFailure(ex -> startPromise.fail(ex))
 													).onFailure(ex -> startPromise.fail(ex))
@@ -514,6 +516,35 @@ public class MainVerticle extends AbstractVerticle {
 			promise.complete();
 		} catch(Exception ex) {
 			LOG.error("Unable to configure site context. ", ex);
+			promise.fail(ex);
+		}
+
+		return promise.future();
+	}
+
+	private Future<Void> configureCamel() {
+		Promise<Void> promise = Promise.promise();
+		try {
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+
+			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel", message -> {
+				apiGpuDevice.importDataCamel().onSuccess(a -> {
+					message.reply(new JsonObject());
+				}).onFailure(ex -> {
+					message.fail(500, ex.getMessage());
+				});
+			});
+
+			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel-compensation", message -> {
+				apiGpuDevice.importDataCamelCompensation().onSuccess(a -> {
+					message.reply(new JsonObject());
+				}).onFailure(ex -> {
+					message.fail(500, ex.getMessage());
+				});
+			});
+			promise.complete();
+		} catch(Exception ex) {
+			LOG.error("The Camel Component was not configured properly. ");
 			promise.fail(ex);
 		}
 
