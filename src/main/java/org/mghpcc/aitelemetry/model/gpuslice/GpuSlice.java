@@ -18,32 +18,35 @@ import io.vertx.pgclient.data.Polygon;
 
 /**
  * Order: 7
- * Model: true
- * 
- * Api: true
- * Page: true
- * SuperPage: BaseModelPage
- * Indexed: true
  * Description: A GPU slice inside a GPU
+ * AName: a GPU slice
+ * PluralName: GPU slices
+ * Icon: <i class="fa-regular fa-cake-slice"></i>
  * 
- * ApiTag: GPU slice
- * ApiUri: /api/gpu-slice
- * 
+ * SearchPageUri: /en-us/search/gpu-slice
+ * EditPageUri: /en-us/edit/gpu-slice/{pageId}
+ * ApiUri: /en-us/api/gpu-slice
  * ApiMethod:
  *   Search:
  *   GET:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: GpuSlicePage
- *     ApiUri: /gpu-slice
  * 
- * Role: SiteAdmin
- * 
- * AName: a GPU slice
- * PluralName: GPU slices
- * Icon: <i class="fa-regular fa-cake-slice"></i>
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  */
 public class GpuSlice extends GpuSliceGen<BaseModel> {
 
@@ -58,8 +61,9 @@ public class GpuSlice extends GpuSliceGen<BaseModel> {
    * HtmColumn: 1
    * HtmRowTitle: GPU device details
    * Facet: true
+   * VarName: true
    **/
-  protected void _name(Wrap<String> w) {}
+  protected void _sliceName(Wrap<String> w) {}
 
   /**
    * {@inheritDoc}
@@ -71,6 +75,7 @@ public class GpuSlice extends GpuSliceGen<BaseModel> {
    * HtmCell: 2
    * Facet: true
    * HtmColumn: 2
+   * VarDescription: true
    **/
   protected void _description(Wrap<String> w) {}
 
@@ -133,9 +138,10 @@ public class GpuSlice extends GpuSliceGen<BaseModel> {
    * HtmRow: 3
    * HtmCell: 4
    * Facet: true
+   * VarId: true
    */
   protected void _entityId(Wrap<String> w) {
-    w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+    w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(sliceName)));
   }
 
   /**
@@ -147,22 +153,6 @@ public class GpuSlice extends GpuSliceGen<BaseModel> {
   protected void _entityShortId(Wrap<String> w) {
     if(entityId != null) {
       w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
-    }
-  }
-
-  @Override
-  protected void _objectTitle(Wrap<String> w) {
-    StringBuilder b = new StringBuilder();
-    b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", GpuSlice_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-    w.o(b.toString().trim());
-  }
-
-  @Override
-  protected void _objectId(Wrap<String> w) {
-  if(objectTitle != null) {
-      w.o(toId(objectTitle));
-    } else if(id != null){
-      w.o(id.toString());
     }
   }
 }

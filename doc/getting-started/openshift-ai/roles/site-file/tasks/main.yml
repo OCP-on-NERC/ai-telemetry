@@ -15,7 +15,7 @@
   register: PUBLIC_MODELS_RESPONSE
 - name: Query Apache Solr for all Java page templates
   uri:
-    url: "{{ SOLR_URL_COMPUTATE + '/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:' + SITE_NAME + (('+OR+siteNom_indexed_string:' + SITE_POM_ARTIFACT_ID) if SITE_POM_ARTIFACT_ID is defined else '') + '&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&fq=classePageTemplates_enUS_indexed_string:%5B%2A%20TO%20%2A%5D&sort=classeOrdre_indexed_int%20asc' }}"
+    url: "{{ SOLR_URL_COMPUTATE + '/select?rows=300&q=*:*&fq=partEstClasse_indexed_boolean:true&fq=siteNom_indexed_string:' + SITE_NAME + (('+OR+siteNom_indexed_string:' + SITE_POM_ARTIFACT_ID) if SITE_POM_ARTIFACT_ID is defined else '') + '&fq=classeApiMethodes_enUS_indexed_strings:SearchPage&fq=-classeNomSimple_enUS_indexed_string:SiteUser&fq=(classePageTemplates_enUS_indexed_string:%5B%2A%20TO%20%2A%5D%20OR%20classePageTemplatesUtilisateur_enUS_indexed_string:%5B%2A%20TO%20%2A%5D)&sort=classeOrdre_indexed_int%20asc' }}"
     url_username: "{{ SOLR_USERNAME }}"
     url_password: "{{ SOLR_PASSWORD }}"
     validate_certs: false

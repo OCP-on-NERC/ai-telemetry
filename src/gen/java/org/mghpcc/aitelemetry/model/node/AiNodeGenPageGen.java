@@ -1,7 +1,7 @@
 package org.mghpcc.aitelemetry.model.node;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.model.BaseModelPage;
+import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.model.BaseModel;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
@@ -65,20 +65,20 @@ import io.vertx.core.Future;
  * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these AiNodeGenPage objects in a RESTful API. 
  * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class AiNodeGenPageGen into the class AiNodeGenPage. 
  * </li>
- * <h3>About the AiNodeGenPage class and it's generated class AiNodeGenPageGen&lt;BaseModelPage&gt;: </h3>extends AiNodeGenPageGen
+ * <h3>About the AiNodeGenPage class and it's generated class AiNodeGenPageGen&lt;PageLayout&gt;: </h3>extends AiNodeGenPageGen
  * <p>
  * This Java class extends a generated Java class AiNodeGenPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage">Find the class AiNodeGenPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage">Find the class AiNodeGenPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends AiNodeGenPageGen<BaseModelPage>
- * <p>This <code>class AiNodeGenPage extends AiNodeGenPageGen&lt;BaseModelPage&gt;</code>, which means it extends a newly generated AiNodeGenPageGen. 
- * The generated <code>class AiNodeGenPageGen extends BaseModelPage</code> which means that AiNodeGenPage extends AiNodeGenPageGen which extends BaseModelPage. 
+ * extends AiNodeGenPageGen<PageLayout>
+ * <p>This <code>class AiNodeGenPage extends AiNodeGenPageGen&lt;PageLayout&gt;</code>, which means it extends a newly generated AiNodeGenPageGen. 
+ * The generated <code>class AiNodeGenPageGen extends PageLayout</code> which means that AiNodeGenPage extends AiNodeGenPageGen which extends PageLayout. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -119,19 +119,19 @@ import io.vertx.core.Future;
  * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class AiNodeGenPage in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.node in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.node&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.node&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
-public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
+public abstract class AiNodeGenPageGen<DEV> extends PageLayout {
 	protected static final Logger LOG = LoggerFactory.getLogger(AiNodeGenPage.class);
 
 	///////////////////////
@@ -148,7 +148,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity searchListAiNode_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:searchListAiNode_">Find the entity searchListAiNode_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:searchListAiNode_">Find the entity searchListAiNode_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -189,7 +189,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity listAiNode
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:listAiNode">Find the entity listAiNode in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:listAiNode">Find the entity listAiNode in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -230,101 +230,101 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 	}
 
 	/////////////////
-	// aiNodeCount //
+	// resultCount //
 	/////////////////
 
 
-	/**	 The entity aiNodeCount
+	/**	 The entity resultCount
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
-	protected Integer aiNodeCount;
+	protected Integer resultCount;
 
-	/**	<br> The entity aiNodeCount
+	/**	<br> The entity resultCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNodeCount">Find the entity aiNodeCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:resultCount">Find the entity resultCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _aiNodeCount(Wrap<Integer> w);
+	protected abstract void _resultCount(Wrap<Integer> w);
 
-	public Integer getAiNodeCount() {
-		return aiNodeCount;
+	public Integer getResultCount() {
+		return resultCount;
 	}
 
-	public void setAiNodeCount(Integer aiNodeCount) {
-		this.aiNodeCount = aiNodeCount;
+	public void setResultCount(Integer resultCount) {
+		this.resultCount = resultCount;
 	}
 	@JsonIgnore
-	public void setAiNodeCount(String o) {
-		this.aiNodeCount = AiNodeGenPage.staticSetAiNodeCount(siteRequest_, o);
+	public void setResultCount(String o) {
+		this.resultCount = AiNodeGenPage.staticSetResultCount(siteRequest_, o);
 	}
-	public static Integer staticSetAiNodeCount(SiteRequest siteRequest_, String o) {
+	public static Integer staticSetResultCount(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Integer.parseInt(o);
 		return null;
 	}
-	protected AiNodeGenPage aiNodeCountInit() {
-		Wrap<Integer> aiNodeCountWrap = new Wrap<Integer>().var("aiNodeCount");
-		if(aiNodeCount == null) {
-			_aiNodeCount(aiNodeCountWrap);
-			Optional.ofNullable(aiNodeCountWrap.getO()).ifPresent(o -> {
-				setAiNodeCount(o);
+	protected AiNodeGenPage resultCountInit() {
+		Wrap<Integer> resultCountWrap = new Wrap<Integer>().var("resultCount");
+		if(resultCount == null) {
+			_resultCount(resultCountWrap);
+			Optional.ofNullable(resultCountWrap.getO()).ifPresent(o -> {
+				setResultCount(o);
 			});
 		}
 		return (AiNodeGenPage)this;
 	}
 
-	public static Integer staticSearchAiNodeCount(SiteRequest siteRequest_, Integer o) {
+	public static Integer staticSearchResultCount(SiteRequest siteRequest_, Integer o) {
 		return o;
 	}
 
-	public static String staticSearchStrAiNodeCount(SiteRequest siteRequest_, Integer o) {
+	public static String staticSearchStrResultCount(SiteRequest siteRequest_, Integer o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqAiNodeCount(SiteRequest siteRequest_, String o) {
-		return AiNodeGenPage.staticSearchAiNodeCount(siteRequest_, AiNodeGenPage.staticSetAiNodeCount(siteRequest_, o)).toString();
+	public static String staticSearchFqResultCount(SiteRequest siteRequest_, String o) {
+		return AiNodeGenPage.staticSearchResultCount(siteRequest_, AiNodeGenPage.staticSetResultCount(siteRequest_, o)).toString();
 	}
 
-	/////////////
-	// aiNode_ //
-	/////////////
+	////////////
+	// result //
+	////////////
 
 
-	/**	 The entity aiNode_
+	/**	 The entity result
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected AiNode aiNode_;
+	protected AiNode result;
 
-	/**	<br> The entity aiNode_
+	/**	<br> The entity result
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:aiNode_">Find the entity aiNode_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:result">Find the entity result in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _aiNode_(Wrap<AiNode> w);
+	protected abstract void _result(Wrap<AiNode> w);
 
-	public AiNode getAiNode_() {
-		return aiNode_;
+	public AiNode getResult() {
+		return result;
 	}
 
-	public void setAiNode_(AiNode aiNode_) {
-		this.aiNode_ = aiNode_;
+	public void setResult(AiNode result) {
+		this.result = result;
 	}
-	public static AiNode staticSetAiNode_(SiteRequest siteRequest_, String o) {
+	public static AiNode staticSetResult(SiteRequest siteRequest_, String o) {
 		return null;
 	}
-	protected AiNodeGenPage aiNode_Init() {
-		Wrap<AiNode> aiNode_Wrap = new Wrap<AiNode>().var("aiNode_");
-		if(aiNode_ == null) {
-			_aiNode_(aiNode_Wrap);
-			Optional.ofNullable(aiNode_Wrap.getO()).ifPresent(o -> {
-				setAiNode_(o);
+	protected AiNodeGenPage resultInit() {
+		Wrap<AiNode> resultWrap = new Wrap<AiNode>().var("result");
+		if(result == null) {
+			_result(resultWrap);
+			Optional.ofNullable(resultWrap.getO()).ifPresent(o -> {
+				setResult(o);
 			});
 		}
 		return (AiNodeGenPage)this;
@@ -345,7 +345,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -390,56 +390,57 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		return AiNodeGenPage.staticSearchPk(siteRequest_, AiNodeGenPage.staticSetPk(siteRequest_, o)).toString();
 	}
 
-	////////
-	// id //
-	////////
+	////////////
+	// solrId //
+	////////////
 
 
-	/**	 The entity id
+	/**	 The entity solrId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String id;
+	protected String solrId;
 
-	/**	<br> The entity id
+	/**	<br> The entity solrId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:solrId">Find the entity solrId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _id(Wrap<String> w);
+	protected abstract void _solrId(Wrap<String> w);
 
-	public String getId() {
-		return id;
+	public String getSolrId() {
+		return solrId;
 	}
-	public void setId(String o) {
-		this.id = AiNodeGenPage.staticSetId(siteRequest_, o);
+	@JsonIgnore
+	public void setSolrId(String o) {
+		this.solrId = AiNodeGenPage.staticSetSolrId(siteRequest_, o);
 	}
-	public static String staticSetId(SiteRequest siteRequest_, String o) {
+	public static String staticSetSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiNodeGenPage idInit() {
-		Wrap<String> idWrap = new Wrap<String>().var("id");
-		if(id == null) {
-			_id(idWrap);
-			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
-				setId(o);
+	protected AiNodeGenPage solrIdInit() {
+		Wrap<String> solrIdWrap = new Wrap<String>().var("solrId");
+		if(solrId == null) {
+			_solrId(solrIdWrap);
+			Optional.ofNullable(solrIdWrap.getO()).ifPresent(o -> {
+				setSolrId(o);
 			});
 		}
 		return (AiNodeGenPage)this;
 	}
 
-	public static String staticSearchId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrSolrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
-		return AiNodeGenPage.staticSearchId(siteRequest_, AiNodeGenPage.staticSetId(siteRequest_, o)).toString();
+	public static String staticSearchFqSolrId(SiteRequest siteRequest_, String o) {
+		return AiNodeGenPage.staticSearchSolrId(siteRequest_, AiNodeGenPage.staticSetSolrId(siteRequest_, o)).toString();
 	}
 
 	///////////////////
@@ -456,7 +457,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 
 	/**	<br> The entity pageUriAiNode
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pageUriAiNode">Find the entity pageUriAiNode in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodeGenPage&fq=entiteVar_enUS_indexed_string:pageUriAiNode">Find the entity pageUriAiNode in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -465,6 +466,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 	public String getPageUriAiNode() {
 		return pageUriAiNode;
 	}
+	@JsonIgnore
 	public void setPageUriAiNode(String o) {
 		this.pageUriAiNode = AiNodeGenPage.staticSetPageUriAiNode(siteRequest_, o);
 	}
@@ -498,18 +500,18 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiNodeGenPage(SiteRequest siteRequest_) {
+	public Future<AiNodeGenPageGen<DEV>> promiseDeepAiNodeGenPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiNodeGenPage();
 	}
 
-	public Future<Void> promiseDeepAiNodeGenPage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiNodeGenPageGen<DEV>> promiseDeepAiNodeGenPage() {
+		Promise<AiNodeGenPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiNodeGenPage(promise2);
 		promise2.future().onSuccess(a -> {
-			super.promiseDeepBaseModelPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+			super.promiseDeepPageLayout(siteRequest_).onSuccess(b -> {
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -525,10 +527,10 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 			try {
 				searchListAiNode_Init();
 				listAiNodeInit();
-				aiNodeCountInit();
-				aiNode_Init();
+				resultCountInit();
+				resultInit();
 				pkInit();
-				idInit();
+				solrIdInit();
 				pageUriAiNodeInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -543,7 +545,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiNodeGenPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiNodeGenPage(siteRequest_);
 	}
 
@@ -552,7 +554,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 	/////////////////
 
 	public void siteRequestAiNodeGenPage(SiteRequest siteRequest_) {
-			super.siteRequestBaseModelPage(siteRequest_);
+			super.siteRequestPageLayout(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
@@ -587,18 +589,18 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 				return oAiNodeGenPage.searchListAiNode_;
 			case "listAiNode":
 				return oAiNodeGenPage.listAiNode;
-			case "aiNodeCount":
-				return oAiNodeGenPage.aiNodeCount;
-			case "aiNode_":
-				return oAiNodeGenPage.aiNode_;
+			case "resultCount":
+				return oAiNodeGenPage.resultCount;
+			case "result":
+				return oAiNodeGenPage.result;
 			case "pk":
 				return oAiNodeGenPage.pk;
-			case "id":
-				return oAiNodeGenPage.id;
+			case "solrId":
+				return oAiNodeGenPage.solrId;
 			case "pageUriAiNode":
 				return oAiNodeGenPage.pageUriAiNode;
 			default:
-				return super.obtainBaseModelPage(var);
+				return super.obtainPageLayout(var);
 		}
 	}
 
@@ -623,7 +625,7 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		AiNodeGenPage oAiNodeGenPage = (AiNodeGenPage)this;
 		switch(var) {
 			default:
-				return super.relateBaseModelPage(var, val);
+				return super.relatePageLayout(var, val);
 		}
 	}
 
@@ -638,16 +640,16 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listAiNode":
 			return AiNodeGenPage.staticSetListAiNode(siteRequest_, o);
-		case "aiNodeCount":
-			return AiNodeGenPage.staticSetAiNodeCount(siteRequest_, o);
+		case "resultCount":
+			return AiNodeGenPage.staticSetResultCount(siteRequest_, o);
 		case "pk":
 			return AiNodeGenPage.staticSetPk(siteRequest_, o);
-		case "id":
-			return AiNodeGenPage.staticSetId(siteRequest_, o);
+		case "solrId":
+			return AiNodeGenPage.staticSetSolrId(siteRequest_, o);
 		case "pageUriAiNode":
 			return AiNodeGenPage.staticSetPageUriAiNode(siteRequest_, o);
 			default:
-				return BaseModelPage.staticSetBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -662,16 +664,16 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listAiNode":
 			return AiNodeGenPage.staticSearchListAiNode(siteRequest_, (JsonArray)o);
-		case "aiNodeCount":
-			return AiNodeGenPage.staticSearchAiNodeCount(siteRequest_, (Integer)o);
+		case "resultCount":
+			return AiNodeGenPage.staticSearchResultCount(siteRequest_, (Integer)o);
 		case "pk":
 			return AiNodeGenPage.staticSearchPk(siteRequest_, (Long)o);
-		case "id":
-			return AiNodeGenPage.staticSearchId(siteRequest_, (String)o);
+		case "solrId":
+			return AiNodeGenPage.staticSearchSolrId(siteRequest_, (String)o);
 		case "pageUriAiNode":
 			return AiNodeGenPage.staticSearchPageUriAiNode(siteRequest_, (String)o);
 			default:
-				return BaseModelPage.staticSearchBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -686,16 +688,16 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listAiNode":
 			return AiNodeGenPage.staticSearchStrListAiNode(siteRequest_, (String)o);
-		case "aiNodeCount":
-			return AiNodeGenPage.staticSearchStrAiNodeCount(siteRequest_, (Integer)o);
+		case "resultCount":
+			return AiNodeGenPage.staticSearchStrResultCount(siteRequest_, (Integer)o);
 		case "pk":
 			return AiNodeGenPage.staticSearchStrPk(siteRequest_, (Long)o);
-		case "id":
-			return AiNodeGenPage.staticSearchStrId(siteRequest_, (String)o);
+		case "solrId":
+			return AiNodeGenPage.staticSearchStrSolrId(siteRequest_, (String)o);
 		case "pageUriAiNode":
 			return AiNodeGenPage.staticSearchStrPageUriAiNode(siteRequest_, (String)o);
 			default:
-				return BaseModelPage.staticSearchStrBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchStrPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -710,16 +712,16 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listAiNode":
 			return AiNodeGenPage.staticSearchFqListAiNode(siteRequest_, o);
-		case "aiNodeCount":
-			return AiNodeGenPage.staticSearchFqAiNodeCount(siteRequest_, o);
+		case "resultCount":
+			return AiNodeGenPage.staticSearchFqResultCount(siteRequest_, o);
 		case "pk":
 			return AiNodeGenPage.staticSearchFqPk(siteRequest_, o);
-		case "id":
-			return AiNodeGenPage.staticSearchFqId(siteRequest_, o);
+		case "solrId":
+			return AiNodeGenPage.staticSearchFqSolrId(siteRequest_, o);
 		case "pageUriAiNode":
 			return AiNodeGenPage.staticSearchFqPageUriAiNode(siteRequest_, o);
 			default:
-				return BaseModelPage.staticSearchFqBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchFqPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -736,19 +738,59 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 	public static final String CLASS_SIMPLE_NAME = "AiNodeGenPage";
 	public static final String VAR_searchListAiNode_ = "searchListAiNode_";
 	public static final String VAR_listAiNode = "listAiNode";
-	public static final String VAR_aiNodeCount = "aiNodeCount";
-	public static final String VAR_aiNode_ = "aiNode_";
+	public static final String VAR_resultCount = "resultCount";
+	public static final String VAR_result = "result";
 	public static final String VAR_pk = "pk";
-	public static final String VAR_id = "id";
+	public static final String VAR_solrId = "solrId";
 	public static final String VAR_pageUriAiNode = "pageUriAiNode";
 
 	public static final String DISPLAY_NAME_searchListAiNode_ = "";
 	public static final String DISPLAY_NAME_listAiNode = "";
-	public static final String DISPLAY_NAME_aiNodeCount = "";
-	public static final String DISPLAY_NAME_aiNode_ = "";
+	public static final String DISPLAY_NAME_resultCount = "";
+	public static final String DISPLAY_NAME_result = "";
 	public static final String DISPLAY_NAME_pk = "";
-	public static final String DISPLAY_NAME_id = "";
+	public static final String DISPLAY_NAME_solrId = "";
 	public static final String DISPLAY_NAME_pageUriAiNode = "";
+
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return AiNodeGenPage.displayNameAiNodeGenPage(var);
@@ -759,18 +801,95 @@ public abstract class AiNodeGenPageGen<DEV> extends BaseModelPage {
 			return DISPLAY_NAME_searchListAiNode_;
 		case VAR_listAiNode:
 			return DISPLAY_NAME_listAiNode;
-		case VAR_aiNodeCount:
-			return DISPLAY_NAME_aiNodeCount;
-		case VAR_aiNode_:
-			return DISPLAY_NAME_aiNode_;
+		case VAR_resultCount:
+			return DISPLAY_NAME_resultCount;
+		case VAR_result:
+			return DISPLAY_NAME_result;
 		case VAR_pk:
 			return DISPLAY_NAME_pk;
-		case VAR_id:
-			return DISPLAY_NAME_id;
+		case VAR_solrId:
+			return DISPLAY_NAME_solrId;
 		case VAR_pageUriAiNode:
 			return DISPLAY_NAME_pageUriAiNode;
 		default:
-			return BaseModelPage.displayNameBaseModelPage(var);
+			return PageLayout.displayNamePageLayout(var);
+		}
+	}
+
+	public static String descriptionAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.descriptionPageLayout(var);
+		}
+	}
+
+	public static String classSimpleNameAiNodeGenPage(String var) {
+		switch(var) {
+		case VAR_searchListAiNode_:
+			return "SearchList";
+		case VAR_listAiNode:
+			return "JsonArray";
+		case VAR_resultCount:
+			return "Integer";
+		case VAR_result:
+			return "AiNode";
+		case VAR_pk:
+			return "Long";
+		case VAR_solrId:
+			return "String";
+		case VAR_pageUriAiNode:
+			return "String";
+			default:
+				return PageLayout.classSimpleNamePageLayout(var);
+		}
+	}
+
+	public static Integer htmColumnAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmColumnPageLayout(var);
+		}
+	}
+
+	public static Integer htmRowAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmRowPageLayout(var);
+		}
+	}
+
+	public static Integer htmCellAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmCellPageLayout(var);
+		}
+	}
+
+	public static Integer lengthMinAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.lengthMinPageLayout(var);
+		}
+	}
+
+	public static Integer lengthMaxAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.lengthMaxPageLayout(var);
+		}
+	}
+
+	public static Integer maxAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.maxPageLayout(var);
+		}
+	}
+
+	public static Integer minAiNodeGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.minPageLayout(var);
 		}
 	}
 }

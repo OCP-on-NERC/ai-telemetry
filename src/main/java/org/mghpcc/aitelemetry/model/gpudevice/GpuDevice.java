@@ -17,32 +17,35 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Fiware: true
- *
- * Model: true
- * Api: true
- * Page: true
- * SuperPage: BaseModelPage
- * Indexed: true
  * Order: 5
  * Description: A Red Hat OpenShift GPU device containing GPUs
- * ApiTag: GPU device
- * ApiUri: /api/gpu-device
+ * AName: a GPU device
+ * Icon: <i class="fa-regular fa-memory"></i>
  *
+ * SearchPageUri: /en-us/search/gpu-device
+ * EditPageUri: /en-us/edit/gpu-device/{pageId}
+ * ApiUri: /en-us/api/gpu-device
  * ApiMethod:
  *   Search:
  *   GET:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: GpuDevicePage
- *     ApiUri: /gpu-device
- *
- * Role: SiteAdmin
- *
- * AName: a GPU device
- * Icon: <i class="fa-regular fa-memory"></i>
+ * 
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  **/
 public class GpuDevice extends GpuDeviceGen<BaseModel> {
 
@@ -50,15 +53,65 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: name
-	 * Description: The name of this GPU device
+	 * DisplayName: GPU device ID
+	 * Description: A unique ID for a gpu device per cluster, and node. 
+	 * Facet: true
+	 * VarName: true
+	 **/
+	protected void _gpuDeviceId(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: cluster name
+	 * Description: The cluster name of this GPU device
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 1
-	 * HtmRowTitle: GPU device details
+	 * HtmRowTitleOpen: GPU device details
 	 * Facet: true
 	 **/
-	protected void _name(Wrap<String> w) {}
+	protected void _clusterName(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: node name
+	 * Description: The node name of this GPU device
+	 * HtmRow: 3
+	 * HtmCell: 2
+	 * HtmColumn: 2
+	 * Facet: true
+	 **/
+	protected void _nodeName(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU device number
+	 * Description: The number of this GPU device
+	 * HtmRow: 3
+	 * HtmCell: 3
+	 * HtmColumn: 3
+	 * Facet: true
+	 **/
+	protected void _gpuDeviceNumber(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU device utilization
+	 * Description: Current utilization of the GPU device. 
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * HtmRowTitleOpen: GPU device utilization stats
+	 * Facet: true
+	 **/
+	protected void _gpuDeviceUtilization(Wrap<Integer> w) {}
 
 	/**
 	 * {@inheritDoc}
@@ -70,6 +123,7 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * HtmCell: 2
 	 * Facet: true
 	 * HtmColumn: 2
+	 * VarDescription: true
 	 **/
 	protected void _description(Wrap<String> w) {}
 
@@ -133,9 +187,10 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
+	 * VarId: true
 	 */
 	protected void _entityId(Wrap<String> w) {
-		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(gpuDeviceId)));
 	}
 
 	/**
@@ -147,22 +202,6 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	protected void _entityShortId(Wrap<String> w) {
 		if(entityId != null) {
 			w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
-		}
-	}
-
-	@Override
-	protected void _objectTitle(Wrap<String> w) {
-		StringBuilder b = new StringBuilder();
-		b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", GpuDevice_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-		w.o(b.toString().trim());
-	}
-
-	@Override
-	protected void _objectId(Wrap<String> w) {
-	if(objectTitle != null) {
-			w.o(toId(objectTitle));
-		} else if(id != null){
-			w.o(id.toString());
 		}
 	}
 }

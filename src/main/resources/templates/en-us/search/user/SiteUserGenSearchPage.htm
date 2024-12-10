@@ -1,0 +1,270 @@
+{% extends "en-us/PageLayout.htm" %}
+
+{%- block htmTitlePageLayout %}
+{%- block htmTitleSiteUserPage %}
+    <title>{% if resultCount == 0 %}no site user found{% else %}site users{% endif %}</title>
+{%- endblock htmTitleSiteUserPage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/user/SiteUser.css"/>
+{%- block htmStylesSiteUserPage %}
+{%- endblock htmStylesSiteUserPage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+{{ super() }}
+{%- block htmStyleSiteUserPage %}
+{%- endblock htmStyleSiteUserPage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsSiteUserPage %}
+    <script src="{{staticBaseUrl}}/js/en-us/search/user/SiteUser.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/user/SiteUserSearchPage.js"></script>
+{%- endblock htmScriptsSiteUserPage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptSiteUserPage %}
+    <script>
+
+      function jsWebsocketSiteUser(userId, vars, $response) {
+{%- block jsWebsocketSiteUserPage %}{%- endblock %}
+      }
+
+      function jsTooltipSiteUser(e, feature) {
+{%- block jsTooltipSiteUserPage %}{%- endblock %}
+      }
+
+      function htmTooltipSiteUser(feature, layer) {
+        return `{%- block htmTooltipSiteUserPage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.title}</a></h3>
+{%- endblock htmTooltipSiteUserPage %}`;
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('sl-button')
+        , customElements.whenDefined('sl-input')
+      ]).then(() => {
+
+        var userId = {% if result.userId is defined %}{{ result.userId | tojson }}{% else %}null{% endif %};
+
+        if(userId == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          var o = document.querySelector('.pageForm .result')?.value;
+          if(o)
+            window.result = JSON.parse(o);
+        {% if userId is defined %}
+        {% endif %}
+        }
+        var l = document.querySelector('.pageForm .listSiteUser')?.value;
+        if(l)
+          window.listSiteUser = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphSiteUser();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qSiteUser_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qSiteUser_rows')?.addEventListener('sl-change', event => {
+          paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_rows'));
+        });
+
+        document.querySelector('#qSiteUser_start')?.addEventListener('sl-change', event => {
+          paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_start'));
+        });
+
+
+        var submitForm_patchSiteUser = document.querySelector('#htmForm_patchSiteUser')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchSiteUser')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchSiteUser(null, document.querySelector('#htmForm_patchSiteUser'), document.querySelector('#htmFormButton_patchSiteUser'), event.target.getAttribute('data-userId'));
+          return false;
+        });
+
+        var submitForm_postSiteUser = document.querySelector('#htmForm_postSiteUser')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postSiteUser')?.addEventListener('click', event => {
+          event.preventDefault();
+          postSiteUser(document.querySelector('#htmForm_postSiteUser'), document.querySelector('#htmFormButton_postSiteUser'), (response, target) => { response.json().then((json) => { window.location.href = json.editPage; }); });
+          return false;
+        });
+
+        var submitForm_searchpageSiteUser = document.querySelector('#htmForm_searchpageSiteUser')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageSiteUser')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageSiteUser();
+          return false;
+        });
+      });
+    </script>
+{%- endblock htmScriptSiteUserPage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketSiteUserPage %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketSiteUser(websocketSiteUserInner);
+{%- endblock websocketSiteUserPage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlSiteUserPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlSiteUserPage %}
+
+{%- block htmBodyStartPageLayout %}
+{{ super() }}
+{%- block htmBodyStartSiteUserPage %}
+{%- endblock htmBodyStartSiteUserPage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleSiteUserPage %}
+{%- include en-us/search/user/SiteUserSidebar.htm %}
+{%- include en-us/search/user/SiteUserSuggestedSearch.htm %}
+{% if resultCount == 0 %}
+          <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
+        <div>
+            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all site users
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
+{% include en-us/search/user/SiteUserSearchButtons.htm %}
+{% include en-us/search/user/SiteUserSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no site user found</span>
+          </span>
+        </h2>
+{% else %}
+        <div class="pageContent ">
+          <div id="site-calendar-box">
+            <div id="site-calendar"><!-- // --></div>
+          </div>
+          <div class="margin-block">
+            <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
+            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all site users
+            </sl-button>
+          </div>
+          <h1><a href="{{pageUri}}"><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></a></h1>
+{% include en-us/search/user/SiteUserSearchButtons.htm %}
+{% include en-us/search/user/SiteUserSearchForm.htm %}
+{% include en-us/search/user/SiteUserPaginationButtons.htm %}
+          <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+            <div>
+              <sl-dropdown id="htmDropdown-userFullName">
+                <sl-button variant="primary" slot="trigger" caret></sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-userFullName-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by null ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-userFullName-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by null descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <sl-dropdown id="htmDropdown-userName">
+                <sl-button variant="primary" slot="trigger" caret></sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-userName-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by null ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-userName-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by null descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <div></div>
+            </div>
+            {% for item in listSiteUser%}
+            <div>
+              <a href="{{ item.displayPage }}">
+                <i class="fa-duotone fa-solid fa-user-gear"></i>
+              {{ item.userFullName }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              {{ item.userName }}
+              </a>
+              <sl-button variant="primary"
+                  id="{{classApiMethodMethod}}_editPage"
+                  placeholder="[String] edit"
+                  label="edit"
+                  title="Edit this"
+                  class="button-on-left {{classApiMethodMethod}}_editPage classSiteUser inputSiteUser{{userId}}EditPage "
+                  name="setEditPage"
+                  href="{{ item.editPage | e }}"
+                  >
+                <i class="fa-solid fa-pen-to-square"></i>
+                edit
+              </sl-button>
+            </div>
+            {% endfor %}
+              {% if getColumnUserFullName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnUserName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnEditPage is defined %}
+                <div>
+                </div>
+              {% endif %}
+          </div>
+{% endif %}
+{%- endblock htmBodyMiddleSiteUserPage %}
+{%- endblock htmBodyMiddlePageLayout %}
+
+{%- block htmBodyEndPageLayout %}
+  {{ super() }}
+{%- block htmBodyEndSiteUserPage %}
+{%- endblock htmBodyEndSiteUserPage %}
+{%- endblock htmBodyEndPageLayout %}

@@ -1,0 +1,26 @@
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nerc-ops
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        nerc.mghpcc.org/aggregate-to-nerc-ops: 'true'
+    - matchLabels:
+        rbac.authorization.k8s.io/aggregate-to-cluster-reader: 'true'
+    - matchLabels:
+        rbac.authorization.k8s.io/aggregate-to-view: 'true'
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nerc-ops
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: {{ CLUSTER_ADMIN_GROUP }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nerc-ops

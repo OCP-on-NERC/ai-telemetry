@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage">Find the class AiClusterPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage">Find the class AiClusterPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -98,15 +98,15 @@ import io.vertx.core.json.JsonArray;
  * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class AiClusterPage in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.cluster in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
@@ -117,18 +117,18 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiClusterPage(SiteRequest siteRequest_) {
+	public Future<AiClusterPageGen<DEV>> promiseDeepAiClusterPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiClusterPage();
 	}
 
-	public Future<Void> promiseDeepAiClusterPage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiClusterPageGen<DEV>> promiseDeepAiClusterPage() {
+		Promise<AiClusterPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiClusterPage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepAiClusterGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -155,7 +155,7 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiClusterPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiClusterPage(siteRequest_);
 	}
 
@@ -294,6 +294,46 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	public static final String CLASS_SIMPLE_NAME = "AiClusterPage";
 
 
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return AiClusterPage.displayNameAiClusterPage(var);
 	}
@@ -301,6 +341,69 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		switch(var) {
 		default:
 			return AiClusterGenPage.displayNameAiClusterGenPage(var);
+		}
+	}
+
+	public static String descriptionAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.descriptionAiClusterGenPage(var);
+		}
+	}
+
+	public static String classSimpleNameAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.classSimpleNameAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer htmColumnAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.htmColumnAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer htmRowAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.htmRowAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer htmCellAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.htmCellAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer lengthMinAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.lengthMinAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer lengthMaxAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.lengthMaxAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer maxAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.maxAiClusterGenPage(var);
+		}
+	}
+
+	public static Integer minAiClusterPage(String var) {
+		switch(var) {
+			default:
+				return AiClusterGenPage.minAiClusterGenPage(var);
 		}
 	}
 }

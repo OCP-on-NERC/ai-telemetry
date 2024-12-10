@@ -70,7 +70,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel">Find the class BaseModel in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel">Find the class BaseModel in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -92,22 +92,12 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the BaseModel class will inherit the helpful inherited class comments from the super class BaseModelGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 1</h2>
- * <p>This class contains a comment <b>"Order: 1"</b>, which means this class will be sorted by the given number 1 ascending when code that relates to multiple classes at the same time is generated. 
- * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
  * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
  * </p>
  * <h2>Page: true</h2>
- * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
- * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
- * This creates a new Java class org.mghpcc.aitelemetry.model.BaseModelPage. 
- * </p>
- * <h2>SuperPage.enUS: PageLayout</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.BaseModelPage extends org.mghpcc.aitelemetry.page.PageLayout. 
- * </p>
+ * <h2>SuperPage.enUS: null</h2>
  * <h2>Promise: true</h2>
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
@@ -134,23 +124,20 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class BaseModel in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
 public abstract class BaseModelGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(BaseModel.class);
-
-	public static final String BaseModel_Description_enUS = "A reusable base class for all database model classes";
-
 
 	//////////////////
 	// siteRequest_ //
@@ -166,7 +153,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity siteRequest_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:siteRequest_">Find the entity siteRequest_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:siteRequest_">Find the entity siteRequest_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -208,7 +195,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -253,62 +240,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return BaseModel.staticSearchPk(siteRequest_, BaseModel.staticSetPk(siteRequest_, o)).toString();
 	}
 
-	///////////////
-	// inheritPk //
-	///////////////
-
-
-	/**	 The entity inheritPk
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String inheritPk;
-
-	/**	<br> The entity inheritPk
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:inheritPk">Find the entity inheritPk in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _inheritPk(Wrap<String> w);
-
-	public String getInheritPk() {
-		return inheritPk;
-	}
-	public void setInheritPk(String o) {
-		this.inheritPk = BaseModel.staticSetInheritPk(siteRequest_, o);
-	}
-	public static String staticSetInheritPk(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected BaseModel inheritPkInit() {
-		Wrap<String> inheritPkWrap = new Wrap<String>().var("inheritPk");
-		if(inheritPk == null) {
-			_inheritPk(inheritPkWrap);
-			Optional.ofNullable(inheritPkWrap.getO()).ifPresent(o -> {
-				setInheritPk(o);
-			});
-		}
-		return (BaseModel)this;
-	}
-
-	public static String staticSearchInheritPk(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrInheritPk(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqInheritPk(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchInheritPk(siteRequest_, BaseModel.staticSetInheritPk(siteRequest_, o)).toString();
-	}
-
-	public String sqlInheritPk() {
-		return inheritPk;
-	}
-
 	/////////////
 	// created //
 	/////////////
@@ -326,7 +257,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity created
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:created">Find the entity created in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:created">Find the entity created in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -406,7 +337,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity modified
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:modified">Find the entity modified in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:modified">Find the entity modified in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -479,7 +410,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity archived
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:archived">Find the entity archived in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:archived">Find the entity archived in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -540,7 +471,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity classCanonicalName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classCanonicalName">Find the entity classCanonicalName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classCanonicalName">Find the entity classCanonicalName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -549,6 +480,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getClassCanonicalName() {
 		return classCanonicalName;
 	}
+	@JsonIgnore
 	public void setClassCanonicalName(String o) {
 		this.classCanonicalName = BaseModel.staticSetClassCanonicalName(siteRequest_, o);
 	}
@@ -592,7 +524,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity classSimpleName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classSimpleName">Find the entity classSimpleName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classSimpleName">Find the entity classSimpleName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -601,6 +533,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getClassSimpleName() {
 		return classSimpleName;
 	}
+	@JsonIgnore
 	public void setClassSimpleName(String o) {
 		this.classSimpleName = BaseModel.staticSetClassSimpleName(siteRequest_, o);
 	}
@@ -645,7 +578,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity classCanonicalNames
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classCanonicalNames">Find the entity classCanonicalNames in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:classCanonicalNames">Find the entity classCanonicalNames in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -658,6 +591,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public void setClassCanonicalNames(List<String> classCanonicalNames) {
 		this.classCanonicalNames = classCanonicalNames;
 	}
+	@JsonIgnore
 	public void setClassCanonicalNames(String o) {
 		String l = BaseModel.staticSetClassCanonicalNames(siteRequest_, o);
 		if(l != null)
@@ -718,7 +652,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity sessionId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:sessionId">Find the entity sessionId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:sessionId">Find the entity sessionId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -727,6 +661,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getSessionId() {
 		return sessionId;
 	}
+	@JsonIgnore
 	public void setSessionId(String o) {
 		this.sessionId = BaseModel.staticSetSessionId(siteRequest_, o);
 	}
@@ -775,7 +710,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity userKey
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:userKey">Find the entity userKey in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:userKey">Find the entity userKey in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -839,7 +774,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity saves
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:saves">Find the entity saves in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:saves">Find the entity saves in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -852,6 +787,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public void setSaves(List<String> saves) {
 		this.saves = saves;
 	}
+	@JsonIgnore
 	public void setSaves(String o) {
 		String l = BaseModel.staticSetSaves(siteRequest_, o);
 		if(l != null)
@@ -898,160 +834,224 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return BaseModel.staticSearchSaves(siteRequest_, BaseModel.staticSetSaves(siteRequest_, o)).toString();
 	}
 
-	////////////////
-	// objectIcon //
-	////////////////
+	///////////
+	// title //
+	///////////
 
 
-	/**	 The entity objectIcon
+	/**	 The entity title
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String objectIcon;
+	protected String title;
 
-	/**	<br> The entity objectIcon
+	/**	<br> The entity title
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectIcon">Find the entity objectIcon in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:title">Find the entity title in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _objectIcon(Wrap<String> w);
+	protected abstract void _title(Wrap<String> w);
 
-	public String getObjectIcon() {
-		return objectIcon;
+	public String getTitle() {
+		return title;
 	}
-	public void setObjectIcon(String o) {
-		this.objectIcon = BaseModel.staticSetObjectIcon(siteRequest_, o);
+	@JsonIgnore
+	public void setTitle(String o) {
+		this.title = BaseModel.staticSetTitle(siteRequest_, o);
 	}
-	public static String staticSetObjectIcon(SiteRequest siteRequest_, String o) {
+	public static String staticSetTitle(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BaseModel objectIconInit() {
-		Wrap<String> objectIconWrap = new Wrap<String>().var("objectIcon");
-		if(objectIcon == null) {
-			_objectIcon(objectIconWrap);
-			Optional.ofNullable(objectIconWrap.getO()).ifPresent(o -> {
-				setObjectIcon(o);
+	protected BaseModel titleInit() {
+		Wrap<String> titleWrap = new Wrap<String>().var("title");
+		if(title == null) {
+			_title(titleWrap);
+			Optional.ofNullable(titleWrap.getO()).ifPresent(o -> {
+				setTitle(o);
 			});
 		}
 		return (BaseModel)this;
 	}
 
-	public static String staticSearchObjectIcon(SiteRequest siteRequest_, String o) {
+	public static String staticSearchTitle(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrObjectIcon(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrTitle(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqObjectIcon(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchObjectIcon(siteRequest_, BaseModel.staticSetObjectIcon(siteRequest_, o)).toString();
+	public static String staticSearchFqTitle(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchTitle(siteRequest_, BaseModel.staticSetTitle(siteRequest_, o)).toString();
+	}
+
+	public String sqlTitle() {
+		return title;
 	}
 
 	/////////////////
-	// objectTitle //
+	// displayPage //
 	/////////////////
 
 
-	/**	 The entity objectTitle
+	/**	 The entity displayPage
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String objectTitle;
+	protected String displayPage;
 
-	/**	<br> The entity objectTitle
+	/**	<br> The entity displayPage
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectTitle">Find the entity objectTitle in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:displayPage">Find the entity displayPage in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _objectTitle(Wrap<String> w);
+	protected abstract void _displayPage(Wrap<String> w);
 
-	public String getObjectTitle() {
-		return objectTitle;
+	public String getDisplayPage() {
+		return displayPage;
 	}
-	public void setObjectTitle(String o) {
-		this.objectTitle = BaseModel.staticSetObjectTitle(siteRequest_, o);
+	@JsonIgnore
+	public void setDisplayPage(String o) {
+		this.displayPage = BaseModel.staticSetDisplayPage(siteRequest_, o);
 	}
-	public static String staticSetObjectTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSetDisplayPage(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BaseModel objectTitleInit() {
-		Wrap<String> objectTitleWrap = new Wrap<String>().var("objectTitle");
-		if(objectTitle == null) {
-			_objectTitle(objectTitleWrap);
-			Optional.ofNullable(objectTitleWrap.getO()).ifPresent(o -> {
-				setObjectTitle(o);
+	protected BaseModel displayPageInit() {
+		Wrap<String> displayPageWrap = new Wrap<String>().var("displayPage");
+		if(displayPage == null) {
+			_displayPage(displayPageWrap);
+			Optional.ofNullable(displayPageWrap.getO()).ifPresent(o -> {
+				setDisplayPage(o);
 			});
 		}
 		return (BaseModel)this;
 	}
 
-	public static String staticSearchObjectTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchDisplayPage(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrObjectTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrDisplayPage(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqObjectTitle(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchObjectTitle(siteRequest_, BaseModel.staticSetObjectTitle(siteRequest_, o)).toString();
+	public static String staticSearchFqDisplayPage(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchDisplayPage(siteRequest_, BaseModel.staticSetDisplayPage(siteRequest_, o)).toString();
+	}
+
+	public String sqlDisplayPage() {
+		return displayPage;
 	}
 
 	//////////////
-	// objectId //
+	// editPage //
 	//////////////
 
 
-	/**	 The entity objectId
+	/**	 The entity editPage
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String objectId;
+	protected String editPage;
 
-	/**	<br> The entity objectId
+	/**	<br> The entity editPage
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectId">Find the entity objectId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:editPage">Find the entity editPage in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _objectId(Wrap<String> w);
+	protected abstract void _editPage(Wrap<String> w);
 
-	public String getObjectId() {
-		return objectId;
+	public String getEditPage() {
+		return editPage;
 	}
-	public void setObjectId(String o) {
-		this.objectId = BaseModel.staticSetObjectId(siteRequest_, o);
+	@JsonIgnore
+	public void setEditPage(String o) {
+		this.editPage = BaseModel.staticSetEditPage(siteRequest_, o);
 	}
-	public static String staticSetObjectId(SiteRequest siteRequest_, String o) {
+	public static String staticSetEditPage(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BaseModel objectIdInit() {
-		Wrap<String> objectIdWrap = new Wrap<String>().var("objectId");
-		if(objectId == null) {
-			_objectId(objectIdWrap);
-			Optional.ofNullable(objectIdWrap.getO()).ifPresent(o -> {
-				setObjectId(o);
+	protected BaseModel editPageInit() {
+		Wrap<String> editPageWrap = new Wrap<String>().var("editPage");
+		if(editPage == null) {
+			_editPage(editPageWrap);
+			Optional.ofNullable(editPageWrap.getO()).ifPresent(o -> {
+				setEditPage(o);
 			});
 		}
 		return (BaseModel)this;
 	}
 
-	public static String staticSearchObjectId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchEditPage(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrObjectId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrEditPage(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqObjectId(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchObjectId(siteRequest_, BaseModel.staticSetObjectId(siteRequest_, o)).toString();
+	public static String staticSearchFqEditPage(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchEditPage(siteRequest_, BaseModel.staticSetEditPage(siteRequest_, o)).toString();
+	}
+
+	//////////////
+	// userPage //
+	//////////////
+
+
+	/**	 The entity userPage
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String userPage;
+
+	/**	<br> The entity userPage
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:userPage">Find the entity userPage in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _userPage(Wrap<String> w);
+
+	public String getUserPage() {
+		return userPage;
+	}
+	@JsonIgnore
+	public void setUserPage(String o) {
+		this.userPage = BaseModel.staticSetUserPage(siteRequest_, o);
+	}
+	public static String staticSetUserPage(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BaseModel userPageInit() {
+		Wrap<String> userPageWrap = new Wrap<String>().var("userPage");
+		if(userPage == null) {
+			_userPage(userPageWrap);
+			Optional.ofNullable(userPageWrap.getO()).ifPresent(o -> {
+				setUserPage(o);
+			});
+		}
+		return (BaseModel)this;
+	}
+
+	public static String staticSearchUserPage(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrUserPage(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqUserPage(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchUserPage(siteRequest_, BaseModel.staticSetUserPage(siteRequest_, o)).toString();
 	}
 
 	///////////////////
@@ -1068,7 +1068,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity objectSuggest
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectSuggest">Find the entity objectSuggest in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectSuggest">Find the entity objectSuggest in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1077,6 +1077,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getObjectSuggest() {
 		return objectSuggest;
 	}
+	@JsonIgnore
 	public void setObjectSuggest(String o) {
 		this.objectSuggest = BaseModel.staticSetObjectSuggest(siteRequest_, o);
 	}
@@ -1121,7 +1122,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	/**	<br> The entity objectText
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectText">Find the entity objectText in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:objectText">Find the entity objectText in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -1134,6 +1135,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public void setObjectText(List<String> objectText) {
 		this.objectText = objectText;
 	}
+	@JsonIgnore
 	public void setObjectText(String o) {
 		String l = BaseModel.staticSetObjectText(siteRequest_, o);
 		if(l != null)
@@ -1180,229 +1182,74 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return BaseModel.staticSearchObjectText(siteRequest_, BaseModel.staticSetObjectText(siteRequest_, o)).toString();
 	}
 
-	///////////////
-	// pageUrlId //
-	///////////////
+	////////////
+	// solrId //
+	////////////
 
 
-	/**	 The entity pageUrlId
+	/**	 The entity solrId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String pageUrlId;
+	protected String solrId;
 
-	/**	<br> The entity pageUrlId
+	/**	<br> The entity solrId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:pageUrlId">Find the entity pageUrlId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:solrId">Find the entity solrId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _pageUrlId(Wrap<String> w);
+	protected abstract void _solrId(Wrap<String> w);
 
-	public String getPageUrlId() {
-		return pageUrlId;
+	public String getSolrId() {
+		return solrId;
 	}
-	public void setPageUrlId(String o) {
-		this.pageUrlId = BaseModel.staticSetPageUrlId(siteRequest_, o);
+	@JsonIgnore
+	public void setSolrId(String o) {
+		this.solrId = BaseModel.staticSetSolrId(siteRequest_, o);
 	}
-	public static String staticSetPageUrlId(SiteRequest siteRequest_, String o) {
+	public static String staticSetSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BaseModel pageUrlIdInit() {
-		Wrap<String> pageUrlIdWrap = new Wrap<String>().var("pageUrlId");
-		if(pageUrlId == null) {
-			_pageUrlId(pageUrlIdWrap);
-			Optional.ofNullable(pageUrlIdWrap.getO()).ifPresent(o -> {
-				setPageUrlId(o);
+	protected BaseModel solrIdInit() {
+		Wrap<String> solrIdWrap = new Wrap<String>().var("solrId");
+		if(solrId == null) {
+			_solrId(solrIdWrap);
+			Optional.ofNullable(solrIdWrap.getO()).ifPresent(o -> {
+				setSolrId(o);
 			});
 		}
 		return (BaseModel)this;
 	}
 
-	public static String staticSearchPageUrlId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrPageUrlId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrSolrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqPageUrlId(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchPageUrlId(siteRequest_, BaseModel.staticSetPageUrlId(siteRequest_, o)).toString();
-	}
-
-	///////////////
-	// pageUrlPk //
-	///////////////
-
-
-	/**	 The entity pageUrlPk
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String pageUrlPk;
-
-	/**	<br> The entity pageUrlPk
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:pageUrlPk">Find the entity pageUrlPk in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _pageUrlPk(Wrap<String> w);
-
-	public String getPageUrlPk() {
-		return pageUrlPk;
-	}
-	public void setPageUrlPk(String o) {
-		this.pageUrlPk = BaseModel.staticSetPageUrlPk(siteRequest_, o);
-	}
-	public static String staticSetPageUrlPk(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected BaseModel pageUrlPkInit() {
-		Wrap<String> pageUrlPkWrap = new Wrap<String>().var("pageUrlPk");
-		if(pageUrlPk == null) {
-			_pageUrlPk(pageUrlPkWrap);
-			Optional.ofNullable(pageUrlPkWrap.getO()).ifPresent(o -> {
-				setPageUrlPk(o);
-			});
-		}
-		return (BaseModel)this;
-	}
-
-	public static String staticSearchPageUrlPk(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrPageUrlPk(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPageUrlPk(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchPageUrlPk(siteRequest_, BaseModel.staticSetPageUrlPk(siteRequest_, o)).toString();
-	}
-
-	////////////////
-	// pageUrlApi //
-	////////////////
-
-
-	/**	 The entity pageUrlApi
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String pageUrlApi;
-
-	/**	<br> The entity pageUrlApi
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:pageUrlApi">Find the entity pageUrlApi in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _pageUrlApi(Wrap<String> w);
-
-	public String getPageUrlApi() {
-		return pageUrlApi;
-	}
-	public void setPageUrlApi(String o) {
-		this.pageUrlApi = BaseModel.staticSetPageUrlApi(siteRequest_, o);
-	}
-	public static String staticSetPageUrlApi(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected BaseModel pageUrlApiInit() {
-		Wrap<String> pageUrlApiWrap = new Wrap<String>().var("pageUrlApi");
-		if(pageUrlApi == null) {
-			_pageUrlApi(pageUrlApiWrap);
-			Optional.ofNullable(pageUrlApiWrap.getO()).ifPresent(o -> {
-				setPageUrlApi(o);
-			});
-		}
-		return (BaseModel)this;
-	}
-
-	public static String staticSearchPageUrlApi(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrPageUrlApi(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPageUrlApi(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchPageUrlApi(siteRequest_, BaseModel.staticSetPageUrlApi(siteRequest_, o)).toString();
-	}
-
-	////////
-	// id //
-	////////
-
-
-	/**	 The entity id
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String id;
-
-	/**	<br> The entity id
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _id(Wrap<String> w);
-
-	public String getId() {
-		return id;
-	}
-	public void setId(String o) {
-		this.id = BaseModel.staticSetId(siteRequest_, o);
-	}
-	public static String staticSetId(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected BaseModel idInit() {
-		Wrap<String> idWrap = new Wrap<String>().var("id");
-		if(id == null) {
-			_id(idWrap);
-			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
-				setId(o);
-			});
-		}
-		return (BaseModel)this;
-	}
-
-	public static String staticSearchId(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchId(siteRequest_, BaseModel.staticSetId(siteRequest_, o)).toString();
+	public static String staticSearchFqSolrId(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchSolrId(siteRequest_, BaseModel.staticSetSolrId(siteRequest_, o)).toString();
 	}
 
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepBaseModel(SiteRequest siteRequest_) {
+	public Future<BaseModelGen<DEV>> promiseDeepBaseModel(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepBaseModel();
 	}
 
-	public Future<Void> promiseDeepBaseModel() {
-		Promise<Void> promise = Promise.promise();
+	public Future<BaseModelGen<DEV>> promiseDeepBaseModel() {
+		Promise<BaseModelGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseBaseModel(promise2);
 		promise2.future().onSuccess(a -> {
-			promise.complete();
+			promise.complete(this);
 		}).onFailure(ex -> {
 			promise.fail(ex);
 		});
@@ -1415,7 +1262,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			try {
 				siteRequest_Init();
 				pkInit();
-				inheritPkInit();
 				createdInit();
 				modifiedInit();
 				archivedInit();
@@ -1425,15 +1271,13 @@ public abstract class BaseModelGen<DEV> extends Object {
 				sessionIdInit();
 				userKeyInit();
 				savesInit();
-				objectIconInit();
-				objectTitleInit();
-				objectIdInit();
+				titleInit();
+				displayPageInit();
+				editPageInit();
+				userPageInit();
 				objectSuggestInit();
 				objectTextInit();
-				pageUrlIdInit();
-				pageUrlPkInit();
-				pageUrlApiInit();
-				idInit();
+				solrIdInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -1447,7 +1291,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return promise.future();
 	}
 
-	public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	public Future<? extends BaseModelGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepBaseModel(siteRequest_);
 	}
 
@@ -1490,8 +1334,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return oBaseModel.siteRequest_;
 			case "pk":
 				return oBaseModel.pk;
-			case "inheritPk":
-				return oBaseModel.inheritPk;
 			case "created":
 				return oBaseModel.created;
 			case "modified":
@@ -1510,24 +1352,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return oBaseModel.userKey;
 			case "saves":
 				return oBaseModel.saves;
-			case "objectIcon":
-				return oBaseModel.objectIcon;
-			case "objectTitle":
-				return oBaseModel.objectTitle;
-			case "objectId":
-				return oBaseModel.objectId;
+			case "title":
+				return oBaseModel.title;
+			case "displayPage":
+				return oBaseModel.displayPage;
+			case "editPage":
+				return oBaseModel.editPage;
+			case "userPage":
+				return oBaseModel.userPage;
 			case "objectSuggest":
 				return oBaseModel.objectSuggest;
 			case "objectText":
 				return oBaseModel.objectText;
-			case "pageUrlId":
-				return oBaseModel.pageUrlId;
-			case "pageUrlPk":
-				return oBaseModel.pageUrlPk;
-			case "pageUrlApi":
-				return oBaseModel.pageUrlApi;
-			case "id":
-				return oBaseModel.id;
+			case "solrId":
+				return oBaseModel.solrId;
 			default:
 				return null;
 		}
@@ -1569,8 +1407,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 		case "pk":
 			return BaseModel.staticSetPk(siteRequest_, o);
-		case "inheritPk":
-			return BaseModel.staticSetInheritPk(siteRequest_, o);
 		case "created":
 			return BaseModel.staticSetCreated(siteRequest_, o);
 		case "modified":
@@ -1589,24 +1425,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSetUserKey(siteRequest_, o);
 		case "saves":
 			return BaseModel.staticSetSaves(siteRequest_, o);
-		case "objectIcon":
-			return BaseModel.staticSetObjectIcon(siteRequest_, o);
-		case "objectTitle":
-			return BaseModel.staticSetObjectTitle(siteRequest_, o);
-		case "objectId":
-			return BaseModel.staticSetObjectId(siteRequest_, o);
+		case "title":
+			return BaseModel.staticSetTitle(siteRequest_, o);
+		case "displayPage":
+			return BaseModel.staticSetDisplayPage(siteRequest_, o);
+		case "editPage":
+			return BaseModel.staticSetEditPage(siteRequest_, o);
+		case "userPage":
+			return BaseModel.staticSetUserPage(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSetObjectSuggest(siteRequest_, o);
 		case "objectText":
 			return BaseModel.staticSetObjectText(siteRequest_, o);
-		case "pageUrlId":
-			return BaseModel.staticSetPageUrlId(siteRequest_, o);
-		case "pageUrlPk":
-			return BaseModel.staticSetPageUrlPk(siteRequest_, o);
-		case "pageUrlApi":
-			return BaseModel.staticSetPageUrlApi(siteRequest_, o);
-		case "id":
-			return BaseModel.staticSetId(siteRequest_, o);
+		case "solrId":
+			return BaseModel.staticSetSolrId(siteRequest_, o);
 			default:
 				return null;
 		}
@@ -1623,8 +1455,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 		case "pk":
 			return BaseModel.staticSearchPk(siteRequest_, (Long)o);
-		case "inheritPk":
-			return BaseModel.staticSearchInheritPk(siteRequest_, (String)o);
 		case "created":
 			return BaseModel.staticSearchCreated(siteRequest_, (ZonedDateTime)o);
 		case "modified":
@@ -1643,24 +1473,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchUserKey(siteRequest_, (Long)o);
 		case "saves":
 			return BaseModel.staticSearchSaves(siteRequest_, (String)o);
-		case "objectIcon":
-			return BaseModel.staticSearchObjectIcon(siteRequest_, (String)o);
-		case "objectTitle":
-			return BaseModel.staticSearchObjectTitle(siteRequest_, (String)o);
-		case "objectId":
-			return BaseModel.staticSearchObjectId(siteRequest_, (String)o);
+		case "title":
+			return BaseModel.staticSearchTitle(siteRequest_, (String)o);
+		case "displayPage":
+			return BaseModel.staticSearchDisplayPage(siteRequest_, (String)o);
+		case "editPage":
+			return BaseModel.staticSearchEditPage(siteRequest_, (String)o);
+		case "userPage":
+			return BaseModel.staticSearchUserPage(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
 			return BaseModel.staticSearchObjectText(siteRequest_, (String)o);
-		case "pageUrlId":
-			return BaseModel.staticSearchPageUrlId(siteRequest_, (String)o);
-		case "pageUrlPk":
-			return BaseModel.staticSearchPageUrlPk(siteRequest_, (String)o);
-		case "pageUrlApi":
-			return BaseModel.staticSearchPageUrlApi(siteRequest_, (String)o);
-		case "id":
-			return BaseModel.staticSearchId(siteRequest_, (String)o);
+		case "solrId":
+			return BaseModel.staticSearchSolrId(siteRequest_, (String)o);
 			default:
 				return null;
 		}
@@ -1677,8 +1503,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 		case "pk":
 			return BaseModel.staticSearchStrPk(siteRequest_, (Long)o);
-		case "inheritPk":
-			return BaseModel.staticSearchStrInheritPk(siteRequest_, (String)o);
 		case "created":
 			return BaseModel.staticSearchStrCreated(siteRequest_, (String)o);
 		case "modified":
@@ -1697,24 +1521,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchStrUserKey(siteRequest_, (Long)o);
 		case "saves":
 			return BaseModel.staticSearchStrSaves(siteRequest_, (String)o);
-		case "objectIcon":
-			return BaseModel.staticSearchStrObjectIcon(siteRequest_, (String)o);
-		case "objectTitle":
-			return BaseModel.staticSearchStrObjectTitle(siteRequest_, (String)o);
-		case "objectId":
-			return BaseModel.staticSearchStrObjectId(siteRequest_, (String)o);
+		case "title":
+			return BaseModel.staticSearchStrTitle(siteRequest_, (String)o);
+		case "displayPage":
+			return BaseModel.staticSearchStrDisplayPage(siteRequest_, (String)o);
+		case "editPage":
+			return BaseModel.staticSearchStrEditPage(siteRequest_, (String)o);
+		case "userPage":
+			return BaseModel.staticSearchStrUserPage(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchStrObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
 			return BaseModel.staticSearchStrObjectText(siteRequest_, (String)o);
-		case "pageUrlId":
-			return BaseModel.staticSearchStrPageUrlId(siteRequest_, (String)o);
-		case "pageUrlPk":
-			return BaseModel.staticSearchStrPageUrlPk(siteRequest_, (String)o);
-		case "pageUrlApi":
-			return BaseModel.staticSearchStrPageUrlApi(siteRequest_, (String)o);
-		case "id":
-			return BaseModel.staticSearchStrId(siteRequest_, (String)o);
+		case "solrId":
+			return BaseModel.staticSearchStrSolrId(siteRequest_, (String)o);
 			default:
 				return null;
 		}
@@ -1731,8 +1551,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 		case "pk":
 			return BaseModel.staticSearchFqPk(siteRequest_, o);
-		case "inheritPk":
-			return BaseModel.staticSearchFqInheritPk(siteRequest_, o);
 		case "created":
 			return BaseModel.staticSearchFqCreated(siteRequest_, o);
 		case "modified":
@@ -1751,24 +1569,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchFqUserKey(siteRequest_, o);
 		case "saves":
 			return BaseModel.staticSearchFqSaves(siteRequest_, o);
-		case "objectIcon":
-			return BaseModel.staticSearchFqObjectIcon(siteRequest_, o);
-		case "objectTitle":
-			return BaseModel.staticSearchFqObjectTitle(siteRequest_, o);
-		case "objectId":
-			return BaseModel.staticSearchFqObjectId(siteRequest_, o);
+		case "title":
+			return BaseModel.staticSearchFqTitle(siteRequest_, o);
+		case "displayPage":
+			return BaseModel.staticSearchFqDisplayPage(siteRequest_, o);
+		case "editPage":
+			return BaseModel.staticSearchFqEditPage(siteRequest_, o);
+		case "userPage":
+			return BaseModel.staticSearchFqUserPage(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSearchFqObjectSuggest(siteRequest_, o);
 		case "objectText":
 			return BaseModel.staticSearchFqObjectText(siteRequest_, o);
-		case "pageUrlId":
-			return BaseModel.staticSearchFqPageUrlId(siteRequest_, o);
-		case "pageUrlPk":
-			return BaseModel.staticSearchFqPageUrlPk(siteRequest_, o);
-		case "pageUrlApi":
-			return BaseModel.staticSearchFqPageUrlApi(siteRequest_, o);
-		case "id":
-			return BaseModel.staticSearchFqId(siteRequest_, o);
+		case "solrId":
+			return BaseModel.staticSearchFqSolrId(siteRequest_, o);
 			default:
 				return null;
 		}
@@ -1795,13 +1609,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 	public Object persistBaseModel(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("inheritpk".equals(varLower)) {
-				if(val instanceof String) {
-					setInheritPk((String)val);
-				}
-				saves.add("inheritPk");
-				return val;
-			} else if("created".equals(varLower)) {
+			if("created".equals(varLower)) {
 				if(val instanceof String) {
 					setCreated((String)val);
 				} else if(val instanceof OffsetDateTime) {
@@ -1831,6 +1639,18 @@ public abstract class BaseModelGen<DEV> extends Object {
 				}
 				saves.add("userKey");
 				return val;
+			} else if("title".equals(varLower)) {
+				if(val instanceof String) {
+					setTitle((String)val);
+				}
+				saves.add("title");
+				return val;
+			} else if("displaypage".equals(varLower)) {
+				if(val instanceof String) {
+					setDisplayPage((String)val);
+				}
+				saves.add("displayPage");
+				return val;
 		} else {
 			return null;
 		}
@@ -1850,12 +1670,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 			Long pk = (Long)doc.get("pk_docvalues_long");
 			oBaseModel.setPk(pk);
-
-			if(saves.contains("inheritPk")) {
-				String inheritPk = (String)doc.get("inheritPk_docvalues_string");
-				if(inheritPk != null)
-					oBaseModel.setInheritPk(inheritPk);
-			}
 
 			if(saves.contains("created")) {
 				String created = (String)doc.get("created_docvalues_date");
@@ -1911,22 +1725,28 @@ public abstract class BaseModelGen<DEV> extends Object {
 					oBaseModel.saves.addAll(saves);
 			}
 
-			if(saves.contains("objectIcon")) {
-				String objectIcon = (String)doc.get("objectIcon_docvalues_string");
-				if(objectIcon != null)
-					oBaseModel.setObjectIcon(objectIcon);
+			if(saves.contains("title")) {
+				String title = (String)doc.get("title_docvalues_string");
+				if(title != null)
+					oBaseModel.setTitle(title);
 			}
 
-			if(saves.contains("objectTitle")) {
-				String objectTitle = (String)doc.get("objectTitle_docvalues_string");
-				if(objectTitle != null)
-					oBaseModel.setObjectTitle(objectTitle);
+			if(saves.contains("displayPage")) {
+				String displayPage = (String)doc.get("displayPage_docvalues_string");
+				if(displayPage != null)
+					oBaseModel.setDisplayPage(displayPage);
 			}
 
-			if(saves.contains("objectId")) {
-				String objectId = (String)doc.get("objectId_docvalues_string");
-				if(objectId != null)
-					oBaseModel.setObjectId(objectId);
+			if(saves.contains("editPage")) {
+				String editPage = (String)doc.get("editPage_docvalues_string");
+				if(editPage != null)
+					oBaseModel.setEditPage(editPage);
+			}
+
+			if(saves.contains("userPage")) {
+				String userPage = (String)doc.get("userPage_docvalues_string");
+				if(userPage != null)
+					oBaseModel.setUserPage(userPage);
 			}
 
 			if(saves.contains("objectSuggest")) {
@@ -1934,35 +1754,14 @@ public abstract class BaseModelGen<DEV> extends Object {
 				oBaseModel.setObjectSuggest(objectSuggest);
 			}
 
-			if(saves.contains("pageUrlId")) {
-				String pageUrlId = (String)doc.get("pageUrlId_docvalues_string");
-				if(pageUrlId != null)
-					oBaseModel.setPageUrlId(pageUrlId);
-			}
-
-			if(saves.contains("pageUrlPk")) {
-				String pageUrlPk = (String)doc.get("pageUrlPk_docvalues_string");
-				if(pageUrlPk != null)
-					oBaseModel.setPageUrlPk(pageUrlPk);
-			}
-
-			if(saves.contains("pageUrlApi")) {
-				String pageUrlApi = (String)doc.get("pageUrlApi_docvalues_string");
-				if(pageUrlApi != null)
-					oBaseModel.setPageUrlApi(pageUrlApi);
-			}
-
-			String id = (String)doc.get("id");
-			oBaseModel.setId(id);
+			String solrId = (String)doc.get("solrId");
+			oBaseModel.setSolrId(solrId);
 		}
 	}
 
 	public void indexBaseModel(JsonObject doc) {
 		if(pk != null) {
 			doc.put("pk_docvalues_long", pk);
-		}
-		if(inheritPk != null) {
-			doc.put("inheritPk_docvalues_string", inheritPk);
 		}
 		if(created != null) {
 			doc.put("created_docvalues_date", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(ZonedDateTime.ofInstant(created.toInstant(), ZoneId.of("UTC"))));
@@ -1999,14 +1798,17 @@ public abstract class BaseModelGen<DEV> extends Object {
 				l.add(o);
 			}
 		}
-		if(objectIcon != null) {
-			doc.put("objectIcon_docvalues_string", objectIcon);
+		if(title != null) {
+			doc.put("title_docvalues_string", title);
 		}
-		if(objectTitle != null) {
-			doc.put("objectTitle_docvalues_string", objectTitle);
+		if(displayPage != null) {
+			doc.put("displayPage_docvalues_string", displayPage);
 		}
-		if(objectId != null) {
-			doc.put("objectId_docvalues_string", objectId);
+		if(editPage != null) {
+			doc.put("editPage_docvalues_string", editPage);
+		}
+		if(userPage != null) {
+			doc.put("userPage_docvalues_string", userPage);
 		}
 		if(objectSuggest != null) {
 			doc.put("objectSuggest_suggested", objectSuggest);
@@ -2018,17 +1820,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				l.add(o);
 			}
 		}
-		if(pageUrlId != null) {
-			doc.put("pageUrlId_docvalues_string", pageUrlId);
-		}
-		if(pageUrlPk != null) {
-			doc.put("pageUrlPk_docvalues_string", pageUrlPk);
-		}
-		if(pageUrlApi != null) {
-			doc.put("pageUrlApi_docvalues_string", pageUrlApi);
-		}
-		if(id != null) {
-			doc.put("id", id);
+		if(solrId != null) {
+			doc.put("solrId", solrId);
 		}
 	}
 
@@ -2036,8 +1829,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 			case "pk":
 				return "pk_docvalues_long";
-			case "inheritPk":
-				return "inheritPk_docvalues_string";
 			case "created":
 				return "created_docvalues_date";
 			case "modified":
@@ -2056,18 +1847,14 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "userKey_docvalues_long";
 			case "saves":
 				return "saves_docvalues_strings";
-			case "objectIcon":
-				return "objectIcon_docvalues_string";
-			case "objectTitle":
-				return "objectTitle_docvalues_string";
-			case "objectId":
-				return "objectId_docvalues_string";
-			case "pageUrlId":
-				return "pageUrlId_docvalues_string";
-			case "pageUrlPk":
-				return "pageUrlPk_docvalues_string";
-			case "pageUrlApi":
-				return "pageUrlApi_docvalues_string";
+			case "title":
+				return "title_docvalues_string";
+			case "displayPage":
+				return "displayPage_docvalues_string";
+			case "editPage":
+				return "editPage_docvalues_string";
+			case "userPage":
+				return "userPage_docvalues_string";
 			default:
 				return null;
 		}
@@ -2077,8 +1864,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(entityVar) {
 			case "pk":
 				return "pk_docvalues_long";
-			case "inheritPk":
-				return "inheritPk_docvalues_string";
 			case "created":
 				return "created_docvalues_date";
 			case "modified":
@@ -2097,24 +1882,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "userKey_docvalues_long";
 			case "saves":
 				return "saves_docvalues_strings";
-			case "objectIcon":
-				return "objectIcon_docvalues_string";
-			case "objectTitle":
-				return "objectTitle_docvalues_string";
-			case "objectId":
-				return "objectId_docvalues_string";
+			case "title":
+				return "title_docvalues_string";
+			case "displayPage":
+				return "displayPage_docvalues_string";
+			case "editPage":
+				return "editPage_docvalues_string";
+			case "userPage":
+				return "userPage_docvalues_string";
 			case "objectSuggest":
 				return "objectSuggest_suggested";
 			case "objectText":
 				return "objectText_text_enUS";
-			case "pageUrlId":
-				return "pageUrlId_docvalues_string";
-			case "pageUrlPk":
-				return "pageUrlPk_docvalues_string";
-			case "pageUrlApi":
-				return "pageUrlApi_docvalues_string";
-			case "id":
-				return "id";
+			case "solrId":
+				return "solrId";
 			default:
 				return null;
 		}
@@ -2124,8 +1905,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		switch(searchVar) {
 			case "pk_docvalues_long":
 				return "pk";
-			case "inheritPk_docvalues_string":
-				return "inheritPk";
 			case "created_docvalues_date":
 				return "created";
 			case "modified_docvalues_date":
@@ -2144,24 +1923,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "userKey";
 			case "saves_docvalues_strings":
 				return "saves";
-			case "objectIcon_docvalues_string":
-				return "objectIcon";
-			case "objectTitle_docvalues_string":
-				return "objectTitle";
-			case "objectId_docvalues_string":
-				return "objectId";
+			case "title_docvalues_string":
+				return "title";
+			case "displayPage_docvalues_string":
+				return "displayPage";
+			case "editPage_docvalues_string":
+				return "editPage";
+			case "userPage_docvalues_string":
+				return "userPage";
 			case "objectSuggest_suggested":
 				return "objectSuggest";
 			case "objectText_text_enUS":
 				return "objectText";
-			case "pageUrlId_docvalues_string":
-				return "pageUrlId";
-			case "pageUrlPk_docvalues_string":
-				return "pageUrlPk";
-			case "pageUrlApi_docvalues_string":
-				return "pageUrlApi";
-			case "id":
-				return "id";
+			case "solrId":
+				return "solrId";
 			default:
 				return null;
 		}
@@ -2199,7 +1974,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 		SiteRequest siteRequest = oBaseModel.getSiteRequest_();
 
 		oBaseModel.setPk(Optional.ofNullable(doc.get("pk_docvalues_long")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setInheritPk(Optional.ofNullable(doc.get("inheritPk_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setCreated(Optional.ofNullable(doc.get("created_docvalues_date")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setModified(Optional.ofNullable(doc.get("modified_docvalues_date")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setArchived(Optional.ofNullable(doc.get("archived_docvalues_boolean")).map(v -> v.toString()).orElse(null));
@@ -2213,18 +1987,16 @@ public abstract class BaseModelGen<DEV> extends Object {
 		Optional.ofNullable((List<?>)doc.get("saves_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oBaseModel.addSaves(BaseModel.staticSetSaves(siteRequest, v.toString()));
 		});
-		oBaseModel.setObjectIcon(Optional.ofNullable(doc.get("objectIcon_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setObjectId(Optional.ofNullable(doc.get("objectId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setTitle(Optional.ofNullable(doc.get("title_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setDisplayPage(Optional.ofNullable(doc.get("displayPage_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setEditPage(Optional.ofNullable(doc.get("editPage_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setUserPage(Optional.ofNullable(doc.get("userPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("objectText_text_enUS")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oBaseModel.addObjectText(BaseModel.staticSetObjectText(siteRequest, v.toString()));
 		});
-		oBaseModel.setPageUrlId(Optional.ofNullable(doc.get("pageUrlId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setPageUrlPk(Optional.ofNullable(doc.get("pageUrlPk_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oBaseModel.setPageUrlApi(Optional.ofNullable(doc.get("pageUrlApi_docvalues_string")).map(v -> v.toString()).orElse(null));
-		String id = (String)doc.get("id");
-		oBaseModel.setId(id);
+		String solrId = (String)doc.get("solrId");
+		oBaseModel.setSolrId(solrId);
 	}
 
 	//////////////////
@@ -2238,8 +2010,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			BaseModel original = (BaseModel)o;
 			if(!Objects.equals(pk, original.getPk()))
 				apiRequest.addVars("pk");
-			if(!Objects.equals(inheritPk, original.getInheritPk()))
-				apiRequest.addVars("inheritPk");
 			if(!Objects.equals(created, original.getCreated()))
 				apiRequest.addVars("created");
 			if(!Objects.equals(modified, original.getModified()))
@@ -2258,24 +2028,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 				apiRequest.addVars("userKey");
 			if(!Objects.equals(saves, original.getSaves()))
 				apiRequest.addVars("saves");
-			if(!Objects.equals(objectIcon, original.getObjectIcon()))
-				apiRequest.addVars("objectIcon");
-			if(!Objects.equals(objectTitle, original.getObjectTitle()))
-				apiRequest.addVars("objectTitle");
-			if(!Objects.equals(objectId, original.getObjectId()))
-				apiRequest.addVars("objectId");
+			if(!Objects.equals(title, original.getTitle()))
+				apiRequest.addVars("title");
+			if(!Objects.equals(displayPage, original.getDisplayPage()))
+				apiRequest.addVars("displayPage");
+			if(!Objects.equals(editPage, original.getEditPage()))
+				apiRequest.addVars("editPage");
+			if(!Objects.equals(userPage, original.getUserPage()))
+				apiRequest.addVars("userPage");
 			if(!Objects.equals(objectSuggest, original.getObjectSuggest()))
 				apiRequest.addVars("objectSuggest");
 			if(!Objects.equals(objectText, original.getObjectText()))
 				apiRequest.addVars("objectText");
-			if(!Objects.equals(pageUrlId, original.getPageUrlId()))
-				apiRequest.addVars("pageUrlId");
-			if(!Objects.equals(pageUrlPk, original.getPageUrlPk()))
-				apiRequest.addVars("pageUrlPk");
-			if(!Objects.equals(pageUrlApi, original.getPageUrlApi()))
-				apiRequest.addVars("pageUrlApi");
-			if(!Objects.equals(id, original.getId()))
-				apiRequest.addVars("id");
+			if(!Objects.equals(solrId, original.getSolrId()))
+				apiRequest.addVars("solrId");
 		}
 	}
 
@@ -2286,7 +2052,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(Optional.ofNullable(pk).map(v -> "pk: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(inheritPk).map(v -> "inheritPk: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(created).map(v -> "created: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(modified).map(v -> "modified: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(archived).map(v -> "archived: " + v + "\n").orElse(""));
@@ -2296,22 +2061,19 @@ public abstract class BaseModelGen<DEV> extends Object {
 		sb.append(Optional.ofNullable(sessionId).map(v -> "sessionId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(userKey).map(v -> "userKey: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(saves).map(v -> "saves: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(objectIcon).map(v -> "objectIcon: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(objectTitle).map(v -> "objectTitle: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(objectId).map(v -> "objectId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(title).map(v -> "title: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(displayPage).map(v -> "displayPage: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(editPage).map(v -> "editPage: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(userPage).map(v -> "userPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectSuggest).map(v -> "objectSuggest: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectText).map(v -> "objectText: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(pageUrlId).map(v -> "pageUrlId: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(pageUrlPk).map(v -> "pageUrlPk: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(pageUrlApi).map(v -> "pageUrlApi: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(id).map(v -> "id: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(solrId).map(v -> "solrId: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "BaseModel";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_pk = "pk";
-	public static final String VAR_inheritPk = "inheritPk";
 	public static final String VAR_created = "created";
 	public static final String VAR_modified = "modified";
 	public static final String VAR_archived = "archived";
@@ -2321,15 +2083,13 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String VAR_sessionId = "sessionId";
 	public static final String VAR_userKey = "userKey";
 	public static final String VAR_saves = "saves";
-	public static final String VAR_objectIcon = "objectIcon";
-	public static final String VAR_objectTitle = "objectTitle";
-	public static final String VAR_objectId = "objectId";
+	public static final String VAR_title = "title";
+	public static final String VAR_displayPage = "displayPage";
+	public static final String VAR_editPage = "editPage";
+	public static final String VAR_userPage = "userPage";
 	public static final String VAR_objectSuggest = "objectSuggest";
 	public static final String VAR_objectText = "objectText";
-	public static final String VAR_pageUrlId = "pageUrlId";
-	public static final String VAR_pageUrlPk = "pageUrlPk";
-	public static final String VAR_pageUrlApi = "pageUrlApi";
-	public static final String VAR_id = "id";
+	public static final String VAR_solrId = "solrId";
 
 	public static List<String> varsQForClass() {
 		return BaseModel.varsQBaseModel(new ArrayList<String>());
@@ -2349,6 +2109,9 @@ public abstract class BaseModelGen<DEV> extends Object {
 		vars.add(VAR_modified);
 		vars.add(VAR_archived);
 		vars.add(VAR_classSimpleName);
+		vars.add(VAR_displayPage);
+		vars.add(VAR_editPage);
+		vars.add(VAR_userPage);
 		return vars;
 	}
 
@@ -2364,7 +2127,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	public static final String DISPLAY_NAME_siteRequest_ = "";
 	public static final String DISPLAY_NAME_pk = "primary key";
-	public static final String DISPLAY_NAME_inheritPk = "";
 	public static final String DISPLAY_NAME_created = "created";
 	public static final String DISPLAY_NAME_modified = "modified";
 	public static final String DISPLAY_NAME_archived = "archive";
@@ -2374,15 +2136,45 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_sessionId = "";
 	public static final String DISPLAY_NAME_userKey = "";
 	public static final String DISPLAY_NAME_saves = "";
-	public static final String DISPLAY_NAME_objectIcon = "";
-	public static final String DISPLAY_NAME_objectTitle = "";
-	public static final String DISPLAY_NAME_objectId = "ID";
+	public static final String DISPLAY_NAME_title = "title";
+	public static final String DISPLAY_NAME_displayPage = "product page";
+	public static final String DISPLAY_NAME_editPage = "edit";
+	public static final String DISPLAY_NAME_userPage = "user";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
 	public static final String DISPLAY_NAME_objectText = "text";
-	public static final String DISPLAY_NAME_pageUrlId = "";
-	public static final String DISPLAY_NAME_pageUrlPk = "";
-	public static final String DISPLAY_NAME_pageUrlApi = "";
-	public static final String DISPLAY_NAME_id = "";
+	public static final String DISPLAY_NAME_solrId = "";
+
+	public String idForClass() {
+		return null;
+	}
+
+	public String titleForClass() {
+		return title;
+	}
+
+	public String nameForClass() {
+		return null;
+	}
+
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	public String descriptionForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return BaseModel.displayNameBaseModel(var);
@@ -2393,8 +2185,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return DISPLAY_NAME_siteRequest_;
 		case VAR_pk:
 			return DISPLAY_NAME_pk;
-		case VAR_inheritPk:
-			return DISPLAY_NAME_inheritPk;
 		case VAR_created:
 			return DISPLAY_NAME_created;
 		case VAR_modified:
@@ -2413,24 +2203,20 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return DISPLAY_NAME_userKey;
 		case VAR_saves:
 			return DISPLAY_NAME_saves;
-		case VAR_objectIcon:
-			return DISPLAY_NAME_objectIcon;
-		case VAR_objectTitle:
-			return DISPLAY_NAME_objectTitle;
-		case VAR_objectId:
-			return DISPLAY_NAME_objectId;
+		case VAR_title:
+			return DISPLAY_NAME_title;
+		case VAR_displayPage:
+			return DISPLAY_NAME_displayPage;
+		case VAR_editPage:
+			return DISPLAY_NAME_editPage;
+		case VAR_userPage:
+			return DISPLAY_NAME_userPage;
 		case VAR_objectSuggest:
 			return DISPLAY_NAME_objectSuggest;
 		case VAR_objectText:
 			return DISPLAY_NAME_objectText;
-		case VAR_pageUrlId:
-			return DISPLAY_NAME_pageUrlId;
-		case VAR_pageUrlPk:
-			return DISPLAY_NAME_pageUrlPk;
-		case VAR_pageUrlApi:
-			return DISPLAY_NAME_pageUrlApi;
-		case VAR_id:
-			return DISPLAY_NAME_id;
+		case VAR_solrId:
+			return DISPLAY_NAME_solrId;
 		default:
 			return null;
 		}
@@ -2442,8 +2228,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "The current request object";
 		case VAR_pk:
 			return "The primary key of this object in the database";
-		case VAR_inheritPk:
-			return "An optional inherited primary key from a legacy system for this object in the database";
 		case VAR_created:
 			return "A created timestamp for this record in the database";
 		case VAR_modified:
@@ -2462,23 +2246,19 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "The primary key of the user that created this record";
 		case VAR_saves:
 			return "A list of fields that are saved for this record in the database";
-		case VAR_objectIcon:
-			return "The icon HTML";
-		case VAR_objectTitle:
-			return "The title of this object";
-		case VAR_objectId:
-			return "A URL friendly unique ID for this object";
+		case VAR_title:
+			return "The title of this page. ";
+		case VAR_displayPage:
+			return "Visit this product's landing page. ";
+		case VAR_editPage:
+			return "Edit this";
+		case VAR_userPage:
+			return "User page";
 		case VAR_objectSuggest:
 			return "The indexed field in the search engine for this record while using autosuggest";
 		case VAR_objectText:
 			return "The full text search field in the search engine for this record while using autosuggest";
-		case VAR_pageUrlId:
-			return "The link by name for this object in the UI";
-		case VAR_pageUrlPk:
-			return "The link by primary key for this object in the UI";
-		case VAR_pageUrlApi:
-			return "The link to this object in the API";
-		case VAR_id:
+		case VAR_solrId:
 			return "The unique key for this record in the search engine";
 			default:
 				return null;
@@ -2491,8 +2271,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "SiteRequest";
 		case VAR_pk:
 			return "Long";
-		case VAR_inheritPk:
-			return "String";
 		case VAR_created:
 			return "ZonedDateTime";
 		case VAR_modified:
@@ -2511,23 +2289,19 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "Long";
 		case VAR_saves:
 			return "List";
-		case VAR_objectIcon:
+		case VAR_title:
 			return "String";
-		case VAR_objectTitle:
+		case VAR_displayPage:
 			return "String";
-		case VAR_objectId:
+		case VAR_editPage:
+			return "String";
+		case VAR_userPage:
 			return "String";
 		case VAR_objectSuggest:
 			return "String";
 		case VAR_objectText:
 			return "List";
-		case VAR_pageUrlId:
-			return "String";
-		case VAR_pageUrlPk:
-			return "String";
-		case VAR_pageUrlApi:
-			return "String";
-		case VAR_id:
+		case VAR_solrId:
 			return "String";
 			default:
 				return null;
@@ -2536,10 +2310,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	public static Integer htmColumnBaseModel(String var) {
 		switch(var) {
-		case VAR_created:
-			return 1;
-		case VAR_objectTitle:
-			return 2;
+		case VAR_editPage:
+			return 99;
 			default:
 				return null;
 		}
@@ -2555,8 +2327,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return 1;
 		case VAR_archived:
 			return 2;
-		case VAR_objectId:
-			return 1;
+		case VAR_displayPage:
+			return 99;
 			default:
 				return null;
 		}
@@ -2572,7 +2344,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return 4;
 		case VAR_archived:
 			return 1;
-		case VAR_objectId:
+		case VAR_displayPage:
 			return 2;
 			default:
 				return null;

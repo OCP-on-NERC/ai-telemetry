@@ -18,32 +18,35 @@ import io.vertx.pgclient.data.Polygon;
 
 /**
  * Order: 8
- * Model: true
- * 
- * Api: true
- * Page: true
- * SuperPage: BaseModelPage
- * Indexed: true
  * Description: A research project using AI and GPUs
+ * AName: an AI project
+ * PluralName: AI projects
+ * Icon: <i class="fa-regular fa-school"></i>
  * 
- * ApiTag: AI project
- * ApiUri: /api/ai-project
- * 
+ * SearchPageUri: /en-us/search/ai-project
+ * EditPageUri: /en-us/edit/ai-project/{pageId}
+ * ApiUri: /en-us/api/ai-project
  * ApiMethod:
  *   Search:
  *   GET:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: AiProjectPage
- *     ApiUri: /ai-project
  * 
- * Role: SiteAdmin
- * 
- * AName: an AI project
- * PluralName: AI projects
- * Icon: <i class="fa-regular fa-school"></i>
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  */
 public class AiProject extends AiProjectGen<BaseModel> {
 
@@ -58,8 +61,9 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * HtmColumn: 1
    * HtmRowTitle: AI project details
    * Facet: true
+   * VarName: true
    **/
-  protected void _name(Wrap<String> w) {}
+  protected void _projectName(Wrap<String> w) {}
 
   /**
    * {@inheritDoc}
@@ -71,6 +75,7 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * HtmCell: 2
    * Facet: true
    * HtmColumn: 2
+   * VarDescription: true
    **/
   protected void _description(Wrap<String> w) {}
 
@@ -133,9 +138,10 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * HtmRow: 3
    * HtmCell: 4
    * Facet: true
+   * VarId: true
    */
   protected void _entityId(Wrap<String> w) {
-    w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+    w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(projectName)));
   }
 
   /**
@@ -147,22 +153,6 @@ public class AiProject extends AiProjectGen<BaseModel> {
   protected void _entityShortId(Wrap<String> w) {
     if(entityId != null) {
       w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
-    }
-  }
-
-  @Override
-  protected void _objectTitle(Wrap<String> w) {
-    StringBuilder b = new StringBuilder();
-    b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", AiProject_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-    w.o(b.toString().trim());
-  }
-
-  @Override
-  protected void _objectId(Wrap<String> w) {
-  if(objectTitle != null) {
-      w.o(toId(objectTitle));
-    } else if(id != null){
-      w.o(id.toString());
     }
   }
 }

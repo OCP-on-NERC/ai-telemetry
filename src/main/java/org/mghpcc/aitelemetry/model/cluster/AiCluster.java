@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
+import org.computate.vertx.api.BaseApiServiceImpl;
 import org.computate.vertx.search.list.SearchList;
+import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
 import io.vertx.core.Promise;
@@ -18,49 +20,52 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Fiware: true
- *
- * Model: true
- * Api: true
- * Page: true
- * SuperPage: BaseModelPage
- * Indexed: true
  * Order: 3
  * Description: A Red Hat OpenShift cluster containing GPUs
- * ApiTag: AI cluster
- * ApiUri: /api/ai-cluster
+ * AName: an AI cluster
+ * Icon: <i class="fa-regular fa-server"></i>
  *
+ * SearchPageUri: /en-us/search/ai-cluster
+ * EditPageUri: /en-us/edit/ai-cluster/{pageId}
+ * ApiUri: /en-us/api/ai-cluster
  * ApiMethod:
  *   Search:
  *   GET:
  *   PATCH:
  *   POST:
+ *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: AiClusterPage
- *     ApiUri: /ai-cluster
- *
- * Role: SiteAdmin
- *
- * AName: an AI cluster
- * Icon: <i class="fa-regular fa-server"></i>
+ * 
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  **/
 public class AiCluster extends AiClusterGen<BaseModel> {
-
 
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: name
+	 * DisplayName: cluster name
 	 * Description: The name of this cluster
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 1
-	 * HtmRowTitle: cluster details
+	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
+	 * VarName: true
 	 **/
-	protected void _name(Wrap<String> w) {}
+	protected void _clusterName(Wrap<String> w) {}
 
 
 	/**
@@ -71,10 +76,12 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Description: A description of this cluster
 	 * HtmRow: 3
 	 * HtmCell: 2
-	 * Facet: true
 	 * HtmColumn: 2
+	 * VarDescription: true
 	 **/
-	protected void _description(Wrap<String> w) {}
+	protected void _description(Wrap<String> w) {
+		w.o(String.format("Contains %s AI nodes and %s GPU devices", aiNodesTotal, gpuDevicesTotal));
+	}
 
 
 	/**
@@ -120,8 +127,8 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: location
 	 * Description: Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
-	 * HtmRow: 10
-	 * HtmCell: 1
+	 * HtmRow: 3
+	 * HtmCell: 5
 	 * Facet: true
 	 **/
 	protected void _location(Wrap<Point> w) {}
@@ -136,9 +143,10 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
+	 * VarId: true
 	 */
 	protected void _entityId(Wrap<String> w) {
-		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(name)));
+		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(clusterName)));
 	}
 
 	/**
@@ -153,20 +161,51 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 		}
 	}
 
-	@Override
-	protected void _objectTitle(Wrap<String> w) {
-		StringBuilder b = new StringBuilder();
-		b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", AiCluster_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-		w.o(b.toString().trim());
-	}
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: AI nodes total
+	 * Description: The total number of AI nodes on this cluster. 
+	 * HtmRowTitleOpen: cluster totals
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _aiNodesTotal(Wrap<Integer> w) {}
 
-	@Override
-	protected void _objectId(Wrap<String> w) {
-	if(objectTitle != null) {
-			w.o(toId(objectTitle));
-		} else if(id != null){
-			w.o(id.toString());
-		}
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU devices total
+	 * Description: The total number of GPU devices on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 2
+	 * Facet: true
+	 */
+	protected void _gpuDevicesTotal(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * DisplayName: Grafana GPU utilization
+	 * Description: Explore this cluster's GPU utilization in Grafana. 
+	 * HtmRow: 5
+	 * HtmRowTitleOpen: Useful URLs
+	 * HtmCell: 1
+	 * Facet: true
+	 * Link: true
+	 */
+	protected void _grafanaUrl(Wrap<String> w) {
+		w.o(String.format("%s/explore?orgId=1&left=%s"
+				, siteRequest_.getConfig().getString(ConfigKeys.GRAFANA_BASE_URL, ConfigKeys.GRAFANA_BASE_URL)
+				, BaseApiServiceImpl.urlEncode(
+						String.format("[\"now-1h\",\"now\",\"observability-metrics\",{\"exemplar\":true,\"expr\":\"DCGM_FI_DEV_GPU_UTIL{cluster=\\\"%s\\\"}\"}]"
+								, BaseApiServiceImpl.urlEncode(clusterName)
+						)
+				)
+		));
 	}
 }
 

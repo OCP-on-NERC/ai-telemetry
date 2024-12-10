@@ -84,6 +84,15 @@ so in this online VSCode environment, it seems we need to disable the Java autob
 - Search for `autobuild`. 
 - Uncheck to disable the auto build. 
 
+## Disable Inlay Hints
+
+There are inlay hints in the Java code editor that are really annoying and not useful, so we will disable these. 
+
+- Click on the gear icon in the bottom left. 
+- Click `Settings`. 
+- Search for `inlay hints`. 
+- Set the `Editor > Inlay Hints` to `off`. 
+
 ## Next...
 If you have successfully ran all of the commands above, congratulations, you are ready to move on to the next notebook in the course. 
 - If you have additional questions or issues, please [create an issue for the course here](https://github.com/OCP-on-NERC/ai-telemetry/issues). 

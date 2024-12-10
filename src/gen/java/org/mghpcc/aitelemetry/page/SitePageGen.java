@@ -60,7 +60,7 @@ import io.vertx.core.json.JsonObject;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage">Find the class SitePage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage">Find the class SitePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -91,11 +91,17 @@ import io.vertx.core.json.JsonObject;
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: Page"</b>, which groups all of the OpenAPIs for SitePage objects under the tag "Page". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/page</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/page"</b>, which defines the base API URI for SitePage objects as "/api/page" in the OpenAPI spec. 
+ * <h2>ApiMethode: DisplayPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DisplayPage"</b>, which creates an API "DisplayPage". 
+ * </p>
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: articles"</b>, which groups all of the OpenAPIs for SitePage objects under the tag "articles". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/article</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/article"</b>, which defines the base API URI for SitePage objects as "/en-us/api/article" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -106,8 +112,8 @@ import io.vertx.core.json.JsonObject;
  * <p>By adding a class comment "{@inheritDoc}", the SitePage class will inherit the helpful inherited class comments from the super class SitePageGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 2</h2>
- * <p>This class contains a comment <b>"Order: 2"</b>, which means this class will be sorted by the given number 2 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 4</h2>
+ * <p>This class contains a comment <b>"Order: 4"</b>, which means this class will be sorted by the given number 4 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <h2>Page: true</h2>
@@ -115,9 +121,9 @@ import io.vertx.core.json.JsonObject;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.page.SitePagePage. 
  * </p>
- * <h2>SuperPage.enUS: BaseResultPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseResultPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseResultPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.page.SitePagePage extends org.mghpcc.aitelemetry.result.BaseResultPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.page.SitePagePage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -142,66 +148,73 @@ import io.vertx.core.json.JsonObject;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this SitePage API. 
- * It's possible to reconfigure the roles required to access the SitePage API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_SitePage: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: an article</h2>
  * <p>This class contains a comment <b>"AName.enUS: an article"</b>, which identifies the language context to describe a SitePage as "an article". 
  * </p>
  * <p>
  * Delete the class SitePage in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.page in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.page&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.page&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
 public abstract class SitePageGen<DEV> extends BaseResult {
 	protected static final Logger LOG = LoggerFactory.getLogger(SitePage.class);
 
-	public static final String SitePage_Description_enUS = "Read the latest articles to learn more";
-	public static final String SitePage_AName_enUS = "an article";
-	public static final String SitePage_This_enUS = "this ";
-	public static final String SitePage_ThisName_enUS = "this article";
-	public static final String SitePage_A_enUS = "a ";
-	public static final String SitePage_TheName_enUS = "thearticle";
-	public static final String SitePage_SingularName_enUS = "article";
-	public static final String SitePage_PluralName_enUS = "articles";
-	public static final String SitePage_NameActual_enUS = "current article";
-	public static final String SitePage_AllName_enUS = "all articles";
-	public static final String SitePage_SearchAllNameBy_enUS = "search articles by ";
-	public static final String SitePage_Title_enUS = "articles";
-	public static final String SitePage_ThePluralName_enUS = "the articles";
-	public static final String SitePage_NoNameFound_enUS = "no article found";
-	public static final String SitePage_ApiUri_enUS = "/api/page";
-	public static final String SitePage_ApiUriSearchPage_enUS = "/page";
-	public static final String SitePage_OfName_enUS = "of article";
-	public static final String SitePage_ANameAdjective_enUS = "an article";
-	public static final String SitePage_NameAdjectiveSingular_enUS = "article";
-	public static final String SitePage_NameAdjectivePlural_enUS = "articles";
-	public static final String Search_enUS_Uri = "/api/page";
-	public static final String Search_enUS_ImageUri = "/png/api/page-999.png";
-	public static final String GET_enUS_Uri = "/api/page/{id}";
-	public static final String GET_enUS_ImageUri = "/png/api/page/{id}-999.png";
-	public static final String PATCH_enUS_Uri = "/api/page";
-	public static final String PATCH_enUS_ImageUri = "/png/api/page-999.png";
-	public static final String POST_enUS_Uri = "/api/page";
-	public static final String POST_enUS_ImageUri = "/png/api/page-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/page-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/page-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/page";
-	public static final String SearchPage_enUS_ImageUri = "/png/page-999.png";
+	public static final String Description_enUS = "Read the latest articles to learn more";
+	public static final String AName_enUS = "an article";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this article";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "thearticle";
+	public static final String SingularName_enUS = "article";
+	public static final String PluralName_enUS = "articles";
+	public static final String NameActual_enUS = "current article";
+	public static final String AllName_enUS = "all articles";
+	public static final String SearchAllNameBy_enUS = "search articles by ";
+	public static final String Title_enUS = "articles";
+	public static final String ThePluralName_enUS = "the articles";
+	public static final String NoNameFound_enUS = "no article found";
+	public static final String ApiUri_enUS = "/en-us/api/article";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/article";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/article/{pageId}";
+	public static final String OfName_enUS = "of article";
+	public static final String ANameAdjective_enUS = "an article";
+	public static final String NameAdjectiveSingular_enUS = "article";
+	public static final String NameAdjectivePlural_enUS = "articles";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/article";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/article";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/article";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/article/{pageId}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/article/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/article/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/article";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/article";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/article";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/article";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/article";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/article";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/article-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/article-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/article-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/article";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/article";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/article";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/article/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/article/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/article/%s";
+	public static final String DisplayPage_enUS_OpenApiUri = "/en-us/view/article/{pageId}";
+	public static final String DisplayPage_enUS_StringFormatUri = "/en-us/view/article/%s";
+	public static final String DisplayPage_enUS_StringFormatUrl = "%s/en-us/view/article/%s";
 
-	public static final String SitePage_Icon = "<i class=\"fa-duotone fa-solid fa-newspaper\"></i>";
+	public static final String Icon = "<i class=\"fa-duotone fa-solid fa-newspaper\"></i>";
 
 	/////////////
 	// article //
@@ -217,7 +230,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity article
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:article">Find the entity article in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:article">Find the entity article in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -274,7 +287,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity githubOrg
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:githubOrg">Find the entity githubOrg in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:githubOrg">Find the entity githubOrg in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -283,6 +296,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getGithubOrg() {
 		return githubOrg;
 	}
+	@JsonIgnore
 	public void setGithubOrg(String o) {
 		this.githubOrg = SitePage.staticSetGithubOrg(siteRequest_, o);
 	}
@@ -326,7 +340,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity siteName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteName">Find the entity siteName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteName">Find the entity siteName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -335,6 +349,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteName() {
 		return siteName;
 	}
+	@JsonIgnore
 	public void setSiteName(String o) {
 		this.siteName = SitePage.staticSetSiteName(siteRequest_, o);
 	}
@@ -378,7 +393,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity siteDisplayName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteDisplayName">Find the entity siteDisplayName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteDisplayName">Find the entity siteDisplayName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -387,6 +402,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteDisplayName() {
 		return siteDisplayName;
 	}
+	@JsonIgnore
 	public void setSiteDisplayName(String o) {
 		this.siteDisplayName = SitePage.staticSetSiteDisplayName(siteRequest_, o);
 	}
@@ -430,7 +446,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity sitePublicUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:sitePublicUrl">Find the entity sitePublicUrl in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:sitePublicUrl">Find the entity sitePublicUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -439,6 +455,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSitePublicUrl() {
 		return sitePublicUrl;
 	}
+	@JsonIgnore
 	public void setSitePublicUrl(String o) {
 		this.sitePublicUrl = SitePage.staticSetSitePublicUrl(siteRequest_, o);
 	}
@@ -482,7 +499,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity mailingListUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:mailingListUrl">Find the entity mailingListUrl in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:mailingListUrl">Find the entity mailingListUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -491,6 +508,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getMailingListUrl() {
 		return mailingListUrl;
 	}
+	@JsonIgnore
 	public void setMailingListUrl(String o) {
 		this.mailingListUrl = SitePage.staticSetMailingListUrl(siteRequest_, o);
 	}
@@ -534,7 +552,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity quayioOrg
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:quayioOrg">Find the entity quayioOrg in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:quayioOrg">Find the entity quayioOrg in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -543,6 +561,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getQuayioOrg() {
 		return quayioOrg;
 	}
+	@JsonIgnore
 	public void setQuayioOrg(String o) {
 		this.quayioOrg = SitePage.staticSetQuayioOrg(siteRequest_, o);
 	}
@@ -586,7 +605,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity sitePomGroupId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:sitePomGroupId">Find the entity sitePomGroupId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:sitePomGroupId">Find the entity sitePomGroupId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -595,6 +614,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSitePomGroupId() {
 		return sitePomGroupId;
 	}
+	@JsonIgnore
 	public void setSitePomGroupId(String o) {
 		this.sitePomGroupId = SitePage.staticSetSitePomGroupId(siteRequest_, o);
 	}
@@ -638,7 +658,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity staticBaseUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:staticBaseUrl">Find the entity staticBaseUrl in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:staticBaseUrl">Find the entity staticBaseUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -647,6 +667,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getStaticBaseUrl() {
 		return staticBaseUrl;
 	}
+	@JsonIgnore
 	public void setStaticBaseUrl(String o) {
 		this.staticBaseUrl = SitePage.staticSetStaticBaseUrl(siteRequest_, o);
 	}
@@ -690,7 +711,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity staticPath
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:staticPath">Find the entity staticPath in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:staticPath">Find the entity staticPath in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -699,6 +720,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getStaticPath() {
 		return staticPath;
 	}
+	@JsonIgnore
 	public void setStaticPath(String o) {
 		this.staticPath = SitePage.staticSetStaticPath(siteRequest_, o);
 	}
@@ -742,7 +764,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity siteBaseUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteBaseUrl">Find the entity siteBaseUrl in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:siteBaseUrl">Find the entity siteBaseUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -751,6 +773,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteBaseUrl() {
 		return siteBaseUrl;
 	}
+	@JsonIgnore
 	public void setSiteBaseUrl(String o) {
 		this.siteBaseUrl = SitePage.staticSetSiteBaseUrl(siteRequest_, o);
 	}
@@ -795,7 +818,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity courseNum
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:courseNum">Find the entity courseNum in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:courseNum">Find the entity courseNum in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -859,7 +882,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity lessonNum
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:lessonNum">Find the entity lessonNum in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:lessonNum">Find the entity lessonNum in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -908,60 +931,61 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		return lessonNum;
 	}
 
-	///////////
-	// title //
-	///////////
+	//////////
+	// name //
+	//////////
 
 
-	/**	 The entity title
+	/**	 The entity name
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String title;
+	protected String name;
 
-	/**	<br> The entity title
+	/**	<br> The entity name
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:title">Find the entity title in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _title(Wrap<String> w);
+	protected abstract void _name(Wrap<String> w);
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String o) {
-		this.title = SitePage.staticSetTitle(siteRequest_, o);
+	@JsonIgnore
+	public void setName(String o) {
+		this.name = SitePage.staticSetName(siteRequest_, o);
 	}
-	public static String staticSetTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSetName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected SitePage titleInit() {
-		Wrap<String> titleWrap = new Wrap<String>().var("title");
-		if(title == null) {
-			_title(titleWrap);
-			Optional.ofNullable(titleWrap.getO()).ifPresent(o -> {
-				setTitle(o);
+	protected SitePage nameInit() {
+		Wrap<String> nameWrap = new Wrap<String>().var("name");
+		if(name == null) {
+			_name(nameWrap);
+			Optional.ofNullable(nameWrap.getO()).ifPresent(o -> {
+				setName(o);
 			});
 		}
 		return (SitePage)this;
 	}
 
-	public static String staticSearchTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrName(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqTitle(SiteRequest siteRequest_, String o) {
-		return SitePage.staticSearchTitle(siteRequest_, SitePage.staticSetTitle(siteRequest_, o)).toString();
+	public static String staticSearchFqName(SiteRequest siteRequest_, String o) {
+		return SitePage.staticSearchName(siteRequest_, SitePage.staticSetName(siteRequest_, o)).toString();
 	}
 
-	public String sqlTitle() {
-		return title;
+	public String sqlName() {
+		return name;
 	}
 
 	////////////
@@ -978,7 +1002,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity author
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:author">Find the entity author in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:author">Find the entity author in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -987,6 +1011,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getAuthor() {
 		return author;
 	}
+	@JsonIgnore
 	public void setAuthor(String o) {
 		this.author = SitePage.staticSetAuthor(siteRequest_, o);
 	}
@@ -1034,7 +1059,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity pageId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageId">Find the entity pageId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageId">Find the entity pageId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1043,6 +1068,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageId() {
 		return pageId;
 	}
+	@JsonIgnore
 	public void setPageId(String o) {
 		this.pageId = SitePage.staticSetPageId(siteRequest_, o);
 	}
@@ -1076,230 +1102,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		return pageId;
 	}
 
-	/////////////////
-	// resourceUri //
-	/////////////////
-
-
-	/**	 The entity resourceUri
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String resourceUri;
-
-	/**	<br> The entity resourceUri
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:resourceUri">Find the entity resourceUri in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _resourceUri(Wrap<String> w);
-
-	public String getResourceUri() {
-		return resourceUri;
-	}
-	public void setResourceUri(String o) {
-		this.resourceUri = SitePage.staticSetResourceUri(siteRequest_, o);
-	}
-	public static String staticSetResourceUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected SitePage resourceUriInit() {
-		Wrap<String> resourceUriWrap = new Wrap<String>().var("resourceUri");
-		if(resourceUri == null) {
-			_resourceUri(resourceUriWrap);
-			Optional.ofNullable(resourceUriWrap.getO()).ifPresent(o -> {
-				setResourceUri(o);
-			});
-		}
-		return (SitePage)this;
-	}
-
-	public static String staticSearchResourceUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrResourceUri(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqResourceUri(SiteRequest siteRequest_, String o) {
-		return SitePage.staticSearchResourceUri(siteRequest_, SitePage.staticSetResourceUri(siteRequest_, o)).toString();
-	}
-
-	public String sqlResourceUri() {
-		return resourceUri;
-	}
-
-	/////////////////
-	// templateUri //
-	/////////////////
-
-
-	/**	 The entity templateUri
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String templateUri;
-
-	/**	<br> The entity templateUri
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:templateUri">Find the entity templateUri in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _templateUri(Wrap<String> w);
-
-	public String getTemplateUri() {
-		return templateUri;
-	}
-	public void setTemplateUri(String o) {
-		this.templateUri = SitePage.staticSetTemplateUri(siteRequest_, o);
-	}
-	public static String staticSetTemplateUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected SitePage templateUriInit() {
-		Wrap<String> templateUriWrap = new Wrap<String>().var("templateUri");
-		if(templateUri == null) {
-			_templateUri(templateUriWrap);
-			Optional.ofNullable(templateUriWrap.getO()).ifPresent(o -> {
-				setTemplateUri(o);
-			});
-		}
-		return (SitePage)this;
-	}
-
-	public static String staticSearchTemplateUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrTemplateUri(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqTemplateUri(SiteRequest siteRequest_, String o) {
-		return SitePage.staticSearchTemplateUri(siteRequest_, SitePage.staticSetTemplateUri(siteRequest_, o)).toString();
-	}
-
-	public String sqlTemplateUri() {
-		return templateUri;
-	}
-
-	/////////
-	// uri //
-	/////////
-
-
-	/**	 The entity uri
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String uri;
-
-	/**	<br> The entity uri
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:uri">Find the entity uri in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _uri(Wrap<String> w);
-
-	public String getUri() {
-		return uri;
-	}
-	public void setUri(String o) {
-		this.uri = SitePage.staticSetUri(siteRequest_, o);
-	}
-	public static String staticSetUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected SitePage uriInit() {
-		Wrap<String> uriWrap = new Wrap<String>().var("uri");
-		if(uri == null) {
-			_uri(uriWrap);
-			Optional.ofNullable(uriWrap.getO()).ifPresent(o -> {
-				setUri(o);
-			});
-		}
-		return (SitePage)this;
-	}
-
-	public static String staticSearchUri(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrUri(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqUri(SiteRequest siteRequest_, String o) {
-		return SitePage.staticSearchUri(siteRequest_, SitePage.staticSetUri(siteRequest_, o)).toString();
-	}
-
-	public String sqlUri() {
-		return uri;
-	}
-
-	/////////
-	// url //
-	/////////
-
-
-	/**	 The entity url
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String url;
-
-	/**	<br> The entity url
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:url">Find the entity url in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _url(Wrap<String> w);
-
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String o) {
-		this.url = SitePage.staticSetUrl(siteRequest_, o);
-	}
-	public static String staticSetUrl(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected SitePage urlInit() {
-		Wrap<String> urlWrap = new Wrap<String>().var("url");
-		if(url == null) {
-			_url(urlWrap);
-			Optional.ofNullable(urlWrap.getO()).ifPresent(o -> {
-				setUrl(o);
-			});
-		}
-		return (SitePage)this;
-	}
-
-	public static String staticSearchUrl(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrUrl(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqUrl(SiteRequest siteRequest_, String o) {
-		return SitePage.staticSearchUrl(siteRequest_, SitePage.staticSetUrl(siteRequest_, o)).toString();
-	}
-
-	public String sqlUrl() {
-		return url;
-	}
-
 	////////
 	// h1 //
 	////////
@@ -1314,7 +1116,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity h1
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:h1">Find the entity h1 in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:h1">Find the entity h1 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1323,6 +1125,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getH1() {
 		return h1;
 	}
+	@JsonIgnore
 	public void setH1(String o) {
 		this.h1 = SitePage.staticSetH1(siteRequest_, o);
 	}
@@ -1370,7 +1173,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity h2
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:h2">Find the entity h2 in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:h2">Find the entity h2 in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1379,6 +1182,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getH2() {
 		return h2;
 	}
+	@JsonIgnore
 	public void setH2(String o) {
 		this.h2 = SitePage.staticSetH2(siteRequest_, o);
 	}
@@ -1426,7 +1230,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity pageImageUri
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageUri">Find the entity pageImageUri in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageUri">Find the entity pageImageUri in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1435,6 +1239,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageImageUri() {
 		return pageImageUri;
 	}
+	@JsonIgnore
 	public void setPageImageUri(String o) {
 		this.pageImageUri = SitePage.staticSetPageImageUri(siteRequest_, o);
 	}
@@ -1483,7 +1288,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity pageImageWidth
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageWidth">Find the entity pageImageWidth in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageWidth">Find the entity pageImageWidth in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1543,7 +1348,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity pageImageHeight
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageHeight">Find the entity pageImageHeight in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageHeight">Find the entity pageImageHeight in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1602,7 +1407,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	/**	<br> The entity pageImageType
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageType">Find the entity pageImageType in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePage&fq=entiteVar_enUS_indexed_string:pageImageType">Find the entity pageImageType in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1611,6 +1416,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageImageType() {
 		return pageImageType;
 	}
+	@JsonIgnore
 	public void setPageImageType(String o) {
 		this.pageImageType = SitePage.staticSetPageImageType(siteRequest_, o);
 	}
@@ -1644,18 +1450,18 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepSitePage(SiteRequest siteRequest_) {
+	public Future<SitePageGen<DEV>> promiseDeepSitePage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepSitePage();
 	}
 
-	public Future<Void> promiseDeepSitePage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<SitePageGen<DEV>> promiseDeepSitePage() {
+		Promise<SitePageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseSitePage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseResult(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -1682,13 +1488,9 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				siteBaseUrlInit();
 				courseNumInit();
 				lessonNumInit();
-				titleInit();
+				nameInit();
 				authorInit();
 				pageIdInit();
-				resourceUriInit();
-				templateUriInit();
-				uriInit();
-				urlInit();
 				h1Init();
 				h2Init();
 				pageImageUriInit();
@@ -1708,7 +1510,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends SitePageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepSitePage(siteRequest_);
 	}
 
@@ -1774,20 +1576,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				return oSitePage.courseNum;
 			case "lessonNum":
 				return oSitePage.lessonNum;
-			case "title":
-				return oSitePage.title;
+			case "name":
+				return oSitePage.name;
 			case "author":
 				return oSitePage.author;
 			case "pageId":
 				return oSitePage.pageId;
-			case "resourceUri":
-				return oSitePage.resourceUri;
-			case "templateUri":
-				return oSitePage.templateUri;
-			case "uri":
-				return oSitePage.uri;
-			case "url":
-				return oSitePage.url;
 			case "h1":
 				return oSitePage.h1;
 			case "h2":
@@ -1865,20 +1659,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return SitePage.staticSetCourseNum(siteRequest_, o);
 		case "lessonNum":
 			return SitePage.staticSetLessonNum(siteRequest_, o);
-		case "title":
-			return SitePage.staticSetTitle(siteRequest_, o);
+		case "name":
+			return SitePage.staticSetName(siteRequest_, o);
 		case "author":
 			return SitePage.staticSetAuthor(siteRequest_, o);
 		case "pageId":
 			return SitePage.staticSetPageId(siteRequest_, o);
-		case "resourceUri":
-			return SitePage.staticSetResourceUri(siteRequest_, o);
-		case "templateUri":
-			return SitePage.staticSetTemplateUri(siteRequest_, o);
-		case "uri":
-			return SitePage.staticSetUri(siteRequest_, o);
-		case "url":
-			return SitePage.staticSetUrl(siteRequest_, o);
 		case "h1":
 			return SitePage.staticSetH1(siteRequest_, o);
 		case "h2":
@@ -1931,20 +1717,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return SitePage.staticSearchCourseNum(siteRequest_, (Integer)o);
 		case "lessonNum":
 			return SitePage.staticSearchLessonNum(siteRequest_, (Integer)o);
-		case "title":
-			return SitePage.staticSearchTitle(siteRequest_, (String)o);
+		case "name":
+			return SitePage.staticSearchName(siteRequest_, (String)o);
 		case "author":
 			return SitePage.staticSearchAuthor(siteRequest_, (String)o);
 		case "pageId":
 			return SitePage.staticSearchPageId(siteRequest_, (String)o);
-		case "resourceUri":
-			return SitePage.staticSearchResourceUri(siteRequest_, (String)o);
-		case "templateUri":
-			return SitePage.staticSearchTemplateUri(siteRequest_, (String)o);
-		case "uri":
-			return SitePage.staticSearchUri(siteRequest_, (String)o);
-		case "url":
-			return SitePage.staticSearchUrl(siteRequest_, (String)o);
 		case "h1":
 			return SitePage.staticSearchH1(siteRequest_, (String)o);
 		case "h2":
@@ -1997,20 +1775,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return SitePage.staticSearchStrCourseNum(siteRequest_, (Integer)o);
 		case "lessonNum":
 			return SitePage.staticSearchStrLessonNum(siteRequest_, (Integer)o);
-		case "title":
-			return SitePage.staticSearchStrTitle(siteRequest_, (String)o);
+		case "name":
+			return SitePage.staticSearchStrName(siteRequest_, (String)o);
 		case "author":
 			return SitePage.staticSearchStrAuthor(siteRequest_, (String)o);
 		case "pageId":
 			return SitePage.staticSearchStrPageId(siteRequest_, (String)o);
-		case "resourceUri":
-			return SitePage.staticSearchStrResourceUri(siteRequest_, (String)o);
-		case "templateUri":
-			return SitePage.staticSearchStrTemplateUri(siteRequest_, (String)o);
-		case "uri":
-			return SitePage.staticSearchStrUri(siteRequest_, (String)o);
-		case "url":
-			return SitePage.staticSearchStrUrl(siteRequest_, (String)o);
 		case "h1":
 			return SitePage.staticSearchStrH1(siteRequest_, (String)o);
 		case "h2":
@@ -2063,20 +1833,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return SitePage.staticSearchFqCourseNum(siteRequest_, o);
 		case "lessonNum":
 			return SitePage.staticSearchFqLessonNum(siteRequest_, o);
-		case "title":
-			return SitePage.staticSearchFqTitle(siteRequest_, o);
+		case "name":
+			return SitePage.staticSearchFqName(siteRequest_, o);
 		case "author":
 			return SitePage.staticSearchFqAuthor(siteRequest_, o);
 		case "pageId":
 			return SitePage.staticSearchFqPageId(siteRequest_, o);
-		case "resourceUri":
-			return SitePage.staticSearchFqResourceUri(siteRequest_, o);
-		case "templateUri":
-			return SitePage.staticSearchFqTemplateUri(siteRequest_, o);
-		case "uri":
-			return SitePage.staticSearchFqUri(siteRequest_, o);
-		case "url":
-			return SitePage.staticSearchFqUrl(siteRequest_, o);
 		case "h1":
 			return SitePage.staticSearchFqH1(siteRequest_, o);
 		case "h2":
@@ -2131,11 +1893,11 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				}
 				saves.add("lessonNum");
 				return val;
-			} else if("title".equals(varLower)) {
+			} else if("name".equals(varLower)) {
 				if(val instanceof String) {
-					setTitle((String)val);
+					setName((String)val);
 				}
-				saves.add("title");
+				saves.add("name");
 				return val;
 			} else if("author".equals(varLower)) {
 				if(val instanceof String) {
@@ -2148,30 +1910,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 					setPageId((String)val);
 				}
 				saves.add("pageId");
-				return val;
-			} else if("resourceuri".equals(varLower)) {
-				if(val instanceof String) {
-					setResourceUri((String)val);
-				}
-				saves.add("resourceUri");
-				return val;
-			} else if("templateuri".equals(varLower)) {
-				if(val instanceof String) {
-					setTemplateUri((String)val);
-				}
-				saves.add("templateUri");
-				return val;
-			} else if("uri".equals(varLower)) {
-				if(val instanceof String) {
-					setUri((String)val);
-				}
-				saves.add("uri");
-				return val;
-			} else if("url".equals(varLower)) {
-				if(val instanceof String) {
-					setUrl((String)val);
-				}
-				saves.add("url");
 				return val;
 			} else if("h1".equals(varLower)) {
 				if(val instanceof String) {
@@ -2220,10 +1958,10 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 					oSitePage.setLessonNum(lessonNum);
 			}
 
-			if(saves.contains("title")) {
-				String title = (String)doc.get("title_docvalues_string");
-				if(title != null)
-					oSitePage.setTitle(title);
+			if(saves.contains("name")) {
+				String name = (String)doc.get("name_docvalues_string");
+				if(name != null)
+					oSitePage.setName(name);
 			}
 
 			if(saves.contains("author")) {
@@ -2236,30 +1974,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				String pageId = (String)doc.get("pageId_docvalues_string");
 				if(pageId != null)
 					oSitePage.setPageId(pageId);
-			}
-
-			if(saves.contains("resourceUri")) {
-				String resourceUri = (String)doc.get("resourceUri_docvalues_string");
-				if(resourceUri != null)
-					oSitePage.setResourceUri(resourceUri);
-			}
-
-			if(saves.contains("templateUri")) {
-				String templateUri = (String)doc.get("templateUri_docvalues_string");
-				if(templateUri != null)
-					oSitePage.setTemplateUri(templateUri);
-			}
-
-			if(saves.contains("uri")) {
-				String uri = (String)doc.get("uri_docvalues_string");
-				if(uri != null)
-					oSitePage.setUri(uri);
-			}
-
-			if(saves.contains("url")) {
-				String url = (String)doc.get("url_docvalues_string");
-				if(url != null)
-					oSitePage.setUrl(url);
 			}
 
 			if(saves.contains("h1")) {
@@ -2291,26 +2005,14 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		if(lessonNum != null) {
 			doc.put("lessonNum_docvalues_int", lessonNum);
 		}
-		if(title != null) {
-			doc.put("title_docvalues_string", title);
+		if(name != null) {
+			doc.put("name_docvalues_string", name);
 		}
 		if(author != null) {
 			doc.put("author_docvalues_string", author);
 		}
 		if(pageId != null) {
 			doc.put("pageId_docvalues_string", pageId);
-		}
-		if(resourceUri != null) {
-			doc.put("resourceUri_docvalues_string", resourceUri);
-		}
-		if(templateUri != null) {
-			doc.put("templateUri_docvalues_string", templateUri);
-		}
-		if(uri != null) {
-			doc.put("uri_docvalues_string", uri);
-		}
-		if(url != null) {
-			doc.put("url_docvalues_string", url);
 		}
 		if(h1 != null) {
 			doc.put("h1_docvalues_string", h1);
@@ -2331,20 +2033,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				return "courseNum_docvalues_int";
 			case "lessonNum":
 				return "lessonNum_docvalues_int";
-			case "title":
-				return "title_docvalues_string";
+			case "name":
+				return "name_docvalues_string";
 			case "author":
 				return "author_docvalues_string";
 			case "pageId":
 				return "pageId_docvalues_string";
-			case "resourceUri":
-				return "resourceUri_docvalues_string";
-			case "templateUri":
-				return "templateUri_docvalues_string";
-			case "uri":
-				return "uri_docvalues_string";
-			case "url":
-				return "url_docvalues_string";
 			case "h1":
 				return "h1_docvalues_string";
 			case "h2":
@@ -2362,20 +2056,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				return "courseNum_docvalues_int";
 			case "lessonNum":
 				return "lessonNum_docvalues_int";
-			case "title":
-				return "title_docvalues_string";
+			case "name":
+				return "name_docvalues_string";
 			case "author":
 				return "author_docvalues_string";
 			case "pageId":
 				return "pageId_docvalues_string";
-			case "resourceUri":
-				return "resourceUri_docvalues_string";
-			case "templateUri":
-				return "templateUri_docvalues_string";
-			case "uri":
-				return "uri_docvalues_string";
-			case "url":
-				return "url_docvalues_string";
 			case "h1":
 				return "h1_docvalues_string";
 			case "h2":
@@ -2393,20 +2079,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				return "courseNum";
 			case "lessonNum_docvalues_int":
 				return "lessonNum";
-			case "title_docvalues_string":
-				return "title";
+			case "name_docvalues_string":
+				return "name";
 			case "author_docvalues_string":
 				return "author";
 			case "pageId_docvalues_string":
 				return "pageId";
-			case "resourceUri_docvalues_string":
-				return "resourceUri";
-			case "templateUri_docvalues_string":
-				return "templateUri";
-			case "uri_docvalues_string":
-				return "uri";
-			case "url_docvalues_string":
-				return "url";
 			case "h1_docvalues_string":
 				return "h1";
 			case "h2_docvalues_string":
@@ -2445,13 +2123,9 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 		oSitePage.setCourseNum(Optional.ofNullable(doc.get("courseNum_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oSitePage.setLessonNum(Optional.ofNullable(doc.get("lessonNum_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oSitePage.setTitle(Optional.ofNullable(doc.get("title_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oSitePage.setName(Optional.ofNullable(doc.get("name_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setAuthor(Optional.ofNullable(doc.get("author_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setPageId(Optional.ofNullable(doc.get("pageId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSitePage.setResourceUri(Optional.ofNullable(doc.get("resourceUri_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSitePage.setTemplateUri(Optional.ofNullable(doc.get("templateUri_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSitePage.setUri(Optional.ofNullable(doc.get("uri_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oSitePage.setUrl(Optional.ofNullable(doc.get("url_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setH1(Optional.ofNullable(doc.get("h1_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setH2(Optional.ofNullable(doc.get("h2_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSitePage.setPageImageUri(Optional.ofNullable(doc.get("pageImageUri_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -2472,20 +2146,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 				apiRequest.addVars("courseNum");
 			if(!Objects.equals(lessonNum, original.getLessonNum()))
 				apiRequest.addVars("lessonNum");
-			if(!Objects.equals(title, original.getTitle()))
-				apiRequest.addVars("title");
+			if(!Objects.equals(name, original.getName()))
+				apiRequest.addVars("name");
 			if(!Objects.equals(author, original.getAuthor()))
 				apiRequest.addVars("author");
 			if(!Objects.equals(pageId, original.getPageId()))
 				apiRequest.addVars("pageId");
-			if(!Objects.equals(resourceUri, original.getResourceUri()))
-				apiRequest.addVars("resourceUri");
-			if(!Objects.equals(templateUri, original.getTemplateUri()))
-				apiRequest.addVars("templateUri");
-			if(!Objects.equals(uri, original.getUri()))
-				apiRequest.addVars("uri");
-			if(!Objects.equals(url, original.getUrl()))
-				apiRequest.addVars("url");
 			if(!Objects.equals(h1, original.getH1()))
 				apiRequest.addVars("h1");
 			if(!Objects.equals(h2, original.getH2()))
@@ -2505,13 +2171,9 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		sb.append(super.toString());
 		sb.append(Optional.ofNullable(courseNum).map(v -> "courseNum: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(lessonNum).map(v -> "lessonNum: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(title).map(v -> "title: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(name).map(v -> "name: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(author).map(v -> "author: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(pageId).map(v -> "pageId: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(resourceUri).map(v -> "resourceUri: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(templateUri).map(v -> "templateUri: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(uri).map(v -> "uri: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(url).map(v -> "url: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(h1).map(v -> "h1: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(h2).map(v -> "h2: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(pageImageUri).map(v -> "pageImageUri: \"" + v + "\"\n" ).orElse(""));
@@ -2536,13 +2198,9 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public static final String VAR_siteBaseUrl = "siteBaseUrl";
 	public static final String VAR_courseNum = "courseNum";
 	public static final String VAR_lessonNum = "lessonNum";
-	public static final String VAR_title = "title";
+	public static final String VAR_name = "name";
 	public static final String VAR_author = "author";
 	public static final String VAR_pageId = "pageId";
-	public static final String VAR_resourceUri = "resourceUri";
-	public static final String VAR_templateUri = "templateUri";
-	public static final String VAR_uri = "uri";
-	public static final String VAR_url = "url";
 	public static final String VAR_h1 = "h1";
 	public static final String VAR_h2 = "h2";
 	public static final String VAR_pageImageUri = "pageImageUri";
@@ -2566,10 +2224,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		vars.add(VAR_lessonNum);
 		vars.add(VAR_author);
 		vars.add(VAR_pageId);
-		vars.add(VAR_resourceUri);
-		vars.add(VAR_templateUri);
-		vars.add(VAR_uri);
-		vars.add(VAR_url);
 		vars.add(VAR_pageImageUri);
 		BaseResult.varsFqBaseResult(vars);
 		return vars;
@@ -2598,19 +2252,55 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public static final String DISPLAY_NAME_siteBaseUrl = "";
 	public static final String DISPLAY_NAME_courseNum = "Course Number";
 	public static final String DISPLAY_NAME_lessonNum = "Lesson Number";
-	public static final String DISPLAY_NAME_title = "title";
+	public static final String DISPLAY_NAME_name = "title";
 	public static final String DISPLAY_NAME_author = "author";
 	public static final String DISPLAY_NAME_pageId = "Page ID";
-	public static final String DISPLAY_NAME_resourceUri = "resource URI";
-	public static final String DISPLAY_NAME_templateUri = "template URI";
-	public static final String DISPLAY_NAME_uri = "URI";
-	public static final String DISPLAY_NAME_url = "URL";
 	public static final String DISPLAY_NAME_h1 = "header 1";
 	public static final String DISPLAY_NAME_h2 = "header 2";
 	public static final String DISPLAY_NAME_pageImageUri = "imageUri";
 	public static final String DISPLAY_NAME_pageImageWidth = "";
 	public static final String DISPLAY_NAME_pageImageHeight = "";
 	public static final String DISPLAY_NAME_pageImageType = "";
+
+	@Override
+	public String idForClass() {
+		return pageId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return name;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return SitePage.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/article/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return "%s/en-us/view/article/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return SitePage.displayNameSitePage(var);
@@ -2643,20 +2333,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return DISPLAY_NAME_courseNum;
 		case VAR_lessonNum:
 			return DISPLAY_NAME_lessonNum;
-		case VAR_title:
-			return DISPLAY_NAME_title;
+		case VAR_name:
+			return DISPLAY_NAME_name;
 		case VAR_author:
 			return DISPLAY_NAME_author;
 		case VAR_pageId:
 			return DISPLAY_NAME_pageId;
-		case VAR_resourceUri:
-			return DISPLAY_NAME_resourceUri;
-		case VAR_templateUri:
-			return DISPLAY_NAME_templateUri;
-		case VAR_uri:
-			return DISPLAY_NAME_uri;
-		case VAR_url:
-			return DISPLAY_NAME_url;
 		case VAR_h1:
 			return DISPLAY_NAME_h1;
 		case VAR_h2:
@@ -2680,20 +2362,12 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return "The course number for this page. ";
 		case VAR_lessonNum:
 			return "The lesson number for this page. ";
-		case VAR_title:
-			return "The title of this page. ";
+		case VAR_name:
+			return "The name of this page. ";
 		case VAR_author:
 			return "The author";
 		case VAR_pageId:
 			return "The ID for this page. ";
-		case VAR_resourceUri:
-			return "The resource relative URI for this page. ";
-		case VAR_templateUri:
-			return "The template relative URI for this page. ";
-		case VAR_uri:
-			return "The relative URI for this page. ";
-		case VAR_url:
-			return "The URL for this page. ";
 		case VAR_h1:
 			return "The 1st header of this page. ";
 		case VAR_h2:
@@ -2739,19 +2413,11 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return "Integer";
 		case VAR_lessonNum:
 			return "Integer";
-		case VAR_title:
+		case VAR_name:
 			return "String";
 		case VAR_author:
 			return "String";
 		case VAR_pageId:
-			return "String";
-		case VAR_resourceUri:
-			return "String";
-		case VAR_templateUri:
-			return "String";
-		case VAR_uri:
-			return "String";
-		case VAR_url:
 			return "String";
 		case VAR_h1:
 			return "String";
@@ -2772,7 +2438,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	public static Integer htmColumnSitePage(String var) {
 		switch(var) {
-		case VAR_title:
+		case VAR_name:
 			return 1;
 			default:
 				return BaseResult.htmColumnBaseResult(var);
@@ -2784,11 +2450,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 		case VAR_author:
 			return 3;
 		case VAR_pageId:
-			return 3;
-		case VAR_uri:
-			return 3;
-		case VAR_url:
-			return 3;
+			return 99;
 		case VAR_pageImageUri:
 			return 4;
 			default:
@@ -2802,10 +2464,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 			return 3;
 		case VAR_pageId:
 			return 1;
-		case VAR_uri:
-			return 2;
-		case VAR_url:
-			return 2;
 		case VAR_pageImageUri:
 			return 1;
 			default:

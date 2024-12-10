@@ -70,7 +70,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject">Find the class AiProject in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject">Find the class AiProject in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -95,17 +95,23 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: POST</h2>
  * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
  * </p>
+ * <h2>ApiMethode: DELETE</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETE"</b>, which creates an API "DELETE". 
+ * </p>
  * <h2>ApiMethode: PUTImport</h2>
  * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
  * </p>
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: AI project"</b>, which groups all of the OpenAPIs for AiProject objects under the tag "AI project". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/ai-project</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/ai-project"</b>, which defines the base API URI for AiProject objects as "/api/ai-project" in the OpenAPI spec. 
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: AI projects"</b>, which groups all of the OpenAPIs for AiProject objects under the tag "AI projects". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/ai-project</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/ai-project"</b>, which defines the base API URI for AiProject objects as "/en-us/api/ai-project" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -128,9 +134,9 @@ import org.computate.search.response.solr.SolrResponse;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.model.project.AiProjectPage. 
  * </p>
- * <h2>SuperPage.enUS: BaseModelPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.project.AiProjectPage extends org.mghpcc.aitelemetry.model.BaseModelPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.model.project.AiProjectPage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -155,121 +161,129 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this AiProject API. 
- * It's possible to reconfigure the roles required to access the AiProject API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_AiProject: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: an AI project</h2>
  * <p>This class contains a comment <b>"AName.enUS: an AI project"</b>, which identifies the language context to describe a AiProject as "an AI project". 
  * </p>
  * <p>
  * Delete the class AiProject in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.project in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.project&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.project&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
 public abstract class AiProjectGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(AiProject.class);
 
-	public static final String AiProject_Description_enUS = "A research project using AI and GPUs";
-	public static final String AiProject_AName_enUS = "an AI project";
-	public static final String AiProject_This_enUS = "this ";
-	public static final String AiProject_ThisName_enUS = "this AI project";
-	public static final String AiProject_A_enUS = "a ";
-	public static final String AiProject_TheName_enUS = "theAI project";
-	public static final String AiProject_SingularName_enUS = "AI project";
-	public static final String AiProject_PluralName_enUS = "AI projects";
-	public static final String AiProject_NameActual_enUS = "current AI project";
-	public static final String AiProject_AllName_enUS = "all AI projects";
-	public static final String AiProject_SearchAllNameBy_enUS = "search AI projects by ";
-	public static final String AiProject_Title_enUS = "AI projects";
-	public static final String AiProject_ThePluralName_enUS = "the AI projects";
-	public static final String AiProject_NoNameFound_enUS = "no AI project found";
-	public static final String AiProject_ApiUri_enUS = "/api/ai-project";
-	public static final String AiProject_ApiUriSearchPage_enUS = "/ai-project";
-	public static final String AiProject_OfName_enUS = "of AI project";
-	public static final String AiProject_ANameAdjective_enUS = "an AI project";
-	public static final String AiProject_NameAdjectiveSingular_enUS = "AI project";
-	public static final String AiProject_NameAdjectivePlural_enUS = "AI projects";
-	public static final String Search_enUS_Uri = "/api/ai-project";
-	public static final String Search_enUS_ImageUri = "/png/api/ai-project-999.png";
-	public static final String GET_enUS_Uri = "/api/ai-project/{id}";
-	public static final String GET_enUS_ImageUri = "/png/api/ai-project/{id}-999.png";
-	public static final String PATCH_enUS_Uri = "/api/ai-project";
-	public static final String PATCH_enUS_ImageUri = "/png/api/ai-project-999.png";
-	public static final String POST_enUS_Uri = "/api/ai-project";
-	public static final String POST_enUS_ImageUri = "/png/api/ai-project-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/ai-project-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/ai-project-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/ai-project";
-	public static final String SearchPage_enUS_ImageUri = "/png/ai-project-999.png";
+	public static final String Description_enUS = "A research project using AI and GPUs";
+	public static final String AName_enUS = "an AI project";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this AI project";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "theAI project";
+	public static final String SingularName_enUS = "AI project";
+	public static final String PluralName_enUS = "AI projects";
+	public static final String NameActual_enUS = "current AI project";
+	public static final String AllName_enUS = "all AI projects";
+	public static final String SearchAllNameBy_enUS = "search AI projects by ";
+	public static final String Title_enUS = "AI projects";
+	public static final String ThePluralName_enUS = "the AI projects";
+	public static final String NoNameFound_enUS = "no AI project found";
+	public static final String ApiUri_enUS = "/en-us/api/ai-project";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-project";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-project/{pageId}";
+	public static final String OfName_enUS = "of AI project";
+	public static final String ANameAdjective_enUS = "an AI project";
+	public static final String NameAdjectiveSingular_enUS = "AI project";
+	public static final String NameAdjectivePlural_enUS = "AI projects";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-project";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-project";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-project";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-project/{entityId}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-project/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-project/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-project";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/ai-project";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/ai-project";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-project";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-project";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-project";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-project/{entityId}";
+	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-project/%s";
+	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-project/%s";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-project-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/ai-project-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/ai-project-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-project";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-project";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-project";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-project/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-project/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-project/%s";
 
-	public static final String AiProject_Icon = "<i class=\"fa-regular fa-school\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-school\"></i>";
 
-	//////////
-	// name //
-	//////////
+	/////////////////
+	// projectName //
+	/////////////////
 
 
-	/**	 The entity name
+	/**	 The entity projectName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String name;
+	protected String projectName;
 
-	/**	<br> The entity name
+	/**	<br> The entity projectName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:projectName">Find the entity projectName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _name(Wrap<String> w);
+	protected abstract void _projectName(Wrap<String> w);
 
-	public String getName() {
-		return name;
+	public String getProjectName() {
+		return projectName;
 	}
-	public void setName(String o) {
-		this.name = AiProject.staticSetName(siteRequest_, o);
+	@JsonIgnore
+	public void setProjectName(String o) {
+		this.projectName = AiProject.staticSetProjectName(siteRequest_, o);
 	}
-	public static String staticSetName(SiteRequest siteRequest_, String o) {
+	public static String staticSetProjectName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiProject nameInit() {
-		Wrap<String> nameWrap = new Wrap<String>().var("name");
-		if(name == null) {
-			_name(nameWrap);
-			Optional.ofNullable(nameWrap.getO()).ifPresent(o -> {
-				setName(o);
+	protected AiProject projectNameInit() {
+		Wrap<String> projectNameWrap = new Wrap<String>().var("projectName");
+		if(projectName == null) {
+			_projectName(projectNameWrap);
+			Optional.ofNullable(projectNameWrap.getO()).ifPresent(o -> {
+				setProjectName(o);
 			});
 		}
 		return (AiProject)this;
 	}
 
-	public static String staticSearchName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchProjectName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrProjectName(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqName(SiteRequest siteRequest_, String o) {
-		return AiProject.staticSearchName(siteRequest_, AiProject.staticSetName(siteRequest_, o)).toString();
+	public static String staticSearchFqProjectName(SiteRequest siteRequest_, String o) {
+		return AiProject.staticSearchProjectName(siteRequest_, AiProject.staticSetProjectName(siteRequest_, o)).toString();
 	}
 
-	public String sqlName() {
-		return name;
+	public String sqlProjectName() {
+		return projectName;
 	}
 
 	/////////////////
@@ -286,7 +300,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity description
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -295,6 +309,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
+	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiProject.staticSetDescription(siteRequest_, o);
 	}
@@ -343,7 +358,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationColors
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -356,6 +371,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public void setLocationColors(List<String> locationColors) {
 		this.locationColors = locationColors;
 	}
+	@JsonIgnore
 	public void setLocationColors(String o) {
 		String l = AiProject.staticSetLocationColors(siteRequest_, o);
 		if(l != null)
@@ -417,7 +433,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationTitles
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -430,6 +446,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public void setLocationTitles(List<String> locationTitles) {
 		this.locationTitles = locationTitles;
 	}
+	@JsonIgnore
 	public void setLocationTitles(String o) {
 		String l = AiProject.staticSetLocationTitles(siteRequest_, o);
 		if(l != null)
@@ -491,7 +508,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationLinks
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -504,6 +521,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public void setLocationLinks(List<String> locationLinks) {
 		this.locationLinks = locationLinks;
 	}
+	@JsonIgnore
 	public void setLocationLinks(String o) {
 		String l = AiProject.staticSetLocationLinks(siteRequest_, o);
 		if(l != null)
@@ -566,7 +584,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity location
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -667,7 +685,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -676,6 +694,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
+	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiProject.staticSetEntityId(siteRequest_, o);
 	}
@@ -723,7 +742,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityShortId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -732,6 +751,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
+	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiProject.staticSetEntityShortId(siteRequest_, o);
 	}
@@ -765,18 +785,18 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiProject(SiteRequest siteRequest_) {
+	public Future<AiProjectGen<DEV>> promiseDeepAiProject(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiProject();
 	}
 
-	public Future<Void> promiseDeepAiProject() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiProjectGen<DEV>> promiseDeepAiProject() {
+		Promise<AiProjectGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiProject(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -790,7 +810,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
-				nameInit();
+				projectNameInit();
 				descriptionInit();
 				locationColorsInit();
 				locationTitlesInit();
@@ -811,7 +831,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiProjectGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiProject(siteRequest_);
 	}
 
@@ -851,8 +871,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public Object obtainAiProject(String var) {
 		AiProject oAiProject = (AiProject)this;
 		switch(var) {
-			case "name":
-				return oAiProject.name;
+			case "projectName":
+				return oAiProject.projectName;
 			case "description":
 				return oAiProject.description;
 			case "locationColors":
@@ -906,8 +926,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static Object staticSetAiProject(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return AiProject.staticSetName(siteRequest_, o);
+		case "projectName":
+			return AiProject.staticSetProjectName(siteRequest_, o);
 		case "description":
 			return AiProject.staticSetDescription(siteRequest_, o);
 		case "locationColors":
@@ -936,8 +956,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static Object staticSearchAiProject(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return AiProject.staticSearchName(siteRequest_, (String)o);
+		case "projectName":
+			return AiProject.staticSearchProjectName(siteRequest_, (String)o);
 		case "description":
 			return AiProject.staticSearchDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -966,8 +986,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchStrAiProject(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return AiProject.staticSearchStrName(siteRequest_, (String)o);
+		case "projectName":
+			return AiProject.staticSearchStrProjectName(siteRequest_, (String)o);
 		case "description":
 			return AiProject.staticSearchStrDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -996,8 +1016,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchFqAiProject(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return AiProject.staticSearchFqName(siteRequest_, o);
+		case "projectName":
+			return AiProject.staticSearchFqProjectName(siteRequest_, o);
 		case "description":
 			return AiProject.staticSearchFqDescription(siteRequest_, o);
 		case "locationColors":
@@ -1038,11 +1058,11 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public Object persistAiProject(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("name".equals(varLower)) {
+			if("projectname".equals(varLower)) {
 				if(val instanceof String) {
-					setName((String)val);
+					setProjectName((String)val);
 				}
-				saves.add("name");
+				saves.add("projectName");
 				return val;
 			} else if("description".equals(varLower)) {
 				if(val instanceof String) {
@@ -1081,10 +1101,10 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
 
-			if(saves.contains("name")) {
-				String name = (String)doc.get("name_docvalues_string");
-				if(name != null)
-					oAiProject.setName(name);
+			if(saves.contains("projectName")) {
+				String projectName = (String)doc.get("projectName_docvalues_string");
+				if(projectName != null)
+					oAiProject.setProjectName(projectName);
 			}
 
 			if(saves.contains("description")) {
@@ -1128,8 +1148,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 
 	public void indexAiProject(JsonObject doc) {
-		if(name != null) {
-			doc.put("name_docvalues_string", name);
+		if(projectName != null) {
+			doc.put("projectName_docvalues_string", projectName);
 		}
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
@@ -1167,8 +1187,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String varStoredAiProject(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "projectName":
+				return "projectName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1188,8 +1208,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String varIndexedAiProject(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "projectName":
+				return "projectName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1209,8 +1229,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String searchVarAiProject(String searchVar) {
 		switch(searchVar) {
-			case "name_docvalues_string":
-				return "name";
+			case "projectName_docvalues_string":
+				return "projectName";
 			case "description_docvalues_string":
 				return "description";
 			case "locationColors_indexedstored_strings":
@@ -1253,7 +1273,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		AiProject oAiProject = (AiProject)this;
 		SiteRequest siteRequest = oAiProject.getSiteRequest_();
 
-		oAiProject.setName(Optional.ofNullable(doc.get("name_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiProject.setProjectName(Optional.ofNullable(doc.get("projectName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiProject.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oAiProject.addLocationColors(AiProject.staticSetLocationColors(siteRequest, v.toString()));
@@ -1279,8 +1299,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
 		if(o != null && o instanceof AiProject) {
 			AiProject original = (AiProject)o;
-			if(!Objects.equals(name, original.getName()))
-				apiRequest.addVars("name");
+			if(!Objects.equals(projectName, original.getProjectName()))
+				apiRequest.addVars("projectName");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
 			if(!Objects.equals(locationColors, original.getLocationColors()))
@@ -1304,7 +1324,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
-		sb.append(Optional.ofNullable(name).map(v -> "name: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(projectName).map(v -> "projectName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
@@ -1319,7 +1339,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiProject;
 	}
-	public static final String VAR_name = "name";
+	public static final String VAR_projectName = "projectName";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
 	public static final String VAR_locationTitles = "locationTitles";
@@ -1340,7 +1360,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		return AiProject.varsFqAiProject(new ArrayList<String>());
 	}
 	public static List<String> varsFqAiProject(List<String> vars) {
-		vars.add(VAR_name);
+		vars.add(VAR_projectName);
 		vars.add(VAR_description);
 		vars.add(VAR_location);
 		vars.add(VAR_entityId);
@@ -1357,7 +1377,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		return vars;
 	}
 
-	public static final String DISPLAY_NAME_name = "name";
+	public static final String DISPLAY_NAME_projectName = "name";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "location colors";
 	public static final String DISPLAY_NAME_locationTitles = "location titles";
@@ -1366,13 +1386,53 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
 
+	@Override
+	public String idForClass() {
+		return entityId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return projectName;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return AiProject.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return description;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/ai-project/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return AiProject.displayNameAiProject(var);
 	}
 	public static String displayNameAiProject(String var) {
 		switch(var) {
-		case VAR_name:
-			return DISPLAY_NAME_name;
+		case VAR_projectName:
+			return DISPLAY_NAME_projectName;
 		case VAR_description:
 			return DISPLAY_NAME_description;
 		case VAR_locationColors:
@@ -1394,7 +1454,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String descriptionAiProject(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_projectName:
 			return "The name of this AI project";
 		case VAR_description:
 			return "A description of this AI project";
@@ -1417,7 +1477,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String classSimpleNameAiProject(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_projectName:
 			return "String";
 		case VAR_description:
 			return "String";
@@ -1440,7 +1500,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnAiProject(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_projectName:
 			return 1;
 		case VAR_description:
 			return 2;
@@ -1451,7 +1511,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmRowAiProject(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_projectName:
 			return 3;
 		case VAR_description:
 			return 3;
@@ -1466,7 +1526,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmCellAiProject(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_projectName:
 			return 1;
 		case VAR_description:
 			return 2;

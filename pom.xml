@@ -5,9 +5,9 @@
 	<groupId>org.mghpcc</groupId>
 	<artifactId>aitelemetry</artifactId>
 	<version>1.0.0</version>
-	<name>Learn that computer</name>
+	<name>AI Telemetry</name>
 	<description>AI telemetry on OpenShift dashboards</description>
-	<url>https://ai-telemetry.mghpcc.org</url>
+	<url>https://ai-telemetry.apps.obs.nerc.mghpcc.org</url>
 	<packaging>jar</packaging>
 
 	<licenses>
@@ -22,7 +22,7 @@
 			<name>Users</name>
 			<subscribe>https://computate.topicbox.com/groups/computate</subscribe>
 			<unsubscribe>https://computate.topicbox.com/groups/computate</unsubscribe>
-			<post>mailto:computate@computate.topicbox.com</post>
+			<post>mailto:ai-telemetry@computate.topicbox.com</post>
 			<archive>https://computate.topicbox.com/groups/computate</archive>
 		</mailingList>
 	</mailingLists>
@@ -33,15 +33,15 @@
 	</issueManagement>
 
 	<organization>
-		<name>computate.org</name>
-		<url>https://www.computate.org/</url>
+		<name></name>
+		<url></url>
 	</organization>
 
 	<developers>
 		<developer>
-			<name>Christopher Tate</name>
-			<organization>computate.org</organization>
-			<organizationUrl>https://www.computate.org/</organizationUrl>
+			<name></name>
+			<organization></organization>
+			<organizationUrl></organizationUrl>
 		</developer>
 	</developers>
 
@@ -85,12 +85,6 @@
 		<mockito.version>4.10.0</mockito.version>
 		<commonmark.version>0.21.0</commonmark.version>
 
-		<quarkus-base.version>3.2.9</quarkus-base.version>
-		<quarkus.version>${quarkus-base.version}.Final-redhat-00002</quarkus.version>
-		<quarkus-plugin.version>${quarkus.version}</quarkus-plugin.version>
-		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-		<quarkus.platform.version>${quarkus.version}</quarkus.platform.version>
 		<rest-assured.version>5.3.2</rest-assured.version>
 
 		<vertx-base.version>4.5.8</vertx-base.version>
@@ -132,14 +126,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>${quarkus.platform.group-id}</groupId>
-				<artifactId>${quarkus.platform.artifact-id}</artifactId>
-				<version>${quarkus.platform.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.apache.camel</groupId>
 				<artifactId>camel-bom</artifactId>
 				<version>${camel.version}</version>
@@ -155,6 +141,11 @@
 		<!-- Computate -->
 		<!-- ######### -->
 
+		<dependency>
+			<groupId>org.computate</groupId>
+			<artifactId>computate-search</artifactId>
+			<version>${computate.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.computate</groupId>
 			<artifactId>computate-vertx</artifactId>
@@ -375,63 +366,6 @@
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-opentelemetry</artifactId>
 		</dependency>
-
-		<!-- ####### -->
-		<!-- Quarkus -->
-		<!-- ####### -->
-
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-resteasy-reactive-jackson</artifactId>
-			<version>${quarkus.platform.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-vertx</artifactId>
-			<version>${quarkus.platform.version}</version>
-			<exclusions>
-				<exclusion>
-			        <groupId>org.jboss.slf4j</groupId>
-			        <artifactId>slf4j-jboss-logmanager</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!--
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-bootstrap-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-bootstrap-maven-resolver</artifactId>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>io.smallrye.reactive</groupId>
-			<artifactId>smallrye-mutiny-vertx-web-client</artifactId>
-		</dependency>
-		<!--
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-arc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-bootstrap-runner</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-junit5</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<scope>test</scope>
-			<version>${rest-assured.version}</version>
-		</dependency>
-		-->
 		
 		<!-- ########## -->
 		<!-- jfreechart -->

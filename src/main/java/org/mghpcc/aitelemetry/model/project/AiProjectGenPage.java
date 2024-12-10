@@ -1,7 +1,10 @@
 package org.mghpcc.aitelemetry.model.project;
 
+import org.mghpcc.aitelemetry.model.project.AiProject;
+import java.lang.String;
+import java.util.List;
+import io.vertx.pgclient.data.Point;
 import org.mghpcc.aitelemetry.page.PageLayout;
-import org.mghpcc.aitelemetry.model.BaseModelPage;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import java.io.IOException;
@@ -25,7 +28,6 @@ import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -47,7 +49,7 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
+public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
@@ -389,6 +391,18 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
   }
 
   @Override
+  protected void _defaultSortVars(List<String> l) {
+    if(!searchListAiProject_.getDefaultSort()) {
+      Optional.ofNullable(searchListAiProject_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+        String varSortParts[] = varSortStr.split(" ");
+        String varSort = AiProject.searchVarAiProject(varSortParts[0]);
+        String varSortDirection = varSortParts[1];
+        l.add(String.format("%s %s", varSort, varSortDirection));
+      });
+    }
+  }
+
+  @Override
   protected void _defaultFieldListVars(List<String> l) {
     Optional.ofNullable(searchListAiProject_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
@@ -446,23 +460,26 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
     Optional.ofNullable(searchListAiProject_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
-  protected void _aiProjectCount(Wrap<Integer> w) {
+  protected void _resultCount(Wrap<Integer> w) {
     w.o(searchListAiProject_ == null ? 0 : searchListAiProject_.size());
   }
 
-  protected void _aiProject_(Wrap<AiProject> w) {
-    if(aiProjectCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
+  /**
+   * Initialized: false
+  **/
+  protected void _result(Wrap<AiProject> w) {
+    if(resultCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("entityId")).orElse(null) != null)
       w.o(searchListAiProject_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
-    if(aiProject_ != null)
-      w.o(aiProject_.getPk());
+    if(result != null)
+      w.o(result.getPk());
   }
 
-  protected void _id(Wrap<String> w) {
-    if(aiProject_ != null)
-      w.o(aiProject_.getId());
+  protected void _solrId(Wrap<String> w) {
+    if(result != null)
+      w.o(result.getSolrId());
   }
 
   @Override
@@ -477,11 +494,11 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageTitle(Wrap<String> c) {
-    if(aiProject_ != null && aiProject_.getObjectTitle() != null)
-      c.o(aiProject_.getObjectTitle());
-    else if(aiProject_ != null)
+    if(result != null && result.getTitle() != null)
+      c.o(result.getTitle());
+    else if(result != null)
       c.o("AI projects");
-    else if(searchListAiProject_ == null || aiProjectCount == 0)
+    else if(searchListAiProject_ == null || resultCount == 0)
       c.o("no AI project found");
     else
       c.o("AI projects");
@@ -489,12 +506,12 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/ai-project");
+    c.o("/en-us/search/ai-project");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/api/ai-project");
+    c.o("/en-us/api/ai-project");
   }
 
   @Override
@@ -509,7 +526,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/ai-project-999.png");
+      c.o("/png/en-us/search/ai-project-999.png");
   }
 
   @Override
@@ -518,6 +535,6 @@ public class AiProjectGenPage extends AiProjectGenPageGen<BaseModelPage> {
   }
 
   protected void _pageUriAiProject(Wrap<String> c) {
-      c.o("/ai-project");
+      c.o("/en-us/search/ai-project");
   }
 }

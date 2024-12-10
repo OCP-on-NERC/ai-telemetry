@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage">Find the class GpuDevicePage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage">Find the class GpuDevicePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -98,15 +98,15 @@ import io.vertx.core.json.JsonArray;
  * <h2>AName.enUS: null</h2>
  * <p>
  * Delete the class GpuDevicePage in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.gpudevice in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
@@ -117,18 +117,18 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepGpuDevicePage(SiteRequest siteRequest_) {
+	public Future<GpuDevicePageGen<DEV>> promiseDeepGpuDevicePage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepGpuDevicePage();
 	}
 
-	public Future<Void> promiseDeepGpuDevicePage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<GpuDevicePageGen<DEV>> promiseDeepGpuDevicePage() {
+		Promise<GpuDevicePageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseGpuDevicePage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepGpuDeviceGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -155,7 +155,7 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends GpuDevicePageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepGpuDevicePage(siteRequest_);
 	}
 
@@ -294,6 +294,46 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 	public static final String CLASS_SIMPLE_NAME = "GpuDevicePage";
 
 
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return GpuDevicePage.displayNameGpuDevicePage(var);
 	}
@@ -301,6 +341,69 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 		switch(var) {
 		default:
 			return GpuDeviceGenPage.displayNameGpuDeviceGenPage(var);
+		}
+	}
+
+	public static String descriptionGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.descriptionGpuDeviceGenPage(var);
+		}
+	}
+
+	public static String classSimpleNameGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.classSimpleNameGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer htmColumnGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.htmColumnGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer htmRowGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.htmRowGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer htmCellGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.htmCellGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer lengthMinGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.lengthMinGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer lengthMaxGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.lengthMaxGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer maxGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.maxGpuDeviceGenPage(var);
+		}
+	}
+
+	public static Integer minGpuDevicePage(String var) {
+		switch(var) {
+			default:
+				return GpuDeviceGenPage.minGpuDeviceGenPage(var);
 		}
 	}
 }

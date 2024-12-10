@@ -1,5 +1,7 @@
 target/**
 .flattened-pom.xml
 .vscode
-doc/getting-started/openshift-ai/vars.yaml
-
+bin/generate.sh
+bin/generatenow.sh
+bin/index.sh
+bin/indexnow.sh

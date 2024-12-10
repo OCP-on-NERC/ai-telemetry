@@ -457,10 +457,12 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			siteRequest.initDeepSiteRequest(siteRequest);
 			String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
 {% for JAVA_PAGE in JAVA_PAGES %}
-			{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}EnUSApiServiceImpl api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }} = new {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}EnUSApiServiceImpl(vertx.eventBus(), config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
+			{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}EnUSApiServiceImpl api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }} = new {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}EnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
 {% endfor %}
 {% for JAVA_PAGE in JAVA_PAGES %}
-{% for n in range(loop.index) %}	{% endfor %}		api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.importTimer(Paths.get(templatePath, "{{ JAVA_PAGE.classePageTemplates_enUS_stored_string }}"), vertx, siteRequest, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_SIMPLE_NAME, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_API_ADDRESS_{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}).onSuccess(q{{ loop.index }} -> {
+{% if JAVA_PAGE.classePageTemplates_enUS_stored_string is defined or JAVA_PAGE.classePageTemplatesUtilisateur_enUS_stored_string is defined %}
+{% for n in range(loop.index) %}	{% endfor %}		api{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.importTimer(Paths.get(templatePath, "{{ JAVA_PAGE.classePageTemplates_enUS_stored_string | default(JAVA_PAGE.classePageTemplatesUtilisateur_enUS_stored_string) }}"), vertx, siteRequest, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_SIMPLE_NAME, {{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}.CLASS_API_ADDRESS_{{ JAVA_PAGE.classeNomSimple_enUS_stored_string }}).onSuccess(q{{ loop.index }} -> {
+{% endif %}
 {% endfor %}
 {% for n in range(JAVA_PAGES|length) %}	{% endfor %}			LOG.info("data import complete");
 {% for n in range(JAVA_PAGES|length) %}	{% endfor %}			promise.complete();

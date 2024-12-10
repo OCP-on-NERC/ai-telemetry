@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
+import java.lang.Integer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -70,7 +71,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode">Find the class AiNode in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode">Find the class AiNode in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -95,17 +96,23 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: POST</h2>
  * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
  * </p>
+ * <h2>ApiMethode: DELETE</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETE"</b>, which creates an API "DELETE". 
+ * </p>
  * <h2>ApiMethode: PUTImport</h2>
  * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
  * </p>
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: AI node"</b>, which groups all of the OpenAPIs for AiNode objects under the tag "AI node". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/ai-node</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/ai-node"</b>, which defines the base API URI for AiNode objects as "/api/ai-node" in the OpenAPI spec. 
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: AI nodes"</b>, which groups all of the OpenAPIs for AiNode objects under the tag "AI nodes". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/ai-node</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/ai-node"</b>, which defines the base API URI for AiNode objects as "/en-us/api/ai-node" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -128,9 +135,9 @@ import org.computate.search.response.solr.SolrResponse;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.model.node.AiNodePage. 
  * </p>
- * <h2>SuperPage.enUS: BaseModelPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.node.AiNodePage extends org.mghpcc.aitelemetry.model.BaseModelPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.model.node.AiNodePage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -155,121 +162,186 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this AiNode API. 
- * It's possible to reconfigure the roles required to access the AiNode API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_AiNode: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: an AI node</h2>
  * <p>This class contains a comment <b>"AName.enUS: an AI node"</b>, which identifies the language context to describe a AiNode as "an AI node". 
  * </p>
  * <p>
  * Delete the class AiNode in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.node in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.node&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.node&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
- * curl -k 'https://solr.apps-crc.testing:443/solr/computate/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;siteNom_indexed_string:ai\-telemetry&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * Generated: true
  **/
 public abstract class AiNodeGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(AiNode.class);
 
-	public static final String AiNode_Description_enUS = "A Red Hat OpenShift node containing GPUs";
-	public static final String AiNode_AName_enUS = "an AI node";
-	public static final String AiNode_This_enUS = "this ";
-	public static final String AiNode_ThisName_enUS = "this AI node";
-	public static final String AiNode_A_enUS = "a ";
-	public static final String AiNode_TheName_enUS = "theAI node";
-	public static final String AiNode_SingularName_enUS = "AI node";
-	public static final String AiNode_PluralName_enUS = "AI nodes";
-	public static final String AiNode_NameActual_enUS = "current AI node";
-	public static final String AiNode_AllName_enUS = "all AI nodes";
-	public static final String AiNode_SearchAllNameBy_enUS = "search AI nodes by ";
-	public static final String AiNode_Title_enUS = "AI nodes";
-	public static final String AiNode_ThePluralName_enUS = "the AI nodes";
-	public static final String AiNode_NoNameFound_enUS = "no AI node found";
-	public static final String AiNode_ApiUri_enUS = "/api/ai-node";
-	public static final String AiNode_ApiUriSearchPage_enUS = "/ai-node";
-	public static final String AiNode_OfName_enUS = "of AI node";
-	public static final String AiNode_ANameAdjective_enUS = "an AI node";
-	public static final String AiNode_NameAdjectiveSingular_enUS = "AI node";
-	public static final String AiNode_NameAdjectivePlural_enUS = "AI nodes";
-	public static final String Search_enUS_Uri = "/api/ai-node";
-	public static final String Search_enUS_ImageUri = "/png/api/ai-node-999.png";
-	public static final String GET_enUS_Uri = "/api/ai-node/{id}";
-	public static final String GET_enUS_ImageUri = "/png/api/ai-node/{id}-999.png";
-	public static final String PATCH_enUS_Uri = "/api/ai-node";
-	public static final String PATCH_enUS_ImageUri = "/png/api/ai-node-999.png";
-	public static final String POST_enUS_Uri = "/api/ai-node";
-	public static final String POST_enUS_ImageUri = "/png/api/ai-node-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/ai-node-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/ai-node-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/ai-node";
-	public static final String SearchPage_enUS_ImageUri = "/png/ai-node-999.png";
+	public static final String Description_enUS = "A Red Hat OpenShift node containing GPUs";
+	public static final String AName_enUS = "an AI node";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this AI node";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "theAI node";
+	public static final String SingularName_enUS = "AI node";
+	public static final String PluralName_enUS = "AI nodes";
+	public static final String NameActual_enUS = "current AI node";
+	public static final String AllName_enUS = "all AI nodes";
+	public static final String SearchAllNameBy_enUS = "search AI nodes by ";
+	public static final String Title_enUS = "AI nodes";
+	public static final String ThePluralName_enUS = "the AI nodes";
+	public static final String NoNameFound_enUS = "no AI node found";
+	public static final String ApiUri_enUS = "/en-us/api/ai-node";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-node";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-node/{pageId}";
+	public static final String OfName_enUS = "of AI node";
+	public static final String ANameAdjective_enUS = "an AI node";
+	public static final String NameAdjectiveSingular_enUS = "AI node";
+	public static final String NameAdjectivePlural_enUS = "AI nodes";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-node";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-node";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-node";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-node/{entityId}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-node/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-node/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-node";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/ai-node";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/ai-node";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-node";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-node";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-node";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-node/{entityId}";
+	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-node/%s";
+	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-node/%s";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-node-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/ai-node-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/ai-node-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-node";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-node";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-node";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-node/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-node/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-node/%s";
 
-	public static final String AiNode_Icon = "<i class=\"fa-regular fa-computer\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-computer\"></i>";
 
-	//////////
-	// name //
-	//////////
+	/////////////////
+	// clusterName //
+	/////////////////
 
 
-	/**	 The entity name
+	/**	 The entity clusterName
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String name;
+	protected String clusterName;
 
-	/**	<br> The entity name
+	/**	<br> The entity clusterName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:name">Find the entity name in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:clusterName">Find the entity clusterName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _name(Wrap<String> w);
+	protected abstract void _clusterName(Wrap<String> w);
 
-	public String getName() {
-		return name;
+	public String getClusterName() {
+		return clusterName;
 	}
-	public void setName(String o) {
-		this.name = AiNode.staticSetName(siteRequest_, o);
+	@JsonIgnore
+	public void setClusterName(String o) {
+		this.clusterName = AiNode.staticSetClusterName(siteRequest_, o);
 	}
-	public static String staticSetName(SiteRequest siteRequest_, String o) {
+	public static String staticSetClusterName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiNode nameInit() {
-		Wrap<String> nameWrap = new Wrap<String>().var("name");
-		if(name == null) {
-			_name(nameWrap);
-			Optional.ofNullable(nameWrap.getO()).ifPresent(o -> {
-				setName(o);
+	protected AiNode clusterNameInit() {
+		Wrap<String> clusterNameWrap = new Wrap<String>().var("clusterName");
+		if(clusterName == null) {
+			_clusterName(clusterNameWrap);
+			Optional.ofNullable(clusterNameWrap.getO()).ifPresent(o -> {
+				setClusterName(o);
 			});
 		}
 		return (AiNode)this;
 	}
 
-	public static String staticSearchName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchClusterName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrName(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrClusterName(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqName(SiteRequest siteRequest_, String o) {
-		return AiNode.staticSearchName(siteRequest_, AiNode.staticSetName(siteRequest_, o)).toString();
+	public static String staticSearchFqClusterName(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchClusterName(siteRequest_, AiNode.staticSetClusterName(siteRequest_, o)).toString();
 	}
 
-	public String sqlName() {
-		return name;
+	public String sqlClusterName() {
+		return clusterName;
+	}
+
+	//////////////
+	// nodeName //
+	//////////////
+
+
+	/**	 The entity nodeName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String nodeName;
+
+	/**	<br> The entity nodeName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:nodeName">Find the entity nodeName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _nodeName(Wrap<String> w);
+
+	public String getNodeName() {
+		return nodeName;
+	}
+	@JsonIgnore
+	public void setNodeName(String o) {
+		this.nodeName = AiNode.staticSetNodeName(siteRequest_, o);
+	}
+	public static String staticSetNodeName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiNode nodeNameInit() {
+		Wrap<String> nodeNameWrap = new Wrap<String>().var("nodeName");
+		if(nodeName == null) {
+			_nodeName(nodeNameWrap);
+			Optional.ofNullable(nodeNameWrap.getO()).ifPresent(o -> {
+				setNodeName(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNodeName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNodeName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNodeName(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNodeName(siteRequest_, AiNode.staticSetNodeName(siteRequest_, o)).toString();
+	}
+
+	public String sqlNodeName() {
+		return nodeName;
 	}
 
 	/////////////////
@@ -286,7 +358,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity description
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -295,6 +367,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
+	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiNode.staticSetDescription(siteRequest_, o);
 	}
@@ -343,7 +416,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationColors
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -356,6 +429,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public void setLocationColors(List<String> locationColors) {
 		this.locationColors = locationColors;
 	}
+	@JsonIgnore
 	public void setLocationColors(String o) {
 		String l = AiNode.staticSetLocationColors(siteRequest_, o);
 		if(l != null)
@@ -417,7 +491,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationTitles
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -430,6 +504,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public void setLocationTitles(List<String> locationTitles) {
 		this.locationTitles = locationTitles;
 	}
+	@JsonIgnore
 	public void setLocationTitles(String o) {
 		String l = AiNode.staticSetLocationTitles(siteRequest_, o);
 		if(l != null)
@@ -491,7 +566,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationLinks
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -504,6 +579,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public void setLocationLinks(List<String> locationLinks) {
 		this.locationLinks = locationLinks;
 	}
+	@JsonIgnore
 	public void setLocationLinks(String o) {
 		String l = AiNode.staticSetLocationLinks(siteRequest_, o);
 		if(l != null)
@@ -566,7 +642,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity location
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -653,6 +729,70 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		return location;
 	}
 
+	/////////////////////
+	// gpuDevicesTotal //
+	/////////////////////
+
+
+	/**	 The entity gpuDevicesTotal
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer gpuDevicesTotal;
+
+	/**	<br> The entity gpuDevicesTotal
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:gpuDevicesTotal">Find the entity gpuDevicesTotal in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _gpuDevicesTotal(Wrap<Integer> w);
+
+	public Integer getGpuDevicesTotal() {
+		return gpuDevicesTotal;
+	}
+
+	public void setGpuDevicesTotal(Integer gpuDevicesTotal) {
+		this.gpuDevicesTotal = gpuDevicesTotal;
+	}
+	@JsonIgnore
+	public void setGpuDevicesTotal(String o) {
+		this.gpuDevicesTotal = AiNode.staticSetGpuDevicesTotal(siteRequest_, o);
+	}
+	public static Integer staticSetGpuDevicesTotal(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected AiNode gpuDevicesTotalInit() {
+		Wrap<Integer> gpuDevicesTotalWrap = new Wrap<Integer>().var("gpuDevicesTotal");
+		if(gpuDevicesTotal == null) {
+			_gpuDevicesTotal(gpuDevicesTotalWrap);
+			Optional.ofNullable(gpuDevicesTotalWrap.getO()).ifPresent(o -> {
+				setGpuDevicesTotal(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static Integer staticSearchGpuDevicesTotal(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrGpuDevicesTotal(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqGpuDevicesTotal(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchGpuDevicesTotal(siteRequest_, AiNode.staticSetGpuDevicesTotal(siteRequest_, o)).toString();
+	}
+
+	public Integer sqlGpuDevicesTotal() {
+		return gpuDevicesTotal;
+	}
+
 	//////////////
 	// entityId //
 	//////////////
@@ -667,7 +807,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -676,6 +816,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
+	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiNode.staticSetEntityId(siteRequest_, o);
 	}
@@ -723,7 +864,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityShortId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing:443/solr/computate/select?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -732,6 +873,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
+	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiNode.staticSetEntityShortId(siteRequest_, o);
 	}
@@ -765,18 +907,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiNode(SiteRequest siteRequest_) {
+	public Future<AiNodeGen<DEV>> promiseDeepAiNode(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiNode();
 	}
 
-	public Future<Void> promiseDeepAiNode() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiNodeGen<DEV>> promiseDeepAiNode() {
+		Promise<AiNodeGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiNode(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -790,12 +932,14 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
-				nameInit();
+				clusterNameInit();
+				nodeNameInit();
 				descriptionInit();
 				locationColorsInit();
 				locationTitlesInit();
 				locationLinksInit();
 				locationInit();
+				gpuDevicesTotalInit();
 				entityIdInit();
 				entityShortIdInit();
 				promise2.complete();
@@ -811,7 +955,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiNodeGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiNode(siteRequest_);
 	}
 
@@ -851,8 +995,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public Object obtainAiNode(String var) {
 		AiNode oAiNode = (AiNode)this;
 		switch(var) {
-			case "name":
-				return oAiNode.name;
+			case "clusterName":
+				return oAiNode.clusterName;
+			case "nodeName":
+				return oAiNode.nodeName;
 			case "description":
 				return oAiNode.description;
 			case "locationColors":
@@ -863,6 +1009,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return oAiNode.locationLinks;
 			case "location":
 				return oAiNode.location;
+			case "gpuDevicesTotal":
+				return oAiNode.gpuDevicesTotal;
 			case "entityId":
 				return oAiNode.entityId;
 			case "entityShortId":
@@ -906,8 +1054,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static Object staticSetAiNode(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return AiNode.staticSetName(siteRequest_, o);
+		case "clusterName":
+			return AiNode.staticSetClusterName(siteRequest_, o);
+		case "nodeName":
+			return AiNode.staticSetNodeName(siteRequest_, o);
 		case "description":
 			return AiNode.staticSetDescription(siteRequest_, o);
 		case "locationColors":
@@ -918,6 +1068,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSetLocationLinks(siteRequest_, o);
 		case "location":
 			return AiNode.staticSetLocation(siteRequest_, o);
+		case "gpuDevicesTotal":
+			return AiNode.staticSetGpuDevicesTotal(siteRequest_, o);
 		case "entityId":
 			return AiNode.staticSetEntityId(siteRequest_, o);
 		case "entityShortId":
@@ -936,8 +1088,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static Object staticSearchAiNode(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return AiNode.staticSearchName(siteRequest_, (String)o);
+		case "clusterName":
+			return AiNode.staticSearchClusterName(siteRequest_, (String)o);
+		case "nodeName":
+			return AiNode.staticSearchNodeName(siteRequest_, (String)o);
 		case "description":
 			return AiNode.staticSearchDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -948,6 +1102,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return AiNode.staticSearchLocation(siteRequest_, (Point)o);
+		case "gpuDevicesTotal":
+			return AiNode.staticSearchGpuDevicesTotal(siteRequest_, (Integer)o);
 		case "entityId":
 			return AiNode.staticSearchEntityId(siteRequest_, (String)o);
 		case "entityShortId":
@@ -966,8 +1122,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchStrAiNode(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "name":
-			return AiNode.staticSearchStrName(siteRequest_, (String)o);
+		case "clusterName":
+			return AiNode.staticSearchStrClusterName(siteRequest_, (String)o);
+		case "nodeName":
+			return AiNode.staticSearchStrNodeName(siteRequest_, (String)o);
 		case "description":
 			return AiNode.staticSearchStrDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -978,6 +1136,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchStrLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return AiNode.staticSearchStrLocation(siteRequest_, (Point)o);
+		case "gpuDevicesTotal":
+			return AiNode.staticSearchStrGpuDevicesTotal(siteRequest_, (Integer)o);
 		case "entityId":
 			return AiNode.staticSearchStrEntityId(siteRequest_, (String)o);
 		case "entityShortId":
@@ -996,8 +1156,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchFqAiNode(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "name":
-			return AiNode.staticSearchFqName(siteRequest_, o);
+		case "clusterName":
+			return AiNode.staticSearchFqClusterName(siteRequest_, o);
+		case "nodeName":
+			return AiNode.staticSearchFqNodeName(siteRequest_, o);
 		case "description":
 			return AiNode.staticSearchFqDescription(siteRequest_, o);
 		case "locationColors":
@@ -1008,6 +1170,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchFqLocationLinks(siteRequest_, o);
 		case "location":
 			return AiNode.staticSearchFqLocation(siteRequest_, o);
+		case "gpuDevicesTotal":
+			return AiNode.staticSearchFqGpuDevicesTotal(siteRequest_, o);
 		case "entityId":
 			return AiNode.staticSearchFqEntityId(siteRequest_, o);
 		case "entityShortId":
@@ -1038,11 +1202,17 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public Object persistAiNode(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("name".equals(varLower)) {
+			if("clustername".equals(varLower)) {
 				if(val instanceof String) {
-					setName((String)val);
+					setClusterName((String)val);
 				}
-				saves.add("name");
+				saves.add("clusterName");
+				return val;
+			} else if("nodename".equals(varLower)) {
+				if(val instanceof String) {
+					setNodeName((String)val);
+				}
+				saves.add("nodeName");
 				return val;
 			} else if("description".equals(varLower)) {
 				if(val instanceof String) {
@@ -1057,6 +1227,14 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 					setLocation((Point)val);
 				}
 				saves.add("location");
+				return val;
+			} else if("gpudevicestotal".equals(varLower)) {
+				if(val instanceof Integer) {
+					setGpuDevicesTotal((Integer)val);
+				} else {
+					setGpuDevicesTotal(val == null ? null : val.toString());
+				}
+				saves.add("gpuDevicesTotal");
 				return val;
 			} else if("entityid".equals(varLower)) {
 				if(val instanceof String) {
@@ -1081,10 +1259,16 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
 
-			if(saves.contains("name")) {
-				String name = (String)doc.get("name_docvalues_string");
-				if(name != null)
-					oAiNode.setName(name);
+			if(saves.contains("clusterName")) {
+				String clusterName = (String)doc.get("clusterName_docvalues_string");
+				if(clusterName != null)
+					oAiNode.setClusterName(clusterName);
+			}
+
+			if(saves.contains("nodeName")) {
+				String nodeName = (String)doc.get("nodeName_docvalues_string");
+				if(nodeName != null)
+					oAiNode.setNodeName(nodeName);
 			}
 
 			if(saves.contains("description")) {
@@ -1117,6 +1301,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 					oAiNode.setLocation(location);
 			}
 
+			if(saves.contains("gpuDevicesTotal")) {
+				Integer gpuDevicesTotal = (Integer)doc.get("gpuDevicesTotal_docvalues_int");
+				if(gpuDevicesTotal != null)
+					oAiNode.setGpuDevicesTotal(gpuDevicesTotal);
+			}
+
 			if(saves.contains("entityId")) {
 				String entityId = (String)doc.get("entityId_docvalues_string");
 				if(entityId != null)
@@ -1128,8 +1318,11 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 
 	public void indexAiNode(JsonObject doc) {
-		if(name != null) {
-			doc.put("name_docvalues_string", name);
+		if(clusterName != null) {
+			doc.put("clusterName_docvalues_string", clusterName);
+		}
+		if(nodeName != null) {
+			doc.put("nodeName_docvalues_string", nodeName);
 		}
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
@@ -1158,6 +1351,9 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		if(location != null) {
 			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
 		}
+		if(gpuDevicesTotal != null) {
+			doc.put("gpuDevicesTotal_docvalues_int", gpuDevicesTotal);
+		}
 		if(entityId != null) {
 			doc.put("entityId_docvalues_string", entityId);
 		}
@@ -1167,8 +1363,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static String varStoredAiNode(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "clusterName":
+				return "clusterName_docvalues_string";
+			case "nodeName":
+				return "nodeName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1179,6 +1377,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
+			case "gpuDevicesTotal":
+				return "gpuDevicesTotal_docvalues_int";
 			case "entityId":
 				return "entityId_docvalues_string";
 			default:
@@ -1188,8 +1388,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static String varIndexedAiNode(String entityVar) {
 		switch(entityVar) {
-			case "name":
-				return "name_docvalues_string";
+			case "clusterName":
+				return "clusterName_docvalues_string";
+			case "nodeName":
+				return "nodeName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1200,6 +1402,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
+			case "gpuDevicesTotal":
+				return "gpuDevicesTotal_docvalues_int";
 			case "entityId":
 				return "entityId_docvalues_string";
 			default:
@@ -1209,8 +1413,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static String searchVarAiNode(String searchVar) {
 		switch(searchVar) {
-			case "name_docvalues_string":
-				return "name";
+			case "clusterName_docvalues_string":
+				return "clusterName";
+			case "nodeName_docvalues_string":
+				return "nodeName";
 			case "description_docvalues_string":
 				return "description";
 			case "locationColors_indexedstored_strings":
@@ -1221,6 +1427,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "locationLinks";
 			case "location_docvalues_location":
 				return "location";
+			case "gpuDevicesTotal_docvalues_int":
+				return "gpuDevicesTotal";
 			case "entityId_docvalues_string":
 				return "entityId";
 			default:
@@ -1253,7 +1461,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		AiNode oAiNode = (AiNode)this;
 		SiteRequest siteRequest = oAiNode.getSiteRequest_();
 
-		oAiNode.setName(Optional.ofNullable(doc.get("name_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNodeName(Optional.ofNullable(doc.get("nodeName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiNode.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oAiNode.addLocationColors(AiNode.staticSetLocationColors(siteRequest, v.toString()));
@@ -1265,6 +1474,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			oAiNode.addLocationLinks(AiNode.staticSetLocationLinks(siteRequest, v.toString()));
 		});
 		oAiNode.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
+		oAiNode.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oAiNode.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
@@ -1279,8 +1489,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
 		if(o != null && o instanceof AiNode) {
 			AiNode original = (AiNode)o;
-			if(!Objects.equals(name, original.getName()))
-				apiRequest.addVars("name");
+			if(!Objects.equals(clusterName, original.getClusterName()))
+				apiRequest.addVars("clusterName");
+			if(!Objects.equals(nodeName, original.getNodeName()))
+				apiRequest.addVars("nodeName");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
 			if(!Objects.equals(locationColors, original.getLocationColors()))
@@ -1291,6 +1503,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				apiRequest.addVars("locationLinks");
 			if(!Objects.equals(location, original.getLocation()))
 				apiRequest.addVars("location");
+			if(!Objects.equals(gpuDevicesTotal, original.getGpuDevicesTotal()))
+				apiRequest.addVars("gpuDevicesTotal");
 			if(!Objects.equals(entityId, original.getEntityId()))
 				apiRequest.addVars("entityId");
 			super.apiRequestBaseModel();
@@ -1304,12 +1518,14 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
-		sb.append(Optional.ofNullable(name).map(v -> "name: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(clusterName).map(v -> "clusterName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(nodeName).map(v -> "nodeName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationLinks).map(v -> "locationLinks: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(gpuDevicesTotal).map(v -> "gpuDevicesTotal: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
@@ -1319,12 +1535,14 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiNode;
 	}
-	public static final String VAR_name = "name";
+	public static final String VAR_clusterName = "clusterName";
+	public static final String VAR_nodeName = "nodeName";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
 	public static final String VAR_locationTitles = "locationTitles";
 	public static final String VAR_locationLinks = "locationLinks";
 	public static final String VAR_location = "location";
+	public static final String VAR_gpuDevicesTotal = "gpuDevicesTotal";
 	public static final String VAR_entityId = "entityId";
 	public static final String VAR_entityShortId = "entityShortId";
 
@@ -1340,9 +1558,10 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		return AiNode.varsFqAiNode(new ArrayList<String>());
 	}
 	public static List<String> varsFqAiNode(List<String> vars) {
-		vars.add(VAR_name);
-		vars.add(VAR_description);
+		vars.add(VAR_clusterName);
+		vars.add(VAR_nodeName);
 		vars.add(VAR_location);
+		vars.add(VAR_gpuDevicesTotal);
 		vars.add(VAR_entityId);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
@@ -1353,26 +1572,71 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static List<String> varsRangeAiNode(List<String> vars) {
 		vars.add(VAR_location);
+		vars.add(VAR_gpuDevicesTotal);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
 
-	public static final String DISPLAY_NAME_name = "name";
+	public static final String DISPLAY_NAME_clusterName = "cluster name";
+	public static final String DISPLAY_NAME_nodeName = "node name";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
 	public static final String DISPLAY_NAME_locationTitles = "area served titles";
 	public static final String DISPLAY_NAME_locationLinks = "area served links";
 	public static final String DISPLAY_NAME_location = "location";
+	public static final String DISPLAY_NAME_gpuDevicesTotal = "GPU devices total";
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
+
+	@Override
+	public String idForClass() {
+		return entityId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return nodeName;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return AiNode.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return description;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/ai-node/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return AiNode.displayNameAiNode(var);
 	}
 	public static String displayNameAiNode(String var) {
 		switch(var) {
-		case VAR_name:
-			return DISPLAY_NAME_name;
+		case VAR_clusterName:
+			return DISPLAY_NAME_clusterName;
+		case VAR_nodeName:
+			return DISPLAY_NAME_nodeName;
 		case VAR_description:
 			return DISPLAY_NAME_description;
 		case VAR_locationColors:
@@ -1383,6 +1647,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_locationLinks;
 		case VAR_location:
 			return DISPLAY_NAME_location;
+		case VAR_gpuDevicesTotal:
+			return DISPLAY_NAME_gpuDevicesTotal;
 		case VAR_entityId:
 			return DISPLAY_NAME_entityId;
 		case VAR_entityShortId:
@@ -1394,7 +1660,9 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static String descriptionAiNode(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return "The name of this cluster";
+		case VAR_nodeName:
 			return "The name of this node";
 		case VAR_description:
 			return "A description of this node";
@@ -1406,6 +1674,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return "The links of each location Paths. ";
 		case VAR_location:
 			return "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon";
+		case VAR_gpuDevicesTotal:
+			return "The total number of GPU devices on this cluster. ";
 		case VAR_entityId:
 			return "A unique ID for this Smart Data Model";
 		case VAR_entityShortId:
@@ -1417,7 +1687,9 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static String classSimpleNameAiNode(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return "String";
+		case VAR_nodeName:
 			return "String";
 		case VAR_description:
 			return "String";
@@ -1429,6 +1701,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return "List";
 		case VAR_location:
 			return "Point";
+		case VAR_gpuDevicesTotal:
+			return "Integer";
 		case VAR_entityId:
 			return "String";
 		case VAR_entityShortId:
@@ -1440,10 +1714,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnAiNode(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return 2;
+		case VAR_nodeName:
 			return 1;
 		case VAR_description:
-			return 2;
+			return 3;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}
@@ -1451,12 +1727,16 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmRowAiNode(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return 3;
+		case VAR_nodeName:
 			return 3;
 		case VAR_description:
 			return 3;
 		case VAR_location:
 			return 10;
+		case VAR_gpuDevicesTotal:
+			return 3;
 		case VAR_entityId:
 			return 3;
 			default:
@@ -1466,12 +1746,16 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmCellAiNode(String var) {
 		switch(var) {
-		case VAR_name:
+		case VAR_clusterName:
+			return 1;
+		case VAR_nodeName:
 			return 1;
 		case VAR_description:
 			return 2;
 		case VAR_location:
 			return 1;
+		case VAR_gpuDevicesTotal:
+			return 6;
 		case VAR_entityId:
 			return 4;
 			default:

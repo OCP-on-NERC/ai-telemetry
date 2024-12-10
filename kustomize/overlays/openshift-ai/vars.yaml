@@ -3,6 +3,8 @@
 # OpenShift defaults #
 ######################
 
+USING_OPENSHIFT_AI: "{{ true if lookup('file', '/var/run/secrets/kubernetes.io/serviceaccount/namespace') else false | default(false) }}"
+
 # OpenShift AI workbench name
 OPENSHIFT_AI_WORKBENCH: 
 # The wildcard domain suffix where OpenShift Routes are available by default. 
@@ -24,6 +26,8 @@ VARS_FILENAME: vars.yaml
 VARS_PATH: "{{ SITE_SRC }}/kustomize/overlays/{{ OPENSHIFT_AI_WORKBENCH }}/{{ VARS_FILENAME }}"
 # A shorter name for the application used for database names, collections, and artifact IDs. 
 SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | replace('.', '') | lower }}"
+# The namespace in OpenShift where the site will run. 
+SITE_NAMESPACE: "ai-telemetry-cbca60"
 # A pretty version of the site name. 
 SITE_DISPLAY_NAME: AI Telemetry
 # A short description of the site. 
@@ -47,18 +51,20 @@ SITE_PORT: 10210
 # The host name of the site. 
 SITE_HOST_NAME: "0.0.0.0"
 # The base URL of the site. 
-SITE_BASE_URL: "https://vscode-{{ OPENSHIFT_AI_WORKBENCH }}-ai-telemetry-cbca60.apps.shift.nerc.mghpcc.org"
+SITE_BASE_URL: "https://{{ OPENSHIFT_AI_WORKBENCH }}-ai-telemetry.apps.shift.nerc.mghpcc.org"
 # The public facing URL for the site. 
 SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
 CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
 # Verify SSL connections. 
 SSL_VERIFY: false
-# The namespace in OpenShift where the site will run. 
-SITE_NAMESPACE: "ai-telemetry-cbca60"
 OVERLAY_NAME: "{{ OPENSHIFT_AI_WORKBENCH }}"
 OVERLAY_PATH: "{{ SITE_SRC }}/kustomize/overlays/{{ OVERLAY_NAME }}"
 OVERLAY_SITE_PATH: "{{ OVERLAY_PATH }}/{{ SITE_NAME }}"
+# The public search endpoint for searching public items in the site. 
+PUBLIC_SEARCH_URI: "/en-us/search"
+# The user search endpoint for searching public and authorized items in the site. 
+USER_SEARCH_URI: "/en-us/user-search"
 
 #########################
 # Mailing list defaults #
@@ -191,6 +197,14 @@ DYNAMIC_PAGE_PATHS:
   - "en-us/article"
 # An optional FontAwesome Pro Kit for additional FontAwesome icons. 
 FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
+# An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
+WEB_COMPONENTS_CSS: |-
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode | default('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />') }}
+# An optional link element to either a Shoelace web components JavaScript or a Web Awesome Backer web components JavaScript. 
+WEB_COMPONENTS_JS: |-
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>') }}
+# Switch between Shoelace "sl-" and Web Awesome "wa-" element prefixes. 
+WEB_COMPONENTS_PREFIX: "sl-"
 # Site default theme, light or dark. 
 SITE_THEME: dark
 
@@ -306,7 +320,7 @@ DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ OPENSHIFT_AI_WORKBENCH }}"
 # The namespace in OpenShift where Keycloak will run. 
 AUTH_NAMESPACE: "{{ SITE_NAMESPACE }}"
 # The Auth host name. 
-AUTH_HOST_NAME: "ai-telemetry-keycloak.apps.shift.nerc.mghpcc.org"
+AUTH_HOST_NAME: "keycloak.apps.obs.nerc.mghpcc.org"
 # The Auth port. 
 AUTH_PORT: 443
 # Whether the Auth server uses SSL. 
@@ -316,7 +330,7 @@ AUTH_SSL_REQUIRED: all
 # The Auth realm. 
 AUTH_REALM: "NERC"
 # The Auth client. 
-AUTH_CLIENT: "nerc"
+AUTH_CLIENT: "ai-telemetry"
 # The Auth secret. 
 AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.secret | b64decode }}"
 # The Auth admin username. 
@@ -463,3 +477,19 @@ ENABLE_OPENID_CONNECT: true
 WRITE_API: true
 # Write code comments into generated code. 
 WRITE_COMMENTS: true
+
+ENABLE_KAFKA: false
+ENABLE_MQTT: false
+ENABLE_AMQP: false
+
+#######################
+# prom-keycloak-proxy #
+#######################
+PROM_KEYCLOAK_PROXY_PORT: 443
+PROM_KEYCLOAK_PROXY_HOST_NAME: metrics.apps.obs.nerc.mghpcc.org
+PROM_KEYCLOAK_PROXY_SSL: true
+
+###########
+# grafana #
+###########
+GRAFANA_BASE_URL: https://grafana.apps.obs.nerc.mghpcc.org

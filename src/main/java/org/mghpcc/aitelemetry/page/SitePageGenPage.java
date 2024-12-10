@@ -1,7 +1,10 @@
 package org.mghpcc.aitelemetry.page;
 
+import org.mghpcc.aitelemetry.page.SitePage;
+import java.lang.Boolean;
+import java.lang.String;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
-import org.mghpcc.aitelemetry.result.BaseResultPage;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import java.io.IOException;
@@ -47,7 +50,7 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
+public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
@@ -389,6 +392,18 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
   }
 
   @Override
+  protected void _defaultSortVars(List<String> l) {
+    if(!searchListSitePage_.getDefaultSort()) {
+      Optional.ofNullable(searchListSitePage_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+        String varSortParts[] = varSortStr.split(" ");
+        String varSort = SitePage.searchVarSitePage(varSortParts[0]);
+        String varSortDirection = varSortParts[1];
+        l.add(String.format("%s %s", varSort, varSortDirection));
+      });
+    }
+  }
+
+  @Override
   protected void _defaultFieldListVars(List<String> l) {
     Optional.ofNullable(searchListSitePage_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
@@ -446,18 +461,21 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
     Optional.ofNullable(searchListSitePage_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
-  protected void _sitePageCount(Wrap<Integer> w) {
+  protected void _resultCount(Wrap<Integer> w) {
     w.o(searchListSitePage_ == null ? 0 : searchListSitePage_.size());
   }
 
-  protected void _sitePage_(Wrap<SitePage> w) {
-    if(sitePageCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
+  /**
+   * Initialized: false
+  **/
+  protected void _result(Wrap<SitePage> w) {
+    if(resultCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("pageId")).orElse(null) != null)
       w.o(searchListSitePage_.get(0));
   }
 
-  protected void _id(Wrap<String> w) {
-    if(sitePage_ != null)
-      w.o(sitePage_.getId());
+  protected void _solrId(Wrap<String> w) {
+    if(result != null)
+      w.o(result.getSolrId());
   }
 
   @Override
@@ -472,11 +490,11 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
 
   @Override
   protected void _pageTitle(Wrap<String> c) {
-    if(sitePage_ != null && sitePage_.getObjectTitle() != null)
-      c.o(sitePage_.getObjectTitle());
-    else if(sitePage_ != null)
+    if(result != null && result.getTitle() != null)
+      c.o(result.getTitle());
+    else if(result != null)
       c.o("articles");
-    else if(searchListSitePage_ == null || sitePageCount == 0)
+    else if(searchListSitePage_ == null || resultCount == 0)
       c.o("no article found");
     else
       c.o("articles");
@@ -484,12 +502,12 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/page");
+    c.o("/en-us/search/article");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/api/page");
+    c.o("/en-us/api/article");
   }
 
   @Override
@@ -504,7 +522,7 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/page-999.png");
+      c.o("/png/en-us/search/article-999.png");
   }
 
   @Override
@@ -513,6 +531,6 @@ public class SitePageGenPage extends SitePageGenPageGen<BaseResultPage> {
   }
 
   protected void _pageUriSitePage(Wrap<String> c) {
-      c.o("/page");
+      c.o("/en-us/search/article");
   }
 }
