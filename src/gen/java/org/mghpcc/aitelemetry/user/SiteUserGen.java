@@ -52,6 +52,8 @@ import org.computate.search.response.solr.SolrResponse;
  * </li><li>You can add a class comment "Rows: 100" if you wish the SiteUser API to return more or less than 10 records by default. 
  * In this case, the API will return 100 records from the API instead of 10 by default. 
  * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </li><li>You can add a class comment "SqlOrder: " followed by an Integer to sort this class compared when generating the SQL code to create and drop tables. 
+ * The Order comment allows you do define which order the SQL code is generated. 
  * </li>
  * <h3>About the SiteUser class and it's generated class SiteUserGen&lt;BaseModel&gt;: </h3>extends SiteUserGen
  * <p>
@@ -59,7 +61,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser">Find the class SiteUser in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser">Find the class SiteUser in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -81,20 +83,17 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: POST</h2>
  * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
  * </p>
- * <h2>ApiMethode: DELETE</h2>
- * <p>This class contains a comment <b>"ApiMethod: DELETE"</b>, which creates an API "DELETE". 
- * </p>
- * <h2>ApiMethode: PUTImport</h2>
- * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
- * </p>
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: User"</b>, which groups all of the OpenAPIs for SiteUser objects under the tag "User". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/user</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/user"</b>, which defines the base API URI for SiteUser objects as "/api/user" in the OpenAPI spec. 
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: site users"</b>, which groups all of the OpenAPIs for SiteUser objects under the tag "site users". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/user</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/user"</b>, which defines the base API URI for SiteUser objects as "/en-us/api/user" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -105,11 +104,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the SiteUser class will inherit the helpful inherited class comments from the super class SiteUserGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 3</h2>
- * <p>This class contains a comment <b>"Order: 3"</b>, which means this class will be sorted by the given number 3 ascending when code that relates to multiple classes at the same time is generated. 
- * </p>
- * <h2>SqlOrder: 1</h2>
- * <p>This class contains a comment <b>"SqlOrder: 1"</b>, which means this class will be sorted by the given number 1 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>Order: 1</h2>
+ * <p>This class contains a comment <b>"Order: 1"</b>, which means this class will be sorted by the given number 1 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -120,9 +116,9 @@ import org.computate.search.response.solr.SolrResponse;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.user.SiteUserPage. 
  * </p>
- * <h2>SuperPage.enUS: BaseModelPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.user.SiteUserPage extends org.mghpcc.aitelemetry.model.BaseModelPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.user.SiteUserPage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -147,18 +143,6 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this SiteUser API. 
- * It's possible to reconfigure the roles required to access the SiteUser API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_SiteUser: ["SiteAdmin"]</pre>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this SiteUser API. 
- * It's possible to reconfigure the roles required to access the SiteUser API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_SiteUser: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: a site user</h2>
  * <p>This class contains a comment <b>"AName.enUS: a site user"</b>, which identifies the language context to describe a SiteUser as "a site user". 
  * </p>
@@ -179,40 +163,44 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class SiteUserGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(SiteUser.class);
 
-	public static final String SiteUser_Description_enUS = "A user record for each site user";
-	public static final String SiteUser_AName_enUS = "a site user";
-	public static final String SiteUser_This_enUS = "this ";
-	public static final String SiteUser_ThisName_enUS = "this site user";
-	public static final String SiteUser_A_enUS = "a ";
-	public static final String SiteUser_TheName_enUS = "the site user";
-	public static final String SiteUser_SingularName_enUS = "site user";
-	public static final String SiteUser_PluralName_enUS = "site users";
-	public static final String SiteUser_NameActual_enUS = "current site user";
-	public static final String SiteUser_AllName_enUS = "all site users";
-	public static final String SiteUser_SearchAllNameBy_enUS = "search site users by ";
-	public static final String SiteUser_Title_enUS = "site users";
-	public static final String SiteUser_ThePluralName_enUS = "the site users";
-	public static final String SiteUser_NoNameFound_enUS = "no site user found";
-	public static final String SiteUser_ApiUri_enUS = "/api/user";
-	public static final String SiteUser_ApiUriSearchPage_enUS = "/user";
-	public static final String SiteUser_OfName_enUS = "of site user";
-	public static final String SiteUser_ANameAdjective_enUS = "a site user";
-	public static final String SiteUser_NameAdjectiveSingular_enUS = "site user";
-	public static final String SiteUser_NameAdjectivePlural_enUS = "site users";
-	public static final String Search_enUS_Uri = "/api/user";
-	public static final String Search_enUS_ImageUri = "/png/api/user-999.png";
-	public static final String PATCH_enUS_Uri = "/api/user";
-	public static final String PATCH_enUS_ImageUri = "/png/api/user-999.png";
-	public static final String POST_enUS_Uri = "/api/user";
-	public static final String POST_enUS_ImageUri = "/png/api/user-999.png";
-	public static final String DELETE_enUS_Uri = "/api/user";
-	public static final String DELETE_enUS_ImageUri = "/png/api/user-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/user-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/user-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/user";
-	public static final String SearchPage_enUS_ImageUri = "/png/user-999.png";
+	public static final String Description_enUS = "A user record for each site user";
+	public static final String AName_enUS = "a site user";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this site user";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "the site user";
+	public static final String SingularName_enUS = "site user";
+	public static final String PluralName_enUS = "site users";
+	public static final String NameActual_enUS = "current site user";
+	public static final String AllName_enUS = "all site users";
+	public static final String SearchAllNameBy_enUS = "search site users by ";
+	public static final String Title_enUS = "site users";
+	public static final String ThePluralName_enUS = "the site users";
+	public static final String NoNameFound_enUS = "no site user found";
+	public static final String ApiUri_enUS = "/en-us/api/user";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/user";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/user/{pageId}";
+	public static final String OfName_enUS = "of site user";
+	public static final String ANameAdjective_enUS = "a site user";
+	public static final String NameAdjectiveSingular_enUS = "site user";
+	public static final String NameAdjectivePlural_enUS = "site users";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/user";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/user";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/user";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/user";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/user";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/user";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/user";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/user";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/user";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/user";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/user";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/user";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/user/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/user/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/user/%s";
 
-	public static final String SiteUser_Icon = "<i class=\"fa-duotone fa-solid fa-user-gear\"></i>";
+	public static final String Icon = "<i class=\"fa-duotone fa-solid fa-user-gear\"></i>";
 
 	//////////////
 	// userKeys //
@@ -322,6 +310,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserId() {
 		return userId;
 	}
+	@JsonIgnore
 	public void setUserId(String o) {
 		this.userId = SiteUser.staticSetUserId(siteRequest_, o);
 	}
@@ -378,6 +367,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserName() {
 		return userName;
 	}
+	@JsonIgnore
 	public void setUserName(String o) {
 		this.userName = SiteUser.staticSetUserName(siteRequest_, o);
 	}
@@ -434,6 +424,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserEmail() {
 		return userEmail;
 	}
+	@JsonIgnore
 	public void setUserEmail(String o) {
 		this.userEmail = SiteUser.staticSetUserEmail(siteRequest_, o);
 	}
@@ -490,6 +481,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserFirstName() {
 		return userFirstName;
 	}
+	@JsonIgnore
 	public void setUserFirstName(String o) {
 		this.userFirstName = SiteUser.staticSetUserFirstName(siteRequest_, o);
 	}
@@ -546,6 +538,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserLastName() {
 		return userLastName;
 	}
+	@JsonIgnore
 	public void setUserLastName(String o) {
 		this.userLastName = SiteUser.staticSetUserLastName(siteRequest_, o);
 	}
@@ -602,6 +595,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserFullName() {
 		return userFullName;
 	}
+	@JsonIgnore
 	public void setUserFullName(String o) {
 		this.userFullName = SiteUser.staticSetUserFullName(siteRequest_, o);
 	}
@@ -757,22 +751,79 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return seeDeleted;
 	}
 
+	/////////////////
+	// displayName //
+	/////////////////
+
+
+	/**	 The entity displayName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String displayName;
+
+	/**	<br> The entity displayName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.user.SiteUser&fq=entiteVar_enUS_indexed_string:displayName">Find the entity displayName in Solr</a>
+	 * <br>
+	 * @param c is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _displayName(Wrap<String> c);
+
+	public String getDisplayName() {
+		return displayName;
+	}
+	@JsonIgnore
+	public void setDisplayName(String o) {
+		this.displayName = SiteUser.staticSetDisplayName(siteRequest_, o);
+	}
+	public static String staticSetDisplayName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected SiteUser displayNameInit() {
+		Wrap<String> displayNameWrap = new Wrap<String>().var("displayName");
+		if(displayName == null) {
+			_displayName(displayNameWrap);
+			Optional.ofNullable(displayNameWrap.getO()).ifPresent(o -> {
+				setDisplayName(o);
+			});
+		}
+		return (SiteUser)this;
+	}
+
+	public static String staticSearchDisplayName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrDisplayName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDisplayName(SiteRequest siteRequest_, String o) {
+		return SiteUser.staticSearchDisplayName(siteRequest_, SiteUser.staticSetDisplayName(siteRequest_, o)).toString();
+	}
+
+	public String sqlDisplayName() {
+		return displayName;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepSiteUser(SiteRequest siteRequest_) {
+	public Future<SiteUserGen<DEV>> promiseDeepSiteUser(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepSiteUser();
 	}
 
-	public Future<Void> promiseDeepSiteUser() {
-		Promise<Void> promise = Promise.promise();
+	public Future<SiteUserGen<DEV>> promiseDeepSiteUser() {
+		Promise<SiteUserGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseSiteUser(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -795,6 +846,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				userFullNameInit();
 				seeArchivedInit();
 				seeDeletedInit();
+				displayNameInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -808,7 +860,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends SiteUserGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepSiteUser(siteRequest_);
 	}
 
@@ -866,6 +918,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return oSiteUser.seeArchived;
 			case "seeDeleted":
 				return oSiteUser.seeDeleted;
+			case "displayName":
+				return oSiteUser.displayName;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -923,6 +977,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSetSeeArchived(siteRequest_, o);
 		case "seeDeleted":
 			return SiteUser.staticSetSeeDeleted(siteRequest_, o);
+		case "displayName":
+			return SiteUser.staticSetDisplayName(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -955,6 +1011,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchSeeArchived(siteRequest_, (Boolean)o);
 		case "seeDeleted":
 			return SiteUser.staticSearchSeeDeleted(siteRequest_, (Boolean)o);
+		case "displayName":
+			return SiteUser.staticSearchDisplayName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -987,6 +1045,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchStrSeeArchived(siteRequest_, (Boolean)o);
 		case "seeDeleted":
 			return SiteUser.staticSearchStrSeeDeleted(siteRequest_, (Boolean)o);
+		case "displayName":
+			return SiteUser.staticSearchStrDisplayName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1019,6 +1079,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return SiteUser.staticSearchFqSeeArchived(siteRequest_, o);
 		case "seeDeleted":
 			return SiteUser.staticSearchFqSeeDeleted(siteRequest_, o);
+		case "displayName":
+			return SiteUser.staticSearchFqDisplayName(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1097,6 +1159,12 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				}
 				saves.add("seeDeleted");
 				return val;
+			} else if("displayname".equals(varLower)) {
+				if(val instanceof String) {
+					setDisplayName((String)val);
+				}
+				saves.add("displayName");
+				return val;
 		} else {
 			return super.persistBaseModel(var, val);
 		}
@@ -1167,6 +1235,12 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				if(seeDeleted != null)
 					oSiteUser.setSeeDeleted(seeDeleted);
 			}
+
+			if(saves.contains("displayName")) {
+				String displayName = (String)doc.get("displayName_docvalues_string");
+				if(displayName != null)
+					oSiteUser.setDisplayName(displayName);
+			}
 		}
 
 		super.populateBaseModel(doc);
@@ -1204,6 +1278,9 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		if(seeDeleted != null) {
 			doc.put("seeDeleted_docvalues_boolean", seeDeleted);
 		}
+		if(displayName != null) {
+			doc.put("displayName_docvalues_string", displayName);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1228,6 +1305,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return "seeArchived_docvalues_boolean";
 			case "seeDeleted":
 				return "seeDeleted_docvalues_boolean";
+			case "displayName":
+				return "displayName_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1253,6 +1332,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return "seeArchived_docvalues_boolean";
 			case "seeDeleted":
 				return "seeDeleted_docvalues_boolean";
+			case "displayName":
+				return "displayName_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1278,6 +1359,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				return "seeArchived";
 			case "seeDeleted_docvalues_boolean":
 				return "seeDeleted";
+			case "displayName_docvalues_string":
+				return "displayName";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1319,6 +1402,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		oSiteUser.setUserFullName(Optional.ofNullable(doc.get("userFullName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oSiteUser.setSeeArchived(Optional.ofNullable(doc.get("seeArchived_docvalues_boolean")).map(v -> v.toString()).orElse(null));
 		oSiteUser.setSeeDeleted(Optional.ofNullable(doc.get("seeDeleted_docvalues_boolean")).map(v -> v.toString()).orElse(null));
+		oSiteUser.setDisplayName(Optional.ofNullable(doc.get("displayName_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1350,6 +1434,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 				apiRequest.addVars("seeArchived");
 			if(!Objects.equals(seeDeleted, original.getSeeDeleted()))
 				apiRequest.addVars("seeDeleted");
+			if(!Objects.equals(displayName, original.getDisplayName()))
+				apiRequest.addVars("displayName");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1370,6 +1456,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(userFullName).map(v -> "userFullName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(seeArchived).map(v -> "seeArchived: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(seeDeleted).map(v -> "seeDeleted: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(displayName).map(v -> "displayName: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -1387,6 +1474,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String VAR_userFullName = "userFullName";
 	public static final String VAR_seeArchived = "seeArchived";
 	public static final String VAR_seeDeleted = "seeDeleted";
+	public static final String VAR_displayName = "displayName";
 
 	public static List<String> varsQForClass() {
 		return SiteUser.varsQSiteUser(new ArrayList<String>());
@@ -1421,6 +1509,47 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_userFullName = "";
 	public static final String DISPLAY_NAME_seeArchived = "see archived";
 	public static final String DISPLAY_NAME_seeDeleted = "see deleted";
+	public static final String DISPLAY_NAME_displayName = "";
+
+	@Override
+	public String idForClass() {
+		return userId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return displayName;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return SiteUser.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/user/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return SiteUser.displayNameSiteUser(var);
@@ -1445,6 +1574,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_seeArchived;
 		case VAR_seeDeleted:
 			return DISPLAY_NAME_seeDeleted;
+		case VAR_displayName:
+			return DISPLAY_NAME_displayName;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1470,6 +1601,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return "A user field allowing a user to see archived records";
 		case VAR_seeDeleted:
 			return "A user field allowing a user to see deleted records";
+		case VAR_displayName:
+			return "The display name for this user";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1495,6 +1628,8 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			return "Boolean";
 		case VAR_seeDeleted:
 			return "Boolean";
+		case VAR_displayName:
+			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1502,6 +1637,10 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnSiteUser(String var) {
 		switch(var) {
+		case VAR_userName:
+			return 2;
+		case VAR_userFullName:
+			return 1;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}

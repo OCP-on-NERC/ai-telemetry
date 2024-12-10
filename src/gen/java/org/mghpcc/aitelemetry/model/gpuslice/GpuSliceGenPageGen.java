@@ -1,7 +1,7 @@
 package org.mghpcc.aitelemetry.model.gpuslice;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.model.BaseModelPage;
+import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.model.BaseModel;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
@@ -65,20 +65,20 @@ import io.vertx.core.Future;
  * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these GpuSliceGenPage objects in a RESTful API. 
  * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class GpuSliceGenPageGen into the class GpuSliceGenPage. 
  * </li>
- * <h3>About the GpuSliceGenPage class and it's generated class GpuSliceGenPageGen&lt;BaseModelPage&gt;: </h3>extends GpuSliceGenPageGen
+ * <h3>About the GpuSliceGenPage class and it's generated class GpuSliceGenPageGen&lt;PageLayout&gt;: </h3>extends GpuSliceGenPageGen
  * <p>
  * This Java class extends a generated Java class GpuSliceGenPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage">Find the class GpuSliceGenPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage">Find the class GpuSliceGenPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends GpuSliceGenPageGen<BaseModelPage>
- * <p>This <code>class GpuSliceGenPage extends GpuSliceGenPageGen&lt;BaseModelPage&gt;</code>, which means it extends a newly generated GpuSliceGenPageGen. 
- * The generated <code>class GpuSliceGenPageGen extends BaseModelPage</code> which means that GpuSliceGenPage extends GpuSliceGenPageGen which extends BaseModelPage. 
+ * extends GpuSliceGenPageGen<PageLayout>
+ * <p>This <code>class GpuSliceGenPage extends GpuSliceGenPageGen&lt;PageLayout&gt;</code>, which means it extends a newly generated GpuSliceGenPageGen. 
+ * The generated <code>class GpuSliceGenPageGen extends PageLayout</code> which means that GpuSliceGenPage extends GpuSliceGenPageGen which extends PageLayout. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -131,7 +131,7 @@ import io.vertx.core.Future;
  * </p>
  * Generated: true
  **/
-public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
+public abstract class GpuSliceGenPageGen<DEV> extends PageLayout {
 	protected static final Logger LOG = LoggerFactory.getLogger(GpuSliceGenPage.class);
 
 	/////////////////////////
@@ -229,102 +229,102 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		return GpuSliceGenPage.staticSearchListGpuSlice(siteRequest_, GpuSliceGenPage.staticSetListGpuSlice(siteRequest_, o)).toString();
 	}
 
-	///////////////////
-	// gpuSliceCount //
-	///////////////////
+	/////////////////
+	// resultCount //
+	/////////////////
 
 
-	/**	 The entity gpuSliceCount
+	/**	 The entity resultCount
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonSerialize(using = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
-	protected Integer gpuSliceCount;
+	protected Integer resultCount;
 
-	/**	<br> The entity gpuSliceCount
+	/**	<br> The entity resultCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSliceCount">Find the entity gpuSliceCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:resultCount">Find the entity resultCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _gpuSliceCount(Wrap<Integer> w);
+	protected abstract void _resultCount(Wrap<Integer> w);
 
-	public Integer getGpuSliceCount() {
-		return gpuSliceCount;
+	public Integer getResultCount() {
+		return resultCount;
 	}
 
-	public void setGpuSliceCount(Integer gpuSliceCount) {
-		this.gpuSliceCount = gpuSliceCount;
+	public void setResultCount(Integer resultCount) {
+		this.resultCount = resultCount;
 	}
 	@JsonIgnore
-	public void setGpuSliceCount(String o) {
-		this.gpuSliceCount = GpuSliceGenPage.staticSetGpuSliceCount(siteRequest_, o);
+	public void setResultCount(String o) {
+		this.resultCount = GpuSliceGenPage.staticSetResultCount(siteRequest_, o);
 	}
-	public static Integer staticSetGpuSliceCount(SiteRequest siteRequest_, String o) {
+	public static Integer staticSetResultCount(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Integer.parseInt(o);
 		return null;
 	}
-	protected GpuSliceGenPage gpuSliceCountInit() {
-		Wrap<Integer> gpuSliceCountWrap = new Wrap<Integer>().var("gpuSliceCount");
-		if(gpuSliceCount == null) {
-			_gpuSliceCount(gpuSliceCountWrap);
-			Optional.ofNullable(gpuSliceCountWrap.getO()).ifPresent(o -> {
-				setGpuSliceCount(o);
+	protected GpuSliceGenPage resultCountInit() {
+		Wrap<Integer> resultCountWrap = new Wrap<Integer>().var("resultCount");
+		if(resultCount == null) {
+			_resultCount(resultCountWrap);
+			Optional.ofNullable(resultCountWrap.getO()).ifPresent(o -> {
+				setResultCount(o);
 			});
 		}
 		return (GpuSliceGenPage)this;
 	}
 
-	public static Integer staticSearchGpuSliceCount(SiteRequest siteRequest_, Integer o) {
+	public static Integer staticSearchResultCount(SiteRequest siteRequest_, Integer o) {
 		return o;
 	}
 
-	public static String staticSearchStrGpuSliceCount(SiteRequest siteRequest_, Integer o) {
+	public static String staticSearchStrResultCount(SiteRequest siteRequest_, Integer o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqGpuSliceCount(SiteRequest siteRequest_, String o) {
-		return GpuSliceGenPage.staticSearchGpuSliceCount(siteRequest_, GpuSliceGenPage.staticSetGpuSliceCount(siteRequest_, o)).toString();
+	public static String staticSearchFqResultCount(SiteRequest siteRequest_, String o) {
+		return GpuSliceGenPage.staticSearchResultCount(siteRequest_, GpuSliceGenPage.staticSetResultCount(siteRequest_, o)).toString();
 	}
 
-	///////////////
-	// gpuSlice_ //
-	///////////////
+	////////////
+	// result //
+	////////////
 
 
-	/**	 The entity gpuSlice_
+	/**	 The entity result
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected GpuSlice gpuSlice_;
+	protected GpuSlice result;
 
-	/**	<br> The entity gpuSlice_
+	/**	<br> The entity result
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:gpuSlice_">Find the entity gpuSlice_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:result">Find the entity result in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _gpuSlice_(Wrap<GpuSlice> w);
+	protected abstract void _result(Wrap<GpuSlice> w);
 
-	public GpuSlice getGpuSlice_() {
-		return gpuSlice_;
+	public GpuSlice getResult() {
+		return result;
 	}
 
-	public void setGpuSlice_(GpuSlice gpuSlice_) {
-		this.gpuSlice_ = gpuSlice_;
+	public void setResult(GpuSlice result) {
+		this.result = result;
 	}
-	public static GpuSlice staticSetGpuSlice_(SiteRequest siteRequest_, String o) {
+	public static GpuSlice staticSetResult(SiteRequest siteRequest_, String o) {
 		return null;
 	}
-	protected GpuSliceGenPage gpuSlice_Init() {
-		Wrap<GpuSlice> gpuSlice_Wrap = new Wrap<GpuSlice>().var("gpuSlice_");
-		if(gpuSlice_ == null) {
-			_gpuSlice_(gpuSlice_Wrap);
-			Optional.ofNullable(gpuSlice_Wrap.getO()).ifPresent(o -> {
-				setGpuSlice_(o);
+	protected GpuSliceGenPage resultInit() {
+		Wrap<GpuSlice> resultWrap = new Wrap<GpuSlice>().var("result");
+		if(result == null) {
+			_result(resultWrap);
+			Optional.ofNullable(resultWrap.getO()).ifPresent(o -> {
+				setResult(o);
 			});
 		}
 		return (GpuSliceGenPage)this;
@@ -390,56 +390,57 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		return GpuSliceGenPage.staticSearchPk(siteRequest_, GpuSliceGenPage.staticSetPk(siteRequest_, o)).toString();
 	}
 
-	////////
-	// id //
-	////////
+	////////////
+	// solrId //
+	////////////
 
 
-	/**	 The entity id
+	/**	 The entity solrId
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String id;
+	protected String solrId;
 
-	/**	<br> The entity id
+	/**	<br> The entity solrId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSliceGenPage&fq=entiteVar_enUS_indexed_string:solrId">Find the entity solrId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _id(Wrap<String> w);
+	protected abstract void _solrId(Wrap<String> w);
 
-	public String getId() {
-		return id;
+	public String getSolrId() {
+		return solrId;
 	}
-	public void setId(String o) {
-		this.id = GpuSliceGenPage.staticSetId(siteRequest_, o);
+	@JsonIgnore
+	public void setSolrId(String o) {
+		this.solrId = GpuSliceGenPage.staticSetSolrId(siteRequest_, o);
 	}
-	public static String staticSetId(SiteRequest siteRequest_, String o) {
+	public static String staticSetSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected GpuSliceGenPage idInit() {
-		Wrap<String> idWrap = new Wrap<String>().var("id");
-		if(id == null) {
-			_id(idWrap);
-			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
-				setId(o);
+	protected GpuSliceGenPage solrIdInit() {
+		Wrap<String> solrIdWrap = new Wrap<String>().var("solrId");
+		if(solrId == null) {
+			_solrId(solrIdWrap);
+			Optional.ofNullable(solrIdWrap.getO()).ifPresent(o -> {
+				setSolrId(o);
 			});
 		}
 		return (GpuSliceGenPage)this;
 	}
 
-	public static String staticSearchId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrSolrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
-		return GpuSliceGenPage.staticSearchId(siteRequest_, GpuSliceGenPage.staticSetId(siteRequest_, o)).toString();
+	public static String staticSearchFqSolrId(SiteRequest siteRequest_, String o) {
+		return GpuSliceGenPage.staticSearchSolrId(siteRequest_, GpuSliceGenPage.staticSetSolrId(siteRequest_, o)).toString();
 	}
 
 	/////////////////////
@@ -465,6 +466,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 	public String getPageUriGpuSlice() {
 		return pageUriGpuSlice;
 	}
+	@JsonIgnore
 	public void setPageUriGpuSlice(String o) {
 		this.pageUriGpuSlice = GpuSliceGenPage.staticSetPageUriGpuSlice(siteRequest_, o);
 	}
@@ -498,18 +500,18 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepGpuSliceGenPage(SiteRequest siteRequest_) {
+	public Future<GpuSliceGenPageGen<DEV>> promiseDeepGpuSliceGenPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepGpuSliceGenPage();
 	}
 
-	public Future<Void> promiseDeepGpuSliceGenPage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<GpuSliceGenPageGen<DEV>> promiseDeepGpuSliceGenPage() {
+		Promise<GpuSliceGenPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseGpuSliceGenPage(promise2);
 		promise2.future().onSuccess(a -> {
-			super.promiseDeepBaseModelPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+			super.promiseDeepPageLayout(siteRequest_).onSuccess(b -> {
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -525,10 +527,10 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 			try {
 				searchListGpuSlice_Init();
 				listGpuSliceInit();
-				gpuSliceCountInit();
-				gpuSlice_Init();
+				resultCountInit();
+				resultInit();
 				pkInit();
-				idInit();
+				solrIdInit();
 				pageUriGpuSliceInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -543,7 +545,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends GpuSliceGenPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepGpuSliceGenPage(siteRequest_);
 	}
 
@@ -552,7 +554,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 	/////////////////
 
 	public void siteRequestGpuSliceGenPage(SiteRequest siteRequest_) {
-			super.siteRequestBaseModelPage(siteRequest_);
+			super.siteRequestPageLayout(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
@@ -587,18 +589,18 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 				return oGpuSliceGenPage.searchListGpuSlice_;
 			case "listGpuSlice":
 				return oGpuSliceGenPage.listGpuSlice;
-			case "gpuSliceCount":
-				return oGpuSliceGenPage.gpuSliceCount;
-			case "gpuSlice_":
-				return oGpuSliceGenPage.gpuSlice_;
+			case "resultCount":
+				return oGpuSliceGenPage.resultCount;
+			case "result":
+				return oGpuSliceGenPage.result;
 			case "pk":
 				return oGpuSliceGenPage.pk;
-			case "id":
-				return oGpuSliceGenPage.id;
+			case "solrId":
+				return oGpuSliceGenPage.solrId;
 			case "pageUriGpuSlice":
 				return oGpuSliceGenPage.pageUriGpuSlice;
 			default:
-				return super.obtainBaseModelPage(var);
+				return super.obtainPageLayout(var);
 		}
 	}
 
@@ -623,7 +625,7 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		GpuSliceGenPage oGpuSliceGenPage = (GpuSliceGenPage)this;
 		switch(var) {
 			default:
-				return super.relateBaseModelPage(var, val);
+				return super.relatePageLayout(var, val);
 		}
 	}
 
@@ -638,16 +640,16 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listGpuSlice":
 			return GpuSliceGenPage.staticSetListGpuSlice(siteRequest_, o);
-		case "gpuSliceCount":
-			return GpuSliceGenPage.staticSetGpuSliceCount(siteRequest_, o);
+		case "resultCount":
+			return GpuSliceGenPage.staticSetResultCount(siteRequest_, o);
 		case "pk":
 			return GpuSliceGenPage.staticSetPk(siteRequest_, o);
-		case "id":
-			return GpuSliceGenPage.staticSetId(siteRequest_, o);
+		case "solrId":
+			return GpuSliceGenPage.staticSetSolrId(siteRequest_, o);
 		case "pageUriGpuSlice":
 			return GpuSliceGenPage.staticSetPageUriGpuSlice(siteRequest_, o);
 			default:
-				return BaseModelPage.staticSetBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -662,16 +664,16 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listGpuSlice":
 			return GpuSliceGenPage.staticSearchListGpuSlice(siteRequest_, (JsonArray)o);
-		case "gpuSliceCount":
-			return GpuSliceGenPage.staticSearchGpuSliceCount(siteRequest_, (Integer)o);
+		case "resultCount":
+			return GpuSliceGenPage.staticSearchResultCount(siteRequest_, (Integer)o);
 		case "pk":
 			return GpuSliceGenPage.staticSearchPk(siteRequest_, (Long)o);
-		case "id":
-			return GpuSliceGenPage.staticSearchId(siteRequest_, (String)o);
+		case "solrId":
+			return GpuSliceGenPage.staticSearchSolrId(siteRequest_, (String)o);
 		case "pageUriGpuSlice":
 			return GpuSliceGenPage.staticSearchPageUriGpuSlice(siteRequest_, (String)o);
 			default:
-				return BaseModelPage.staticSearchBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -686,16 +688,16 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listGpuSlice":
 			return GpuSliceGenPage.staticSearchStrListGpuSlice(siteRequest_, (String)o);
-		case "gpuSliceCount":
-			return GpuSliceGenPage.staticSearchStrGpuSliceCount(siteRequest_, (Integer)o);
+		case "resultCount":
+			return GpuSliceGenPage.staticSearchStrResultCount(siteRequest_, (Integer)o);
 		case "pk":
 			return GpuSliceGenPage.staticSearchStrPk(siteRequest_, (Long)o);
-		case "id":
-			return GpuSliceGenPage.staticSearchStrId(siteRequest_, (String)o);
+		case "solrId":
+			return GpuSliceGenPage.staticSearchStrSolrId(siteRequest_, (String)o);
 		case "pageUriGpuSlice":
 			return GpuSliceGenPage.staticSearchStrPageUriGpuSlice(siteRequest_, (String)o);
 			default:
-				return BaseModelPage.staticSearchStrBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchStrPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -710,16 +712,16 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 		switch(entityVar) {
 		case "listGpuSlice":
 			return GpuSliceGenPage.staticSearchFqListGpuSlice(siteRequest_, o);
-		case "gpuSliceCount":
-			return GpuSliceGenPage.staticSearchFqGpuSliceCount(siteRequest_, o);
+		case "resultCount":
+			return GpuSliceGenPage.staticSearchFqResultCount(siteRequest_, o);
 		case "pk":
 			return GpuSliceGenPage.staticSearchFqPk(siteRequest_, o);
-		case "id":
-			return GpuSliceGenPage.staticSearchFqId(siteRequest_, o);
+		case "solrId":
+			return GpuSliceGenPage.staticSearchFqSolrId(siteRequest_, o);
 		case "pageUriGpuSlice":
 			return GpuSliceGenPage.staticSearchFqPageUriGpuSlice(siteRequest_, o);
 			default:
-				return BaseModelPage.staticSearchFqBaseModelPage(entityVar,  siteRequest_, o);
+				return PageLayout.staticSearchFqPageLayout(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -736,19 +738,59 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 	public static final String CLASS_SIMPLE_NAME = "GpuSliceGenPage";
 	public static final String VAR_searchListGpuSlice_ = "searchListGpuSlice_";
 	public static final String VAR_listGpuSlice = "listGpuSlice";
-	public static final String VAR_gpuSliceCount = "gpuSliceCount";
-	public static final String VAR_gpuSlice_ = "gpuSlice_";
+	public static final String VAR_resultCount = "resultCount";
+	public static final String VAR_result = "result";
 	public static final String VAR_pk = "pk";
-	public static final String VAR_id = "id";
+	public static final String VAR_solrId = "solrId";
 	public static final String VAR_pageUriGpuSlice = "pageUriGpuSlice";
 
 	public static final String DISPLAY_NAME_searchListGpuSlice_ = "";
 	public static final String DISPLAY_NAME_listGpuSlice = "";
-	public static final String DISPLAY_NAME_gpuSliceCount = "";
-	public static final String DISPLAY_NAME_gpuSlice_ = "";
+	public static final String DISPLAY_NAME_resultCount = "";
+	public static final String DISPLAY_NAME_result = "";
 	public static final String DISPLAY_NAME_pk = "";
-	public static final String DISPLAY_NAME_id = "";
+	public static final String DISPLAY_NAME_solrId = "";
 	public static final String DISPLAY_NAME_pageUriGpuSlice = "";
+
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return GpuSliceGenPage.displayNameGpuSliceGenPage(var);
@@ -759,18 +801,95 @@ public abstract class GpuSliceGenPageGen<DEV> extends BaseModelPage {
 			return DISPLAY_NAME_searchListGpuSlice_;
 		case VAR_listGpuSlice:
 			return DISPLAY_NAME_listGpuSlice;
-		case VAR_gpuSliceCount:
-			return DISPLAY_NAME_gpuSliceCount;
-		case VAR_gpuSlice_:
-			return DISPLAY_NAME_gpuSlice_;
+		case VAR_resultCount:
+			return DISPLAY_NAME_resultCount;
+		case VAR_result:
+			return DISPLAY_NAME_result;
 		case VAR_pk:
 			return DISPLAY_NAME_pk;
-		case VAR_id:
-			return DISPLAY_NAME_id;
+		case VAR_solrId:
+			return DISPLAY_NAME_solrId;
 		case VAR_pageUriGpuSlice:
 			return DISPLAY_NAME_pageUriGpuSlice;
 		default:
-			return BaseModelPage.displayNameBaseModelPage(var);
+			return PageLayout.displayNamePageLayout(var);
+		}
+	}
+
+	public static String descriptionGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.descriptionPageLayout(var);
+		}
+	}
+
+	public static String classSimpleNameGpuSliceGenPage(String var) {
+		switch(var) {
+		case VAR_searchListGpuSlice_:
+			return "SearchList";
+		case VAR_listGpuSlice:
+			return "JsonArray";
+		case VAR_resultCount:
+			return "Integer";
+		case VAR_result:
+			return "GpuSlice";
+		case VAR_pk:
+			return "Long";
+		case VAR_solrId:
+			return "String";
+		case VAR_pageUriGpuSlice:
+			return "String";
+			default:
+				return PageLayout.classSimpleNamePageLayout(var);
+		}
+	}
+
+	public static Integer htmColumnGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmColumnPageLayout(var);
+		}
+	}
+
+	public static Integer htmRowGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmRowPageLayout(var);
+		}
+	}
+
+	public static Integer htmCellGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.htmCellPageLayout(var);
+		}
+	}
+
+	public static Integer lengthMinGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.lengthMinPageLayout(var);
+		}
+	}
+
+	public static Integer lengthMaxGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.lengthMaxPageLayout(var);
+		}
+	}
+
+	public static Integer maxGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.maxPageLayout(var);
+		}
+	}
+
+	public static Integer minGpuSliceGenPage(String var) {
+		switch(var) {
+			default:
+				return PageLayout.minPageLayout(var);
 		}
 	}
 }

@@ -71,7 +71,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice">Find the class GpuDevice in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice">Find the class GpuDevice in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -105,11 +105,14 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: GPU device"</b>, which groups all of the OpenAPIs for GpuDevice objects under the tag "GPU device". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/gpu-device</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/gpu-device"</b>, which defines the base API URI for GpuDevice objects as "/api/gpu-device" in the OpenAPI spec. 
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: GPU devices"</b>, which groups all of the OpenAPIs for GpuDevice objects under the tag "GPU devices". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/gpu-device</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/gpu-device"</b>, which defines the base API URI for GpuDevice objects as "/en-us/api/gpu-device" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -132,9 +135,9 @@ import org.computate.search.response.solr.SolrResponse;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage. 
  * </p>
- * <h2>SuperPage.enUS: BaseModelPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage extends org.mghpcc.aitelemetry.model.BaseModelPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -159,12 +162,6 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this GpuDevice API. 
- * It's possible to reconfigure the roles required to access the GpuDevice API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_GpuDevice: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: a GPU device</h2>
  * <p>This class contains a comment <b>"AName.enUS: a GPU device"</b>, which identifies the language context to describe a GpuDevice as "a GPU device". 
  * </p>
@@ -185,42 +182,53 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(GpuDevice.class);
 
-	public static final String GpuDevice_Description_enUS = "A Red Hat OpenShift GPU device containing GPUs";
-	public static final String GpuDevice_AName_enUS = "a GPU device";
-	public static final String GpuDevice_This_enUS = "this ";
-	public static final String GpuDevice_ThisName_enUS = "this GPU device";
-	public static final String GpuDevice_A_enUS = "a ";
-	public static final String GpuDevice_TheName_enUS = "the GPU device";
-	public static final String GpuDevice_SingularName_enUS = "GPU device";
-	public static final String GpuDevice_PluralName_enUS = "GPU devices";
-	public static final String GpuDevice_NameActual_enUS = "current GPU device";
-	public static final String GpuDevice_AllName_enUS = "all GPU devices";
-	public static final String GpuDevice_SearchAllNameBy_enUS = "search GPU devices by ";
-	public static final String GpuDevice_Title_enUS = "GPU devices";
-	public static final String GpuDevice_ThePluralName_enUS = "the GPU devices";
-	public static final String GpuDevice_NoNameFound_enUS = "no GPU device found";
-	public static final String GpuDevice_ApiUri_enUS = "/api/gpu-device";
-	public static final String GpuDevice_ApiUriSearchPage_enUS = "/gpu-device";
-	public static final String GpuDevice_OfName_enUS = "of GPU device";
-	public static final String GpuDevice_ANameAdjective_enUS = "a GPU device";
-	public static final String GpuDevice_NameAdjectiveSingular_enUS = "GPU device";
-	public static final String GpuDevice_NameAdjectivePlural_enUS = "GPU devices";
-	public static final String Search_enUS_Uri = "/api/gpu-device";
-	public static final String Search_enUS_ImageUri = "/png/api/gpu-device-999.png";
-	public static final String GET_enUS_Uri = "/api/gpu-device/{id}";
-	public static final String GET_enUS_ImageUri = "/png/api/gpu-device/{id}-999.png";
-	public static final String PATCH_enUS_Uri = "/api/gpu-device";
-	public static final String PATCH_enUS_ImageUri = "/png/api/gpu-device-999.png";
-	public static final String POST_enUS_Uri = "/api/gpu-device";
-	public static final String POST_enUS_ImageUri = "/png/api/gpu-device-999.png";
-	public static final String DELETE_enUS_Uri = "/api/gpu-device";
-	public static final String DELETE_enUS_ImageUri = "/png/api/gpu-device-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/gpu-device-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/gpu-device-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/gpu-device";
-	public static final String SearchPage_enUS_ImageUri = "/png/gpu-device-999.png";
+	public static final String Description_enUS = "A Red Hat OpenShift GPU device containing GPUs";
+	public static final String AName_enUS = "a GPU device";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this GPU device";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "the GPU device";
+	public static final String SingularName_enUS = "GPU device";
+	public static final String PluralName_enUS = "GPU devices";
+	public static final String NameActual_enUS = "current GPU device";
+	public static final String AllName_enUS = "all GPU devices";
+	public static final String SearchAllNameBy_enUS = "search GPU devices by ";
+	public static final String Title_enUS = "GPU devices";
+	public static final String ThePluralName_enUS = "the GPU devices";
+	public static final String NoNameFound_enUS = "no GPU device found";
+	public static final String ApiUri_enUS = "/en-us/api/gpu-device";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/gpu-device";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/gpu-device/{pageId}";
+	public static final String OfName_enUS = "of GPU device";
+	public static final String ANameAdjective_enUS = "a GPU device";
+	public static final String NameAdjectiveSingular_enUS = "GPU device";
+	public static final String NameAdjectivePlural_enUS = "GPU devices";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/gpu-device";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/gpu-device";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/gpu-device/{entityId}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/gpu-device/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/gpu-device/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/gpu-device";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/gpu-device";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/gpu-device";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/gpu-device";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/gpu-device/{entityId}";
+	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/gpu-device/%s";
+	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/gpu-device/%s";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/gpu-device-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/gpu-device-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/gpu-device-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/gpu-device";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/gpu-device";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/gpu-device";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/gpu-device/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/gpu-device/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/gpu-device/%s";
 
-	public static final String GpuDevice_Icon = "<i class=\"fa-regular fa-memory\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-memory\"></i>";
 
 	/////////////////
 	// gpuDeviceId //
@@ -245,6 +253,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getGpuDeviceId() {
 		return gpuDeviceId;
 	}
+	@JsonIgnore
 	public void setGpuDeviceId(String o) {
 		this.gpuDeviceId = GpuDevice.staticSetGpuDeviceId(siteRequest_, o);
 	}
@@ -301,6 +310,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getClusterName() {
 		return clusterName;
 	}
+	@JsonIgnore
 	public void setClusterName(String o) {
 		this.clusterName = GpuDevice.staticSetClusterName(siteRequest_, o);
 	}
@@ -357,6 +367,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getNodeName() {
 		return nodeName;
 	}
+	@JsonIgnore
 	public void setNodeName(String o) {
 		this.nodeName = GpuDevice.staticSetNodeName(siteRequest_, o);
 	}
@@ -541,6 +552,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
+	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = GpuDevice.staticSetDescription(siteRequest_, o);
 	}
@@ -602,6 +614,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public void setLocationColors(List<String> locationColors) {
 		this.locationColors = locationColors;
 	}
+	@JsonIgnore
 	public void setLocationColors(String o) {
 		String l = GpuDevice.staticSetLocationColors(siteRequest_, o);
 		if(l != null)
@@ -676,6 +689,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public void setLocationTitles(List<String> locationTitles) {
 		this.locationTitles = locationTitles;
 	}
+	@JsonIgnore
 	public void setLocationTitles(String o) {
 		String l = GpuDevice.staticSetLocationTitles(siteRequest_, o);
 		if(l != null)
@@ -750,6 +764,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public void setLocationLinks(List<String> locationLinks) {
 		this.locationLinks = locationLinks;
 	}
+	@JsonIgnore
 	public void setLocationLinks(String o) {
 		String l = GpuDevice.staticSetLocationLinks(siteRequest_, o);
 		if(l != null)
@@ -922,6 +937,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
+	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = GpuDevice.staticSetEntityId(siteRequest_, o);
 	}
@@ -978,6 +994,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
+	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = GpuDevice.staticSetEntityShortId(siteRequest_, o);
 	}
@@ -1011,18 +1028,18 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepGpuDevice(SiteRequest siteRequest_) {
+	public Future<GpuDeviceGen<DEV>> promiseDeepGpuDevice(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepGpuDevice();
 	}
 
-	public Future<Void> promiseDeepGpuDevice() {
-		Promise<Void> promise = Promise.promise();
+	public Future<GpuDeviceGen<DEV>> promiseDeepGpuDevice() {
+		Promise<GpuDeviceGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseGpuDevice(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -1061,7 +1078,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends GpuDeviceGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepGpuDevice(siteRequest_);
 	}
 
@@ -1774,6 +1791,46 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_entityId = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
 
+	@Override
+	public String idForClass() {
+		return entityId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return gpuDeviceId;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return GpuDevice.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return description;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/gpu-device/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return GpuDevice.displayNameGpuDevice(var);
 	}
@@ -1867,37 +1924,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
-		}
-	}
-
-	public static String ngsiType(String var) {
-		switch(var) {
-		case VAR_gpuDeviceId:
-			return "Property";
-		case VAR_clusterName:
-			return "Property";
-		case VAR_nodeName:
-			return "Property";
-		case VAR_gpuDeviceNumber:
-			return "Property";
-		case VAR_gpuDeviceUtilization:
-			return "Property";
-		case VAR_description:
-			return "Property";
-		case VAR_locationColors:
-			return "Property";
-		case VAR_locationTitles:
-			return "Property";
-		case VAR_locationLinks:
-			return "Property";
-		case VAR_location:
-			return "GeoProperty";
-		case VAR_entityId:
-			return "Property";
-		case VAR_entityShortId:
-			return "Property";
-			default:
-				return null;
 		}
 	}
 

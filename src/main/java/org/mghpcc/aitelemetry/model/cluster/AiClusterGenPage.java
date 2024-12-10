@@ -1,7 +1,11 @@
 package org.mghpcc.aitelemetry.model.cluster;
 
+import org.mghpcc.aitelemetry.model.cluster.AiCluster;
+import java.lang.String;
+import java.util.List;
+import io.vertx.pgclient.data.Point;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
-import org.mghpcc.aitelemetry.model.BaseModelPage;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import java.io.IOException;
@@ -25,7 +29,6 @@ import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -47,7 +50,7 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
+public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
@@ -389,6 +392,18 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
   }
 
   @Override
+  protected void _defaultSortVars(List<String> l) {
+    if(!searchListAiCluster_.getDefaultSort()) {
+      Optional.ofNullable(searchListAiCluster_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+        String varSortParts[] = varSortStr.split(" ");
+        String varSort = AiCluster.searchVarAiCluster(varSortParts[0]);
+        String varSortDirection = varSortParts[1];
+        l.add(String.format("%s %s", varSort, varSortDirection));
+      });
+    }
+  }
+
+  @Override
   protected void _defaultFieldListVars(List<String> l) {
     Optional.ofNullable(searchListAiCluster_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
@@ -446,23 +461,26 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
     Optional.ofNullable(searchListAiCluster_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
-  protected void _aiClusterCount(Wrap<Integer> w) {
+  protected void _resultCount(Wrap<Integer> w) {
     w.o(searchListAiCluster_ == null ? 0 : searchListAiCluster_.size());
   }
 
-  protected void _aiCluster_(Wrap<AiCluster> w) {
-    if(aiClusterCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
+  /**
+   * Initialized: false
+  **/
+  protected void _result(Wrap<AiCluster> w) {
+    if(resultCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("entityId")).orElse(null) != null)
       w.o(searchListAiCluster_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
-    if(aiCluster_ != null)
-      w.o(aiCluster_.getPk());
+    if(result != null)
+      w.o(result.getPk());
   }
 
-  protected void _id(Wrap<String> w) {
-    if(aiCluster_ != null)
-      w.o(aiCluster_.getId());
+  protected void _solrId(Wrap<String> w) {
+    if(result != null)
+      w.o(result.getSolrId());
   }
 
   @Override
@@ -477,11 +495,11 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageTitle(Wrap<String> c) {
-    if(aiCluster_ != null && aiCluster_.getObjectTitle() != null)
-      c.o(aiCluster_.getObjectTitle());
-    else if(aiCluster_ != null)
+    if(result != null && result.getTitle() != null)
+      c.o(result.getTitle());
+    else if(result != null)
       c.o("AI clusters");
-    else if(searchListAiCluster_ == null || aiClusterCount == 0)
+    else if(searchListAiCluster_ == null || resultCount == 0)
       c.o("no AI cluster found");
     else
       c.o("AI clusters");
@@ -489,12 +507,12 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/ai-cluster");
+    c.o("/en-us/search/ai-cluster");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/api/ai-cluster");
+    c.o("/en-us/api/ai-cluster");
   }
 
   @Override
@@ -509,7 +527,7 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/ai-cluster-999.png");
+      c.o("/png/en-us/search/ai-cluster-999.png");
   }
 
   @Override
@@ -518,6 +536,6 @@ public class AiClusterGenPage extends AiClusterGenPageGen<BaseModelPage> {
   }
 
   protected void _pageUriAiCluster(Wrap<String> c) {
-      c.o("/ai-cluster");
+      c.o("/en-us/search/ai-cluster");
   }
 }

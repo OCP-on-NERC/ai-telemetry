@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProjectPage">Find the class AiProjectPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProjectPage">Find the class AiProjectPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -117,18 +117,18 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiProjectPage(SiteRequest siteRequest_) {
+	public Future<AiProjectPageGen<DEV>> promiseDeepAiProjectPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiProjectPage();
 	}
 
-	public Future<Void> promiseDeepAiProjectPage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiProjectPageGen<DEV>> promiseDeepAiProjectPage() {
+		Promise<AiProjectPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiProjectPage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepAiProjectGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -155,7 +155,7 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiProjectPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiProjectPage(siteRequest_);
 	}
 
@@ -294,6 +294,46 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	public static final String CLASS_SIMPLE_NAME = "AiProjectPage";
 
 
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return AiProjectPage.displayNameAiProjectPage(var);
 	}
@@ -301,6 +341,69 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		switch(var) {
 		default:
 			return AiProjectGenPage.displayNameAiProjectGenPage(var);
+		}
+	}
+
+	public static String descriptionAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.descriptionAiProjectGenPage(var);
+		}
+	}
+
+	public static String classSimpleNameAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.classSimpleNameAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer htmColumnAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.htmColumnAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer htmRowAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.htmRowAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer htmCellAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.htmCellAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer lengthMinAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.lengthMinAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer lengthMaxAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.lengthMaxAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer maxAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.maxAiProjectGenPage(var);
+		}
+	}
+
+	public static Integer minAiProjectPage(String var) {
+		switch(var) {
+			default:
+				return AiProjectGenPage.minAiProjectGenPage(var);
 		}
 	}
 }

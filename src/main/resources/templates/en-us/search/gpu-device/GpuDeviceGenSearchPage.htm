@@ -1,0 +1,403 @@
+{% extends "en-us/PageLayout.htm" %}
+
+{%- block htmTitlePageLayout %}
+{%- block htmTitleGpuDevicePage %}
+    <title>{% if resultCount == 0 %}no GPU device found{% else %}GPU devices{% endif %}</title>
+{%- endblock htmTitleGpuDevicePage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/gpu-device/GpuDevice.css"/>
+{%- block htmStylesGpuDevicePage %}
+{%- endblock htmStylesGpuDevicePage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+{{ super() }}
+{%- block htmStyleGpuDevicePage %}
+{%- endblock htmStyleGpuDevicePage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsGpuDevicePage %}
+    <script src="{{staticBaseUrl}}/js/en-us/search/gpu-device/GpuDevice.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/gpu-device/GpuDeviceSearchPage.js"></script>
+{%- endblock htmScriptsGpuDevicePage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptGpuDevicePage %}
+    <script>
+
+      function jsWebsocketGpuDevice(entityId, vars, $response) {
+{%- block jsWebsocketGpuDevicePage %}{%- endblock %}
+      }
+
+      function jsTooltipGpuDevice(e, feature) {
+{%- block jsTooltipGpuDevicePage %}{%- endblock %}
+      }
+
+      function htmTooltipGpuDevice(feature, layer) {
+        return `{%- block htmTooltipGpuDevicePage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.title}</a></h3>
+{%- endblock htmTooltipGpuDevicePage %}`;
+      }
+
+      function jsLegendGpuDevice(map) {
+{%- block jsLegendGpuDevicePage %}
+        var div = L.DomUtil.create('div', 'info legend');
+        var htm = '';
+        window.listGpuDevice.forEach((result, index) => {
+          if(result.location) {
+            var shapes = [];
+            if(Array.isArray(result.location))
+              shapes = shapes.concat(result.location);
+            else
+              shapes.push(result.location);
+            shapes.forEach(function(shape, index) {
+              htm += htmLegendGpuDevice(map, shape, result, index, shapes.length);
+            });
+          }
+        });
+        div.innerHTML = htm;
+        return div;
+{%- endblock jsLegendGpuDevicePage %}
+      }
+
+      function htmLegendGpuDevice(map, shape, result, index, count) {
+        var color = result.locationColors[index];
+        var title = result.locationTitles[index];
+        var url = result.locationLinks[index];
+        var htm = '';
+        htm += `<div class="cursor-pointer " style="max-width: 400px; ">
+`;
+        htm += `{%- block htmLegendGpuDevicePage %}
+    <div title="${quoteattr(title)}">
+    <div style="width: 20px; ">
+      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+    </div>
+    <div class="text-overflow-ellipsis ">
+      <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
+    </div>
+    </div>
+{%- endblock htmLegendGpuDevicePage %}`;
+        htm += `
+</div>
+`;
+        return htm;
+      }
+
+      function jsStyleGpuDevice(feature) {
+{%- block jsStyleGpuDevicePage %}
+        if(feature.geometry.type == 'Point') {
+          return {
+            radius: 8
+            , fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 1
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        } else if(feature.geometry.type == 'LineString') {
+          return {
+            color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 5
+            , opacity: 0.7
+          };
+        } else {
+          return {
+             fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 3
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        }
+{%- endblock jsStyleGpuDevicePage %}
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('sl-button')
+        , customElements.whenDefined('sl-input')
+      ]).then(() => {
+
+        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+
+        if(entityId == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          var o = document.querySelector('.pageForm .result')?.value;
+          if(o)
+            window.result = JSON.parse(o);
+        {% if entityId is defined %}
+        {% endif %}
+        }
+        var l = document.querySelector('.pageForm .listGpuDevice')?.value;
+        if(l)
+          window.listGpuDevice = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphGpuDevice();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qGpuDevice_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('GpuDevice', event.target, document.querySelector('#qGpuDeviceDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qGpuDevice_rows')?.addEventListener('sl-change', event => {
+          paramChange('GpuDevice', event.target, document.querySelector('#qGpuDeviceDiv_rows'));
+        });
+
+        document.querySelector('#qGpuDevice_start')?.addEventListener('sl-change', event => {
+          paramChange('GpuDevice', event.target, document.querySelector('#qGpuDeviceDiv_start'));
+        });
+
+
+        var submitForm_patchGpuDevice = document.querySelector('#htmForm_patchGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchGpuDevice(null, document.querySelector('#htmForm_patchGpuDevice'), document.querySelector('#htmFormButton_patchGpuDevice'), event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_postGpuDevice = document.querySelector('#htmForm_postGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          postGpuDevice(document.querySelector('#htmForm_postGpuDevice'), document.querySelector('#htmFormButton_postGpuDevice'), (response, target) => { response.json().then((json) => { window.location.href = json.editPage; }); });
+          return false;
+        });
+
+        var submitForm_deleteGpuDevice = document.querySelector('#htmForm_deleteGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteGpuDevice(event.target, event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_putimportGpuDevice = document.querySelector('#htmForm_putimportGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_putimportGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          putimportGpuDevice(document.querySelector('#htmForm_putimportGpuDevice'), document.querySelector('#htmFormButton_putimportGpuDevice'));
+          return false;
+        });
+
+        var submitForm_searchpageGpuDevice = document.querySelector('#htmForm_searchpageGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageGpuDevice();
+          return false;
+        });
+      });
+    </script>
+{%- endblock htmScriptGpuDevicePage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketGpuDevicePage %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketGpuDevice(websocketGpuDeviceInner);
+{%- endblock websocketGpuDevicePage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlGpuDevicePage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlGpuDevicePage %}
+
+{%- block htmBodyStartPageLayout %}
+{{ super() }}
+{%- block htmBodyStartGpuDevicePage %}
+{%- endblock htmBodyStartGpuDevicePage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleGpuDevicePage %}
+{%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
+{%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
+{% if resultCount == 0 %}
+          <sl-tooltip for="return-to-GpuDevice">back to all GPU devices</sl-tooltip>
+        <div>
+            <sl-button id="return-to-GpuDevice" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all GPU devices
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
+{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
+{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no GPU device found</span>
+          </span>
+        </h2>
+{% else %}
+        <div class="pageContent ">
+          <div id="site-calendar-box">
+            <div id="site-calendar"><!-- // --></div>
+          </div>
+          <div class="margin-block">
+            <sl-tooltip for="return-to-GpuDevice">back to all GPU devices</sl-tooltip>
+            <sl-button id="return-to-GpuDevice" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all GPU devices
+            </sl-button>
+          </div>
+          <h1><a href="{{pageUri}}"><i class="fa-regular fa-memory"></i> <span>GPU devices</span></a></h1>
+{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
+{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
+{% include en-us/search/gpu-device/GpuDevicePaginationButtons.htm %}
+          <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+            <div>
+              <sl-dropdown id="htmDropdown-clusterName">
+                <sl-button variant="primary" slot="trigger" caret>cluster name</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-clusterName-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by cluster name ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-clusterName-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by cluster name descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <sl-dropdown id="htmDropdown-nodeName">
+                <sl-button variant="primary" slot="trigger" caret>node name</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-nodeName-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by node name ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-nodeName-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by node name descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <sl-dropdown id="htmDropdown-description">
+                <sl-button variant="primary" slot="trigger" caret>description</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by description ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by description descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <sl-dropdown id="htmDropdown-gpuDeviceNumber">
+                <sl-button variant="primary" slot="trigger" caret>GPU device number</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-gpuDeviceNumber-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by GPU device number ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-gpuDeviceNumber-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by GPU device number descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <div></div>
+            </div>
+            {% for item in listGpuDevice%}
+            <div>
+              <a href="{{ item.displayPage }}">
+                <i class="fa-regular fa-memory"></i>
+              {{ item.clusterName }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              {{ item.nodeName }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              {{ item.description }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              {{ item.gpuDeviceNumber }}
+              </a>
+              <sl-button variant="primary"
+                  id="{{classApiMethodMethod}}_editPage"
+                  placeholder="[String] edit"
+                  label="edit"
+                  title="Edit this"
+                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuDevice inputGpuDevice{{entityId}}EditPage "
+                  name="setEditPage"
+                  href="{{ item.editPage | e }}"
+                  >
+                <i class="fa-solid fa-pen-to-square"></i>
+                edit
+              </sl-button>
+            </div>
+            {% endfor %}
+              {% if getColumnClusterName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnNodeName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnGpuDeviceNumber is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnEditPage is defined %}
+                <div>
+                </div>
+              {% endif %}
+          </div>
+{% endif %}
+{%- endblock htmBodyMiddleGpuDevicePage %}
+{%- endblock htmBodyMiddlePageLayout %}
+
+{%- block htmBodyEndPageLayout %}
+  {{ super() }}
+{%- block htmBodyEndGpuDevicePage %}
+{%- endblock htmBodyEndGpuDevicePage %}
+{%- endblock htmBodyEndPageLayout %}

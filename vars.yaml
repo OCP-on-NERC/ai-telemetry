@@ -3,6 +3,9 @@
 # Site vars #
 #############
 
+OVERLAY_SITE_PATH: kustomize/overlays/prod
+USING_OPENSHIFT_AI: "{{ true if lookup('file', '/var/run/secrets/kubernetes.io/serviceaccount/namespace') else false | default(false) }}"
+
 # The name of this application. 
 SITE_NAME: ai-telemetry
 # The source code directory for the project. 
@@ -14,8 +17,8 @@ VARS_FILENAME: vars.yaml
 # The vars.yaml path to load when running in development. 
 VARS_PATH: "{{ SITE_SRC }}/{{ VARS_FILENAME }}"
 # A shorter name for the application used for database names, collections, and artifact IDs. 
-SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | lower }}"
-# The site namespace in OpenShift. 
+SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | replace('.', '') | lower }}"
+# The namespace in OpenShift where the site will run. 
 SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
 # A pretty version of the site name. 
 SITE_DISPLAY_NAME: AI Telemetry
@@ -47,6 +50,10 @@ SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
 # Verify SSL connections. 
 SSL_VERIFY: false
+# The public search endpoint for searching public items in the site. 
+PUBLIC_SEARCH_URI: "/en-us/search"
+# The user search endpoint for searching public and authorized items in the site. 
+USER_SEARCH_URI: "/en-us/user-search"
 
 #########################
 # Mailing list defaults #
@@ -108,8 +115,10 @@ COMPUTATE_SRC: "{{ (PARENT_SRC + '/computate') | realpath }}"
 COMPUTATE_SEARCH_SRC: "{{ (PARENT_SRC + '/computate-search') | realpath }}"
 # The default source code directory for the computate-vertx application. 
 COMPUTATE_VERTX_SRC: "{{ (PARENT_SRC + '/computate-vertx') | realpath }}"
+# The unique ID for solr records in the search engine
+SOLR_ID: "solrId"
 # The paths to the internationalization for this project. 
-I18N_PATHS: ["{{ SITE_PREFIX }}/computate/src/main/resources/org/computate/i18n/i18n_enUS.yaml"]
+I18N_PATHS: ["{{ COMPUTATE_VERTX_SRC }}/src/main/resources/org/computate/i18n/i18n_{{ SITE_LANG }}.yaml"]
 # The Java main class of the site. 
 JAVA_MAIN_CLASS: "{{ SITE_MAIN_VERTICLE_PACKAGE }}.AppVertx"
 # Enables Vert.x reactive APIs. 
@@ -173,10 +182,10 @@ CONTAINER_URI: "{{ CONTAINER_REGISTRY }}/{{ CONTAINER_ORG }}/{{ CONTAINER_NAME }
 SITE_STATIC_NAME: "{{ SITE_NAME }}-static"
 # The static files git repository for the project. 
 SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
-# The base URL to the static files. 
-STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
 # The path to the static files. 
 STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
+# The base URL to the static files. 
+STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
 # The site logo relative URI
 SITE_LOGO_URI: "/png/nerc-logo.png"
 # The path to the template files. 
@@ -187,9 +196,13 @@ DYNAMIC_PAGE_PATHS:
 # An optional FontAwesome Pro Kit for additional FontAwesome icons. 
 FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
 # An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
-WEB_COMPONENTS_CSS: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode }}"
+WEB_COMPONENTS_CSS: |-
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode | default('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />') }}
 # An optional link element to either a Shoelace web components JavaScript or a Web Awesome Backer web components JavaScript. 
-WEB_COMPONENTS_JS: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode }}"
+WEB_COMPONENTS_JS: |-
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>') }}
+# Switch between Shoelace "sl-" and Web Awesome "wa-" element prefixes. 
+WEB_COMPONENTS_PREFIX: "sl-"
 # Site default theme, light or dark. 
 SITE_THEME: dark
 
@@ -222,7 +235,7 @@ SITE_POWERED_BY_NAME: New England Research Cloud
 # The URL of the cloud provider where the public site is deployed. 
 SITE_POWERED_BY_URL: https://nerc.mghpcc.org/
 # The static path to the logo of the cloud provider where the public site is deployed. 
-SITE_POWERED_BY_IMAGE_URI: /png/nerc-logo.png
+SITE_POWERED_BY_IMAGE: '<img class="footer-img" alt="Google Kubernetes Engine" src="\{\{ STATIC_BASE_URL \}\}/png/nerc-logo.png"/>'
 
 ######################
 # Zookeeper defaults #
@@ -244,8 +257,6 @@ ZOOKEEPER_SESSION_TIMEOUT_MILLIS: 5000
 # Solr defaults #
 #################
 
-# Name of the solr deployment in OpenShift. 
-SOLR_NAME: solr
 # Whether to use SSL when connecting to Solr. 
 SOLR_SSL: true
 # The host name to connect to Solr in OpenShift. 
@@ -286,7 +297,7 @@ ENABLE_DATABASE: true
 # The namespace of the database in OpenShift. 
 DATABASE_NAMESPACE: postgres
 # The database secret containing the user password to connect to the database. 
-DATABASE_SECRET: postgres-pguser-smartvillage
+DATABASE_SECRET: "postgres-pguser-{{ SITE_SHORT_NAME }}"
 # The PostgreSQL database host name. 
 DATABASE_HOST: "postgres.{{ OPENSHIFT_APPS_DOMAIN }}"
 # The PostgreSQL database port. 
@@ -359,11 +370,15 @@ DEFAULT_MAP_ZOOM: "17"
 # The Context Broker namespace. 
 CONTEXT_BROKER_NAMESPACE: "scorpiobroker"
 # Whether to use SSL when connecting to the Context Broker. 
-CONTEXT_BROKER_SSL: false
+CONTEXT_BROKER_SSL: true
 # The host name to connect to the Context Broker in OpenShift. 
-CONTEXT_BROKER_HOST_NAME: "scorpiobroker.{{ CONTEXT_BROKER_NAMESPACE }}.svc"
+CONTEXT_BROKER_HOST_NAME: "scorpiobroker.apps-crc.testing"
 # The default port that the Context Broker runs. 
-CONTEXT_BROKER_PORT: 9090
+CONTEXT_BROKER_PORT: 443
+# The delay between messages and requerying entity @context. 
+CONTEXT_BROKER_DELAY_MILLIS: 0
+# The Context Broker namespace. 
+CONTEXT_BROKER_CONTEXT: "https://raw.githubusercontent.com/{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}/main/fiware/context.jsonld"
 
 #################
 # iotagent-json #
@@ -382,19 +397,22 @@ IOTAGENT_NORTH_PORT: 443
 # The message broker transport type (MQTT or AMQP). 
 IOTAGENT_TRANSPORT: AMQP
 
-##############
-# Kafka vars #
-##############
-
-# Enable Kafka message integration. 
-ENABLE_KAFKA: false
-
-##############
+#############
 # MQTT vars #
-##############
+#############
 
 # Enable MQTT message integration. 
 ENABLE_MQTT: false
+# The namespace in OpenShift where the AMQP message broker will run. 
+MQTT_NAMESPACE: rabbitmq
+# The MQTT port. 
+MQTT_PORT: 5672
+# The MQTT host name. 
+MQTT_HOST_NAME: "rabbitmq.{{ MQTT_NAMESPACE }}.svc"
+# The MQTT user. 
+MQTT_USER: "user"
+# The MQTT password. 
+#MQTT_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
 
 #############
 # AMQP vars #
@@ -402,6 +420,19 @@ ENABLE_MQTT: false
 
 # Enable AMQP message integration. 
 ENABLE_AMQP: false
+# The namespace in OpenShift where the AMQP message broker will run. 
+AMQP_NAMESPACE: rabbitmq
+# The AMQP port. 
+AMQP_PORT: 5672
+# The AMQP host name. 
+AMQP_HOST_NAME: "rabbitmq.{{ AMQP_NAMESPACE }}.svc"
+# The AMQP user. 
+AMQP_USER: "user"
+# The AMQP password. 
+AMQP_PASSWORD: ""
+#AMQP_HOST_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
+# The AMQP virtual host. 
+AMQP_VIRTUAL_HOST: "%2F"
 
 #################
 # RabbitMQ vars #
@@ -425,19 +456,6 @@ SITE_LIMITS_CPU: "1"
 # The number of pod replicas to run the site in OpenShift. 
 SITE_REPLICAS: 1
 
-#########
-# Email #
-#########
-
-EMAIL_HOST: "smtp.fastmail.com"
-EMAIL_PORT: "465"
-EMAIL_SSL: "true"
-EMAIL_AUTH_METHOD: "PLAIN"
-EMAIL_USERNAME: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='email-smtp', namespace=SITE_NAMESPACE)[0].data['EMAIL_USERNAME'] | b64decode }}"
-EMAIL_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='email-smtp', namespace=SITE_NAMESPACE)[0].data['EMAIL_PASSWORD'] | b64decode }}"
-EMAIL_FROM: "support@example.com"
-EMAIL_ADMIN: "admin@example.com"
-
 ########################
 # Enabled feature vars #
 ########################
@@ -456,8 +474,6 @@ ENABLE_CODE_GENERATION_SERVICE: true
 ENABLE_USER_KEY: true
 # Set the sessionId of the user session creating an object in the database. 
 ENABLE_SESSION_ID: true
-# Enable an object in the database to be deleted. 
-ENABLE_DELETED: true
 # Enable an object in the database to be archived. 
 ENABLE_ARCHIVED: true
 # Enable an admin role. 

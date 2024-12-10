@@ -71,7 +71,7 @@ import org.computate.search.response.solr.SolrResponse;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster">Find the class AiCluster in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster">Find the class AiCluster in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -105,11 +105,14 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
- * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: AI cluster"</b>, which groups all of the OpenAPIs for AiCluster objects under the tag "AI cluster". 
+ * <h2>ApiMethode: EditPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
  * </p>
- * <h2>ApiUri.enUS: /api/ai-cluster</h2>
- * <p>This class contains a comment <b>"ApiUri: /api/ai-cluster"</b>, which defines the base API URI for AiCluster objects as "/api/ai-cluster" in the OpenAPI spec. 
+ * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: AI clusters"</b>, which groups all of the OpenAPIs for AiCluster objects under the tag "AI clusters". 
+ * </p>
+ * <h2>ApiUri.enUS: /en-us/api/ai-cluster</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/ai-cluster"</b>, which defines the base API URI for AiCluster objects as "/en-us/api/ai-cluster" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -132,9 +135,9 @@ import org.computate.search.response.solr.SolrResponse;
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
  * This creates a new Java class org.mghpcc.aitelemetry.model.cluster.AiClusterPage. 
  * </p>
- * <h2>SuperPage.enUS: BaseModelPage</h2>
- * <p>This class contains a comment <b>"SuperPage.enUS: BaseModelPage"</b>, which identifies the Java super class of the page code by it's class simple name "BaseModelPage". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.cluster.AiClusterPage extends org.mghpcc.aitelemetry.model.BaseModelPage. 
+ * <h2>SuperPage.enUS: PageLayout</h2>
+ * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
+ * This means that the newly created class org.mghpcc.aitelemetry.model.cluster.AiClusterPage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
@@ -159,12 +162,6 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>Role.enUS: SiteAdmin</h2>
- * <p>
- * This class contains a comment <b>"Role.enUS: SiteAdmin"</b>, which identifies the default role name "SiteAdmin" of the OAuth2/OpenID Connect user role required to access this AiCluster API. 
- * It's possible to reconfigure the roles required to access the AiCluster API by configuring an environment variable like this: 
- * </p>
- * <pre>AUTH_ROLE_REQUIRED_AiCluster: ["SiteAdmin"]</pre>
  * <h2>AName.enUS: an AI cluster</h2>
  * <p>This class contains a comment <b>"AName.enUS: an AI cluster"</b>, which identifies the language context to describe a AiCluster as "an AI cluster". 
  * </p>
@@ -185,42 +182,53 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class AiClusterGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(AiCluster.class);
 
-	public static final String AiCluster_Description_enUS = "A Red Hat OpenShift cluster containing GPUs";
-	public static final String AiCluster_AName_enUS = "an AI cluster";
-	public static final String AiCluster_This_enUS = "this ";
-	public static final String AiCluster_ThisName_enUS = "this AI cluster";
-	public static final String AiCluster_A_enUS = "a ";
-	public static final String AiCluster_TheName_enUS = "theAI cluster";
-	public static final String AiCluster_SingularName_enUS = "AI cluster";
-	public static final String AiCluster_PluralName_enUS = "AI clusters";
-	public static final String AiCluster_NameActual_enUS = "current AI cluster";
-	public static final String AiCluster_AllName_enUS = "all AI clusters";
-	public static final String AiCluster_SearchAllNameBy_enUS = "search AI clusters by ";
-	public static final String AiCluster_Title_enUS = "AI clusters";
-	public static final String AiCluster_ThePluralName_enUS = "the AI clusters";
-	public static final String AiCluster_NoNameFound_enUS = "no AI cluster found";
-	public static final String AiCluster_ApiUri_enUS = "/api/ai-cluster";
-	public static final String AiCluster_ApiUriSearchPage_enUS = "/ai-cluster";
-	public static final String AiCluster_OfName_enUS = "of AI cluster";
-	public static final String AiCluster_ANameAdjective_enUS = "an AI cluster";
-	public static final String AiCluster_NameAdjectiveSingular_enUS = "AI cluster";
-	public static final String AiCluster_NameAdjectivePlural_enUS = "AI clusters";
-	public static final String Search_enUS_Uri = "/api/ai-cluster";
-	public static final String Search_enUS_ImageUri = "/png/api/ai-cluster-999.png";
-	public static final String GET_enUS_Uri = "/api/ai-cluster/{id}";
-	public static final String GET_enUS_ImageUri = "/png/api/ai-cluster/{id}-999.png";
-	public static final String PATCH_enUS_Uri = "/api/ai-cluster";
-	public static final String PATCH_enUS_ImageUri = "/png/api/ai-cluster-999.png";
-	public static final String POST_enUS_Uri = "/api/ai-cluster";
-	public static final String POST_enUS_ImageUri = "/png/api/ai-cluster-999.png";
-	public static final String DELETE_enUS_Uri = "/api/ai-cluster";
-	public static final String DELETE_enUS_ImageUri = "/png/api/ai-cluster-999.png";
-	public static final String PUTImport_enUS_Uri = "/api/ai-cluster-import";
-	public static final String PUTImport_enUS_ImageUri = "/png/api/ai-cluster-import-999.png";
-	public static final String SearchPage_enUS_Uri = "/ai-cluster";
-	public static final String SearchPage_enUS_ImageUri = "/png/ai-cluster-999.png";
+	public static final String Description_enUS = "A Red Hat OpenShift cluster containing GPUs";
+	public static final String AName_enUS = "an AI cluster";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this AI cluster";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "theAI cluster";
+	public static final String SingularName_enUS = "AI cluster";
+	public static final String PluralName_enUS = "AI clusters";
+	public static final String NameActual_enUS = "current AI cluster";
+	public static final String AllName_enUS = "all AI clusters";
+	public static final String SearchAllNameBy_enUS = "search AI clusters by ";
+	public static final String Title_enUS = "AI clusters";
+	public static final String ThePluralName_enUS = "the AI clusters";
+	public static final String NoNameFound_enUS = "no AI cluster found";
+	public static final String ApiUri_enUS = "/en-us/api/ai-cluster";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-cluster";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-cluster/{pageId}";
+	public static final String OfName_enUS = "of AI cluster";
+	public static final String ANameAdjective_enUS = "an AI cluster";
+	public static final String NameAdjectiveSingular_enUS = "AI cluster";
+	public static final String NameAdjectivePlural_enUS = "AI clusters";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-cluster";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-cluster";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-cluster/{entityId}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-cluster";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/ai-cluster";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-cluster";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-cluster";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-cluster/{entityId}";
+	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
+	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-cluster-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/ai-cluster-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-cluster";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-cluster";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-cluster";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-cluster/{pageId}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-cluster/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-cluster/%s";
 
-	public static final String AiCluster_Icon = "<i class=\"fa-regular fa-server\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-server\"></i>";
 
 	/////////////////
 	// clusterName //
@@ -245,6 +253,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getClusterName() {
 		return clusterName;
 	}
+	@JsonIgnore
 	public void setClusterName(String o) {
 		this.clusterName = AiCluster.staticSetClusterName(siteRequest_, o);
 	}
@@ -301,6 +310,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
+	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiCluster.staticSetDescription(siteRequest_, o);
 	}
@@ -362,6 +372,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public void setLocationColors(List<String> locationColors) {
 		this.locationColors = locationColors;
 	}
+	@JsonIgnore
 	public void setLocationColors(String o) {
 		String l = AiCluster.staticSetLocationColors(siteRequest_, o);
 		if(l != null)
@@ -436,6 +447,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public void setLocationTitles(List<String> locationTitles) {
 		this.locationTitles = locationTitles;
 	}
+	@JsonIgnore
 	public void setLocationTitles(String o) {
 		String l = AiCluster.staticSetLocationTitles(siteRequest_, o);
 		if(l != null)
@@ -510,6 +522,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public void setLocationLinks(List<String> locationLinks) {
 		this.locationLinks = locationLinks;
 	}
+	@JsonIgnore
 	public void setLocationLinks(String o) {
 		String l = AiCluster.staticSetLocationLinks(siteRequest_, o);
 		if(l != null)
@@ -682,6 +695,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
+	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiCluster.staticSetEntityId(siteRequest_, o);
 	}
@@ -738,6 +752,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
+	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiCluster.staticSetEntityShortId(siteRequest_, o);
 	}
@@ -918,6 +933,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getGrafanaUrl() {
 		return grafanaUrl;
 	}
+	@JsonIgnore
 	public void setGrafanaUrl(String o) {
 		this.grafanaUrl = AiCluster.staticSetGrafanaUrl(siteRequest_, o);
 	}
@@ -951,18 +967,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiCluster(SiteRequest siteRequest_) {
+	public Future<AiClusterGen<DEV>> promiseDeepAiCluster(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiCluster();
 	}
 
-	public Future<Void> promiseDeepAiCluster() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiClusterGen<DEV>> promiseDeepAiCluster() {
+		Promise<AiClusterGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiCluster(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -1000,7 +1016,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiClusterGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiCluster(siteRequest_);
 	}
 
@@ -1668,6 +1684,46 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_gpuDevicesTotal = "GPU devices total";
 	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization";
 
+	@Override
+	public String idForClass() {
+		return entityId;
+	}
+
+	@Override
+	public String titleForClass() {
+		return title;
+	}
+
+	@Override
+	public String nameForClass() {
+		return clusterName;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return AiCluster.NameAdjectiveSingular_enUS;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return description;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return "%s/en-us/edit/ai-cluster/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return AiCluster.displayNameAiCluster(var);
 	}
@@ -1755,35 +1811,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
-		}
-	}
-
-	public static String ngsiType(String var) {
-		switch(var) {
-		case VAR_clusterName:
-			return "Property";
-		case VAR_description:
-			return "Property";
-		case VAR_locationColors:
-			return "Property";
-		case VAR_locationTitles:
-			return "Property";
-		case VAR_locationLinks:
-			return "Property";
-		case VAR_location:
-			return "GeoProperty";
-		case VAR_entityId:
-			return "Property";
-		case VAR_entityShortId:
-			return "Property";
-		case VAR_aiNodesTotal:
-			return "Property";
-		case VAR_gpuDevicesTotal:
-			return "Property";
-		case VAR_grafanaUrl:
-			return "Property";
-			default:
-				return null;
 		}
 	}
 

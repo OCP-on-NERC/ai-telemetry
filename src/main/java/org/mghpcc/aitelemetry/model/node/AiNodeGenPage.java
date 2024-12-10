@@ -1,7 +1,11 @@
 package org.mghpcc.aitelemetry.model.node;
 
+import org.mghpcc.aitelemetry.model.node.AiNode;
+import java.lang.String;
+import java.util.List;
+import io.vertx.pgclient.data.Point;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
-import org.mghpcc.aitelemetry.model.BaseModelPage;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import java.io.IOException;
@@ -25,7 +29,6 @@ import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -47,7 +50,7 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
+public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
@@ -389,6 +392,18 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
   }
 
   @Override
+  protected void _defaultSortVars(List<String> l) {
+    if(!searchListAiNode_.getDefaultSort()) {
+      Optional.ofNullable(searchListAiNode_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+        String varSortParts[] = varSortStr.split(" ");
+        String varSort = AiNode.searchVarAiNode(varSortParts[0]);
+        String varSortDirection = varSortParts[1];
+        l.add(String.format("%s %s", varSort, varSortDirection));
+      });
+    }
+  }
+
+  @Override
   protected void _defaultFieldListVars(List<String> l) {
     Optional.ofNullable(searchListAiNode_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
@@ -446,23 +461,26 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
     Optional.ofNullable(searchListAiNode_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
-  protected void _aiNodeCount(Wrap<Integer> w) {
+  protected void _resultCount(Wrap<Integer> w) {
     w.o(searchListAiNode_ == null ? 0 : searchListAiNode_.size());
   }
 
-  protected void _aiNode_(Wrap<AiNode> w) {
-    if(aiNodeCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
+  /**
+   * Initialized: false
+  **/
+  protected void _result(Wrap<AiNode> w) {
+    if(resultCount == 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("entityId")).orElse(null) != null)
       w.o(searchListAiNode_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
-    if(aiNode_ != null)
-      w.o(aiNode_.getPk());
+    if(result != null)
+      w.o(result.getPk());
   }
 
-  protected void _id(Wrap<String> w) {
-    if(aiNode_ != null)
-      w.o(aiNode_.getId());
+  protected void _solrId(Wrap<String> w) {
+    if(result != null)
+      w.o(result.getSolrId());
   }
 
   @Override
@@ -477,11 +495,11 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageTitle(Wrap<String> c) {
-    if(aiNode_ != null && aiNode_.getObjectTitle() != null)
-      c.o(aiNode_.getObjectTitle());
-    else if(aiNode_ != null)
+    if(result != null && result.getTitle() != null)
+      c.o(result.getTitle());
+    else if(result != null)
       c.o("AI nodes");
-    else if(searchListAiNode_ == null || aiNodeCount == 0)
+    else if(searchListAiNode_ == null || resultCount == 0)
       c.o("no AI node found");
     else
       c.o("AI nodes");
@@ -489,12 +507,12 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/ai-node");
+    c.o("/en-us/search/ai-node");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/api/ai-node");
+    c.o("/en-us/api/ai-node");
   }
 
   @Override
@@ -509,7 +527,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/ai-node-999.png");
+      c.o("/png/en-us/search/ai-node-999.png");
   }
 
   @Override
@@ -518,6 +536,6 @@ public class AiNodeGenPage extends AiNodeGenPageGen<BaseModelPage> {
   }
 
   protected void _pageUriAiNode(Wrap<String> c) {
-      c.o("/ai-node");
+      c.o("/en-us/search/ai-node");
   }
 }

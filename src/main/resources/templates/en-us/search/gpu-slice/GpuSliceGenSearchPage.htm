@@ -1,0 +1,363 @@
+{% extends "en-us/PageLayout.htm" %}
+
+{%- block htmTitlePageLayout %}
+{%- block htmTitleGpuSlicePage %}
+    <title>{% if resultCount == 0 %}no GPU slice found{% else %}GPU slices{% endif %}</title>
+{%- endblock htmTitleGpuSlicePage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/gpu-slice/GpuSlice.css"/>
+{%- block htmStylesGpuSlicePage %}
+{%- endblock htmStylesGpuSlicePage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+{{ super() }}
+{%- block htmStyleGpuSlicePage %}
+{%- endblock htmStyleGpuSlicePage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsGpuSlicePage %}
+    <script src="{{staticBaseUrl}}/js/en-us/search/gpu-slice/GpuSlice.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/gpu-slice/GpuSliceSearchPage.js"></script>
+{%- endblock htmScriptsGpuSlicePage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptGpuSlicePage %}
+    <script>
+
+      function jsWebsocketGpuSlice(entityId, vars, $response) {
+{%- block jsWebsocketGpuSlicePage %}{%- endblock %}
+      }
+
+      function jsTooltipGpuSlice(e, feature) {
+{%- block jsTooltipGpuSlicePage %}{%- endblock %}
+      }
+
+      function htmTooltipGpuSlice(feature, layer) {
+        return `{%- block htmTooltipGpuSlicePage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.title}</a></h3>
+{%- endblock htmTooltipGpuSlicePage %}`;
+      }
+
+      function jsLegendGpuSlice(map) {
+{%- block jsLegendGpuSlicePage %}
+        var div = L.DomUtil.create('div', 'info legend');
+        var htm = '';
+        window.listGpuSlice.forEach((result, index) => {
+          if(result.location) {
+            var shapes = [];
+            if(Array.isArray(result.location))
+              shapes = shapes.concat(result.location);
+            else
+              shapes.push(result.location);
+            shapes.forEach(function(shape, index) {
+              htm += htmLegendGpuSlice(map, shape, result, index, shapes.length);
+            });
+          }
+        });
+        div.innerHTML = htm;
+        return div;
+{%- endblock jsLegendGpuSlicePage %}
+      }
+
+      function htmLegendGpuSlice(map, shape, result, index, count) {
+        var color = result.locationColors[index];
+        var title = result.locationTitles[index];
+        var url = result.locationLinks[index];
+        var htm = '';
+        htm += `<div class="cursor-pointer " style="max-width: 400px; ">
+`;
+        htm += `{%- block htmLegendGpuSlicePage %}
+    <div title="${quoteattr(title)}">
+    <div style="width: 20px; ">
+      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+    </div>
+    <div class="text-overflow-ellipsis ">
+      <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
+    </div>
+    </div>
+{%- endblock htmLegendGpuSlicePage %}`;
+        htm += `
+</div>
+`;
+        return htm;
+      }
+
+      function jsStyleGpuSlice(feature) {
+{%- block jsStyleGpuSlicePage %}
+        if(feature.geometry.type == 'Point') {
+          return {
+            radius: 8
+            , fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 1
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        } else if(feature.geometry.type == 'LineString') {
+          return {
+            color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 5
+            , opacity: 0.7
+          };
+        } else {
+          return {
+             fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 3
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        }
+{%- endblock jsStyleGpuSlicePage %}
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('sl-button')
+        , customElements.whenDefined('sl-input')
+      ]).then(() => {
+
+        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+
+        if(entityId == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          var o = document.querySelector('.pageForm .result')?.value;
+          if(o)
+            window.result = JSON.parse(o);
+        {% if entityId is defined %}
+        {% endif %}
+        }
+        var l = document.querySelector('.pageForm .listGpuSlice')?.value;
+        if(l)
+          window.listGpuSlice = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphGpuSlice();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qGpuSlice_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('GpuSlice', event.target, document.querySelector('#qGpuSliceDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qGpuSlice_rows')?.addEventListener('sl-change', event => {
+          paramChange('GpuSlice', event.target, document.querySelector('#qGpuSliceDiv_rows'));
+        });
+
+        document.querySelector('#qGpuSlice_start')?.addEventListener('sl-change', event => {
+          paramChange('GpuSlice', event.target, document.querySelector('#qGpuSliceDiv_start'));
+        });
+
+
+        var submitForm_patchGpuSlice = document.querySelector('#htmForm_patchGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchGpuSlice(null, document.querySelector('#htmForm_patchGpuSlice'), document.querySelector('#htmFormButton_patchGpuSlice'), event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_postGpuSlice = document.querySelector('#htmForm_postGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          postGpuSlice(document.querySelector('#htmForm_postGpuSlice'), document.querySelector('#htmFormButton_postGpuSlice'), (response, target) => { response.json().then((json) => { window.location.href = json.editPage; }); });
+          return false;
+        });
+
+        var submitForm_deleteGpuSlice = document.querySelector('#htmForm_deleteGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteGpuSlice(event.target, event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_putimportGpuSlice = document.querySelector('#htmForm_putimportGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_putimportGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          putimportGpuSlice(document.querySelector('#htmForm_putimportGpuSlice'), document.querySelector('#htmFormButton_putimportGpuSlice'));
+          return false;
+        });
+
+        var submitForm_searchpageGpuSlice = document.querySelector('#htmForm_searchpageGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageGpuSlice();
+          return false;
+        });
+      });
+    </script>
+{%- endblock htmScriptGpuSlicePage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketGpuSlicePage %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketGpuSlice(websocketGpuSliceInner);
+{%- endblock websocketGpuSlicePage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlGpuSlicePage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlGpuSlicePage %}
+
+{%- block htmBodyStartPageLayout %}
+{{ super() }}
+{%- block htmBodyStartGpuSlicePage %}
+{%- endblock htmBodyStartGpuSlicePage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleGpuSlicePage %}
+{%- include en-us/search/gpu-slice/GpuSliceSidebar.htm %}
+{%- include en-us/search/gpu-slice/GpuSliceSuggestedSearch.htm %}
+{% if resultCount == 0 %}
+          <sl-tooltip for="return-to-GpuSlice">back to all GPU slices</sl-tooltip>
+        <div>
+            <sl-button id="return-to-GpuSlice" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all GPU slices
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
+{% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
+{% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no GPU slice found</span>
+          </span>
+        </h2>
+{% else %}
+        <div class="pageContent ">
+          <div id="site-calendar-box">
+            <div id="site-calendar"><!-- // --></div>
+          </div>
+          <div class="margin-block">
+            <sl-tooltip for="return-to-GpuSlice">back to all GPU slices</sl-tooltip>
+            <sl-button id="return-to-GpuSlice" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all GPU slices
+            </sl-button>
+          </div>
+          <h1><a href="{{pageUri}}"><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></a></h1>
+{% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
+{% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
+{% include en-us/search/gpu-slice/GpuSlicePaginationButtons.htm %}
+          <div class="card-like-thing background-color-surface-border" id="site-results-grid">
+            <div>
+              <sl-dropdown id="htmDropdown-sliceName">
+                <sl-button variant="primary" slot="trigger" caret>name</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-sliceName-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by name ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-sliceName-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by name descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <sl-dropdown id="htmDropdown-description">
+                <sl-button variant="primary" slot="trigger" caret>description</sl-button>
+                <sl-menu>
+                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    sort by description ascending
+                  </sl-menu-item>
+                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    sort by description descending
+                  </sl-menu-item>
+                </sl-menu>
+              </sl-dropdown>
+              <div></div>
+            </div>
+            {% for item in listGpuSlice%}
+            <div>
+              <a href="{{ item.displayPage }}">
+                <i class="fa-regular fa-cake-slice"></i>
+              {{ item.sliceName }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              {{ item.description }}
+              </a>
+              <sl-button variant="primary"
+                  id="{{classApiMethodMethod}}_editPage"
+                  placeholder="[String] edit"
+                  label="edit"
+                  title="Edit this"
+                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuSlice inputGpuSlice{{entityId}}EditPage "
+                  name="setEditPage"
+                  href="{{ item.editPage | e }}"
+                  >
+                <i class="fa-solid fa-pen-to-square"></i>
+                edit
+              </sl-button>
+            </div>
+            {% endfor %}
+              {% if getColumnSliceName is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnEditPage is defined %}
+                <div>
+                </div>
+              {% endif %}
+          </div>
+{% endif %}
+{%- endblock htmBodyMiddleGpuSlicePage %}
+{%- endblock htmBodyMiddlePageLayout %}
+
+{%- block htmBodyEndPageLayout %}
+  {{ super() }}
+{%- block htmBodyEndGpuSlicePage %}
+{%- endblock htmBodyEndGpuSlicePage %}
+{%- endblock htmBodyEndPageLayout %}

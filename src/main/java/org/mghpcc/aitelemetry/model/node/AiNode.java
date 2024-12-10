@@ -17,19 +17,14 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Fiware: true
- *
- * Model: true
- * Api: true
- * Page: true
- * UserPageTemplates: /en-us/user/ai-node
- * SuperPage: BaseModelPage
- * Indexed: true
  * Order: 4
  * Description: A Red Hat OpenShift node containing GPUs
- * ApiTag: AI node
- * ApiUri: /api/ai-node
+ * AName: an AI node
+ * Icon: <i class="fa-regular fa-computer"></i>
  *
+ * SearchPageUri: /en-us/search/ai-node
+ * EditPageUri: /en-us/edit/ai-node/{pageId}
+ * ApiUri: /en-us/api/ai-node
  * ApiMethod:
  *   Search:
  *   GET:
@@ -37,14 +32,20 @@ import io.vertx.pgclient.data.Polygon;
  *   POST:
  *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: AiNodePage
- *     ApiUri: /ai-node
- *
- * Role: SiteAdmin
- *
- * AName: an AI node
- * Icon: <i class="fa-regular fa-computer"></i>
+ * 
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  **/
 public class AiNode extends AiNodeGen<BaseModel> {
 
@@ -73,6 +74,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmRowTitle: AI node details
 	 * HtmColumn: 1
 	 * Facet: true
+	 * VarName: true
 	 **/
 	protected void _nodeName(Wrap<String> w) {}
 
@@ -86,6 +88,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 2
 	 * HtmColumn: 3
+	 * VarDescription: true
 	 **/
 	protected void _description(Wrap<String> w) {
 		w.o(String.format("Contains %s GPU devices", gpuDevicesTotal));
@@ -162,6 +165,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
+	 * VarId: true
 	 */
 	protected void _entityId(Wrap<String> w) {
 		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(String.format("%s-%s", clusterName, nodeName))));
@@ -176,22 +180,6 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	protected void _entityShortId(Wrap<String> w) {
 		if(entityId != null) {
 			w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
-		}
-	}
-
-	@Override
-	protected void _objectTitle(Wrap<String> w) {
-		StringBuilder b = new StringBuilder();
-		b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", AiNode_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-		w.o(b.toString().trim());
-	}
-
-	@Override
-	protected void _objectId(Wrap<String> w) {
-	if(objectTitle != null) {
-			w.o(toId(objectTitle));
-		} else if(id != null){
-			w.o(id.toString());
 		}
 	}
 }

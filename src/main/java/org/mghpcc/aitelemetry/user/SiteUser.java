@@ -9,38 +9,25 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
 /**
- * Model: true
- * Api: true
- * Page: true
- * SuperPage: BaseModelPage
- * Indexed: true
- * SqlOrder: 1
- * Order: 3
+ * Order: 1
+ * Description: A user record for each site user
+ * AName: a site user
+ * Icon: <i class="fa-duotone fa-solid fa-user-gear"></i>
  * 
- * ApiTag: User
- * ApiUri: /api/user
+ * Keyword: classSimpleNameSiteUser
+ * Filter: userId
+ * AuthUser: true
+ * AuthDefaultClient:
+ *   GET:
+ *   PATCH:
  * 
+ * SearchPageUri: /en-us/search/user
+ * EditPageUri: /en-us/edit/user/{pageId}
+ * ApiUri: /en-us/api/user
  * ApiMethod:
  *   Search:
  *   PATCH:
  *   POST:
- *   DELETE:
- *   PUTImport:
- *   SearchPage:
- *     Page: SiteUserPage
- *     PageSuper: BaseModelPage
- *     ApiUri: /user
- * 
- * Keyword: classSimpleNameSiteUser
- * Role: SiteAdmin
- * Filter: userId
- * 
- * AName: a site user
- * Icon: <i class="fa-duotone fa-solid fa-user-gear"></i>
- * 
- * RoleUser: true
- * Role: SiteAdmin
- * Description: A user record for each site user
  */
 public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUser {
 
@@ -58,6 +45,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * DocValues: true
 	 * Persist: true
 	 * Description: The unique user ID from the SSO server
+	 * VarId: true
 	 */
 	protected void _userId(Wrap<String> c) {
 	}
@@ -67,6 +55,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * DocValues: true
 	 * Persist: true
 	 * Description: The user's username
+	 * HtmColumn: 2
 	 */
 	protected void _userName(Wrap<String> c) {
 	}
@@ -103,6 +92,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * DocValues: true
 	 * Persist: true
 	 * Description: The user's full name
+	 * HtmColumn: 1
 	 */
 	protected void _userFullName(Wrap<String> c) {
 	}
@@ -135,10 +125,12 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	}
 
 	/**
-	 * Description: An implementation for the interface for the object title
+	 * DocValues: true
+	 * Persist: true
+	 * Description: The display name for this user
+	 * VarName: true
 	 */
-	@Override
-	protected void _objectTitle(Wrap<String> c) {
+	protected void _displayName(Wrap<String> c) {
 		c.o(String.format("%s (%s) <%s>", userFullName, userName, userEmail));
 	}
 

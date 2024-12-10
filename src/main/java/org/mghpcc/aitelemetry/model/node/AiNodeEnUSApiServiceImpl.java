@@ -35,10 +35,6 @@ import com.hubspot.jinjava.Jinjava;
  **/
 public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 
-	public AiNodeEnUSApiServiceImpl(Vertx vertx, JsonObject config, WorkerExecutor workerExecutor, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, PgPool pgPool, KafkaProducer<String, String> kafkaProducer, MqttClient mqttClient, AmqpSender amqpSender, RabbitMQClient rabbitmqClient, WebClient webClient, OAuth2Auth oauth2AuthenticationProvider, AuthorizationProvider authorizationProvider, Jinjava jinjava) {
-		super(vertx, config, workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-	}
-
 	@Override
 	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
 			String classSimpleName, String classApiAddress) {
