@@ -1,0 +1,8 @@
+---
+# ansible-playbook playbooks/deploy-microservices.yaml
+- name: Deploy microservices
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy-microservices
