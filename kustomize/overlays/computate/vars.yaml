@@ -134,9 +134,9 @@ ENABLE_QUARKUS: false
 ###################
 
 # The number of Vert.x instances to run per pod. 
-SITE_INSTANCES: 2
+SITE_INSTANCES: 4
 # The number of Vert.x worker instances to run per pod. 
-WORKER_POOL_SIZE: 2
+WORKER_POOL_SIZE: 1
 # The max event loop execute time in seconds. 
 VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
 # The max worker execute time in seconds. 
@@ -144,7 +144,7 @@ VERTX_MAX_WORKER_EXECUTE_TIME: 6000
 # The time before showing a warning of blocking threads in seconds. 
 VERTX_WARNING_EXCEPTION_SECONDS: 60
 # The number of background worker executors that may run. 
-NUMBER_EXECUTORS: 2
+NUMBER_EXECUTORS: 1
 
 ####################
 # License defaults #
@@ -298,6 +298,7 @@ DATABASE_SECRET: "postgres-pguser-{{ DATABASE_USERNAME }}"
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=DATABASE_SECRET, namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
 DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ OPENSHIFT_AI_WORKBENCH }}"
+DATABASE_MAX_WAIT_QUEUE_SIZE: 20
 
 #####################################
 # Authentication/authorization vars #
@@ -436,7 +437,10 @@ SITE_REPLICAS: 1
 ########################
 
 # Enable data import in the site. 
-ENABLE_IMPORT_DATA: true
+ENABLE_IMPORT_DATA: false
+ENABLE_IMPORT_DATA_AiCluster: false
+ENABLE_IMPORT_DATA_AiNode: false
+ENABLE_IMPORT_DATA_GpuDevice: true
 # Enable the Zookeeper cluster manager. 
 ENABLE_ZOOKEEPER_CLUSTER: false
 # Enable support for Open Telemetry in the application. 
@@ -479,3 +483,6 @@ PROM_KEYCLOAK_PROXY_SSL: true
 # grafana #
 ###########
 GRAFANA_BASE_URL: https://grafana.apps.obs.nerc.mghpcc.org
+
+#IMPORT_DATA_START_TIME_AiCluster: 10:13 America/Denver
+#IMPORT_DATA_PERIOD_AiCluster: 1 Minute

@@ -191,6 +191,16 @@
           return false;
         });
 
+        var submitForm_deleteAiProject = document.querySelector('#htmForm_deleteAiProject')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteAiProject')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteAiProject(null, document.querySelector('#htmForm_deleteAiProject'), document.querySelector('#htmFormButton_deleteAiProject'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportAiProject = document.querySelector('#htmForm_putimportAiProject')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -474,6 +484,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteAiProject() %}<sl-button id="htmButton_deleteAiProject" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteAiProject() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteAiProject"
+                >Delete AI project</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteAiProject() %}
+        <sl-dialog id="deleteAiProjectDialog" label="Delete AI project">
+          <form id="htmForm_deleteAiProject" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteAiProject() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportAiProject() %}<sl-button id="htmButton_putimportAiProject" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiProject() %}
@@ -689,7 +715,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if aiProjectCount == 1 %}<sl-button id="refreshThisAiProjectGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiProjectGenPage')); }, function() { addError(document.querySelector('#refreshThisAiProjectGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiProjectCount > 0 %}<sl-button id="refreshAllAiProjectGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiProjectGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiProjectGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiProjectCount > 0 %}{{ htmButton_patchAiProject() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiProjectCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiProject() }}{%- else %}{{ htmButton_postAiProject() }}{%- endif %}{%- else %}{{ htmButton_postAiProject() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiProject() }}{%- endif %}            </div>
+{% if aiProjectCount == 1 %}<sl-button id="refreshThisAiProjectGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiProjectGenPage')); }, function() { addError(document.querySelector('#refreshThisAiProjectGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if aiProjectCount > 0 %}<sl-button id="refreshAllAiProjectGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiProjectGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllAiProjectGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if aiProjectCount > 0 %}{{ htmButton_patchAiProject() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiProjectCount == 1 %}{%- if pk is defined %}{{ htmButton_postAiProject() }}{%- else %}{{ htmButton_postAiProject() }}{%- endif %}{%- else %}{{ htmButton_postAiProject() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if aiProjectCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteAiProject() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportAiProject() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if aiProjectCount > 0 %}
         {{ htmForm_patchAiProject() }}
@@ -704,6 +730,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postAiProject() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if aiProjectCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteAiProject() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}

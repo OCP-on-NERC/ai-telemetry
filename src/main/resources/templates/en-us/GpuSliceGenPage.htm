@@ -191,6 +191,16 @@
           return false;
         });
 
+        var submitForm_deleteGpuSlice = document.querySelector('#htmForm_deleteGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteGpuSlice(null, document.querySelector('#htmForm_deleteGpuSlice'), document.querySelector('#htmFormButton_deleteGpuSlice'), event.target.getAttribute('data-pk'));
+          return false;
+        });
+
         var submitForm_putimportGpuSlice = document.querySelector('#htmForm_putimportGpuSlice')?.addEventListener('submit', event => {
           event.preventDefault();
           return false;
@@ -474,6 +484,22 @@
         </sl-dialog>
 {%- endmacro %}
 
+{%- macro htmButton_deleteGpuSlice() %}<sl-button id="htmButton_deleteGpuSlice" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+
+{%- macro htmFormButton_deleteGpuSlice() %}
+            <sl-button slot="footer" type="submit" variant="primary"
+                id="htmFormButton_deleteGpuSlice"
+                >Delete GPU slice</sl-button>
+{%- endmacro %}
+
+{%- macro htmForm_deleteGpuSlice() %}
+        <sl-dialog id="deleteGpuSliceDialog" label="Delete GPU slice">
+          <form id="htmForm_deleteGpuSlice" class="round-first-and-last-row-x-large ">
+          </form>
+          {{ htmFormButton_deleteGpuSlice() }}
+        </sl-dialog>
+{%- endmacro %}
+
 {%- macro htmButton_putimportGpuSlice() %}<sl-button id="htmButton_putimportGpuSlice" data-pk="{{ pk }}"><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportGpuSlice() %}
@@ -689,7 +715,7 @@
     {% if "PATCH" in scopes %}
             <sl-divider></sl-divider>
             <div id="htmButtonGroup">
-{% if gpuSliceCount == 1 %}<sl-button id="refreshThisGpuSliceGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisGpuSliceGenPage')); }, function() { addError(document.querySelector('#refreshThisGpuSliceGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if gpuSliceCount > 0 %}<sl-button id="refreshAllGpuSliceGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllGpuSliceGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllGpuSliceGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if gpuSliceCount > 0 %}{{ htmButton_patchGpuSlice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuSliceCount == 1 %}{%- if pk is defined %}{{ htmButton_postGpuSlice() }}{%- else %}{{ htmButton_postGpuSlice() }}{%- endif %}{%- else %}{{ htmButton_postGpuSlice() }}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportGpuSlice() }}{%- endif %}            </div>
+{% if gpuSliceCount == 1 %}<sl-button id="refreshThisGpuSliceGenPage" onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pk:{{pk}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisGpuSliceGenPage')); }, function() { addError(document.querySelector('#refreshThisGpuSliceGenPage')); }); return false; "><i slot="prefix" class="fas fa-sync-alt "></i>refresh</sl-button>{% endif %}{% if gpuSliceCount > 0 %}<sl-button id="refreshAllGpuSliceGenPage{{id}}" onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllGpuSliceGenPage{{id}}')); }, function() { addError(document.querySelector('#refreshAllGpuSliceGenPage{{id}}')); }); "><i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>Refresh all </sl-button>{% endif %}{% endif %}{% endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{%- if gpuSliceCount > 0 %}{{ htmButton_patchGpuSlice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuSliceCount == 1 %}{%- if pk is defined %}{{ htmButton_postGpuSlice() }}{%- else %}{{ htmButton_postGpuSlice() }}{%- endif %}{%- else %}{{ htmButton_postGpuSlice() }}{%- endif %}{%- endif %}{% if AUTH_SCOPE_ADMIN in scopes %}{%- if gpuSliceCount == 1 %}{%- if pk is defined %}{{ htmButton_deleteGpuSlice() }}{%- else %}{%- endif %}{%- else %}{%- endif %}{%- endif %}{%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}{{ htmButton_putimportGpuSlice() }}{%- endif %}            </div>
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
     {%- if gpuSliceCount > 0 %}
         {{ htmForm_patchGpuSlice() }}
@@ -704,6 +730,15 @@
       {%- endif %}
     {%- else %}
         {{ htmForm_postGpuSlice() }}
+    {%- endif %}
+  {%- endif %}
+  {% if AUTH_SCOPE_ADMIN in scopes %}
+    {%- if gpuSliceCount == 1 %}
+      {%- if pk is defined %}
+        {{ htmForm_deleteGpuSlice() }}
+      {%- else %}
+      {%- endif %}
+    {%- else %}
     {%- endif %}
   {%- endif %}
   {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}

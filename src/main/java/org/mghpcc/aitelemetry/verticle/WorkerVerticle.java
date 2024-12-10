@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +43,9 @@ import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpu.Gpu;
-import org.mghpcc.aitelemetry.model.gpu.GpuEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProject;
@@ -73,15 +73,28 @@ import io.vertx.core.Promise;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.http.Cookie;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.authentication.TokenCredentials;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
+import io.vertx.ext.auth.authorization.AuthorizationProvider;
+import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.auth.oauth2.OAuth2Options;
+import io.vertx.ext.auth.oauth2.authorization.KeycloakAuthorization;
+import io.vertx.ext.auth.oauth2.providers.OpenIDConnectAuth;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.mail.MailClient;
 import io.vertx.ext.mail.MailConfig;
+import io.vertx.ext.web.Session;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.OAuth2AuthHandler;
+import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.mqtt.MqttClient;
@@ -104,6 +117,19 @@ import io.vertx.sqlclient.RowStream;
 import io.vertx.sqlclient.SqlConnection;
 import org.mghpcc.aitelemetry.user.SiteUser;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.ConsumerTemplate;
+import org.apache.camel.Exchange;
+import org.apache.camel.LoggingLevel;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.builder.ExpressionBuilder;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.vertx.VertxComponent;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.model.SagaPropagation;
+import org.apache.camel.model.dataformat.JsonLibrary;
+import org.apache.camel.saga.InMemorySagaService;
+
 /**
  */
 public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
@@ -124,6 +150,12 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	private RabbitMQClient rabbitmqClient;
 
 	private ComputateOAuth2AuthHandlerImpl oauth2AuthHandler = null;
+
+	private CamelContext camelContext;
+
+	private OAuth2Auth oauth2AuthenticationProvider;
+
+	private AuthorizationProvider authorizationProvider;
 
 	public ComputateOAuth2AuthHandlerImpl getOauth2AuthHandler() {
 		return oauth2AuthHandler;
@@ -172,9 +204,13 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 								configureMqtt().onSuccess(f -> 
 									configureAmqp().onSuccess(g -> 
 										configureRabbitmq().onSuccess(h -> 
-											importData().onSuccess(i -> {
-												startPromise.complete();
-											}).onFailure(ex -> startPromise.fail(ex))
+											configureOpenApi().onSuccess(i -> 
+												workerExecutor.executeBlocking(() -> configureCamel()).onSuccess(j -> 
+													importData().onSuccess(k -> 
+														startPromise.complete()
+													).onFailure(ex -> startPromise.fail(ex))
+												).onFailure(ex -> startPromise.fail(ex))
+											).onFailure(ex -> startPromise.fail(ex))
 										).onFailure(ex -> startPromise.fail(ex))
 									).onFailure(ex -> startPromise.fail(ex))
 								).onFailure(ex -> startPromise.fail(ex))
@@ -188,13 +224,176 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		}
 	}
 
+	/**	
+	 * Configure the connection to the auth server and setup the routes based on the OpenAPI definition. 
+	 * Setup a callback route when returning from the auth server after successful authentication. 
+	 * Setup a logout route for logging out completely of the application. 
+	 * Return a promise that configures the authentication server and OpenAPI. 
+	 **/
+	public Future<Void> configureOpenApi() {
+		Promise<Void> promise = Promise.promise();
+		try {
+			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
+			
+			JsonObject authClients = Optional.ofNullable(config().getValue(ConfigKeys.AUTH_CLIENTS))
+					.map(v -> v instanceof JsonObject ? (JsonObject)v : new JsonObject(v.toString()))
+					.orElse(new JsonObject().put(Optional.ofNullable(config().getString(ConfigKeys.AUTH_OPEN_API_ID)).orElse("openIdConnect"), config()))
+					;
+			List<Future<OAuth2AuthHandler>> futures = new ArrayList<>();
+			Map<String, OAuth2AuthHandler> authHandlers = new LinkedHashMap<>();
+			Map<String, OAuth2Auth> authProviders = new LinkedHashMap<>();
+			for(String authClientOpenApiId : authClients.fieldNames()) {
+				JsonObject authClient = authClients.getJsonObject(authClientOpenApiId);
+				futures.add(Future.future(promise1 -> {
+					configureAuthClient(authClientOpenApiId, authClient, authHandlers, authProviders).onSuccess(a -> {
+						promise1.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format("configureAuthClient failed. "), ex);
+						promise1.fail(ex);
+					});
+				}));
+			}
+			Future.all(futures).onSuccess(a -> {
+				oauth2AuthenticationProvider = authProviders.get(authProviders.keySet().toArray()[0]);
+				authorizationProvider = KeycloakAuthorization.create();
+				LOG.info("The auth server and API was configured successfully.");
+				promise.complete();
+			}).onFailure(ex -> {
+				LOG.error("Could not configure the auth server and API.", ex);
+				promise.fail(ex);
+			});
+		} catch (Exception ex) {
+			LOG.error("Could not configure the auth server and API.", ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	/**	
+	 * Configure the connection to the auth server and setup the routes based on the OpenAPI definition. 
+	 * Setup a callback route when returning from the auth server after successful authentication. 
+	 * Setup a logout route for logging out completely of the application. 
+	 * Return a promise that configures the authentication server and OpenAPI. 
+	 **/
+	public Future<OAuth2AuthHandler> configureAuthClient(String authClientOpenApiId, JsonObject clientConfig, Map<String, OAuth2AuthHandler> authHandlers, Map<String, OAuth2Auth> authProviders) {
+		Promise<OAuth2AuthHandler> promise = Promise.promise();
+		try {
+			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
+
+			OAuth2Options oauth2ClientOptions = new OAuth2Options();
+			Boolean authSsl = clientConfig.getBoolean(ConfigKeys.AUTH_SSL);
+			String authHostName = clientConfig.getString(ConfigKeys.AUTH_HOST_NAME);
+			Integer authPort = clientConfig.getInteger(ConfigKeys.AUTH_PORT);
+			String authUrl = String.format("%s", clientConfig.getString(ConfigKeys.AUTH_URL));
+			oauth2ClientOptions.setSite(authUrl + "/realms/" + clientConfig.getString(ConfigKeys.AUTH_REALM));
+			oauth2ClientOptions.setTenant(clientConfig.getString(ConfigKeys.AUTH_REALM));
+			String authClient = clientConfig.getString(ConfigKeys.AUTH_CLIENT);
+			oauth2ClientOptions.setClientId(authClient);
+			oauth2ClientOptions.setClientSecret(clientConfig.getString(ConfigKeys.AUTH_SECRET));
+			oauth2ClientOptions.setAuthorizationPath("/oauth/authorize");
+			JsonObject extraParams = new JsonObject();
+			extraParams.put("scope", "profile");
+			oauth2ClientOptions.setExtraParameters(extraParams);
+			oauth2ClientOptions.setHttpClientOptions(new HttpClientOptions().setTrustAll(true).setVerifyHost(false).setConnectTimeout(120000));
+			String authCallbackUri = clientConfig.getString(ConfigKeys.AUTH_CALLBACK_URI);
+			if(authCallbackUri == null)
+				throw new RuntimeException(String.format("Please configure an AUTH_CALLBACK_URI for the AUTH_CLIENT %s.", authClient));
+			OpenIDConnectAuth.discover(vertx, oauth2ClientOptions).onSuccess(oauth2AuthenticationProvider -> {
+				authorizationProvider = KeycloakAuthorization.create();
+
+				oauth2AuthHandler = new ComputateOAuth2AuthHandlerImpl(vertx, oauth2AuthenticationProvider, siteBaseUrl + authCallbackUri);
+				authHandlers.put(authClientOpenApiId, oauth2AuthHandler);
+				authProviders.put(authClientOpenApiId, oauth2AuthenticationProvider);
+				LOG.info(String.format("Configured the auth server and API successfully.", authClient));
+				promise.complete(oauth2AuthHandler);
+			}).onFailure(ex -> {
+				Exception ex2 = new RuntimeException("OpenID Connect Discovery failed", ex);
+				LOG.error("Could not configure the auth server and API.", ex2);
+				promise.fail(ex2);
+			});
+		} catch (Exception ex) {
+			LOG.error("Could not configure the auth server and API.", ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	private Future<Void> configureCamel() {
+		Promise<Void> promise = Promise.promise();
+		try {
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+
+			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel", message -> {
+				apiGpuDevice.importDataCamel().onSuccess(a -> {
+					message.reply(new JsonObject());
+				}).onFailure(ex -> {
+					message.fail(500, ex.getMessage());
+				});
+			});
+
+			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel-compensation", message -> {
+				apiGpuDevice.importDataCamelCompensation().onSuccess(a -> {
+					message.reply(new JsonObject());
+				}).onFailure(ex -> {
+					message.fail(500, ex.getMessage());
+				});
+			});
+
+			camelContext = new DefaultCamelContext();
+			VertxComponent vertxComponent = new VertxComponent();
+			vertxComponent.setVertx(vertx);
+			camelContext.addComponent("vertx", vertxComponent);
+			camelContext.addService(new InMemorySagaService());
+			RouteBuilder routeBuilder = new RouteBuilder() {
+				public void configure() {
+
+					from("direct:importData")
+						.saga()
+							.to("direct:importGpuDeviceData")
+					;
+
+					from("direct:importGpuDeviceData")
+						.saga()
+						.propagation(SagaPropagation.MANDATORY)
+						.compensation("direct:importGpuDeviceData-compensation")
+						.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
+						.log("Starting import of GPU device data")
+						.to("vertx:ai-telemetry-enUS-GpuDevice-importDataCamel?exchangePattern=InOut")
+						.log("Successfully completed import of GPU device data")
+						;
+
+					from("direct:importGpuDeviceData-compensation")
+						.transform().header(Exchange.SAGA_LONG_RUNNING_ACTION)
+						.delay(2000)
+						.log(LoggingLevel.WARN, "GPU device failed, running compensation. ")
+						.to("vertx:ai-telemetry-enUS-GpuDevice-importDataCamel-compensation?exchangePattern=InOut")
+						.log(LoggingLevel.WARN, "Deleted all GPU devices created during failed import. ")
+						.log(LoggingLevel.WARN, "Finished compensation for failed GPU device import. ")
+					;
+				}
+			};
+			routeBuilder.addRoutesToCamelContext(camelContext);
+			camelContext.start();
+
+			ProducerTemplate template = camelContext.createProducerTemplate();
+			template.sendBody("direct:importData", null);
+			LOG.info("The Camel Component was configured properly. ");
+			promise.complete();
+		} catch(Exception ex) {
+			LOG.error("The Camel Component was not configured properly. ");
+			promise.fail(ex);
+		}
+
+		return promise.future();
+	}
+
 	/**
 	 **/
 	public Future<Jinjava> configureJinjava() {
 		Promise<Jinjava> promise = Promise.promise();
 
 		try {
-			jinjava = new Jinjava();
+			jinjava = ComputateConfigKeys.getJinjava();
 			String templatePath = config().getString(ConfigKeys.TEMPLATE_PATH);
 			if(!StringUtils.isBlank(templatePath))
 				jinjava.setResourceLocator(new FileLocator(new File(templatePath)));
@@ -466,10 +665,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			siteRequest.setWebClient(webClient);
 			siteRequest.initDeepSiteRequest(siteRequest);
 			String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
-			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
-			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
-			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
-			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, null, null, jinjava);
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/article"), vertx, siteRequest, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage).onSuccess(q1 -> {
 				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster).onSuccess(q2 -> {
 					apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode).onSuccess(q3 -> {
@@ -487,4 +686,75 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		}
 		return promise.future();
 	}
+
+	// /**
+	//  * Val.Scheduling.enUS:Scheduling the %s import at %s
+	//  * Val.Skip.enUS:Skip importing %s data. 
+	//  * Val.Fail.enUS:Scheduling the import of %s data failed. 
+	//  */
+	// public Future<Void> importTimer(Vertx vertx, ComputateSiteRequest siteRequest, String classSimpleName, String classApiAddress) {
+	// 	Promise<Void> promise = Promise.promise();
+	// 	if(config.getBoolean(String.format("%s_%s", ComputateConfigKeys.ENABLE_IMPORT_DATA, classSimpleName), true)) {
+	// 		// Load the import start time and period configuration. 
+	// 		String importStartTime = config.getString(String.format("%s_%s", ComputateConfigKeys.IMPORT_DATA_START_TIME, classSimpleName));
+	// 		String importPeriod = config.getString(String.format("%s_%s", ComputateConfigKeys.IMPORT_DATA_PERIOD, classSimpleName));
+	// 		// Get the duration of the import period. 
+	// 		// Calculate the next start time, or the next start time after that, if the start time is in less than a minute, 
+	// 		// to give the following code enough time to complete it's calculations to ensure the import starts correctly. 
+
+	// 		Duration nextStartDuration = null;
+	// 		ZonedDateTime nextStartTime = null;
+	// 		if(importPeriod != null) {
+	// 			Duration duration = TimeTool.parseNextDuration(importPeriod);
+	// 			if(importStartTime == null) {
+	// 				nextStartTime = Optional.of(ZonedDateTime.now(ZoneId.of(config.getString(ComputateConfigKeys.SITE_ZONE))))
+	// 						.map(t -> Duration.between(Instant.now(), t).toMinutes() < 1L ? t.plus(duration) : t).get();
+	// 			} else {
+	// 				nextStartTime = TimeTool.parseNextZonedTime(importStartTime);
+	// 			}
+
+	// 			// Get the time now for the import start time zone. 
+	// 			ZonedDateTime now = ZonedDateTime.now(nextStartTime.getZone());
+	// 			BigDecimal[] divideAndRemainder = BigDecimal.valueOf(Duration.between(now, nextStartTime).toMillis())
+	// 					.divideAndRemainder(BigDecimal.valueOf(duration.toMillis()));
+	// 			nextStartDuration = Duration.between(now, nextStartTime);
+	// 			if(divideAndRemainder[0].compareTo(BigDecimal.ONE) >= 0) {
+	// 				nextStartDuration = Duration.ofMillis(divideAndRemainder[1].longValueExact());
+	// 				nextStartTime = now.plus(nextStartDuration);
+	// 			}
+	// 			LOG.info(String.format(importTimerScheduling, classSimpleName, nextStartTime.format(TIME_FORMAT)));
+	// 		}
+	// 		ZonedDateTime nextStartTime2 = nextStartTime;
+
+	// 		if(importStartTime == null) {
+	// 			try {
+	// 				vertx.setTimer(1, a -> {
+	// 					workerExecutor.executeBlocking(() -> {
+	// 						return importBlocking(pagePath, vertx, siteRequest, classSimpleName, classApiAddress, null);
+	// 					});
+	// 				});
+	// 				promise.complete();
+	// 			} catch(Exception ex) {
+	// 				LOG.error(String.format(importTimerFail, classSimpleName), ex);
+	// 				promise.fail(ex);
+	// 			}
+	// 		} else {
+	// 			try {
+	// 				vertx.setTimer(nextStartDuration.toMillis(), a -> {
+	// 					workerExecutor.executeBlocking(() -> {
+	// 						return importBlocking(pagePath, vertx, siteRequest, classSimpleName, classApiAddress, nextStartTime2);
+	// 					});
+	// 				});
+	// 				promise.complete();
+	// 			} catch(Exception ex) {
+	// 				LOG.error(String.format(importTimerFail, classSimpleName), ex);
+	// 				promise.fail(ex);
+	// 			}
+	// 		}
+	// 	} else {
+	// 		LOG.info(String.format(importTimerSkip, classSimpleName));
+	// 		promise.complete();
+	// 	}
+	// 	return promise.future();
+	// }
 }

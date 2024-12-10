@@ -96,6 +96,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: POST</h2>
  * <p>This class contains a comment <b>"ApiMethod: POST"</b>, which creates an API "POST". 
  * </p>
+ * <h2>ApiMethode: DELETE</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETE"</b>, which creates an API "DELETE". 
+ * </p>
  * <h2>ApiMethode: PUTImport</h2>
  * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
  * </p>
@@ -210,6 +213,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String PATCH_enUS_ImageUri = "/png/api/gpu-device-999.png";
 	public static final String POST_enUS_Uri = "/api/gpu-device";
 	public static final String POST_enUS_ImageUri = "/png/api/gpu-device-999.png";
+	public static final String DELETE_enUS_Uri = "/api/gpu-device";
+	public static final String DELETE_enUS_ImageUri = "/png/api/gpu-device-999.png";
 	public static final String PUTImport_enUS_Uri = "/api/gpu-device-import";
 	public static final String PUTImport_enUS_ImageUri = "/png/api/gpu-device-import-999.png";
 	public static final String SearchPage_enUS_Uri = "/gpu-device";
