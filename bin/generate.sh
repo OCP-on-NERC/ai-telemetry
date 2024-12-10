@@ -1,5 +1,8 @@
 #!/bin/bash
 
-cd $HOME/.local/src/ai-telemetry
-env VARS_PATH=$HOME/.local/src/ai-telemetry/vars.yaml COMPUTATE_SRC=$HOME/.local/src/computate SITE_LANG=enUS $HOME/.local/src/computate/bin/enUS/generate.sh
-
+cd /home/ctate/.local/src/ai-telemetry
+env VARS_PATH=/home/ctate/.local/src/ai-telemetry/vars.yaml \
+  COMPUTATE_SRC=/home/ctate/.local/src/computate \
+  COMPUTATE_VERTX_SRC=/home/ctate/.local/src/computate-vertx \
+  SITE_LANG=enUS \
+  /home/ctate/.local/src/computate/bin/enUS/generate.sh

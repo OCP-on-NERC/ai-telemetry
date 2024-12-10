@@ -33,6 +33,7 @@ import io.vertx.ext.web.api.service.ServiceRequest;
 /**
  * Keyword: classSimpleNamePageLayout
  * Description: Defines variables to be used when rendering Handlebars template pages
+ * PageTemplate: en-us/PageLayout.htm
  * Promise: true
  **/
 public class PageLayout extends PageLayoutGen<Object> {
@@ -177,7 +178,12 @@ public class PageLayout extends PageLayoutGen<Object> {
 		try {
 			JsonObject config = siteRequest_.getConfig();
 			JsonObject authClient = Optional.ofNullable(config.getJsonObject(ConfigKeys.AUTH_CLIENTS)).map(authClients -> authClients.getJsonObject(config.getString(ConfigKeys.AUTH_CLIENT))).orElse(config);
-			w.o(authClient.getString(ConfigKeys.AUTH_URL) + "/realms/" + authClient.getString(ConfigKeys.AUTH_REALM) + "/protocol/openid-connect/logout?redirect_url=" + URLEncoder.encode(config.getString(ConfigKeys.SITE_BASE_URL) + authClient.getString(ConfigKeys.AUTH_LOGOUT_URI), "UTF-8"));
+			w.o(String.format("%s/realms/%s/protocol/openid-connect/logout?post_logout_redirect_uri=%s&client_id=%s"
+					, authClient.getString(ConfigKeys.AUTH_URL)
+					, authClient.getString(ConfigKeys.AUTH_REALM)
+					, URLEncoder.encode(config.getString(ConfigKeys.SITE_BASE_URL) + authClient.getString(ConfigKeys.AUTH_LOGOUT_URI), "UTF-8")
+					, authClient.getString(ConfigKeys.AUTH_CLIENT)
+			));
 		} catch (UnsupportedEncodingException ex) {
 			ExceptionUtils.rethrow(ex);
 		}
@@ -236,6 +242,9 @@ public class PageLayout extends PageLayoutGen<Object> {
 	}
 
 	protected void _defaultFieldListVars(List<String> l) {
+	}
+
+	protected void _defaultSortVars(List<String> l) {
 	}
 
 	protected void _defaultStatsVars(List<String> l) {

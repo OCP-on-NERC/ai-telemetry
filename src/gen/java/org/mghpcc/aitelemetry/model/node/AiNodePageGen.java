@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodePage">Find the class AiNodePage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNodePage">Find the class AiNodePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -117,18 +117,18 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepAiNodePage(SiteRequest siteRequest_) {
+	public Future<AiNodePageGen<DEV>> promiseDeepAiNodePage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepAiNodePage();
 	}
 
-	public Future<Void> promiseDeepAiNodePage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<AiNodePageGen<DEV>> promiseDeepAiNodePage() {
+		Promise<AiNodePageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseAiNodePage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepAiNodeGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -155,7 +155,7 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends AiNodePageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepAiNodePage(siteRequest_);
 	}
 
@@ -294,6 +294,46 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 	public static final String CLASS_SIMPLE_NAME = "AiNodePage";
 
 
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return AiNodePage.displayNameAiNodePage(var);
 	}
@@ -301,6 +341,69 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 		switch(var) {
 		default:
 			return AiNodeGenPage.displayNameAiNodeGenPage(var);
+		}
+	}
+
+	public static String descriptionAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.descriptionAiNodeGenPage(var);
+		}
+	}
+
+	public static String classSimpleNameAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.classSimpleNameAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer htmColumnAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.htmColumnAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer htmRowAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.htmRowAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer htmCellAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.htmCellAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer lengthMinAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.lengthMinAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer lengthMaxAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.lengthMaxAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer maxAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.maxAiNodeGenPage(var);
+		}
+	}
+
+	public static Integer minAiNodePage(String var) {
+		switch(var) {
+			default:
+				return AiNodeGenPage.minAiNodeGenPage(var);
 		}
 	}
 }

@@ -20,19 +20,14 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Fiware: true
- *
- * Model: true
- * Api: true
- * Page: true
- * UserPageTemplates: /en-us/user/ai-cluster
- * SuperPage: BaseModelPage
- * Indexed: true
  * Order: 3
  * Description: A Red Hat OpenShift cluster containing GPUs
- * ApiTag: AI cluster
- * ApiUri: /api/ai-cluster
+ * AName: an AI cluster
+ * Icon: <i class="fa-regular fa-server"></i>
  *
+ * SearchPageUri: /en-us/search/ai-cluster
+ * EditPageUri: /en-us/edit/ai-cluster/{pageId}
+ * ApiUri: /en-us/api/ai-cluster
  * ApiMethod:
  *   Search:
  *   GET:
@@ -40,14 +35,20 @@ import io.vertx.pgclient.data.Polygon;
  *   POST:
  *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: AiClusterPage
- *     ApiUri: /ai-cluster
- *
- * Role: SiteAdmin
- *
- * AName: an AI cluster
- * Icon: <i class="fa-regular fa-server"></i>
+ * 
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  **/
 public class AiCluster extends AiClusterGen<BaseModel> {
 
@@ -62,6 +63,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmColumn: 1
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
+	 * VarName: true
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 
@@ -75,6 +77,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 2
 	 * HtmColumn: 2
+	 * VarDescription: true
 	 **/
 	protected void _description(Wrap<String> w) {
 		w.o(String.format("Contains %s AI nodes and %s GPU devices", aiNodesTotal, gpuDevicesTotal));
@@ -140,6 +143,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
+	 * VarId: true
 	 */
 	protected void _entityId(Wrap<String> w) {
 		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(clusterName)));
@@ -202,22 +206,6 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 						)
 				)
 		));
-	}
-
-	@Override
-	protected void _objectTitle(Wrap<String> w) {
-		StringBuilder b = new StringBuilder();
-		b.append(Optional.ofNullable(entityShortId).map(s -> String.format("%s — %s", AiCluster_NameAdjectiveSingular_enUS, s)).orElse(pk.toString()));
-		w.o(b.toString().trim());
-	}
-
-	@Override
-	protected void _objectId(Wrap<String> w) {
-	if(objectTitle != null) {
-			w.o(toId(objectTitle));
-		} else if(id != null){
-			w.o(id.toString());
-		}
 	}
 }
 

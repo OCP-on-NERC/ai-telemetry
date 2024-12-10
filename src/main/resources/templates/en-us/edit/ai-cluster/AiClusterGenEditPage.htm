@@ -1,0 +1,832 @@
+{% extends "en-us/PageLayout.htm" %}
+{%- block htmTitlePageLayout %}
+{%- block htmTitleAiClusterPage %}
+    <title>{{ result.title }}</title>
+{%- endblock htmTitleAiClusterPage %}
+{%- endblock htmTitlePageLayout %}
+
+{%- block htmStylesPageLayout %}
+{{ super() }}
+    <link rel="stylesheet" href="{{ staticBaseUrl }}/css/en-us/search/ai-cluster/AiCluster.css"/>
+{%- block htmStylesAiClusterPage %}
+{%- endblock htmStylesAiClusterPage %}
+{%- endblock htmStylesPageLayout %}
+
+{%- block htmStylePageLayout %}
+{{ super() }}
+{%- block htmStyleAiClusterPage %}
+{%- endblock htmStyleAiClusterPage %}
+{%- endblock htmStylePageLayout %}
+
+{%- block htmScriptsPageLayout %}
+{{ super() }}
+{%- block htmScriptsAiClusterPage %}
+    <script src="{{staticBaseUrl}}/js/en-us/search/ai-cluster/AiCluster.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/ai-cluster/AiClusterSearchPage.js"></script>
+    <script type="module" src="{{staticBaseUrl}}/js/en-us/search/ai-cluster/AiClusterEditPage.js"></script>
+{%- endblock htmScriptsAiClusterPage %}
+{%- endblock htmScriptsPageLayout %}
+
+{%- block htmScriptPageLayout %}
+{%- block htmScriptAiClusterPage %}
+    <script>
+
+      function jsWebsocketAiCluster(entityId, vars, $response) {
+{%- block jsWebsocketAiClusterPage %}{%- endblock %}
+      }
+
+      function jsTooltipAiCluster(e, feature) {
+{%- block jsTooltipAiClusterPage %}{%- endblock %}
+      }
+
+      function htmTooltipAiCluster(feature, layer) {
+        return `{%- block htmTooltipAiClusterPage %}
+<h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.title}</a></h3>
+{%- endblock htmTooltipAiClusterPage %}`;
+      }
+
+      function jsLegendAiCluster(map) {
+{%- block jsLegendAiClusterPage %}
+        var div = L.DomUtil.create('div', 'info legend');
+        var htm = '';
+        window.listAiCluster.forEach((result, index) => {
+          if(result.location) {
+            var shapes = [];
+            if(Array.isArray(result.location))
+              shapes = shapes.concat(result.location);
+            else
+              shapes.push(result.location);
+            shapes.forEach(function(shape, index) {
+              htm += htmLegendAiCluster(map, shape, result, index, shapes.length);
+            });
+          }
+        });
+        div.innerHTML = htm;
+        return div;
+{%- endblock jsLegendAiClusterPage %}
+      }
+
+      function htmLegendAiCluster(map, shape, result, index, count) {
+        var color = result.locationColors[index];
+        var title = result.locationTitles[index];
+        var url = result.locationLinks[index];
+        var htm = '';
+        htm += `<div class="cursor-pointer " style="max-width: 400px; ">
+`;
+        htm += `{%- block htmLegendAiClusterPage %}
+    <div title="${quoteattr(title)}">
+    <div style="width: 20px; ">
+      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+    </div>
+    <div class="text-overflow-ellipsis ">
+      <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
+    </div>
+    </div>
+{%- endblock htmLegendAiClusterPage %}`;
+        htm += `
+</div>
+`;
+        return htm;
+      }
+
+      function jsStyleAiCluster(feature) {
+{%- block jsStyleAiClusterPage %}
+        if(feature.geometry.type == 'Point') {
+          return {
+            radius: 8
+            , fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 1
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        } else if(feature.geometry.type == 'LineString') {
+          return {
+            color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 5
+            , opacity: 0.7
+          };
+        } else {
+          return {
+             fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
+            , weight: 3
+            , opacity: 0.7
+            , fillOpacity: 0.7
+          };
+        }
+{%- endblock jsStyleAiClusterPage %}
+      }
+    </script>
+    <script type="module">
+{% if DEFAULT_MAP_LOCATION is defined %}
+      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+{% endif %}
+{% if DEFAULT_MAP_ZOOM is defined %}
+      window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
+{% endif %}
+      window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
+      Promise.all([
+        customElements.whenDefined('sl-button')
+        , customElements.whenDefined('sl-input')
+      ]).then(() => {
+
+        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+
+        if(entityId == null) {
+          document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-details');
+          });
+          document.querySelector('#grid-toggle-list')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-card');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-list');
+          });
+          document.querySelector('#grid-toggle-card')?.addEventListener('click', () => {
+            document.querySelector('#site-results-grid').classList.remove('grid-mode-details', 'grid-mode-list');
+            document.querySelector('#site-results-grid').classList.add('grid-mode-card');
+          });
+        } else {
+          var o = document.querySelector('.pageForm .result')?.value;
+          if(o)
+            window.result = JSON.parse(o);
+        {% if entityId is defined %}
+        {% endif %}
+        }
+        var l = document.querySelector('.pageForm .listAiCluster')?.value;
+        if(l)
+          window.listAiCluster = JSON.parse(l);
+        window.varsFq = JSON.parse('{{ toJsonObjectStringInApostrophes(varsFq) }}');
+        window.varsRange = JSON.parse('{{ toJsonObjectStringInApostrophes(varsRange) }}');
+        window.defaultRangeVar = '{{ defaultRangeVar }}';
+        pageGraphAiCluster();
+        {% for key, value in varsQ.items() %}
+
+        document.querySelector('#qAiCluster_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+          qChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_{{ key }}'));
+        });
+        {% endfor %}
+
+        document.querySelector('#qAiCluster_rows')?.addEventListener('sl-change', event => {
+          paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_rows'));
+        });
+
+        document.querySelector('#qAiCluster_start')?.addEventListener('sl-change', event => {
+          paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_start'));
+        });
+
+
+        var submitForm_patchAiCluster = document.querySelector('#htmForm_patchAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_patchAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          patchAiCluster(null, document.querySelector('#htmForm_patchAiCluster'), document.querySelector('#htmFormButton_patchAiCluster'), event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_postAiCluster = document.querySelector('#htmForm_postAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_postAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          postAiCluster(document.querySelector('#htmForm_postAiCluster'), document.querySelector('#htmFormButton_postAiCluster'), (response, target) => { response.json().then((json) => { window.location.href = json.editPage; }); });
+          return false;
+        });
+
+        var submitForm_deleteAiCluster = document.querySelector('#htmForm_deleteAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deleteAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          deleteAiCluster(event.target, event.target.getAttribute('data-entityId'));
+          return false;
+        });
+
+        var submitForm_putimportAiCluster = document.querySelector('#htmForm_putimportAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_putimportAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          putimportAiCluster(document.querySelector('#htmForm_putimportAiCluster'), document.querySelector('#htmFormButton_putimportAiCluster'));
+          return false;
+        });
+
+        var submitForm_searchpageAiCluster = document.querySelector('#htmForm_searchpageAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_searchpageAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          searchpageAiCluster();
+          return false;
+        });
+      });
+    </script>
+{%- endblock htmScriptAiClusterPage %}
+{%- endblock htmScriptPageLayout %}
+
+{%- block websocketPageLayout %}
+{%- block websocketAiClusterPage %}
+        window.eventBus = new EventBus('/eventbus');
+        window.eventBus.enableReconnect(true);
+        websocketAiCluster(websocketAiClusterInner);
+{%- endblock websocketAiClusterPage %}
+{%- endblock websocketPageLayout %}
+
+{%- block htmUrlAiClusterPage %}{{pageUri}}?q={{query.q}}&amp;rows={% if rows is defined %}{{rows}}{% else %}{{pagination.rows}}{% endif %}&amp;rows={% if start is defined %}{{start}}{% else %}{{pagination.start}}{% endif %}{% for item query.fq %}{% if fq == item %}{% else %}&fq={{fq}}:{{val}}{% endif %}{% endfor %}{% for item in query.sort %}{% if sort == item %}{% else %}&sort={{var}} {{order}}{% endif %}{% endfor %}{%- endblock htmUrlAiClusterPage %}
+
+{%- block htmBodyStartPageLayout %}
+    {{ super() }}
+{%- block htmBodyStartAiClusterPage %}
+{%- endblock htmBodyStartAiClusterPage %}
+{%- endblock htmBodyStartPageLayout %}
+
+{%- block htmBodyMiddlePageLayout %}
+{%- block htmBodyMiddleAiClusterPage %}
+{%- include en-us/search/ai-cluster/AiClusterSidebar.htm %}
+{%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
+        <div class="main-content">
+{% if resultCount == 0 %}
+          <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
+        <div>
+            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all AI clusters
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
+{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
+{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no AI cluster found</span>
+          </span>
+        </h2>
+{% else %}
+  {% if resultCount == 1 %}
+    {% if solrId is defined %}
+          <div class="margin-block">
+            <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
+            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all AI clusters
+            </sl-button>
+          </div>
+{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
+{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
+          <h1 class="Page_title"><i class="fa-regular fa-server"></i> {{ result.title | e }}</h1>
+    {% else %}
+          <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
+        <div>
+            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all AI clusters
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
+{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
+{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no AI cluster found</span>
+          </span>
+        </h2>
+    {% endif %}
+  {% else %}
+          <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
+        <div>
+            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="fa-solid fa-angle-left"></i>
+              all AI clusters
+            </sl-button>
+          </sl-tooltip>
+        </div>
+        <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
+{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
+{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
+        <h2>
+          <span>
+  {% if classIconCssClasses is defined %}
+            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
+  {% endif %}
+            <span class="">no AI cluster found</span>
+          </span>
+        </h2>
+  {% endif %}
+{% endif %}
+{%- block htmFormAiClusterPage %}
+          <form action="/en-us/api/ai-cluster" id="AiClusterForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+{% if entityId is defined %}
+            <input name="entityId" class="valueEntityId" type="hidden" value="{{entityId}}"/>
+            {% endif %}
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="result" id="result" class="result"  value='{{ toJsonObjectStringInApostrophes(result) }}' type="hidden"/>
+            <input name="listAiCluster" id="listAiCluster" class="listAiCluster"  value='{{ toJsonArrayStringInApostrophes(listAiCluster) }}' type="hidden"/>
+          </form>
+  {% if solrId is defined %}
+          {{ htmButton_searchpageAiCluster() }}
+          {{ htmForm_searchpageAiCluster() }}
+  {% endif %}
+{%- endblock htmFormAiClusterPage %}
+        </div>
+{%- endblock htmBodyMiddleAiClusterPage %}
+{%- endblock htmBodyMiddlePageLayout %}
+
+{%- block htmBodyEndPageLayout %}
+      {{ super() }}
+{%- block htmBodyEndAiClusterPage %}
+{%- endblock htmBodyEndAiClusterPage %}
+{%- endblock htmBodyEndPageLayout %}
+{%- macro inputPkAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_pk">
+  {%- endif %}
+                  <sl-input
+                      readonly
+                      placeholder="[Long] primary key"
+                      label="primary key"
+                      help-text="
+The primary key of this object in the database"
+                      id="{{classApiMethodMethod}}_pk"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiCluster inputAiCluster{{entityId}}Pk "
+                      name="setPk"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiCluster inputAiCluster{{entityId}}Pk "
+                      name="setPk"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiCluster inputAiCluster{{entityId}}Pk "
+                      name="pk"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.pk | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmPkAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputPkAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputCreatedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_created">
+  {%- endif %}
+                  <sl-input
+                      type="text"
+                      readonly
+                      help-text="A created timestamp for this record in the database"
+                      label="created"
+                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiCluster inputAiCluster{{entityId}}Created "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_created"
+                      value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-entityId={{ result.entityId | tojson }}
+                      >
+                  </sl-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmCreatedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputCreatedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputModifiedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_modified">
+  {%- endif %}
+                  <sl-input
+                      type="text"
+                      readonly
+                      help-text="A modified timestamp for this record in the database"
+                      label="modified"
+                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiCluster inputAiCluster{{entityId}}Modified "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_modified"
+                      value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-entityId={{ result.entityId | tojson }}
+                      >
+                  </sl-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmModifiedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputModifiedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputArchivedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_archived">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-button variant="primary"
+                      id="{{classApiMethodMethod}}_archived"
+                      placeholder="archive"
+                      label="archive"
+                      help-text="For archiving this record"
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
+                      name="setArchived"
+                      data-entityId={{ result.entityId | tojson }}
+                      data-val="{{ result.archived | e }}"
+                      >archive</sl-button>
+  {%- else %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-checkbox
+                      id="{{classApiMethodMethod}}_archived"
+                      value="true"
+  {%- else %}
+                  <sl-select
+                      id="{{classApiMethodMethod}}_archived"
+  {%- endif %}
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="archive"
+                      label="archive"
+                      help-text="For archiving this record"
+  {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
+                      name="setArchived"
+  {%- else %}
+    {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
+                      name="setArchived"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiCluster inputAiCluster{{entityId}}Archived "
+                      name="setArchived"
+    {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+    {%- if result.archived == true %}
+                      checked
+    {%- endif %}
+                      data-entityId={{ result.entityId | tojson }}
+                      >archive</sl-checkbox>
+  {%- else %}
+                      >
+                    <sl-option value="" selected="selected"></sl-option>
+                    <sl-option value="true">true</sl-option>
+                    <sl-option value="false">false</sl-option>
+                  </sl-select>
+  {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmArchivedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputArchivedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputClusterNameAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_clusterName">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] cluster name"
+                      label="cluster name"
+                      help-text="
+The name of this cluster"
+                      id="{{classApiMethodMethod}}_clusterName"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
+                      name="setClusterName"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
+                      name="setClusterName"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
+                      name="clusterName"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.clusterName | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmClusterNameAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputClusterNameAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputDescriptionAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_description">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] description"
+                      label="description"
+                      help-text="
+A description of this cluster"
+                      id="{{classApiMethodMethod}}_description"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiCluster inputAiCluster{{entityId}}Description "
+                      name="setDescription"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiCluster inputAiCluster{{entityId}}Description "
+                      name="setDescription"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiCluster inputAiCluster{{entityId}}Description "
+                      name="description"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.description | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmDescriptionAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputDescriptionAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputEntityIdAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_entityId">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] entity ID"
+                      label="entity ID"
+                      help-text="
+A unique ID for this Smart Data Model"
+                      id="{{classApiMethodMethod}}_entityId"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
+                      name="setEntityId"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
+                      name="setEntityId"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_entityId valueEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
+                      name="entityId"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.entityId | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmEntityIdAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputEntityIdAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputLocationAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_location">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[Point] location"
+                      label="location"
+                      help-text="
+Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
+                      id="{{classApiMethodMethod}}_location"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{entityId}}Location "
+                      name="setLocation"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{entityId}}Location "
+                      name="setLocation"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiCluster inputAiCluster{{entityId}}Location "
+                      name="location"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{ toJsonObjectString(result.location) | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmLocationAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputLocationAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputAiNodesTotalAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_aiNodesTotal">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[Integer] AI nodes total"
+                      label="AI nodes total"
+                      help-text="
+The total number of AI nodes on this cluster. "
+                      id="{{classApiMethodMethod}}_aiNodesTotal"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal setAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
+                      name="setAiNodesTotal"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal setAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
+                      name="setAiNodesTotal"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal valueAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
+                      name="aiNodesTotal"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.aiNodesTotal | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmAiNodesTotalAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputAiNodesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputGpuDevicesTotalAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_gpuDevicesTotal">
+  {%- endif %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[Integer] GPU devices total"
+                      label="GPU devices total"
+                      help-text="
+The total number of GPU devices on this cluster. "
+                      id="{{classApiMethodMethod}}_gpuDevicesTotal"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
+                      name="setGpuDevicesTotal"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
+                      name="setGpuDevicesTotal"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal valueGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
+                      name="gpuDevicesTotal"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.gpuDevicesTotal | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGpuDevicesTotalAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputGpuDevicesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputGrafanaUrlAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_grafanaUrl">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-button variant="primary"
+                      id="{{classApiMethodMethod}}_grafanaUrl"
+                      placeholder="[String] Grafana GPU utilization"
+                      label="Grafana GPU utilization"
+                      help-text="Explore this cluster's GPU utilization in Grafana. "
+                      class="button-on-left {{classApiMethodMethod}}_grafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
+                      name="setGrafanaUrl"
+                      href="{{ result.grafanaUrl | e }}"
+                      >
+                    Grafana GPU utilization
+                  </sl-button>
+                  <div class="button-description-on-right ">Explore this cluster's GPU utilization in Grafana. </div>
+  {%- else %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] Grafana GPU utilization"
+                      label="Grafana GPU utilization"
+                      help-text="
+Explore this cluster's GPU utilization in Grafana. "
+                      id="{{classApiMethodMethod}}_grafanaUrl"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
+                      name="setGrafanaUrl"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
+                      name="setGrafanaUrl"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl valueGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
+                      name="grafanaUrl"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.grafanaUrl | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmGrafanaUrlAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputGrafanaUrlAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputDisplayPageAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_displayPage">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <sl-button variant="primary"
+                      id="{{classApiMethodMethod}}_displayPage"
+                      placeholder="[String] product page"
+                      label="product page"
+                      help-text="Visit this product's landing page. "
+                      class="button-on-left {{classApiMethodMethod}}_displayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
+                      name="setDisplayPage"
+                      href="{{ result.displayPage | e }}"
+                      >
+                    product page
+                  </sl-button>
+                  <div class="button-description-on-right ">Visit this product's landing page. </div>
+  {%- else %}
+                  <sl-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] product page"
+                      label="product page"
+                      help-text="
+Visit this product's landing page. "
+                      id="{{classApiMethodMethod}}_displayPage"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-entityId={{ result.entityId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
+                      name="setDisplayPage"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
+                      name="setDisplayPage"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
+                      name="displayPage"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.displayPage | e }}"
+  {%- endif %}
+                      ></sl-input>
+
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmDisplayPageAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputDisplayPageAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}

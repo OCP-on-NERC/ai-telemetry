@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlicePage">Find the class GpuSlicePage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlicePage">Find the class GpuSlicePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -117,18 +117,18 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepGpuSlicePage(SiteRequest siteRequest_) {
+	public Future<GpuSlicePageGen<DEV>> promiseDeepGpuSlicePage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepGpuSlicePage();
 	}
 
-	public Future<Void> promiseDeepGpuSlicePage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<GpuSlicePageGen<DEV>> promiseDeepGpuSlicePage() {
+		Promise<GpuSlicePageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseGpuSlicePage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepGpuSliceGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
+				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
@@ -155,7 +155,7 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends GpuSlicePageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepGpuSlicePage(siteRequest_);
 	}
 
@@ -294,6 +294,46 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 	public static final String CLASS_SIMPLE_NAME = "GpuSlicePage";
 
 
+	@Override
+	public String idForClass() {
+		return null;
+	}
+
+	@Override
+	public String titleForClass() {
+		return null;
+	}
+
+	@Override
+	public String nameForClass() {
+		return null;
+	}
+
+	@Override
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	@Override
+	public String descriptionForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return GpuSlicePage.displayNameGpuSlicePage(var);
 	}
@@ -301,6 +341,69 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 		switch(var) {
 		default:
 			return GpuSliceGenPage.displayNameGpuSliceGenPage(var);
+		}
+	}
+
+	public static String descriptionGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.descriptionGpuSliceGenPage(var);
+		}
+	}
+
+	public static String classSimpleNameGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.classSimpleNameGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer htmColumnGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.htmColumnGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer htmRowGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.htmRowGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer htmCellGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.htmCellGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer lengthMinGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.lengthMinGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer lengthMaxGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.lengthMaxGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer maxGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.maxGpuSliceGenPage(var);
+		}
+	}
+
+	public static Integer minGpuSlicePage(String var) {
+		switch(var) {
+			default:
+				return GpuSliceGenPage.minGpuSliceGenPage(var);
 		}
 	}
 }

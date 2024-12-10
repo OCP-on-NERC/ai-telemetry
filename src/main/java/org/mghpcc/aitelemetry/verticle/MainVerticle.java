@@ -39,6 +39,7 @@ import org.computate.search.serialize.ComputateLocalTimeSerializer;
 import org.computate.search.serialize.ComputateZonedDateTimeSerializer;
 import org.computate.search.tool.SearchTool;
 import org.computate.vertx.api.BaseApiServiceImpl;
+import org.computate.vertx.api.BaseApiServiceInterface;
 import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.model.base.ComputateBaseModel;
 import org.computate.vertx.model.user.ComputateSiteUser;
@@ -55,6 +56,7 @@ import com.google.common.io.Resources;
 import com.hubspot.jinjava.Jinjava;
 import com.hubspot.jinjava.loader.FileLocator;
 
+import org.yaml.snakeyaml.Yaml;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.LongCounter;
@@ -74,6 +76,7 @@ import io.vertx.amqp.AmqpClientOptions;
 import io.vertx.amqp.AmqpSender;
 import io.vertx.rabbitmq.RabbitMQClient;
 import io.vertx.rabbitmq.RabbitMQOptions;
+import io.vertx.serviceproxy.ServiceBinder;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
@@ -150,35 +153,31 @@ import io.vertx.tracing.opentelemetry.OpenTelemetryOptions;
 
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.page.SitePage;
-import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.mghpcc.aitelemetry.user.SiteUserEnUSGenApiService;
-import org.mghpcc.aitelemetry.user.SiteUserEnUSGenApiServiceImpl;
+import org.mghpcc.aitelemetry.user.SiteUserEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.result.BaseResult;
+import org.mghpcc.aitelemetry.model.BaseModel;
+import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePage;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
 
 
-
 /**
  * Description: A Java class to start the Vert.x application as a main method. 
  * Keyword: classSimpleNameVerticle
  **/
-public class MainVerticle extends AbstractVerticle {
+public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private static final Logger LOG = LoggerFactory.getLogger(MainVerticle.class);
 
 	private Integer siteInstances;
@@ -189,6 +188,8 @@ public class MainVerticle extends AbstractVerticle {
 	LocalSessionStore sessionStore;
 	SessionHandler sessionHandler;
 	ComputateOAuth2AuthHandlerImpl oauth2AuthHandler;
+
+	private JsonObject i18n;
 
 	/**
 	 * A io.vertx.ext.jdbc.JDBCClient for connecting to the relational database PostgreSQL. 
@@ -217,6 +218,7 @@ public class MainVerticle extends AbstractVerticle {
 
 	private Jinjava jinjava;
 
+
 	/**	
 	 *	The main method for the Vert.x application that runs the Vert.x Runner class
 	 **/
@@ -227,14 +229,14 @@ public class MainVerticle extends AbstractVerticle {
 			try {
 				Future<Void> originalFuture = Future.future(a -> a.complete());
 				Future<Void> future = originalFuture;
-				WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(false).setTrustAll(true));
+				Boolean sslVerify = config.getBoolean(ConfigKeys.SSL_VERIFY);
+				WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
 				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
-				Boolean runArticleGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_ARTICLE_GENERATOR)).orElse(false);
 				Boolean runFiwareGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_FIWARE_GENERATOR)).orElse(false);
 				Boolean runProjectGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_PROJECT_GENERATOR)).orElse(false);
 
-				if(runOpenApi3Generator || runSqlGenerator || runArticleGenerator || runFiwareGenerator || runProjectGenerator) {
+				if(runOpenApi3Generator || runSqlGenerator || runFiwareGenerator || runProjectGenerator) {
 					SiteRequest siteRequest = new SiteRequest();
 					siteRequest.setConfig(config);
 					siteRequest.setWebClient(webClient);
@@ -248,8 +250,6 @@ public class MainVerticle extends AbstractVerticle {
 						future = future.compose(a -> api.writeOpenApi());
 					if(runSqlGenerator)
 						future = future.compose(a -> api.writeSql());
-					if(runArticleGenerator)
-						future = future.compose(a -> api.writeArticle());
 					if(runFiwareGenerator)
 						future = future.compose(a -> api.writeFiware());
 					if(runProjectGenerator)
@@ -279,7 +279,8 @@ public class MainVerticle extends AbstractVerticle {
 
 	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
 		OpenApi3Generator api = new OpenApi3Generator();
-		WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(false).setTrustAll(true));
+		Boolean sslVerify = config.getBoolean(ConfigKeys.SSL_VERIFY);
+		WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 		SiteRequest siteRequest = new SiteRequest();
 		siteRequest.setConfig(config);
 		siteRequest.setWebClient(webClient);
@@ -325,10 +326,10 @@ public class MainVerticle extends AbstractVerticle {
 			vertx.deployVerticle(MainVerticle.class, deploymentOptions).onSuccess(a -> {
 				LOG.info("Started main verticle. ");
 				List<Future<String>> futures = new ArrayList<>();
-				if(BooleanUtils.isNotFalse(config.getBoolean(ConfigKeys.ENABLE_WORKER_VERTICLE))) {
+				if(config.getBoolean(ConfigKeys.ENABLE_WORKER_VERTICLE, true)) {
 					futures.add(vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions));
 				}
-				if(BooleanUtils.isTrue(config.getBoolean(ConfigKeys.ENABLE_EMAIL))) {
+				if(config.getBoolean(ConfigKeys.ENABLE_EMAIL, false)) {
 					futures.add(vertx.deployVerticle(EmailVerticle.class, EmailVerticleDeploymentOptions));
 				}
 				Future.all(futures).onSuccess(b -> {
@@ -353,7 +354,7 @@ public class MainVerticle extends AbstractVerticle {
 	public static Future<Void> run(JsonObject config) {
 		Promise<Void> promise = Promise.promise();
 		try {
-			Boolean enableZookeeperCluster = Optional.ofNullable(config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER)).orElse(false);
+			Boolean enableZookeeperCluster = config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER, false);
 			VertxOptions vertxOptions = new VertxOptions();
 			EventBusOptions eventBusOptions = new EventBusOptions();
 	
@@ -425,7 +426,7 @@ public class MainVerticle extends AbstractVerticle {
 			vertxOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
 
-			if(BooleanUtils.isTrue(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY))) {
+			if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
 				SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build();
 				SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder().build();
 
@@ -468,26 +469,26 @@ public class MainVerticle extends AbstractVerticle {
 	 * Setup the startPromise to handle the configuration steps and starting the server. 
 	 **/
 	@Override()
-	public void  start(Promise<Void> startPromise) throws Exception, Exception {
+	public void start(Promise<Void> startPromise) throws Exception, Exception {
 		try {
-			configureWebClient().onSuccess(a ->
-				configureDataLoop().onSuccess(b -> 
-					configureOpenApi().onSuccess(c -> 
-						configureHealthChecks().onSuccess(d -> 
-							configureSharedWorkerExecutor().onSuccess(e -> 
-								configureWebsockets().onSuccess(f -> 
-									configureKafka().onSuccess(g -> 
-										configureMqtt().onSuccess(h -> 
-											configureAmqp().onSuccess(i -> 
-												configureRabbitmq().onSuccess(j -> 
-													configureJinjava().onSuccess(k -> 
-															configureApi().onSuccess(m -> 
-																configureUi().onSuccess(n -> 
-																	configureCamel().onSuccess(o -> 
+			configureI18n().onSuccess(a ->
+				configureWebClient().onSuccess(b ->
+					configureDataLoop().onSuccess(c -> 
+						configureOpenApi().onSuccess(d -> 
+							configureHealthChecks().onSuccess(e -> 
+								configureSharedWorkerExecutor().onSuccess(f -> 
+									configureWebsockets().onSuccess(g -> 
+										configureKafka().onSuccess(h -> 
+											configureMqtt().onSuccess(i -> 
+												configureAmqp().onSuccess(j -> 
+													configureRabbitmq().onSuccess(k -> 
+														configureJinjava().onSuccess(l -> 
+																configureApi().onSuccess(n -> 
+																	configureUi().onSuccess(o -> 
 																		startServer().onSuccess(p -> startPromise.complete())
 																	).onFailure(ex -> startPromise.fail(ex))
 																).onFailure(ex -> startPromise.fail(ex))
-															).onFailure(ex -> startPromise.fail(ex))
+														).onFailure(ex -> startPromise.fail(ex))
 													).onFailure(ex -> startPromise.fail(ex))
 												).onFailure(ex -> startPromise.fail(ex))
 											).onFailure(ex -> startPromise.fail(ex))
@@ -503,6 +504,50 @@ public class MainVerticle extends AbstractVerticle {
 			LOG.error("Couldn't start verticle. ", ex);
 			startPromise.fail(ex);
 		}
+	}
+
+	/**
+	 * Configure internationalization. 
+	 * Val.FileError.enUS: Failed to load internationalization data from file: %s
+	 * Val.Error.enUS: Failed to load internationalization data. 
+	 * Val.Complete.enUS: Loading internationalization data is complete. 
+	 * Val.Loaded.enUS: Loaded internationalization data: %s
+	 **/
+	public Future<JsonObject> configureI18n() {
+		Promise<JsonObject> promise = Promise.promise();
+		try {
+			List<Future<String>> futures = new ArrayList<>();
+			JsonArray i18nPaths = Optional.ofNullable(config().getValue(ConfigKeys.I18N_PATHS))
+					.map(v -> v instanceof JsonArray ? (JsonArray)v : new JsonArray(v.toString()))
+					.orElse(new JsonArray())
+					;
+			i18n = new JsonObject();
+			i18nPaths.stream().map(o -> (String)o).forEach(i18nPath -> {
+				futures.add(Future.future(promise1 -> {
+					vertx.fileSystem().readFile(i18nPath).onSuccess(buffer -> {
+						Yaml yaml = new Yaml();
+						Map<String, Object> map = yaml.load(buffer.toString());
+						i18n.mergeIn(new JsonObject(map));
+						LOG.info(String.format(configureI18nLoaded, i18nPath));
+						promise1.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format(configureI18nFileError, i18nPath), ex);
+						promise1.fail(ex);
+					});
+				}));
+			});
+			Future.all(futures).onSuccess(b -> {
+				LOG.info(configureI18nComplete);
+				promise.complete(i18n);
+			}).onFailure(ex -> {
+				LOG.error(configureI18nError, ex);
+				promise.fail(ex);
+			});
+		} catch (Throwable ex) {
+			LOG.error(configureI18nError, ex);
+			promise.fail(ex);
+		}
+		return promise.future();
 	}
 
 	/**	
@@ -522,42 +567,13 @@ public class MainVerticle extends AbstractVerticle {
 		return promise.future();
 	}
 
-	private Future<Void> configureCamel() {
-		Promise<Void> promise = Promise.promise();
-		try {
-			GpuDeviceEnUSApiServiceImpl apiGpuDevice = GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-
-			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel", message -> {
-				apiGpuDevice.importDataCamel().onSuccess(a -> {
-					message.reply(new JsonObject());
-				}).onFailure(ex -> {
-					message.fail(500, ex.getMessage());
-				});
-			});
-
-			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel-compensation", message -> {
-				apiGpuDevice.importDataCamelCompensation().onSuccess(a -> {
-					message.reply(new JsonObject());
-				}).onFailure(ex -> {
-					message.fail(500, ex.getMessage());
-				});
-			});
-			promise.complete();
-		} catch(Exception ex) {
-			LOG.error("The Camel Component was not configured properly. ");
-			promise.fail(ex);
-		}
-
-		return promise.future();
-	}
-
 	/**
 	 **/
 	public Future<KafkaProducer<String, String>> configureKafka() {
 		Promise<KafkaProducer<String, String>> promise = Promise.promise();
 
 		try {
-			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_KAFKA, true))) {
+			if(config().getBoolean(ConfigKeys.ENABLE_KAFKA, false)) {
 				Map<String, String> kafkaConfig = new HashMap<>();
 				kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
 				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
@@ -595,7 +611,7 @@ public class MainVerticle extends AbstractVerticle {
 		Promise<MqttClient> promise = Promise.promise();
 
 		try {
-			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_MQTT))) {
+			if(config().getBoolean(ConfigKeys.ENABLE_MQTT, false)) {
 				try {
 					mqttClient = MqttClient.create(vertx);
 					mqttClient.connect(config().getInteger(ConfigKeys.MQTT_PORT), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
@@ -631,7 +647,7 @@ public class MainVerticle extends AbstractVerticle {
 		Promise<AmqpClient> promise = Promise.promise();
 
 		try {
-			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_AMQP))) {
+			if(config().getBoolean(ConfigKeys.ENABLE_AMQP, false)) {
 				try {
 					AmqpClientOptions options = new AmqpClientOptions()
 							.setHost(config().getString(ConfigKeys.AMQP_HOST))
@@ -683,7 +699,7 @@ public class MainVerticle extends AbstractVerticle {
 		Promise<RabbitMQClient> promise = Promise.promise();
 
 		try {
-			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_RABBITMQ))) {
+			if(config().getBoolean(ConfigKeys.ENABLE_RABBITMQ, false)) {
 				try {
 					RabbitMQOptions options = new RabbitMQOptions()
 							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST_NAME))
@@ -757,7 +773,7 @@ public class MainVerticle extends AbstractVerticle {
 	public Future<Void> configureData() {
 		Promise<Void> promise = Promise.promise();
 		try {
-			if(BooleanUtils.isTrue(config().getBoolean(ConfigKeys.ENABLE_DATABASE))) {
+			if(config().getBoolean(ConfigKeys.ENABLE_DATABASE, true)) {
 				PgConnectOptions pgOptions = new PgConnectOptions();
 				pgOptions.setPort(config().getInteger(ConfigKeys.DATABASE_PORT));
 				pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST));
@@ -1110,33 +1126,55 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 
+	public <API_IMPL extends BaseApiServiceInterface> void initializeApiService(API_IMPL service) {
+		service.setVertx(vertx);
+		service.setEventBus(vertx.eventBus());
+		service.setConfig(config());
+		service.setWorkerExecutor(workerExecutor);
+		service.setOauth2AuthHandler(oauth2AuthHandler);
+		service.setOauth2AuthenticationProvider(oauth2AuthenticationProvider);
+		service.setPgPool(pgPool);
+		service.setKafkaProducer(kafkaProducer);
+		service.setMqttClient(mqttClient);
+		service.setAmqpClient(amqpClient);
+		service.setRabbitmqClient(rabbitmqClient);
+		service.setWebClient(webClient);
+		service.setJinjava(jinjava);
+		service.setI18n(i18n);
+	}
+
+	public <API_INTERFACE, API_IMPL extends API_INTERFACE> void registerApiService(Class<API_INTERFACE> serviceClass, API_IMPL service, String apiAddress) {
+		new ServiceBinder(vertx).setAddress(apiAddress).register(serviceClass, service);
+	}
+
 	/**
 	 */
 	public Future<Void> configureApi() {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject");
+			List<String> authResources = Arrays.asList("AiCluster","SitePage","AiNode","GpuDevice","GpuSlice","AiProject");
 			List<String> publicResources = Arrays.asList("SitePage");
-			SiteUserEnUSGenApiServiceImpl apiSiteUser = SiteUserEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-			apiSiteUser.configureUserSearchApi("/user-search", router, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, config(), webClient, authResources);
-			apiSiteUser.configurePublicSearchApi("/search", router, SiteRequest.class, config(), webClient, publicResources);
+			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
+			initializeApiService(apiSiteUser);
+			registerApiService(SiteUserEnUSGenApiService.class, apiSiteUser, SiteUser.getClassApiAddress());
+			apiSiteUser.configureUserSearchApi(config().getString(ComputateConfigKeys.USER_SEARCH_URI), router, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, config(), webClient, authResources);
+			apiSiteUser.configurePublicSearchApi(config().getString(ComputateConfigKeys.PUBLIC_SEARCH_URI), router, SiteRequest.class, config(), webClient, publicResources);
+// 
+			// AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 
-			SitePageEnUSApiServiceImpl apiSitePage = SitePageEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-			apiSitePage.configureUiResult(router, SitePage.class, SiteRequest.class, "/en-us/article");
-
-			AiClusterEnUSApiServiceImpl apiAiCluster = AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-			apiAiCluster.configureUserUiModel(router, AiCluster.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-cluster");
-
-			AiNodeEnUSApiServiceImpl apiAiNode = AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-			apiAiNode.configureUserUiModel(router, AiNode.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-node");
-
-			GpuDeviceEnUSApiServiceImpl apiGpuDevice = GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-			apiGpuDevice.configureUserUiModel(router, GpuDevice.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/gpu-device");
-
-			GpuSliceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-
-			AiProjectEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
+			initializeApiService(apiSitePage);
+			registerApiService(SitePageEnUSGenApiService.class, apiSitePage, SitePage.getClassApiAddress());
+			// apiSitePage.configureUiResult(router, SitePage.class, SiteRequest.class, "/en-us/view/article/{pageId}");
+// 
+			// AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+// 
+			// GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+// 
+			// GpuSliceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+// 
+			// AiProjectEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");
@@ -1182,6 +1220,101 @@ public class MainVerticle extends AbstractVerticle {
 					LOG.error("Failed to load page. ", ex);
 					handler.fail(ex);
 				}
+			});
+
+			router.getWithRegex("\\/download(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
+				String originalUri = handler.pathParam("uri");
+				SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
+				initializeApiService(apiSiteUser);
+				ServiceRequest serviceRequest = apiSiteUser.generateServiceRequest(handler);
+				apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+					try {
+
+						String uri = handler.pathParam("uri");
+						String url = String.format("%s%s", config().getString(ComputateConfigKeys.SITE_BASE_URL), uri);
+						webClient.post(
+								config().getInteger(ComputateConfigKeys.AUTH_PORT)
+								, config().getString(ComputateConfigKeys.AUTH_HOST_NAME)
+								, config().getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+								)
+								.ssl(config().getBoolean(ComputateConfigKeys.AUTH_SSL))
+								.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+								.expect(ResponsePredicate.status(200))
+								.sendForm(MultiMap.caseInsensitiveMultiMap()
+										.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
+										.add("audience", config().getString(ComputateConfigKeys.AUTH_CLIENT))
+										.add("response_mode", "permissions")
+										.add("permission", String.format("%s#%s", uri, "GET"))
+						).onFailure(ex -> {
+							String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+							LOG.error(String.format("Failed to render page %s", originalUri), ex);
+							handler.fail(403, ex);
+						}).onSuccess(authorizationDecision -> {
+							try {
+								JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+								if(!scopes.contains("GET")) {
+									String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+									Throwable ex = new RuntimeException(msg);
+									LOG.error(String.format("Failed to render page %s", originalUri), ex);
+									handler.fail(403, ex);
+								} else {
+									SiteUser user = siteRequest.getSiteUser_(SiteUser.class);
+									JsonObject query = new JsonObject();
+									MultiMap queryParams = handler.queryParams();
+									for(String name : queryParams.names()) {
+										JsonArray array = query.getJsonArray(name);
+										List<String> vals = queryParams.getAll(name);
+										if(array == null) {
+											array = new JsonArray();
+											query.put(name, array);
+										}
+										for(String val : vals) {
+											array.add(val);
+										}
+									}
+									SearchList<BaseResult> l = new SearchList<>();
+									l.q("*:*");
+									l.setC(BaseResult.class);
+									l.fq(String.format("%s_docvalues_string:%s", "uri", SearchTool.escapeQueryChars(uri)));
+									l.setStore(true);
+									handler.response().headers().add("Content-Type", "text/html");
+									l.promiseDeepForClass(siteRequest).onSuccess(a -> {
+										BaseResult result = l.first();
+										try {
+											String downloadPath = String.format("%s%s.zip", config().getString(ConfigKeys.DOWNLOAD_PATH), uri);
+											vertx.fileSystem().readFile(downloadPath).onSuccess(buffer -> {
+												handler.response().putHeader("Content-Type", "application/zip")
+														.putHeader("Content-Disposition", "attachment; filename=\"" + (String)result.obtainForClass("pageId") + ".zip\"");
+												handler.end(buffer);
+											}).onFailure(ex -> {
+												LOG.error(String.format("Failed to find download %s", uri), ex);
+												handler.fail(ex);
+											});
+										} catch (Exception ex) {
+											LOG.error(String.format("Failed to render page %s", uri), ex);
+											handler.fail(ex);
+										}
+									}).onFailure(ex -> {
+										LOG.error(String.format("Failed to render page %s", uri), ex);
+										handler.fail(ex);
+									});
+								}
+							} catch (Exception ex) {
+								LOG.error(String.format("Failed to render page %s", uri), ex);
+								handler.fail(ex);
+							}
+						}).onFailure(ex -> {
+							LOG.error(String.format("Failed to render page %s", originalUri), ex);
+							handler.fail(ex);
+						});
+					} catch(Exception ex) {
+						LOG.error("Failed to load page. ", ex);
+						handler.fail(ex);
+					}
+				}).onFailure(ex -> {
+					LOG.error(String.format("Failed to render page %s", originalUri), ex);
+					handler.fail(ex);
+				});
 			});
 
 			LOG.info("The UI was configured properly.");

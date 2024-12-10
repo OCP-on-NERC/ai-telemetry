@@ -50,7 +50,7 @@ import io.vertx.core.json.JsonArray;
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePagePage">Find the class SitePagePage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.SitePagePage">Find the class SitePagePage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
@@ -117,21 +117,17 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	// initDeep //
 	//////////////
 
-	public Future<Void> promiseDeepSitePagePage(SiteRequest siteRequest_) {
+	public Future<SitePagePageGen<DEV>> promiseDeepSitePagePage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
 		return promiseDeepSitePagePage();
 	}
 
-	public Future<Void> promiseDeepSitePagePage() {
-		Promise<Void> promise = Promise.promise();
+	public Future<SitePagePageGen<DEV>> promiseDeepSitePagePage() {
+		Promise<SitePagePageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
 		promiseSitePagePage(promise2);
 		promise2.future().onSuccess(a -> {
-			super.promiseDeepSitePageGenPage(siteRequest_).onSuccess(b -> {
-				promise.complete();
-			}).onFailure(ex -> {
-				promise.fail(ex);
-			});
+			promise.complete(this);
 		}).onFailure(ex -> {
 			promise.fail(ex);
 		});
@@ -155,7 +151,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<Void> promiseDeepForClass(SiteRequest siteRequest_) {
+	public Future<? extends SitePagePageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepSitePagePage(siteRequest_);
 	}
 
@@ -164,7 +160,6 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	/////////////////
 
 	public void siteRequestSitePagePage(SiteRequest siteRequest_) {
-			super.siteRequestSitePageGenPage(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
@@ -175,7 +170,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	// obtain //
 	/////////////
 
-	@Override public Object obtainForClass(String var) {
+	public Object obtainForClass(String var) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -196,7 +191,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 		SitePagePage oSitePagePage = (SitePagePage)this;
 		switch(var) {
 			default:
-				return super.obtainSitePageGenPage(var);
+				return null;
 		}
 	}
 
@@ -204,7 +199,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	// relate //
 	///////////////
 
-	@Override public boolean relateForClass(String var, Object val) {
+	public boolean relateForClass(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -221,7 +216,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 		SitePagePage oSitePagePage = (SitePagePage)this;
 		switch(var) {
 			default:
-				return super.relateSitePageGenPage(var, val);
+				return null;
 		}
 	}
 
@@ -235,7 +230,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	public static Object staticSetSitePagePage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return SitePageGenPage.staticSetSitePageGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -249,7 +244,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	public static Object staticSearchSitePagePage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return SitePageGenPage.staticSearchSitePageGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -263,7 +258,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	public static String staticSearchStrSitePagePage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return SitePageGenPage.staticSearchStrSitePageGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -277,7 +272,7 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	public static String staticSearchFqSitePagePage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return SitePageGenPage.staticSearchFqSitePageGenPage(entityVar,  siteRequest_, o);
+				return null;
 		}
 	}
 
@@ -287,12 +282,43 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString());
 		return sb.toString();
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "SitePagePage";
 
+
+	public String idForClass() {
+		return null;
+	}
+
+	public String titleForClass() {
+		return null;
+	}
+
+	public String nameForClass() {
+		return null;
+	}
+
+	public String classNameAdjectiveSingularForClass() {
+		return null;
+	}
+
+	public String descriptionForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlEditPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlDisplayPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
 
 	public static String displayNameForClass(String var) {
 		return SitePagePage.displayNameSitePagePage(var);
@@ -300,7 +326,70 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	public static String displayNameSitePagePage(String var) {
 		switch(var) {
 		default:
-			return SitePageGenPage.displayNameSitePageGenPage(var);
+			return null;
+		}
+	}
+
+	public static String descriptionSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static String classSimpleNameSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer htmColumnSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer htmRowSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer htmCellSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer lengthMinSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer lengthMaxSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer maxSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
+		}
+	}
+
+	public static Integer minSitePagePage(String var) {
+		switch(var) {
+			default:
+				return null;
 		}
 	}
 }

@@ -1,0 +1,108 @@
+---
+- name: Configure keycloak realm
+  community.general.keycloak_realm:
+    validate_certs: false
+    auth_client_id: admin-cli
+    auth_keycloak_url: https://keycloak.apps-crc.testing
+    auth_realm: master
+    auth_username: admin
+    auth_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-initial-admin'), namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+    state: present
+    id: "{{ AUTH_CLIENT }}"
+    realm: "{{ AUTH_REALM }}"
+    enabled: true
+    displayName: "Smart Aquaculture"
+    registrationAllowed: true
+    resetPasswordAllowed: true
+    editUsernameAllowed: true
+    rememberMe: true
+    verifyEmail: true
+    loginWithEmailAllowed: false
+    defaultDefaultClientScopes:
+      - "{{ AUTH_CLIENT }}"
+
+- name: Create dex Namespace
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: dex
+    validate_certs: false
+- name: "Install dex-clients secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'dex-clients-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('dex-clients'), namespace='dex')[0].data['AI_TELEMETRY_AUTH_SECRET'] | default('')) == ''
+- name: "Install github-client-secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'github-client-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('github-client-secret'), namespace='openshift-config')[0].data['clientSecret'] | default('')) == ''
+- name: "Install dex ConfigMap on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'dex-config.yaml') }}"
+    validate_certs: false
+- name: "Install dex on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='kustomize/dex/overlays/openshift-local/') }}"
+    validate_certs: false
+
+- name: "Install group-sync-operator bundle on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='kustomize/cluster-scope/bundles/group-sync-operator/') }}"
+    validate_certs: false
+- name: "Install github-group-sync secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'github-group-sync-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('github-group-sync'), namespace='group-sync-operator')[0].data['privateKey'] | default('')) == ''
+- name: "Install groupsync on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'groupsync.yaml') }}"
+    validate_certs: false
+- name: "Install nerc-ops ClusterRole and ClusterRoleBinding on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'nerc-ops-role-binding.yaml') }}"
+    validate_certs: false
+- name: "Install OAuth with GITHUB_AUTH_CLIENT on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'oauth.yaml') }}"
+    validate_certs: false
+
+- name: Configure OpenShift Keycloak identity provider
+  community.general.keycloak_identity_provider:
+    state: present
+    validate_certs: false
+    auth_client_id: admin-cli
+    auth_keycloak_url: https://keycloak.apps-crc.testing
+    auth_realm: master
+    auth_username: admin
+    auth_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-initial-admin'), namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+
+    enabled: true
+    realm: "{{ AUTH_REALM }}"
+    providerId: oidc
+    alias: openshift
+    displayName: OpenShift
+    trustEmail: true
+    storeToken: false
+    addReadTokenRoleOnCreate: false
+    authenticateByDefault: false
+    linkOnly: false
+    firstBrokerLoginFlowAlias: "first broker login"
+    config:
+        syncMode: "IMPORT"
+        useJwksUrl: true
+        clientId: "{{ MINIO_AUTH_CLIENT }}"
+        clientSecret: "{{ MINIO_AUTH_SECRET }}"
+        authorizationUrl: https://dex-dex.apps-crc.testing
+        tokenUrl: https://dex-dex.apps-crc.testing/token
+

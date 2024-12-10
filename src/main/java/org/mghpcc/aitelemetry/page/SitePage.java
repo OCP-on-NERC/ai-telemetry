@@ -29,37 +29,38 @@ import io.vertx.core.Promise;
 
 
 /**
- * Api: true
- * Page: true
- * PageTemplates: /en-us/article
- * SuperPage: BaseResultPage
- * Indexed: true
- * Order: 2
+ * Order: 4
+ * Description: Read the latest articles to learn more
+ * AName: an article
+ * Icon: <i class="fa-duotone fa-solid fa-newspaper"></i>
+ * Sort.desc: courseNum
+ * Sort.desc: lessonNum
  * 
- * ApiTag: Page
- * ApiUri: /api/page
- * 
+ * PublicRead: true
+ * SearchPageUri: /en-us/search/article
+ * EditPageUri: /en-us/edit/article/{pageId}
+ * DisplayPageUri: /en-us/view/article/{pageId}
+ * ApiUri: /en-us/api/article
  * ApiMethod:
  *   Search:
  *   GET:
  *   PATCH:
  *   POST:
- *   DELETE:
  *   PUTImport:
- *   SearchPage:
- *     Page: SitePagePage
- *     PageSuper: BaseResultPage
- *     ApiUri: /page
  * 
- * AName: an article
- * Icon: <i class="fa-duotone fa-solid fa-newspaper"></i>
- * 
- * Sort.desc: courseNum
- * Sort.desc: lessonNum
- * 
- * PublicRead: true
- * Role: SiteAdmin
- * Description: Read the latest articles to learn more
+ * AuthGroup:
+ *   Admin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
+ *   SuperAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  */
 public class SitePage extends SitePageGen<BaseResult> {
 
@@ -167,11 +168,11 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * DocValues: true
 	 * Persist: true
 	 * DisplayName: title
-	 * Description: The title of this page. 
-	 * UrlVar: pageUrlId
+	 * Description: The name of this page. 
 	 * HtmColumn: 1
+	 * VarName: true
 	 */
-	protected void _title(Wrap<String> w) {
+	protected void _name(Wrap<String> w) {
 	}
 
 	/**
@@ -191,63 +192,16 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * HtmRow: 3
+	 * HtmRowTitleOpen: Useful URLs
+	 * HtmRow: 99
 	 * HtmCell: 1
 	 * Facet: true
 	 * DisplayName: Page ID
 	 * Description: The ID for this page. 
+	 * VarId: true
 	 */
 	protected void _pageId(Wrap<String> w) {
 		toId(title);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * Facet: true
-	 * DisplayName: resource URI
-	 * Description: The resource relative URI for this page. 
-	 */
-	protected void _resourceUri(Wrap<String> w) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * Facet: true
-	 * DisplayName: template URI
-	 * Description: The template relative URI for this page. 
-	 */
-	protected void _templateUri(Wrap<String> w) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * HtmRow: 3
-	 * HtmCell: 2
-	 * Facet: true
-	 * DisplayName: URI
-	 * Description: The relative URI for this page. 
-	 */
-	protected void _uri(Wrap<String> w) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * HtmRow: 3
-	 * HtmCell: 2
-	 * Facet: true
-	 * DisplayName: URL
-	 * Description: The URL for this page. 
-	 */
-	protected void _url(Wrap<String> w) {
-		w.o(String.format("%s%s", siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), uri));
 	}
 
 	/**
@@ -313,28 +267,5 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * Description: The image height
 	 */
 	protected void _pageImageType(Wrap<String> c) {
-	}
-
-	@Override
-	protected void _objectTitle(Wrap<String> w) {
-		w.o(String.format("%s - %s", SitePage_NameAdjectiveSingular_enUS, title));
-	}
-
-	@Override
-	protected void _objectId(Wrap<String> w) {
-		w.o(String.format("%s_%s", SitePage.CLASS_SIMPLE_NAME, pageId));
-	}
-
-	@Override
-	protected void _id(Wrap<String> w) {
-		w.o(String.format("%s_%s", SitePage.CLASS_SIMPLE_NAME, pageId));
-	}
-
-	/**
-	 * HtmColumn: 2
-	 */
-	@Override
-	protected void _pageUrlId(Wrap<String> w) {
-		w.o(url);
 	}
 }

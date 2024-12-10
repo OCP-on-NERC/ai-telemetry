@@ -1,0 +1,202 @@
+---
+- name: Deploy cert-manager
+  kubernetes.core.k8s:
+    state: present
+    src: https://github.com/cert-manager/cert-manager/releases/download/v1.15.1/cert-manager.yaml
+    validate_certs: false
+- name: Wait for cert-manager Ready condition
+  kubernetes.core.k8s_info:
+    namespace: cert-manager
+    kind: Pod
+    label_selectors:
+      - app=cert-manager
+    wait: true
+    wait_timeout: 300
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Create zookeeper Namespace
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: zookeeper
+    validate_certs: false
+- name: Deploy zookeeper
+  kubernetes.core.helm:
+    release_namespace: zookeeper
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/zookeeper
+    name: zookeeper
+    values:
+      image:
+        tag: 3.9.2
+      persistence:
+        size: 10Gi
+      replicaCount: 1
+    validate_certs: false
+- name: Wait for zookeeper Ready condition
+  kubernetes.core.k8s_info:
+    namespace: zookeeper
+    kind: Pod
+    label_selectors:
+      - app.kubernetes.io/name=zookeeper
+    wait: true
+    wait_timeout: 300
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Create solr Namespace
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: solr
+    validate_certs: false
+- name: Deploy solr
+  kubernetes.core.helm:
+    release_namespace: solr
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/solr
+    name: solr
+    values:
+      image:
+        tag: 9.6.1
+      ingress:
+        enabled: true
+        hostname: solr.apps-crc.testing
+        selfSigned: true
+        tls: true
+      zookeeper:
+        enabled: false
+      externalZookeeper:
+        servers:
+          - zookeeper.zookeeper.svc:2181
+      persistence:
+        size: 50Gi
+      collectionShards: 1
+      collectionReplicas: 1
+      replicaCount: 1
+    validate_certs: false
+- name: Wait for solr Ready condition
+  kubernetes.core.k8s_info:
+    namespace: solr
+    kind: Pod
+    label_selectors:
+      - app.kubernetes.io/name=solr
+    wait: true
+    wait_timeout: 300
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Create postgres Namespace
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: postgres
+    validate_certs: false
+- name: Deploy postgres
+  kubernetes.core.helm:
+    release_namespace: postgres
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/postgresql
+    name: postgresql
+    values:
+      image:
+        tag: 14.5.0
+      primary:
+        persistence:
+          size: 50Gi
+    validate_certs: false
+- name: Wait for postgres Ready condition
+  kubernetes.core.k8s_info:
+    namespace: postgres
+    kind: Pod
+    label_selectors:
+      - app.kubernetes.io/name=postgresql
+    wait: true
+    wait_timeout: 300
+    wait_condition:
+      type: Ready
+      status: 'True'
+
+- name: Create keycloak Namespace
+  kubernetes.core.k8s:
+    state: present
+    kind: Namespace
+    name: keycloak
+    validate_certs: false
+- name: "Install keycloak-initial-admin secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'keycloak-initial-admin-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-initial-admin'), namespace='keycloak')[0].data['admin-password'] | default('')) == ''
+- name: "Install postgres-pguser-keycloak secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'postgres-pguser-keycloak-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-keycloak'), namespace='keycloak')[0].data['password'] | default('')) == ''
+- name: "Create the postgres database user keycloak"
+  kubernetes.core.k8s_exec:
+    namespace: postgres
+    pod: postgresql-0
+    command: >-
+      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace='postgres')[0].data['postgres-password'] | b64decode }}" 
+        psql -U postgres postgres -c "create user keycloak password '{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-keycloak'), namespace='keycloak')[0].data['password'] | b64decode }}';"
+  ignore_errors: true
+- name: "Create the postgres database keycloak"
+  kubernetes.core.k8s_exec:
+    namespace: postgres
+    pod: postgresql-0
+    command: >-
+      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace='postgres')[0].data['postgres-password'] | b64decode }}" 
+        psql -U postgres postgres -c "create database keycloak owner keycloak;"
+  ignore_errors: true
+- name: Deploy keycloak
+  kubernetes.core.helm:
+    release_namespace: keycloak
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/keycloak
+    name: keycloak
+    chart_version: 21.7.1
+    values:
+      postgresql:
+        enabled: false
+      externalDatabase:
+        host: postgresql.postgres.svc
+        user: keycloak
+        existingSecret: postgres-pguser-keycloak
+        existingSecretPasswordKey: password
+        database: keycloak
+        port: 5432
+      ingress:
+        enabled: true
+        hostname: keycloak.apps-crc.testing
+        tls: true
+        selfSigned: true
+      extraEnvVars:
+        # - name: KC_FEATURES
+        #   value: oid4vc-vci
+        - name: KC_HOSTNAME
+          value: https://keycloak.apps-crc.testing
+      production: true
+      tls:
+        enabled: true
+        autoGenerated: true
+      image:
+        tag: 26.0.7
+      auth:
+        existingSecret: keycloak-initial-admin
+        adminUser: admin
+        passwordSecretKey: admin-password
+    validate_certs: false
+- name: Wait for keycloak Ready condition
+  kubernetes.core.k8s_info:
+    namespace: keycloak
+    kind: Pod
+    label_selectors:
+      - app.kubernetes.io/name=keycloak
+    wait: true
+    wait_timeout: 300
+    wait_condition:
+      type: Ready
+      status: 'True'
