@@ -14,9 +14,11 @@ VARS_FILENAME: vars.yaml
 # The vars.yaml path to load when running in development. 
 VARS_PATH: "{{ SITE_SRC }}/{{ VARS_FILENAME }}"
 # A shorter name for the application used for database names, collections, and artifact IDs. 
-SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | replace('.', '') | lower }}"
+SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | lower }}"
+# The site namespace in OpenShift. 
+SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
 # A pretty version of the site name. 
-SITE_DISPLAY_NAME: Learn that computer
+SITE_DISPLAY_NAME: AI Telemetry
 # A short description of the site. 
 SITE_DESCRIPTION: "AI telemetry on OpenShift dashboards"
 # The main locale of this application. 
@@ -40,13 +42,11 @@ SITE_HOST_NAME: "localhost"
 # The base URL of the site. 
 SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"
 # The public facing URL for the site. 
-SITE_PUBLIC_URL: "https://ai-telemetry.{{ DOMAIN_NAME }}"
+SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
 CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
 # Verify SSL connections. 
 SSL_VERIFY: false
-# The namespace in OpenShift where the site will run. 
-SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
 
 #########################
 # Mailing list defaults #
@@ -55,7 +55,7 @@ SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
 # The URL to sign up for the mailing list. 
 MAILING_LIST_URL: https://computate.topicbox.com/groups/computate
 # The email address of the mailing list. 
-MAILING_LIST_EMAIL: computate@computate.topicbox.com
+MAILING_LIST_EMAIL: ai-telemetry@computate.topicbox.com
 
 ################
 # API defaults #
@@ -173,10 +173,10 @@ CONTAINER_URI: "{{ CONTAINER_REGISTRY }}/{{ CONTAINER_ORG }}/{{ CONTAINER_NAME }
 SITE_STATIC_NAME: "{{ SITE_NAME }}-static"
 # The static files git repository for the project. 
 SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
-# The path to the static files. 
-STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
 # The base URL to the static files. 
 STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
+# The path to the static files. 
+STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
 # The site logo relative URI
 SITE_LOGO_URI: "/png/nerc-logo.png"
 # The path to the template files. 
@@ -186,6 +186,10 @@ DYNAMIC_PAGE_PATHS:
   - "en-us/article"
 # An optional FontAwesome Pro Kit for additional FontAwesome icons. 
 FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
+# An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
+WEB_COMPONENTS_CSS: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode }}"
+# An optional link element to either a Shoelace web components JavaScript or a Web Awesome Backer web components JavaScript. 
+WEB_COMPONENTS_JS: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode }}"
 # Site default theme, light or dark. 
 SITE_THEME: dark
 
@@ -194,11 +198,11 @@ SITE_THEME: dark
 ######################
 
 # The software developer name. 
-DEVELOPER_NAME: Christopher Tate
+DEVELOPER_NAME: ''
 # The software organization name. 
-DEVELOPER_ORG_NAME: computate.org
+DEVELOPER_ORG_NAME: ''
 # The software organization URL. 
-DEVELOPER_ORG_URL: https://www.computate.org/
+DEVELOPER_ORG_URL: ''
 
 ####################
 # Service defaults #
@@ -335,27 +339,6 @@ AUTH_SCOPE_SUPER_ADMIN: SuperAdmin
 # Enables authorization fine-grained resource permissions. 
 AUTH_FINE_GRAINED_POLICY_PERMISSIONS: true
 
-#################
-# Operator vars #
-#################
-
-# The name of the operator used to deploy data as YAML. 
-OPERATOR_NAME: "{{ SITE_NAME }}-operator"
-# The name of the operator used to deploy data as YAML. 
-OPERATOR_SRC: "{{ (PARENT_SRC + '/' + OPERATOR_NAME) | realpath }}"
-OPERATOR_DOMAIN_NAME: "{{ DOMAIN_NAME }}"
-OPERATOR_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ OPERATOR_NAME }}.git"
-OPERATOR_PYTHON_DEPENDENCY_LIST:
-  - openshift
-  - jmespath
-  - jinja2
-  - configparser
-OPERATOR_REDHAT_DEPENDENCY_LIST:
-  - git
-  - tcl
-  - tk
-OPERATOR_SYSTEM_DEPENDENCY_LIST: "{{ OPERATOR_REDHAT_DEPENDENCY_LIST if ansible_distribution_file_variety == 'RedHat' else OPERATOR_REDHAT_DEPENDENCY_LIST }}"
-
 ###############
 # FIWARE vars #
 ###############
@@ -365,9 +348,39 @@ ENABLE_FIWARE: false
 # FIWARE Smart Data Model source code directory. 
 SMART_DATA_MODELS_SRC: "{{ (PARENT_SRC + '/smart-data-models') | realpath }}"
 # Map default latitude,longitude. 
-DEFAULT_MAP_LOCATION: "55.63379,13.49261"
+DEFAULT_MAP_LOCATION: "42.202504222469884,-72.60788455092577"
 # Map default zoom level. 
 DEFAULT_MAP_ZOOM: "17"
+
+##################
+# Context Broker #
+##################
+
+# The Context Broker namespace. 
+CONTEXT_BROKER_NAMESPACE: "scorpiobroker"
+# Whether to use SSL when connecting to the Context Broker. 
+CONTEXT_BROKER_SSL: false
+# The host name to connect to the Context Broker in OpenShift. 
+CONTEXT_BROKER_HOST_NAME: "scorpiobroker.{{ CONTEXT_BROKER_NAMESPACE }}.svc"
+# The default port that the Context Broker runs. 
+CONTEXT_BROKER_PORT: 9090
+
+#################
+# iotagent-json #
+#################
+
+# The IoT Agent JSON namespace. 
+IOTAGENT_NAMESPACE: "iotagent"
+# Whether to use SSL when connecting to the IoT Agent JSON. 
+IOTAGENT_SSL: true
+# The host name to connect to the IoT Agent JSON in OpenShift. 
+IOTAGENT_HOST_NAME: "iotagent-json.apps-crc.testing"
+# The HTTP port that the IoT Agent JSON runs. 
+IOTAGENT_HTTP_PORT: 7896
+# The North port that the IoT Agent JSON runs. 
+IOTAGENT_NORTH_PORT: 443
+# The message broker transport type (MQTT or AMQP). 
+IOTAGENT_TRANSPORT: AMQP
 
 ##############
 # Kafka vars #
@@ -375,49 +388,10 @@ DEFAULT_MAP_ZOOM: "17"
 
 # Enable Kafka message integration. 
 ENABLE_KAFKA: false
-# The namespace in OpenShift where Kafka will run. 
-KAFKA_NAMESPACE: kafka
-# The Kafka SSL KeyStore secret name. 
-KAFKA_SSL_KEYSTORE_SECRET: "{{ SITE_SHORT_NAME }}-kafka"
-# The Kafka SSL TrustStore secret name. 
-KAFKA_SSL_TRUSTSTORE_SECRET: default-cluster-ca-cert
-# The Kafka port. 
-KAFKA_PORT: 9093
-KAFKA_BROKERS: "127.0.0.1:39275"
-KAFKA_GROUP: "{{ SITE_SHORT_NAME }}-kafka"
-KAFKA_SECURITY_PROTOCOL: "SSL"
-KAFKA_SSL_KEYSTORE_TYPE: "pkcs12"
-KAFKA_SSL_KEYSTORE_LOCATION: ""
-KAFKA_SSL_KEYSTORE_PASSWORD: ""
-KAFKA_SSL_TRUSTSTORE_TYPE: "pkcs12"
-KAFKA_SSL_TRUSTSTORE_LOCATION: ""
-KAFKA_SSL_TRUSTSTORE_PASSWORD: ""
 
-#############
-# IoT Agent #
-#############
-
-# Whether to use SSL when connecting to the IoT Agent. 
-IOT_AGENT_SSL: false
-# The host name to connect to the IoT Agent in OpenShift. 
-IOT_AGENT_HOST_NAME: "iotagent-json.iotagent.svc"
-# The default port that the IoT Agent runs. 
-IOT_AGENT_PORT: 4041
-
-##################
-# Context Broker #
-##################
-
-# Whether to use SSL when connecting to the Context Broker. 
-CONTEXT_BROKER_SSL: false
-# The host name to connect to the Context Broker in OpenShift. 
-CONTEXT_BROKER_HOST_NAME: "scorpiobroker.scorpiobroker.svc"
-# The default port that the Context Broker runs. 
-CONTEXT_BROKER_PORT: 9090
-
-#############
+##############
 # MQTT vars #
-#############
+##############
 
 # Enable MQTT message integration. 
 ENABLE_MQTT: false
@@ -428,19 +402,6 @@ ENABLE_MQTT: false
 
 # Enable AMQP message integration. 
 ENABLE_AMQP: false
-# The namespace in OpenShift where the AMQP message broker will run. 
-AMQP_NAMESPACE: rabbitmq
-# The AMQP port. 
-AMQP_PORT: 5672
-# The AMQP host name. 
-AMQP_HOST_NAME: "rabbitmq.{{ AMQP_NAMESPACE }}.svc"
-# The AMQP user. 
-AMQP_HOST_USER: "user"
-# The AMQP password. 
-AMQP_HOST_PASSWORD: ""
-#AMQP_HOST_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
-# The AMQP virtual host. 
-AMQP_VIRTUAL_HOST: "%2F"
 
 #################
 # RabbitMQ vars #
@@ -448,26 +409,13 @@ AMQP_VIRTUAL_HOST: "%2F"
 
 # Enable RabbitMQ message integration. 
 ENABLE_RABBITMQ: false
-# The namespace in OpenShift where the AMQP message broker will run. 
-RABBITMQ_NAMESPACE: rabbitmq
-# The AMQP port. 
-RABBITMQ_PORT: 5672
-# The AMQP host name. 
-RABBITMQ_HOST_NAME: "rabbitmq.{{ AMQP_NAMESPACE }}.svc"
-# The AMQP user. 
-RABBITMQ_HOST_USER: "user"
-# The AMQP password. 
-RABBITMQ_HOST_PASSWORD: ""
-#RABBITMQ_HOST_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='iotagent-json-message-broker-secret', namespace=SITE_NAMESPACE)[0].data['password'] | b64decode }}"
-# The AMQP virtual host. 
-RABBITMQ_VIRTUAL_HOST: "%2F"
 
 ################################
 # OpenShift Deployment Details #
 ################################
 
 # The amount of memory requested when the pod is first created in OpenShift. 
-SITE_REQUESTS_MEMORY: "500Mi"
+SITE_REQUESTS_MEMORY: "1500Mi"
 # The amount of total memory that can be used by the pod in OpenShift. 
 SITE_LIMITS_MEMORY: "1500Mi"
 # The amount of cpus requested when the pod is first created in OpenShift. 
@@ -476,6 +424,19 @@ SITE_REQUESTS_CPU: "700m"
 SITE_LIMITS_CPU: "1"
 # The number of pod replicas to run the site in OpenShift. 
 SITE_REPLICAS: 1
+
+#########
+# Email #
+#########
+
+EMAIL_HOST: "smtp.fastmail.com"
+EMAIL_PORT: "465"
+EMAIL_SSL: "true"
+EMAIL_AUTH_METHOD: "PLAIN"
+EMAIL_USERNAME: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='email-smtp', namespace=SITE_NAMESPACE)[0].data['EMAIL_USERNAME'] | b64decode }}"
+EMAIL_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='email-smtp', namespace=SITE_NAMESPACE)[0].data['EMAIL_PASSWORD'] | b64decode }}"
+EMAIL_FROM: "support@example.com"
+EMAIL_ADMIN: "admin@example.com"
 
 ########################
 # Enabled feature vars #
@@ -509,4 +470,3 @@ ENABLE_OPENID_CONNECT: true
 WRITE_API: true
 # Write code comments into generated code. 
 WRITE_COMMENTS: true
-
