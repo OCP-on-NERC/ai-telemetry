@@ -413,7 +413,6 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = GpuDeviceGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	public String getPageUriGpuDevice() {
 		return pageUriGpuDevice;
 	}
-	@JsonIgnore
 	public void setPageUriGpuDevice(String o) {
 		this.pageUriGpuDevice = GpuDeviceGenPage.staticSetPageUriGpuDevice(siteRequest_, o);
 	}

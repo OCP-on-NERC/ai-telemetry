@@ -112,8 +112,8 @@ import io.vertx.core.json.JsonObject;
  * <p>By adding a class comment "{@inheritDoc}", the SitePage class will inherit the helpful inherited class comments from the super class SitePageGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 4</h2>
- * <p>This class contains a comment <b>"Order: 4"</b>, which means this class will be sorted by the given number 4 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 0</h2>
+ * <p>This class contains a comment <b>"Order: 0"</b>, which means this class will be sorted by the given number 0 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <h2>Page: true</h2>
@@ -296,7 +296,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getGithubOrg() {
 		return githubOrg;
 	}
-	@JsonIgnore
 	public void setGithubOrg(String o) {
 		this.githubOrg = SitePage.staticSetGithubOrg(siteRequest_, o);
 	}
@@ -349,7 +348,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteName() {
 		return siteName;
 	}
-	@JsonIgnore
 	public void setSiteName(String o) {
 		this.siteName = SitePage.staticSetSiteName(siteRequest_, o);
 	}
@@ -402,7 +400,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteDisplayName() {
 		return siteDisplayName;
 	}
-	@JsonIgnore
 	public void setSiteDisplayName(String o) {
 		this.siteDisplayName = SitePage.staticSetSiteDisplayName(siteRequest_, o);
 	}
@@ -455,7 +452,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSitePublicUrl() {
 		return sitePublicUrl;
 	}
-	@JsonIgnore
 	public void setSitePublicUrl(String o) {
 		this.sitePublicUrl = SitePage.staticSetSitePublicUrl(siteRequest_, o);
 	}
@@ -508,7 +504,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getMailingListUrl() {
 		return mailingListUrl;
 	}
-	@JsonIgnore
 	public void setMailingListUrl(String o) {
 		this.mailingListUrl = SitePage.staticSetMailingListUrl(siteRequest_, o);
 	}
@@ -561,7 +556,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getQuayioOrg() {
 		return quayioOrg;
 	}
-	@JsonIgnore
 	public void setQuayioOrg(String o) {
 		this.quayioOrg = SitePage.staticSetQuayioOrg(siteRequest_, o);
 	}
@@ -614,7 +608,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSitePomGroupId() {
 		return sitePomGroupId;
 	}
-	@JsonIgnore
 	public void setSitePomGroupId(String o) {
 		this.sitePomGroupId = SitePage.staticSetSitePomGroupId(siteRequest_, o);
 	}
@@ -667,7 +660,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getStaticBaseUrl() {
 		return staticBaseUrl;
 	}
-	@JsonIgnore
 	public void setStaticBaseUrl(String o) {
 		this.staticBaseUrl = SitePage.staticSetStaticBaseUrl(siteRequest_, o);
 	}
@@ -720,7 +712,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getStaticPath() {
 		return staticPath;
 	}
-	@JsonIgnore
 	public void setStaticPath(String o) {
 		this.staticPath = SitePage.staticSetStaticPath(siteRequest_, o);
 	}
@@ -773,7 +764,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getSiteBaseUrl() {
 		return siteBaseUrl;
 	}
-	@JsonIgnore
 	public void setSiteBaseUrl(String o) {
 		this.siteBaseUrl = SitePage.staticSetSiteBaseUrl(siteRequest_, o);
 	}
@@ -954,7 +944,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getName() {
 		return name;
 	}
-	@JsonIgnore
 	public void setName(String o) {
 		this.name = SitePage.staticSetName(siteRequest_, o);
 	}
@@ -1011,7 +1000,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getAuthor() {
 		return author;
 	}
-	@JsonIgnore
 	public void setAuthor(String o) {
 		this.author = SitePage.staticSetAuthor(siteRequest_, o);
 	}
@@ -1068,7 +1056,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageId() {
 		return pageId;
 	}
-	@JsonIgnore
 	public void setPageId(String o) {
 		this.pageId = SitePage.staticSetPageId(siteRequest_, o);
 	}
@@ -1125,7 +1112,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getH1() {
 		return h1;
 	}
-	@JsonIgnore
 	public void setH1(String o) {
 		this.h1 = SitePage.staticSetH1(siteRequest_, o);
 	}
@@ -1182,7 +1168,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getH2() {
 		return h2;
 	}
-	@JsonIgnore
 	public void setH2(String o) {
 		this.h2 = SitePage.staticSetH2(siteRequest_, o);
 	}
@@ -1239,7 +1224,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageImageUri() {
 		return pageImageUri;
 	}
-	@JsonIgnore
 	public void setPageImageUri(String o) {
 		this.pageImageUri = SitePage.staticSetPageImageUri(siteRequest_, o);
 	}
@@ -1416,7 +1400,6 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public String getPageImageType() {
 		return pageImageType;
 	}
-	@JsonIgnore
 	public void setPageImageType(String o) {
 		this.pageImageType = SitePage.staticSetPageImageType(siteRequest_, o);
 	}

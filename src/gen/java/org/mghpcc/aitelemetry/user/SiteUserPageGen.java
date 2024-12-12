@@ -127,7 +127,11 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 		Promise<Void> promise2 = Promise.promise();
 		promiseSiteUserPage(promise2);
 		promise2.future().onSuccess(a -> {
-			promise.complete(this);
+			super.promiseDeepSiteUserGenPage(siteRequest_).onSuccess(b -> {
+				promise.complete(this);
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
 		}).onFailure(ex -> {
 			promise.fail(ex);
 		});
@@ -151,7 +155,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 		return promise.future();
 	}
 
-	public Future<? extends SiteUserPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
+	@Override public Future<? extends SiteUserPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
 		return promiseDeepSiteUserPage(siteRequest_);
 	}
 
@@ -160,6 +164,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	/////////////////
 
 	public void siteRequestSiteUserPage(SiteRequest siteRequest_) {
+			super.siteRequestSiteUserGenPage(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
@@ -170,7 +175,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	// obtain //
 	/////////////
 
-	public Object obtainForClass(String var) {
+	@Override public Object obtainForClass(String var) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -191,7 +196,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 		SiteUserPage oSiteUserPage = (SiteUserPage)this;
 		switch(var) {
 			default:
-				return null;
+				return super.obtainSiteUserGenPage(var);
 		}
 	}
 
@@ -199,7 +204,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	// relate //
 	///////////////
 
-	public boolean relateForClass(String var, Object val) {
+	@Override public boolean relateForClass(String var, Object val) {
 		String[] vars = StringUtils.split(var, ".");
 		Object o = null;
 		for(String v : vars) {
@@ -216,7 +221,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 		SiteUserPage oSiteUserPage = (SiteUserPage)this;
 		switch(var) {
 			default:
-				return null;
+				return super.relateSiteUserGenPage(var, val);
 		}
 	}
 
@@ -230,7 +235,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	public static Object staticSetSiteUserPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return null;
+				return SiteUserGenPage.staticSetSiteUserGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -244,7 +249,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	public static Object staticSearchSiteUserPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return null;
+				return SiteUserGenPage.staticSearchSiteUserGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -258,7 +263,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	public static String staticSearchStrSiteUserPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return null;
+				return SiteUserGenPage.staticSearchStrSiteUserGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -272,7 +277,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	public static String staticSearchFqSiteUserPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return null;
+				return SiteUserGenPage.staticSearchFqSiteUserGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -282,40 +287,49 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(super.toString());
 		return sb.toString();
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "SiteUserPage";
 
 
+	@Override
 	public String idForClass() {
 		return null;
 	}
 
+	@Override
 	public String titleForClass() {
 		return null;
 	}
 
+	@Override
 	public String nameForClass() {
 		return null;
 	}
 
+	@Override
 	public String classNameAdjectiveSingularForClass() {
 		return null;
 	}
 
+	@Override
 	public String descriptionForClass() {
 		return null;
 	}
 
+	@Override
 	public String classStringFormatUrlEditPageForClass() {
 		return null;
 	}
 
+	@Override
 	public String classStringFormatUrlDisplayPageForClass() {
 		return null;
 	}
 
+	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return null;
 	}
@@ -326,70 +340,70 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	public static String displayNameSiteUserPage(String var) {
 		switch(var) {
 		default:
-			return null;
+			return SiteUserGenPage.displayNameSiteUserGenPage(var);
 		}
 	}
 
 	public static String descriptionSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.descriptionSiteUserGenPage(var);
 		}
 	}
 
 	public static String classSimpleNameSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.classSimpleNameSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer htmColumnSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.htmColumnSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer htmRowSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.htmRowSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer htmCellSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.htmCellSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer lengthMinSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.lengthMinSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer lengthMaxSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.lengthMaxSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer maxSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.maxSiteUserGenPage(var);
 		}
 	}
 
 	public static Integer minSiteUserPage(String var) {
 		switch(var) {
 			default:
-				return null;
+				return SiteUserGenPage.minSiteUserGenPage(var);
 		}
 	}
 }

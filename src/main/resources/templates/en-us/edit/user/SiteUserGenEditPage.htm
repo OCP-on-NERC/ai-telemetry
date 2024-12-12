@@ -54,8 +54,8 @@
 {% endif %}
       window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
       Promise.all([
-        customElements.whenDefined('sl-button')
-        , customElements.whenDefined('sl-input')
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
       ]).then(() => {
 
         var userId = {% if result.userId is defined %}{{ result.userId | tojson }}{% else %}null{% endif %};
@@ -89,16 +89,16 @@
         pageGraphSiteUser();
         {% for key, value in varsQ.items() %}
 
-        document.querySelector('#qSiteUser_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+        document.querySelector('#qSiteUser_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
           qChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_{{ key }}'));
         });
         {% endfor %}
 
-        document.querySelector('#qSiteUser_rows')?.addEventListener('sl-change', event => {
+        document.querySelector('#qSiteUser_rows')?.addEventListener('wa-change', event => {
           paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_rows'));
         });
 
-        document.querySelector('#qSiteUser_start')?.addEventListener('sl-change', event => {
+        document.querySelector('#qSiteUser_start')?.addEventListener('wa-change', event => {
           paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_start'));
         });
 
@@ -159,14 +159,12 @@
 {%- include en-us/search/user/SiteUserSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
-          <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-        <div>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all site users
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+          <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all site users
+          </wa-button>
+        </wa-tooltip>
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -182,24 +180,22 @@
   {% if resultCount == 1 %}
     {% if solrId is defined %}
           <div class="margin-block">
-            <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+            <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
               <i class="fa-solid fa-angle-left"></i>
               all site users
-            </sl-button>
+            </wa-button>
           </div>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-duotone fa-solid fa-user-gear"></i> {{ result.title | e }}</h1>
     {% else %}
-          <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-        <div>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all site users
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+          <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all site users
+          </wa-button>
+        </wa-tooltip>
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -213,14 +209,12 @@
         </h2>
     {% endif %}
   {% else %}
-          <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-        <div>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all site users
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+          <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all site users
+          </wa-button>
+        </wa-tooltip>
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -262,7 +256,7 @@
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       readonly
                       placeholder="[Long] primary key"
                       label="primary key"
@@ -285,7 +279,7 @@ The primary key of this object in the database"
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.pk | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -299,7 +293,7 @@ The primary key of this object in the database"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       type="text"
                       readonly
                       help-text="A created timestamp for this record in the database"
@@ -313,7 +307,7 @@ The primary key of this object in the database"
   {%- endif %}
                       data-userId={{ result.userId | tojson }}
                       >
-                  </sl-input>
+                  </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
   {%- endif %}
@@ -326,7 +320,7 @@ The primary key of this object in the database"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       type="text"
                       readonly
                       help-text="A modified timestamp for this record in the database"
@@ -340,7 +334,7 @@ The primary key of this object in the database"
   {%- endif %}
                       data-userId={{ result.userId | tojson }}
                       >
-                  </sl-input>
+                  </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
   {%- endif %}
@@ -354,7 +348,7 @@ The primary key of this object in the database"
                 <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-button variant="primary"
+                  <wa-button variant="brand"
                       id="{{classApiMethodMethod}}_archived"
                       placeholder="archive"
                       label="archive"
@@ -363,14 +357,14 @@ The primary key of this object in the database"
                       name="setArchived"
                       data-userId={{ result.userId | tojson }}
                       data-val="{{ result.archived | e }}"
-                      >archive</sl-button>
+                      >archive</wa-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-checkbox
+                  <wa-checkbox
                       id="{{classApiMethodMethod}}_archived"
                       value="true"
   {%- else %}
-                  <sl-select
+                  <wa-select
                       id="{{classApiMethodMethod}}_archived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -394,13 +388,13 @@ The primary key of this object in the database"
                       checked
     {%- endif %}
                       data-userId={{ result.userId | tojson }}
-                      >archive</sl-checkbox>
+                      >archive</wa-checkbox>
   {%- else %}
                       >
-                    <sl-option value="" selected="selected"></sl-option>
-                    <sl-option value="true">true</sl-option>
-                    <sl-option value="false">false</sl-option>
-                  </sl-select>
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
   {%- endif %}
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -416,11 +410,11 @@ The primary key of this object in the database"
                 <form class="subgrid-2col " id="PageForm_seeArchived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-checkbox
+                  <wa-checkbox
                       id="{{classApiMethodMethod}}_seeArchived"
                       value="true"
   {%- else %}
-                  <sl-select
+                  <wa-select
                       id="{{classApiMethodMethod}}_seeArchived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -444,13 +438,13 @@ The primary key of this object in the database"
                       checked
     {%- endif %}
                       data-userId={{ result.userId | tojson }}
-                      >see archived</sl-checkbox>
+                      >see archived</wa-checkbox>
   {%- else %}
                       >
-                    <sl-option value="" selected="selected"></sl-option>
-                    <sl-option value="true">true</sl-option>
-                    <sl-option value="false">false</sl-option>
-                  </sl-select>
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -465,11 +459,11 @@ The primary key of this object in the database"
                 <form class="subgrid-2col " id="PageForm_seeDeleted">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-checkbox
+                  <wa-checkbox
                       id="{{classApiMethodMethod}}_seeDeleted"
                       value="true"
   {%- else %}
-                  <sl-select
+                  <wa-select
                       id="{{classApiMethodMethod}}_seeDeleted"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -493,13 +487,13 @@ The primary key of this object in the database"
                       checked
     {%- endif %}
                       data-userId={{ result.userId | tojson }}
-                      >see deleted</sl-checkbox>
+                      >see deleted</wa-checkbox>
   {%- else %}
                       >
-                    <sl-option value="" selected="selected"></sl-option>
-                    <sl-option value="true">true</sl-option>
-                    <sl-option value="false">false</sl-option>
-                  </sl-select>
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -514,7 +508,7 @@ The primary key of this object in the database"
                 <form class="subgrid-2col " id="PageForm_displayPage">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-button variant="primary"
+                  <wa-button variant="brand"
                       id="{{classApiMethodMethod}}_displayPage"
                       placeholder="[String] product page"
                       label="product page"
@@ -524,10 +518,10 @@ The primary key of this object in the database"
                       href="{{ result.displayPage | e }}"
                       >
                     product page
-                  </sl-button>
+                  </wa-button>
                   <div class="button-description-on-right ">Visit this product's landing page. </div>
   {%- else %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] product page"
                       label="product page"
@@ -550,7 +544,7 @@ Visit this product's landing page. "
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.displayPage | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}

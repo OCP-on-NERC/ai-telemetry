@@ -252,7 +252,6 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getProjectName() {
 		return projectName;
 	}
-	@JsonIgnore
 	public void setProjectName(String o) {
 		this.projectName = AiProject.staticSetProjectName(siteRequest_, o);
 	}
@@ -309,7 +308,6 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
-	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiProject.staticSetDescription(siteRequest_, o);
 	}
@@ -694,7 +692,6 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
-	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiProject.staticSetEntityId(siteRequest_, o);
 	}
@@ -751,7 +748,6 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
-	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiProject.staticSetEntityShortId(siteRequest_, o);
 	}

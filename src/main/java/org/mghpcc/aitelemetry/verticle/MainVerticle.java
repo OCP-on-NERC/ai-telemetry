@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -58,19 +59,14 @@ import com.hubspot.jinjava.loader.FileLocator;
 
 import org.yaml.snakeyaml.Yaml;
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.metrics.LongCounter;
-import io.opentelemetry.api.metrics.LongCounterBuilder;
-import io.opentelemetry.api.metrics.MeterBuilder;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.exporter.otlp.http.trace.OtlpHttpSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
-import io.opentelemetry.sdk.metrics.export.MetricReader;
+import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.vertx.amqp.AmqpClient;
 import io.vertx.amqp.AmqpClientOptions;
 import io.vertx.amqp.AmqpSender;
@@ -93,7 +89,9 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
+import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxBuilder;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.core.buffer.Buffer;
@@ -111,8 +109,10 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.cluster.NodeInfo;
+import io.opentelemetry.api.trace.Tracer;
 import io.vertx.core.streams.Pump;
 import io.vertx.core.tracing.TracingPolicy;
+import io.vertx.core.tracing.TracingOptions;
 import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
@@ -150,6 +150,7 @@ import io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Tuple;
 import io.vertx.tracing.opentelemetry.OpenTelemetryOptions;
+import io.vertx.tracing.opentracing.OpenTracingTracerFactory;
 
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
@@ -158,11 +159,11 @@ import org.mghpcc.aitelemetry.user.SiteUserEnUSGenApiService;
 import org.mghpcc.aitelemetry.user.SiteUserEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.result.BaseResult;
 import org.mghpcc.aitelemetry.model.BaseModel;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePage;
+import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
@@ -217,6 +218,16 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private RabbitMQClient rabbitmqClient;
 
 	private Jinjava jinjava;
+
+	SdkTracerProvider sdkTracerProvider;
+	public void setSdkTracerProvider(SdkTracerProvider sdkTracerProvider) {
+		this.sdkTracerProvider = sdkTracerProvider;
+	}
+
+	SdkMeterProvider sdkMeterProvider;
+	public void setSdkMeterProvider(SdkMeterProvider sdkMeterProvider) {
+		this.sdkMeterProvider = sdkMeterProvider;
+	}
 
 
 	/**	
@@ -297,7 +308,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		});
 	}
 
-	public static Future<Void> runVerticles(Vertx vertx, JsonObject config) {
+	public static Future<Void> runVerticles(Vertx vertx, JsonObject config, SdkTracerProvider sdkTracerProvider, SdkMeterProvider sdkMeterProvider) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
@@ -311,26 +322,42 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			deploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
 			deploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 
-			DeploymentOptions WorkerVerticleDeploymentOptions = new DeploymentOptions();
-			WorkerVerticleDeploymentOptions.setConfig(config);
-			WorkerVerticleDeploymentOptions.setInstances(1);
-			WorkerVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
-			WorkerVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
+			DeploymentOptions workerVerticleDeploymentOptions = new DeploymentOptions();
+			workerVerticleDeploymentOptions.setConfig(config);
+			workerVerticleDeploymentOptions.setInstances(1);
+			workerVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+			workerVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 
-			DeploymentOptions EmailVerticleDeploymentOptions = new DeploymentOptions();
-			EmailVerticleDeploymentOptions.setConfig(config);
-			EmailVerticleDeploymentOptions.setInstances(1);
-			EmailVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
-			EmailVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
+			DeploymentOptions emailVerticleDeploymentOptions = new DeploymentOptions();
+			emailVerticleDeploymentOptions.setConfig(config);
+			emailVerticleDeploymentOptions.setInstances(1);
+			emailVerticleDeploymentOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
+			emailVerticleDeploymentOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 
-			vertx.deployVerticle(MainVerticle.class, deploymentOptions).onSuccess(a -> {
+			vertx.deployVerticle(new Supplier<Verticle>() {
+						@Override
+						public Verticle get() {
+							MainVerticle mainVerticle = new MainVerticle();
+							mainVerticle.setSdkTracerProvider(sdkTracerProvider);
+							mainVerticle.setSdkMeterProvider(sdkMeterProvider);
+							return mainVerticle;
+						}
+					}, deploymentOptions).onSuccess(a -> {
 				LOG.info("Started main verticle. ");
 				List<Future<String>> futures = new ArrayList<>();
 				if(config.getBoolean(ConfigKeys.ENABLE_WORKER_VERTICLE, true)) {
-					futures.add(vertx.deployVerticle(WorkerVerticle.class, WorkerVerticleDeploymentOptions));
+					futures.add(vertx.deployVerticle(new Supplier<Verticle>() {
+								@Override
+								public Verticle get() {
+									WorkerVerticle workerVerticle = new WorkerVerticle();
+									workerVerticle.setSdkTracerProvider(sdkTracerProvider);
+									workerVerticle.setSdkMeterProvider(sdkMeterProvider);
+									return workerVerticle;
+								}
+							}, deploymentOptions));
 				}
 				if(config.getBoolean(ConfigKeys.ENABLE_EMAIL, false)) {
-					futures.add(vertx.deployVerticle(EmailVerticle.class, EmailVerticleDeploymentOptions));
+					futures.add(vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions));
 				}
 				Future.all(futures).onSuccess(b -> {
 					LOG.info("All verticles started successfully.");
@@ -358,6 +385,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			VertxOptions vertxOptions = new VertxOptions();
 			EventBusOptions eventBusOptions = new EventBusOptions();
 	
+			ClusterManager clusterManager = null;
 			if(enableZookeeperCluster) {
 				JsonObject zkConfig = new JsonObject();
 				String hostname = config.getString(ConfigKeys.HOSTNAME);
@@ -385,7 +413,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						.put("intervalTimes", zookeeperMaxSleepMillis)
 						.put("maxTimes", zookeeperMaxRetries)
 				);
-				ClusterManager clusterManager = new ZookeeperClusterManager(zkConfig);
+				clusterManager = new ZookeeperClusterManager(zkConfig);
 	
 				if(clusterHostName == null) {
 					clusterHostName = hostname;
@@ -411,12 +439,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					LOG.info(String.format("%s — %s", ConfigKeys.CLUSTER_PUBLIC_PORT, clusterPublicPort));
 					eventBusOptions.setClusterPublicPort(clusterPublicPort);
 				}
-				vertxOptions.setClusterManager(clusterManager);
 			}
 			Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
 			Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
 			Long vertxMaxWorkerExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_WORKER_EXECUTE_TIME);
-			Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
 			vertxOptions.setEventBusOptions(eventBusOptions);
 			vertxOptions.setWarningExceptionTime(vertxWarningExceptionSeconds);
 			vertxOptions.setWarningExceptionTimeUnit(TimeUnit.SECONDS);
@@ -426,10 +452,18 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			vertxOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
 
+			Resource resource = Resource.builder()
+					.put("service.name", SITE_NAME)
+					.build();
+			SdkTracerProvider sdkTracerProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
+					SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(OtlpHttpSpanExporter.builder().setEndpoint("http://localhost:4318/v1/traces").build()))
+					.setResource(resource).build() : null;
+			SdkMeterProvider sdkMeterProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
+					SdkMeterProvider.builder().build() : null;
 			if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
-				SdkTracerProvider sdkTracerProvider = SdkTracerProvider.builder().build();
-				SdkMeterProvider sdkMeterProvider = SdkMeterProvider.builder().build();
-
+				// Switch oc config current-context to your other cluster to port forward the opentelemetry-collector
+				// oc -n opentelemetry port-forward $(oc -n opentelemetry get pod -l app.kubernetes.io/name=opentelemetry-collector -o name) 4318:4318
+				// Switch oc config current-context back to OpenShift Local
 				OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
 						.setTracerProvider(sdkTracerProvider)
 						.setMeterProvider(sdkMeterProvider)
@@ -439,8 +473,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			}
 	
 			if(enableZookeeperCluster) {
-				Vertx.clusteredVertx(vertxOptions).onSuccess(vertx -> {
-					runVerticles(vertx, config).onSuccess(a -> {
+				VertxBuilder vertxBuilder = Vertx.builder();
+				vertxBuilder.with(vertxOptions);
+
+				// OpenTracingTracerFactory tracerFactory = new OpenTracingTracerFactory();
+				// TracingOptions tracingOptions = new TracingOptions();
+				// Tracer tracer = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? tracerFactory.tracer(tracingOptions) : null;
+				// TracerBuilder tracerBuilder = sdkTracerProvider.tracerBuilder("instrumentationScopeName");
+				// Tracer tracer2 = tracerBuilder.build();
+				// if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
+				// 	vertxBuilder.withTracer(tracerFactory);
+				// }
+				vertxBuilder.withClusterManager(clusterManager);
+				vertxBuilder.buildClustered().onSuccess(vertx -> {
+					runVerticles(vertx, config, sdkTracerProvider, sdkMeterProvider).onSuccess(a -> {
 						promise.complete();
 					});
 				}).onFailure(ex -> {
@@ -448,16 +494,25 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					promise.fail(ex);
 				});
 			} else {
-				Vertx vertx = Vertx.vertx(vertxOptions);
-				runVerticles(vertx, config).onSuccess(a -> {
+				VertxBuilder vertxBuilder = Vertx.builder();
+				vertxBuilder.with(vertxOptions);
+
+				// OpenTracingTracerFactory tracerFactory = new OpenTracingTracerFactory();
+				// TracingOptions tracingOptions = new TracingOptions();
+				// VertxTracer tracer = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? tracerFactory.tracer(tracingOptions) : null;
+				// if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
+				// 	vertxBuilder.withTracer(tracerFactory);
+				// }
+				Vertx vertx = vertxBuilder.build();
+				runVerticles(vertx, config, sdkTracerProvider, sdkMeterProvider).onSuccess(a -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error("Creating clustered Vertx failed. ", ex);
+					LOG.error("Running verticles failed. ", ex);
 					promise.fail(ex);
 				});
 			}
 		} catch (Throwable ex) {
-			LOG.error("Creating clustered Vertx failed. ", ex);
+			LOG.error("Creating Vertx failed. ", ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1153,20 +1208,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("AiCluster","SitePage","AiNode","GpuDevice","GpuSlice","AiProject");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject");
 			List<String> publicResources = Arrays.asList("SitePage");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
 			registerApiService(SiteUserEnUSGenApiService.class, apiSiteUser, SiteUser.getClassApiAddress());
 			apiSiteUser.configureUserSearchApi(config().getString(ComputateConfigKeys.USER_SEARCH_URI), router, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, config(), webClient, authResources);
 			apiSiteUser.configurePublicSearchApi(config().getString(ComputateConfigKeys.PUBLIC_SEARCH_URI), router, SiteRequest.class, config(), webClient, publicResources);
-// 
-			// AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 
 			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
 			initializeApiService(apiSitePage);
 			registerApiService(SitePageEnUSGenApiService.class, apiSitePage, SitePage.getClassApiAddress());
 			// apiSitePage.configureUiResult(router, SitePage.class, SiteRequest.class, "/en-us/view/article/{pageId}");
+// 
+			// AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 // 
 			// AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
 // 

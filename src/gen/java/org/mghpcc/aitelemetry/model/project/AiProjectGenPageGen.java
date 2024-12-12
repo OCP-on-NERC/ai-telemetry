@@ -413,7 +413,6 @@ public abstract class AiProjectGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = AiProjectGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class AiProjectGenPageGen<DEV> extends PageLayout {
 	public String getPageUriAiProject() {
 		return pageUriAiProject;
 	}
-	@JsonIgnore
 	public void setPageUriAiProject(String o) {
 		this.pageUriAiProject = AiProjectGenPage.staticSetPageUriAiProject(siteRequest_, o);
 	}

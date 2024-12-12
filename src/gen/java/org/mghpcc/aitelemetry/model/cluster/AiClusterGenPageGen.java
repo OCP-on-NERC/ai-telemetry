@@ -413,7 +413,6 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = AiClusterGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	public String getPageUriAiCluster() {
 		return pageUriAiCluster;
 	}
-	@JsonIgnore
 	public void setPageUriAiCluster(String o) {
 		this.pageUriAiCluster = AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, o);
 	}

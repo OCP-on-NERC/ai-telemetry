@@ -508,7 +508,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserId() {
 		return userId;
 	}
-	@JsonIgnore
 	public void setUserId(String o) {
 		this.userId = SiteRequest.staticSetUserId(siteRequest_, o);
 	}
@@ -621,7 +620,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getSessionId() {
 		return sessionId;
 	}
-	@JsonIgnore
 	public void setSessionId(String o) {
 		this.sessionId = SiteRequest.staticSetSessionId(siteRequest_, o);
 	}
@@ -674,7 +672,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getSessionIdBefore() {
 		return sessionIdBefore;
 	}
-	@JsonIgnore
 	public void setSessionIdBefore(String o) {
 		this.sessionIdBefore = SiteRequest.staticSetSessionIdBefore(siteRequest_, o);
 	}
@@ -727,7 +724,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserName() {
 		return userName;
 	}
-	@JsonIgnore
 	public void setUserName(String o) {
 		this.userName = SiteRequest.staticSetUserName(siteRequest_, o);
 	}
@@ -780,7 +776,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserLastName() {
 		return userLastName;
 	}
-	@JsonIgnore
 	public void setUserLastName(String o) {
 		this.userLastName = SiteRequest.staticSetUserLastName(siteRequest_, o);
 	}
@@ -833,7 +828,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserFirstName() {
 		return userFirstName;
 	}
-	@JsonIgnore
 	public void setUserFirstName(String o) {
 		this.userFirstName = SiteRequest.staticSetUserFirstName(siteRequest_, o);
 	}
@@ -886,7 +880,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserFullName() {
 		return userFullName;
 	}
-	@JsonIgnore
 	public void setUserFullName(String o) {
 		this.userFullName = SiteRequest.staticSetUserFullName(siteRequest_, o);
 	}
@@ -939,7 +932,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getUserEmail() {
 		return userEmail;
 	}
-	@JsonIgnore
 	public void setUserEmail(String o) {
 		this.userEmail = SiteRequest.staticSetUserEmail(siteRequest_, o);
 	}
@@ -1168,7 +1160,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getLang() {
 		return lang;
 	}
-	@JsonIgnore
 	public void setLang(String o) {
 		this.lang = SiteRequest.staticSetLang(siteRequest_, o);
 	}
@@ -1281,7 +1272,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getRequestUri() {
 		return requestUri;
 	}
-	@JsonIgnore
 	public void setRequestUri(String o) {
 		this.requestUri = SiteRequest.staticSetRequestUri(siteRequest_, o);
 	}
@@ -1334,7 +1324,6 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	public String getRequestMethod() {
 		return requestMethod;
 	}
-	@JsonIgnore
 	public void setRequestMethod(String o) {
 		this.requestMethod = SiteRequest.staticSetRequestMethod(siteRequest_, o);
 	}

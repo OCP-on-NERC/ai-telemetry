@@ -197,7 +197,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getLang() {
 		return lang;
 	}
-	@JsonIgnore
 	public void setLang(String o) {
 		this.lang = PageLayout.staticSetLang(siteRequest_, o);
 	}
@@ -332,7 +331,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getStaticBaseUrl() {
 		return staticBaseUrl;
 	}
-	@JsonIgnore
 	public void setStaticBaseUrl(String o) {
 		this.staticBaseUrl = PageLayout.staticSetStaticBaseUrl(siteRequest_, o);
 	}
@@ -385,7 +383,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteBaseUrl() {
 		return siteBaseUrl;
 	}
-	@JsonIgnore
 	public void setSiteBaseUrl(String o) {
 		this.siteBaseUrl = PageLayout.staticSetSiteBaseUrl(siteRequest_, o);
 	}
@@ -438,7 +435,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteAuthUrl() {
 		return siteAuthUrl;
 	}
-	@JsonIgnore
 	public void setSiteAuthUrl(String o) {
 		this.siteAuthUrl = PageLayout.staticSetSiteAuthUrl(siteRequest_, o);
 	}
@@ -491,7 +487,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteAuthRealm() {
 		return siteAuthRealm;
 	}
-	@JsonIgnore
 	public void setSiteAuthRealm(String o) {
 		this.siteAuthRealm = PageLayout.staticSetSiteAuthRealm(siteRequest_, o);
 	}
@@ -544,7 +539,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFontAwesomeKit() {
 		return fontAwesomeKit;
 	}
-	@JsonIgnore
 	public void setFontAwesomeKit(String o) {
 		this.fontAwesomeKit = PageLayout.staticSetFontAwesomeKit(siteRequest_, o);
 	}
@@ -597,7 +591,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFacebookGraphVersion() {
 		return facebookGraphVersion;
 	}
-	@JsonIgnore
 	public void setFacebookGraphVersion(String o) {
 		this.facebookGraphVersion = PageLayout.staticSetFacebookGraphVersion(siteRequest_, o);
 	}
@@ -650,7 +643,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFacebookAppId() {
 		return facebookAppId;
 	}
-	@JsonIgnore
 	public void setFacebookAppId(String o) {
 		this.facebookAppId = PageLayout.staticSetFacebookAppId(siteRequest_, o);
 	}
@@ -703,7 +695,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageUri() {
 		return pageUri;
 	}
-	@JsonIgnore
 	public void setPageUri(String o) {
 		this.pageUri = PageLayout.staticSetPageUri(siteRequest_, o);
 	}
@@ -756,7 +747,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageId() {
 		return pageId;
 	}
-	@JsonIgnore
 	public void setPageId(String o) {
 		this.pageId = PageLayout.staticSetPageId(siteRequest_, o);
 	}
@@ -809,7 +799,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getApiUri() {
 		return apiUri;
 	}
-	@JsonIgnore
 	public void setApiUri(String o) {
 		this.apiUri = PageLayout.staticSetApiUri(siteRequest_, o);
 	}
@@ -862,7 +851,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageMethod() {
 		return pageMethod;
 	}
-	@JsonIgnore
 	public void setPageMethod(String o) {
 		this.pageMethod = PageLayout.staticSetPageMethod(siteRequest_, o);
 	}
@@ -1035,7 +1023,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserFullName() {
 		return userFullName;
 	}
-	@JsonIgnore
 	public void setUserFullName(String o) {
 		this.userFullName = PageLayout.staticSetUserFullName(siteRequest_, o);
 	}
@@ -1088,7 +1075,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserName() {
 		return userName;
 	}
-	@JsonIgnore
 	public void setUserName(String o) {
 		this.userName = PageLayout.staticSetUserName(siteRequest_, o);
 	}
@@ -1141,7 +1127,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserEmail() {
 		return userEmail;
 	}
-	@JsonIgnore
 	public void setUserEmail(String o) {
 		this.userEmail = PageLayout.staticSetUserEmail(siteRequest_, o);
 	}
@@ -1194,7 +1179,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getLogoutUrl() {
 		return logoutUrl;
 	}
-	@JsonIgnore
 	public void setLogoutUrl(String o) {
 		this.logoutUrl = PageLayout.staticSetLogoutUrl(siteRequest_, o);
 	}
@@ -1290,7 +1274,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getClassSimpleName() {
 		return classSimpleName;
 	}
-	@JsonIgnore
 	public void setClassSimpleName(String o) {
 		this.classSimpleName = PageLayout.staticSetClassSimpleName(siteRequest_, o);
 	}
@@ -1343,7 +1326,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageTitle() {
 		return pageTitle;
 	}
-	@JsonIgnore
 	public void setPageTitle(String o) {
 		this.pageTitle = PageLayout.staticSetPageTitle(siteRequest_, o);
 	}
@@ -2273,7 +2255,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageResponse() {
 		return pageResponse;
 	}
-	@JsonIgnore
 	public void setPageResponse(String o) {
 		this.pageResponse = PageLayout.staticSetPageResponse(siteRequest_, o);
 	}
@@ -2326,7 +2307,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultZoneId() {
 		return defaultZoneId;
 	}
-	@JsonIgnore
 	public void setDefaultZoneId(String o) {
 		this.defaultZoneId = PageLayout.staticSetDefaultZoneId(siteRequest_, o);
 	}
@@ -2420,7 +2400,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultLocaleId() {
 		return defaultLocaleId;
 	}
-	@JsonIgnore
 	public void setDefaultLocaleId(String o) {
 		this.defaultLocaleId = PageLayout.staticSetDefaultLocaleId(siteRequest_, o);
 	}
@@ -2634,7 +2613,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getRangeGap() {
 		return rangeGap;
 	}
-	@JsonIgnore
 	public void setRangeGap(String o) {
 		this.rangeGap = PageLayout.staticSetRangeGap(siteRequest_, o);
 	}
@@ -2899,7 +2877,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultRangeGap() {
 		return defaultRangeGap;
 	}
-	@JsonIgnore
 	public void setDefaultRangeGap(String o) {
 		this.defaultRangeGap = PageLayout.staticSetDefaultRangeGap(siteRequest_, o);
 	}
@@ -3104,7 +3081,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultRangeVar() {
 		return defaultRangeVar;
 	}
-	@JsonIgnore
 	public void setDefaultRangeVar(String o) {
 		this.defaultRangeVar = PageLayout.staticSetDefaultRangeVar(siteRequest_, o);
 	}
@@ -3157,7 +3133,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultFacetSort() {
 		return defaultFacetSort;
 	}
-	@JsonIgnore
 	public void setDefaultFacetSort(String o) {
 		this.defaultFacetSort = PageLayout.staticSetDefaultFacetSort(siteRequest_, o);
 	}
@@ -3523,7 +3498,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getQueryStr() {
 		return queryStr;
 	}
-	@JsonIgnore
 	public void setQueryStr(String o) {
 		this.queryStr = PageLayout.staticSetQueryStr(siteRequest_, o);
 	}
@@ -3619,7 +3593,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageImageUri() {
 		return pageImageUri;
 	}
-	@JsonIgnore
 	public void setPageImageUri(String o) {
 		this.pageImageUri = PageLayout.staticSetPageImageUri(siteRequest_, o);
 	}
@@ -3792,7 +3765,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageVideoId() {
 		return pageVideoId;
 	}
-	@JsonIgnore
 	public void setPageVideoId(String o) {
 		this.pageVideoId = PageLayout.staticSetPageVideoId(siteRequest_, o);
 	}
@@ -3845,7 +3817,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getClassIcon() {
 		return classIcon;
 	}
-	@JsonIgnore
 	public void setClassIcon(String o) {
 		this.classIcon = PageLayout.staticSetClassIcon(siteRequest_, o);
 	}
@@ -3898,7 +3869,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageDescription() {
 		return pageDescription;
 	}
-	@JsonIgnore
 	public void setPageDescription(String o) {
 		this.pageDescription = PageLayout.staticSetPageDescription(siteRequest_, o);
 	}

@@ -253,7 +253,6 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getClusterName() {
 		return clusterName;
 	}
-	@JsonIgnore
 	public void setClusterName(String o) {
 		this.clusterName = AiNode.staticSetClusterName(siteRequest_, o);
 	}
@@ -310,7 +309,6 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getNodeName() {
 		return nodeName;
 	}
-	@JsonIgnore
 	public void setNodeName(String o) {
 		this.nodeName = AiNode.staticSetNodeName(siteRequest_, o);
 	}
@@ -367,7 +365,6 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
-	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiNode.staticSetDescription(siteRequest_, o);
 	}
@@ -816,7 +813,6 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
-	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiNode.staticSetEntityId(siteRequest_, o);
 	}
@@ -873,7 +869,6 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
-	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiNode.staticSetEntityShortId(siteRequest_, o);
 	}

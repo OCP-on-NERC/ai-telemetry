@@ -1,16 +1,16 @@
 
-{%- macro htmButton_patchSitePage() %}<sl-button variant="primary" id="htmButton_patchSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-edit "></i>Modify</sl-button>{%- endmacro %}
+{%- macro htmButton_patchSitePage() %}<wa-button variant="brand" id="htmButton_patchSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-edit "></i>Modify</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_patchSitePage() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_patchSitePage"
-                >Modify article</sl-button>
+                >Modify article</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_patchSitePage() %}
-        <sl-dialog id="patchSitePageDialog" label="Modify article">
+        <wa-dialog id="patchSitePageDialog" label="Modify article">
           <form id="htmForm_patchSitePage" class="round-row primary-smart-border-radius ">
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -72,8 +72,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="useful-urls">
+            </wa-details>
+            <wa-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -99,25 +99,25 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </form>
           {{ htmFormButton_patchSitePage() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_postSitePage() %}<sl-button variant="primary" id="htmButton_postSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-file-plus "></i>Create</sl-button>{%- endmacro %}
+{%- macro htmButton_postSitePage() %}<wa-button variant="brand" id="htmButton_postSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-file-plus "></i>Create</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_postSitePage() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_postSitePage"
-                >Create an article</sl-button>
+                >Create an article</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_postSitePage() %}
-        <sl-dialog id="postSitePageDialog" label="Create an article">
+        <wa-dialog id="postSitePageDialog" label="Create an article">
           <form id="htmForm_postSitePage" class="round-row primary-smart-border-radius ">
             <div>You can override any default values below: </div>
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -179,8 +179,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="useful-urls">
+            </wa-details>
+            <wa-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -206,48 +206,48 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </form>
           {{ htmFormButton_postSitePage() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_putimportSitePage() %}<sl-button variant="primary" id="htmButton_putimportSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
+{%- macro htmButton_putimportSitePage() %}<wa-button variant="brand" id="htmButton_putimportSitePage" data-pageId={{ result.pageId | tojson }}><i slot="prefix" class="fas fa-file-import "></i>Import</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportSitePage() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_putimportSitePage"
-                >Import articles</sl-button>
+                >Import articles</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_putimportSitePage() %}
-        <sl-dialog id="putimportSitePageDialog" label="Import articles">
+        <wa-dialog id="putimportSitePageDialog" label="Import articles">
           <form id="htmForm_putimportSitePage" class="round-row primary-smart-border-radius ">
             <div>
-              <sl-textarea
+              <wa-textarea
                   class="PUTImport_searchList "
                   style="height: 300px; "
                   placeholder="{ 'searchList': [ { 'pageId': ... , 'saves': [ ... ] }, ... ] }"
                   >
-              </sl-textarea>
+              </wa-textarea>
             </div>
           </form>
           {{ htmFormButton_putimportSitePage() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
 {%- macro htmButton_searchpageSitePage() %}{%- endmacro %}
 
 {%- macro htmFormButton_searchpageSitePage() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_searchpageSitePage"
-                >Search articles</sl-button>
+                >Search articles</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_searchpageSitePage() %}
         <div id="searchpageSitePageDialog" label="Search articles">
           <div id="htmForm_searchpageSitePage" class="round-row primary-smart-border-radius ">
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -309,8 +309,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="useful-urls">
+            </wa-details>
+            <wa-details open class="HtmRow" id="useful-urls">
               <div slot="summary">
                 <span>Useful URLs</span>
               </div>
@@ -336,28 +336,29 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </div>
         </div>
 {%- endmacro %}
+          <wa-divider></wa-divider>
+          <div id="htmButtonGroup">
+            <div class="flex flex-wrap round-column pill-smart-border-radius ">
 {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {% if "PATCH" in scopes %}
-        <sl-divider></sl-divider>
-        <div id="htmButtonGroup">
-          <div class="flex flex-wrap round-column pill-smart-border-radius ">
-    {% if resultCount == 1 %}              <sl-button variant="primary" id="refreshThisSitePageGenPage"
+    {% if resultCount == 1 %}
+              <wa-button variant="brand" id="refreshThisSitePageGenPage"
                    onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pageId:{{pageId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSitePageGenPage')); }, function() { addError(document.querySelector('#refreshThisSitePageGenPage')); }); return false; ">
                 <i slot="prefix" class="fas fa-sync-alt "></i>
                 refresh
-              </sl-button>
+              </wa-button>
     {% endif %}
     {% if resultCount > 0 %}
-              <sl-button variant="primary" id="refreshAllSitePageGenPage{{ result.pageId | e }}"
+              <wa-button variant="brand" id="refreshAllSitePageGenPage{{ result.pageId | e }}"
                    onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSitePageGenPage{{ result.pageId | e }}')); }, function() { addError(document.querySelector('#refreshAllSitePageGenPage{{ result.pageId | e }}')); }); "
                   >
                 <i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>
                 Refresh all 
-              </sl-button>
+              </wa-button>
     {% endif %}
   {% endif %}
 {% endif %}
@@ -381,6 +382,7 @@
   {{ htmButton_putimportSitePage() }}
 {%- endif %}
 
+            </div>
           </div>
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {%- if resultCount > 0 %}
@@ -401,4 +403,3 @@
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportSitePage() }}
 {%- endif %}
-        </div>

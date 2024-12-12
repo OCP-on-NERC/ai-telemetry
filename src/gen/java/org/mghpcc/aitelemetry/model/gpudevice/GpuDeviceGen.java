@@ -253,7 +253,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getGpuDeviceId() {
 		return gpuDeviceId;
 	}
-	@JsonIgnore
 	public void setGpuDeviceId(String o) {
 		this.gpuDeviceId = GpuDevice.staticSetGpuDeviceId(siteRequest_, o);
 	}
@@ -310,7 +309,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getClusterName() {
 		return clusterName;
 	}
-	@JsonIgnore
 	public void setClusterName(String o) {
 		this.clusterName = GpuDevice.staticSetClusterName(siteRequest_, o);
 	}
@@ -367,7 +365,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getNodeName() {
 		return nodeName;
 	}
-	@JsonIgnore
 	public void setNodeName(String o) {
 		this.nodeName = GpuDevice.staticSetNodeName(siteRequest_, o);
 	}
@@ -552,7 +549,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
-	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = GpuDevice.staticSetDescription(siteRequest_, o);
 	}
@@ -937,7 +933,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
-	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = GpuDevice.staticSetEntityId(siteRequest_, o);
 	}
@@ -994,7 +989,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
-	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = GpuDevice.staticSetEntityShortId(siteRequest_, o);
 	}

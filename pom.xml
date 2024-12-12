@@ -110,6 +110,7 @@
 		<kie.version>7.67.0.Final-redhat-00017</kie.version>
 		<drools.version>8.32.0.Final</drools.version>
 		<cloudevents.version>2.4.0</cloudevents.version>
+		<opentelemetry.version>1.18.0</opentelemetry.version>
 
 		<computate.version>4.5.8.0</computate.version>
 	</properties>
@@ -365,6 +366,26 @@
 		<dependency>
 			<groupId>io.vertx</groupId>
 			<artifactId>vertx-opentelemetry</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
+			<version>${opentelemetry.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-sdk-common</artifactId>
+			<version>${opentelemetry.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+			<version>${opentelemetry.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-opentracing</artifactId>
 		</dependency>
 		
 		<!-- ########## -->

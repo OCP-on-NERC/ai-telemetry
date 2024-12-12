@@ -480,7 +480,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getClassCanonicalName() {
 		return classCanonicalName;
 	}
-	@JsonIgnore
 	public void setClassCanonicalName(String o) {
 		this.classCanonicalName = BaseModel.staticSetClassCanonicalName(siteRequest_, o);
 	}
@@ -533,7 +532,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getClassSimpleName() {
 		return classSimpleName;
 	}
-	@JsonIgnore
 	public void setClassSimpleName(String o) {
 		this.classSimpleName = BaseModel.staticSetClassSimpleName(siteRequest_, o);
 	}
@@ -661,7 +659,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getSessionId() {
 		return sessionId;
 	}
-	@JsonIgnore
 	public void setSessionId(String o) {
 		this.sessionId = BaseModel.staticSetSessionId(siteRequest_, o);
 	}
@@ -857,7 +854,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getTitle() {
 		return title;
 	}
-	@JsonIgnore
 	public void setTitle(String o) {
 		this.title = BaseModel.staticSetTitle(siteRequest_, o);
 	}
@@ -914,7 +910,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getDisplayPage() {
 		return displayPage;
 	}
-	@JsonIgnore
 	public void setDisplayPage(String o) {
 		this.displayPage = BaseModel.staticSetDisplayPage(siteRequest_, o);
 	}
@@ -971,7 +966,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getEditPage() {
 		return editPage;
 	}
-	@JsonIgnore
 	public void setEditPage(String o) {
 		this.editPage = BaseModel.staticSetEditPage(siteRequest_, o);
 	}
@@ -1024,7 +1018,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getUserPage() {
 		return userPage;
 	}
-	@JsonIgnore
 	public void setUserPage(String o) {
 		this.userPage = BaseModel.staticSetUserPage(siteRequest_, o);
 	}
@@ -1077,7 +1070,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getObjectSuggest() {
 		return objectSuggest;
 	}
-	@JsonIgnore
 	public void setObjectSuggest(String o) {
 		this.objectSuggest = BaseModel.staticSetObjectSuggest(siteRequest_, o);
 	}
@@ -1205,7 +1197,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = BaseModel.staticSetSolrId(siteRequest_, o);
 	}

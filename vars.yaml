@@ -120,7 +120,7 @@ SOLR_ID: "solrId"
 # The paths to the internationalization for this project. 
 I18N_PATHS: ["{{ COMPUTATE_VERTX_SRC }}/src/main/resources/org/computate/i18n/i18n_{{ SITE_LANG }}.yaml"]
 # The Java main class of the site. 
-JAVA_MAIN_CLASS: "{{ SITE_MAIN_VERTICLE_PACKAGE }}.AppVertx"
+JAVA_MAIN_CLASS: "{{ SITE_MAIN_VERTICLE_PACKAGE }}.MainVerticle"
 # Enables Vert.x reactive APIs. 
 ENABLE_VERTX: true
 # Enables a Quarkus application to also be created in addition to the Vert.x main verticle. 
@@ -202,7 +202,7 @@ WEB_COMPONENTS_CSS: |-
 WEB_COMPONENTS_JS: |-
   {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>') }}
 # Switch between Shoelace "sl-" and Web Awesome "wa-" element prefixes. 
-WEB_COMPONENTS_PREFIX: "sl-"
+WEB_COMPONENTS_PREFIX: "wa-"
 # Site default theme, light or dark. 
 SITE_THEME: dark
 
@@ -397,6 +397,21 @@ IOTAGENT_NORTH_PORT: 443
 # The message broker transport type (MQTT or AMQP). 
 IOTAGENT_TRANSPORT: AMQP
 
+##############
+# Kafka vars #
+##############
+
+# Enable Kafka message integration. 
+ENABLE_KAFKA: false
+# The namespace in OpenShift where Kafka will run. 
+KAFKA_NAMESPACE: kafka
+# The Kafka SSL KeyStore secret name. 
+KAFKA_SSL_KEYSTORE_SECRET: "{{ SITE_SHORT_NAME }}-kafka"
+# The Kafka SSL TrustStore secret name. 
+KAFKA_SSL_TRUSTSTORE_SECRET: default-cluster-ca-cert
+# The Kafka port. 
+KAFKA_PORT: 9093
+
 #############
 # MQTT vars #
 #############
@@ -465,7 +480,7 @@ ENABLE_IMPORT_DATA: true
 # Enable the Zookeeper cluster manager. 
 ENABLE_ZOOKEEPER_CLUSTER: false
 # Enable support for Open Telemetry in the application. 
-ENABLE_OPEN_TELEMETRY: false
+ENABLE_OPEN_TELEMETRY: true
 # Enable a login link and Keycloak integration in the application. 
 ENABLE_LOGIN: true
 # Enable the code generation service for the project

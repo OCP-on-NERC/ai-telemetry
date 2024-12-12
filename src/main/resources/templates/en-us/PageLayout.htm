@@ -1,62 +1,27 @@
 <!DOCTYPE html>
-<html lang="{{ SITE_LOCALE }}" class="sl-theme-{{ SITE_THEME }}">
+<html lang="{{ SITE_LOCALE }}" class="wa-theme-default-{{ SITE_THEME }}">
   <head>
-{% block htmHeadPageLayout %}
+{%- block htmHeadPageLayout %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-{% block htmMetaPageLayout %}
-{% endblock htmMetaPageLayout %}
-{% block htmTitlePageLayout %}
-    <title>computate-smart-laptop-challenge</title>
-{% endblock htmTitlePageLayout %}
-{% block htmStylesPageLayout %}
-    <link rel="icon" href="{{ STATIC_BASE_URL }}/favicon.ico" />
-    <!-- <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/w3.css">  -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/dark.css" />
+{%- block htmMetaPageLayout %}
+{%- endblock htmMetaPageLayout %}
+{%- block htmTitlePageLayout %}
+    <title>{{ SITE_DISPLAY_NAME }}</title>
+{%- endblock htmTitlePageLayout %}
+{%- block htmStylesPageLayout %}
+    <link rel="icon" href="{{ STATIC_BASE_URL }}/favicon.svg" />
+    {{ WEB_COMPONENTS_CSS }}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
     <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/site.css"/>
-{% endblock htmStylesPageLayout %}
-
-    <style>
-{% block htmStylePageLayout %}
-{% endblock htmStylePageLayout %}
-    </style>
-
-{% block htmScriptsPageLayout %}
-{% if FONTAWESOME_KIT is defined %}
+{%- endblock htmStylesPageLayout %}
+    <style>{%- block htmStylePageLayout %}{%- endblock htmStylePageLayout %}</style>
+{%- block htmScriptsPageLayout %}
+{%- if FONTAWESOME_KIT is defined %}
     {{ FONTAWESOME_KIT }}
-{% endif %}
-    <script>
-
-      function addGlow($input) {
-        $input.classList.add('glowSuccess');
-        $input.classList.remove('glowError');
-      }
-
-      function removeGlow($input) {
-        $input.classList.remove('glowSuccess');
-        $input.classList.remove('glowError');
-      }
-
-      function addError($input) {
-        $input.classList.remove('glowSuccess');
-        $input.classList.add('glowError');
-      }
-    </script>
+{%- endif %}
     <script type="module">
-      import { registerIconLibrary } from 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/utilities/icon-library.js';
-    
-      registerIconLibrary('fa', {
-        resolver: name => {
-          const filename = name.replace(/^fa[rbs]-/, '');
-          let folder = 'regular';
-          if (name.substring(0, 4) === 'fas-') folder = 'solid';
-          if (name.substring(0, 4) === 'fab-') folder = 'brands';
-          console.log(`https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/svgs/${folder}/${filename}.svg`);
-          return `https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/svgs/${folder}/${filename}.svg`;
-        },
-        mutator: svg => svg.setAttribute('fill', 'currentColor')
-      });
 
       function siteSearchInput(event) {
         var filters = [];
@@ -66,7 +31,7 @@
           filters.push({ name: 'q', value: 'objectSuggest:' + event.target.value });
 
         fetch(
-          '/search?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
+          '{{ PUBLIC_SEARCH_URI }}?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
           , {
             headers: {'Content-Type':'application/json; charset=utf-8'}
           }).then(response => {
@@ -76,9 +41,9 @@
               response.json().then(function(body) {
                 dropdownMenu.innerHTML = '';
                 body.list.forEach((o) => {
-                  var menuItem = document.createElement('sl-menu-item');
-                  menuItem.innerText = o.objectTitle;
-                  menuItem.setAttribute('data-href', o.pageUrlId);
+                  var menuItem = document.createElement('wa-menu-item');
+                  menuItem.innerText = o.title;
+                  menuItem.setAttribute('data-href', o.displayPage);
                   dropdownMenu.appendChild(menuItem);
                   menuItem.addEventListener('click', (event) => window.location.href = event.target.getAttribute('data-href') );
                 });
@@ -92,185 +57,143 @@
       }
 
       Promise.all([
-        customElements.whenDefined('sl-button')
-        , customElements.whenDefined('sl-input')
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
       ]).then(() => {
-        document.querySelector('#siteSearchInput')?.addEventListener('sl-input', siteSearchInput);
-        document.querySelector('#siteSearchInput')?.addEventListener('sl-focus', siteSearchInput);
+        document.querySelector('#siteSearchInput')?.addEventListener('wa-input', siteSearchInput);
+        document.querySelector('#siteSearchInput')?.addEventListener('wa-focus', siteSearchInput);
       });
     </script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+    {{ WEB_COMPONENTS_JS }}
     <script src="{{ STATIC_BASE_URL }}/js/site.js"></script>
     <script type="module" src="{{ STATIC_BASE_URL }}/js/siteModule.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/sockjs.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/vertx-eventbus.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/plotly-2.9.0.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-{% endblock htmScriptsPageLayout %}
-{% block htmScriptPageLayout %}
-{% endblock htmScriptPageLayout %}
-{% endblock htmHeadPageLayout %}
-
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+{%- endblock htmScriptsPageLayout %}
+{%- block htmScriptPageLayout %}
+{%- endblock htmScriptPageLayout %}
+{%- endblock htmHeadPageLayout %}
     <script>
 {%- block websocketPageLayout %}{%- endblock websocketPageLayout %}
     </script>
-  </head>
+   </head>
   <body>
-    <div id="site-grid">
-{% block htmBodyPageLayout %}
-{% block htmBodyStartPageLayout %}
-      <aside id="site-aside-left" class="hide-mobile ">
-        <a id="img-keys-a" href="/">
-          <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
-        </a>
-        <sl-button id="site-aside-left-close-button" label="Close" data-drawer="close" class="hide-desktop">
-          <i slot="prefix" class="fas fa-xmark"></i>
-        </sl-button>
-        <ul>
-          <li>
-            <sl-button id="home-button" href="{{ SITE_BASE_URL }}">
-              <i class="fa-regular fa-house"></i>
-              home
-            </sl-button>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="Read the latest articles to learn more">
-              <sl-button href="{{ SITE_BASE_URL }}/page">
-                <i class="fa-duotone fa-solid fa-newspaper"></i>
-                articles
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift cluster containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-cluster">
-                <i class="fa-regular fa-server"></i>
-                AI clusters
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift node containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-node">
-                <i class="fa-regular fa-computer"></i>
-                AI nodes
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A Red Hat OpenShift GPU device containing GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/gpu-device">
-                <i class="fa-regular fa-memory"></i>
-                GPU devices
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A GPU slice inside a GPU">
-              <sl-button href="{{ SITE_BASE_URL }}/gpu-slice">
-                <i class="fa-regular fa-cake-slice"></i>
-                GPU slices
-              </sl-button>
-            </sl-tooltip>
-          </li>
-          <li>
-            <sl-tooltip placement="right" content="A research project using AI and GPUs">
-              <sl-button href="{{ SITE_BASE_URL }}/ai-project">
-                <i class="fa-regular fa-school"></i>
-                AI projects
-              </sl-button>
-            </sl-tooltip>
-          </li>
-{% if userName is defined %}
-          <li>
-            <sl-details>
+    <wa-page>
+{%- block htmBodyPageLayout %}
+{%- block htmBodyStartPageLayout %}
+      <aside class="main-sidebar" slot="navigation">
+        <div class="text-end">
+          <wa-icon-button name="xmark" label="Close" data-drawer="close" class="hide-desktop sidebar-close-button"></wa-icon-button>
+        </div>
+        <nav>
+          <div>
+            <a href="/">
+              <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
+            </a>
+          </div>
+          <wa-tooltip for="site-aside-left-model-button-SitePage" placement="right" hoist>Read the latest articles to learn more</wa-tooltip>
+          <wa-tooltip for="site-aside-left-model-button-AiCluster" placement="right" hoist>A Red Hat OpenShift cluster containing GPUs</wa-tooltip>
+          <wa-tooltip for="site-aside-left-model-button-AiNode" placement="right" hoist>A Red Hat OpenShift node containing GPUs</wa-tooltip>
+          <wa-tooltip for="site-aside-left-model-button-GpuDevice" placement="right" hoist>A Red Hat OpenShift GPU device containing GPUs</wa-tooltip>
+          <wa-tooltip for="site-aside-left-model-button-GpuSlice" placement="right" hoist>A GPU slice inside a GPU</wa-tooltip>
+          <wa-tooltip for="site-aside-left-model-button-AiProject" placement="right" hoist>A research project using AI and GPUs</wa-tooltip>
+          <div class="flex flex-column round-row primary-smart-border-radius margin-block">
+{%- if userName is defined %}
+            <wa-details>
               <div slot="summary">
-                <sl-avatar label="user"></sl-avatar>
+                <wa-avatar label="user"></wa-avatar>
                 user: {{userName}}
               </div>
               <div>{{ userFullName }}</div>
               <div>{{ userEmail }}</div>
               <div>
-                <sl-tooltip placement="right" content="see or change your user profile">
-                  <sl-button href="/user" label="see or change your user profile">
+                <wa-tooltip content="see or change your user profile">
+                  <wa-button variant="brand" href="/user" label="see or change your user profile">
                     <i slot="prefix" class="fad fa-house-user"></i>
                     <span>my user page</span>
-                  </sl-button>
-                </sl-tooltip>
-                <sl-tooltip placement="right" content="sign out">
-                  <sl-button href="{{ logoutUrl }}" label="sign out">
+                  </wa-button>
+                </wa-tooltip>
+                <wa-tooltip placement="right" content="sign out">
+                  <wa-button variant="brand" href="{{ logoutUrl }}" label="sign out">
                     <i slot="prefix" class="fa-duotone fa-person-from-portal"></i>
                     <span>sign out</span>
-                  </sl-button>
-                </sl-tooltip>
+                  </wa-button>
+                </wa-tooltip>
               </div>
-            </sl-details>
-          </li>
-{% else %}
-          <li>
-            <sl-button href="{{ SITE_BASE_URL }}/user">
+            </wa-details>
+{%- else %}
+            <wa-button variant="brand" href="{{ SITE_BASE_URL }}/user">
               <i class="fa-duotone fa-person-to-portal"></i> login
-            </sl-button>
-          </li>
-{% endif %}
-        </ul>
+            </wa-button>
+{%- endif %}
+          </div>
+          <div class="flex flex-column round-row primary-smart-border-radius margin-block">
+            <wa-button variant="brand" id="site-aside-left-model-button-SitePage" href="{{ SITE_BASE_URL }}/en-us/search/article">
+              <i class="fa-duotone fa-solid fa-newspaper"></i>
+              articles
+            </wa-button>
+            <wa-button variant="brand" id="site-aside-left-model-button-AiCluster" href="{{ SITE_BASE_URL }}/en-us/search/ai-cluster">
+              <i class="fa-regular fa-server"></i>
+              AI clusters
+            </wa-button>
+            <wa-button variant="brand" id="site-aside-left-model-button-AiNode" href="{{ SITE_BASE_URL }}/en-us/search/ai-node">
+              <i class="fa-regular fa-computer"></i>
+              AI nodes
+            </wa-button>
+            <wa-button variant="brand" id="site-aside-left-model-button-GpuDevice" href="{{ SITE_BASE_URL }}/en-us/search/gpu-device">
+              <i class="fa-regular fa-memory"></i>
+              GPU devices
+            </wa-button>
+            <wa-button variant="brand" id="site-aside-left-model-button-GpuSlice" href="{{ SITE_BASE_URL }}/en-us/search/gpu-slice">
+              <i class="fa-regular fa-cake-slice"></i>
+              GPU slices
+            </wa-button>
+            <wa-button variant="brand" id="site-aside-left-model-button-AiProject" href="{{ SITE_BASE_URL }}/en-us/search/ai-project">
+              <i class="fa-regular fa-school"></i>
+              AI projects
+            </wa-button>
+          </div>
+        </nav>
       </aside>
       <main>
-        <header id="top-bar">
-          <sl-button data-toggle-nav id="nav-toggle-button" class="hide-desktop " label="open menu" appearance="text">
-            <i slot="prefix" class="fas fa-bars"></i>
-          </sl-button>
-          <sl-input placeholder="search" id="siteSearchInput">
+        <header class="margin-block flex gap-m align-items-center">
+          <wa-icon-button data-toggle-nav name="bars" class="nav-toggle-button hide-desktop" class="hide-desktop " label="open menu" appearance="text"></wa-icon-button>
+          <wa-input placeholder="search" id="siteSearchInput">
             <i slot="prefix" class="fa-light fa-magnifying-glass"></i>
-          </sl-input>
+          </wa-input>
         </header>
-        <sl-dropdown id="siteSearchDropdown" class="display-block ">
-          <sl-menu id="siteSearchDropdownMenu">
-          </sl-menu>
-        </sl-dropdown>
-        </header>
-{% endblock htmBodyStartPageLayout %}
+        <wa-dropdown id="siteSearchDropdown" class="display-block ">
+          <wa-menu id="siteSearchDropdownMenu">
+          </wa-menu>
+        </wa-dropdown>
+{%- endblock htmBodyStartPageLayout %}
 {% block htmBodyMiddlePageLayout %}
-        <div class="pageContent w3-content ">
+        <div class="pageContent ">
           put stuff here
         </div>
-{% endblock htmBodyMiddlePageLayout %}
-{% block htmBodyEndPageLayout %}
+{%- endblock htmBodyMiddlePageLayout %}
+{%- block htmBodyEndPageLayout %}
       </main>
-      <footer id="site-footer" class="split-block round-first-and-last-column-x-large ">
+      <footer class="flex flex-column round-row primary-smart-border-radius" slot="main-footer">
         {% if GITHUB_ORG is defined %}
-        <sl-button size="large" id="footer-open-source" target="_blank" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/">
-          <div>
-            <i class="fa-brands fa-github fa-5x "></i>
-          </div>
-          <div>
-            This site is open source. 
-          </div>
-        </sl-button>
+        <wa-button variant="brand" size="large" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank">
+          This site is <b><i class="fa-brands fa-github"></i> open source</b>.
+        </wa-button>
         {% endif %}
-        <sl-button size="large" id="footer-generated-by" href="https://www.computate.org/" target="_blank">
-          <div>
-            <div>Generated with </div>
-            <div>
-              <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg"/>
-            </div>
-          </div>
-        </sl-button>
+        <wa-button variant="brand" size="large" id="footer-generated-by" href="https://www.computate.org/" target="_blank">
+            Generated with <b><img class="footer-img" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg" alt="Computate"/></b>.
+        </wa-button>
         {% if SITE_POWERED_BY_URL is defined %}
-        <sl-button size="large" id="footer-powered-by" href="{{ SITE_POWERED_BY_URL }}" target="_blank">
-          <div>
-            <div>
-              <img src="{{ STATIC_BASE_URL }}{{ SITE_POWERED_BY_IMAGE_URI }}"/>
-            </div>
-            <div>
-              Powered by {{ SITE_POWERED_BY_NAME }}
-            </div>
-          </div>
-        </sl-button>
+        <wa-button variant="brand" size="large" id="footer-powered-by" href="{{ SITE_POWERED_BY_URL }}" target="_blank">
+          Powered by <b><img class="footer-img" alt="Google Kubernetes Engine" src="{{ STATIC_BASE_URL }}/png/nerc-logo.png"/> {{ SITE_POWERED_BY_NAME | e }}</b>
+        </wa-button>
         {% endif %}
       </footer>
-    </div>
-{% endblock htmBodyEndPageLayout %}
-{% endblock htmBodyPageLayout %}
+    </wa-page>
+{%- endblock htmBodyEndPageLayout %}
+{%- endblock htmBodyPageLayout %}
   </body>
 </html>

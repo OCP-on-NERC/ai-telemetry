@@ -1,34 +1,34 @@
-        <div id="htmSearchButtons" class="flex flex-wrap round-column pill-smart-border-radius ">
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleSearch').open = true; ">
-            <i slot="prefix" class="fad fa-magnifying-glass hover-box-shadow "></i> 
-            Search
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleFilters').open = true; ">
-            <i slot="prefix" class="fad fa-filters hover-box-shadow "></i> 
-            Filters
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleSort').open = true; ">
-            <i slot="prefix" class="fa-solid fa-arrow-down-a-z hover-box-shadow "></i> 
-            Sort
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleRange').open = true; ">
-            <i slot="prefix" class="fad fa-calendar-range hover-box-shadow "></i> 
-            Range
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarTogglePivot').open = true; ">
-            <i slot="prefix" class="fad fa-table-pivot hover-box-shadow "></i> 
-            Pivot
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleFieldList').open = true; ">
-            <i slot="prefix" class="fad fa-list-ul hover-box-shadow "></i> 
-            FieldList
-          </sl-button>
-          <sl-button variant="primary" onclick="document.querySelector('#siteSidebarToggleStats').open = true; ">
-            <i slot="prefix" class="fad fa-chart-candlestick hover-box-shadow "></i> 
-            Stats
-          </sl-button>
-          <sl-button variant="primary" href="{{ apiUri }}{% if result.userId is defined %}/{{ result.userId }}{% else %}{{ queryStr }}{% endif %}">
-            <i slot="prefix" class="fad fa-brackets-curly hover-box-shadow "></i> 
-            Api
-          </sl-button>
-        </div>
+          <div id="htmSearchButtons" class="flex flex-wrap round-column pill-smart-border-radius ">
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleSearch').open = true; ">
+              <i slot="prefix" class="fad fa-magnifying-glass hover-box-shadow "></i> 
+              Search
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleFilters').open = true; ">
+              <i slot="prefix" class="fad fa-filters hover-box-shadow "></i> 
+              Filters
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleSort').open = true; ">
+              <i slot="prefix" class="fa-solid fa-arrow-down-a-z hover-box-shadow "></i> 
+              Sort
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleRange').open = true; ">
+              <i slot="prefix" class="fad fa-calendar-range hover-box-shadow "></i> 
+              Range
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarTogglePivot').open = true; ">
+              <i slot="prefix" class="fad fa-table-pivot hover-box-shadow "></i> 
+              Pivot
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleFieldList').open = true; ">
+              <i slot="prefix" class="fad fa-list-ul hover-box-shadow "></i> 
+              FieldList
+            </wa-button>
+            <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleStats').open = true; ">
+              <i slot="prefix" class="fad fa-chart-candlestick hover-box-shadow "></i> 
+              Stats
+            </wa-button>
+            <wa-button variant="brand" href="{{ apiUri }}{% if result.userId is defined %}/{{ result.userId }}{% else %}{{ queryStr }}{% endif %}">
+              <i slot="prefix" class="fad fa-brackets-curly hover-box-shadow "></i> 
+              Api
+            </wa-button>
+          </div>

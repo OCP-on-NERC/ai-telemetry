@@ -11,7 +11,7 @@
     id: "{{ AUTH_CLIENT }}"
     realm: "{{ AUTH_REALM }}"
     enabled: true
-    displayName: "Smart Aquaculture"
+    displayName: "NERC"
     registrationAllowed: true
     resetPasswordAllowed: true
     editUsernameAllowed: true
@@ -48,6 +48,23 @@
   kubernetes.core.k8s:
     state: present
     definition: "{{ lookup('kubernetes.core.kustomize', dir='kustomize/dex/overlays/openshift-local/') }}"
+    validate_certs: false
+
+- name: "Install minio bundle on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='kustomize/cluster-scope/bundles/minio/') }}"
+    validate_certs: false
+- name: "Install minio-admin-credentials secret on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'minio-admin-credentials-secret.yaml') }}"
+    validate_certs: false
+  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('minio-admin-credentials'), namespace='minio')[0].data['MINIO_IDENTITY_OPENID_CLIENT_SECRET'] | default('')) == ''
+- name: "Install minio on OpenShift"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='kustomize/minio/overlays/openshift-local/') }}"
     validate_certs: false
 
 - name: "Install group-sync-operator bundle on OpenShift"
@@ -99,10 +116,38 @@
     linkOnly: false
     firstBrokerLoginFlowAlias: "first broker login"
     config:
-        syncMode: "IMPORT"
-        useJwksUrl: true
-        clientId: "{{ MINIO_AUTH_CLIENT }}"
-        clientSecret: "{{ MINIO_AUTH_SECRET }}"
-        authorizationUrl: https://dex-dex.apps-crc.testing
-        tokenUrl: https://dex-dex.apps-crc.testing/token
+      syncMode: "IMPORT"
+      useJwksUrl: true
+      clientId: "ai-telemetry"
+      clientSecret: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('dex-clients'), namespace='dex')[0].data['AI_TELEMETRY_AUTH_SECRET'] | b64decode }}"
+      authorizationUrl: https://dex-dex.apps-crc.testing
+      tokenUrl: https://dex-dex.apps-crc.testing/token
 
+- name: Configure OpenShift Keycloak identity provider
+  community.general.keycloak_client:
+    state: present
+    validate_certs: false
+    auth_client_id: admin-cli
+    auth_keycloak_url: https://keycloak.apps-crc.testing
+    auth_realm: master
+    auth_username: admin
+    auth_password: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-initial-admin'), namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+
+    realm: "{{ AUTH_REALM }}"
+    id: "{{ AUTH_CLIENT }}"
+    name: "{{ AUTH_CLIENT }}"
+    clientId: "{{ AUTH_CLIENT }}"
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    authorizationServicesEnabled: true
+    frontchannelLogout: true
+    publicClient: false
+    protocol: openid-connect
+    redirectUris:
+      - "{{ SITE_BASE_URL }}/callback"
+      - "{{ SITE_BASE_URL }}/logout"
+    defaultClientScopes:
+      - profile
+      - "{{ AUTH_CLIENT }}"
+    authorizationSettings:
+      decisionStrategy: AFFIRMATIVE

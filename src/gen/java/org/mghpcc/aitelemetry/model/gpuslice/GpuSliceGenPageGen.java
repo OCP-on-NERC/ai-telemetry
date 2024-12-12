@@ -413,7 +413,6 @@ public abstract class GpuSliceGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = GpuSliceGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class GpuSliceGenPageGen<DEV> extends PageLayout {
 	public String getPageUriGpuSlice() {
 		return pageUriGpuSlice;
 	}
-	@JsonIgnore
 	public void setPageUriGpuSlice(String o) {
 		this.pageUriGpuSlice = GpuSliceGenPage.staticSetPageUriGpuSlice(siteRequest_, o);
 	}

@@ -1,6 +1,6 @@
         <div class="htmBodySidebarSitePagePage ">
 {%- block htmBodySidebarSitePagePage %}
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
               <i class="fad fa-magnifying-glass "></i>
               Search
@@ -16,7 +16,7 @@
                 </div>
                 <div>
                   <div>
-                    <sl-input id="qSitePage_{{ key }}" placeholder="{{ displayName }}" data-var="{{ key }}" autocomplete="off="></sl-input>
+                    <wa-input id="qSitePage_{{ key }}" placeholder="{{ displayName }}" data-var="{{ key }}" autocomplete="off="></wa-input>
                     <div id="qSitePageDiv_{{ key }}" class="pageSearchVal "></div>
                   </div>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div>
                   <div>
-                    <sl-input id="qSitePage_start" placeholder="{{ displayName }}" class="" data-var="start" autocomplete="off=" value="{{ start }}"></sl-input>
+                    <wa-input id="qSitePage_start" placeholder="{{ displayName }}" class="" data-var="start" autocomplete="off=" value="{{ start }}"></wa-input>
                     <div id="qSitePageDiv_start" class="pageSearchVal ">start={{ start }}</div>
                   </div>
                 </div>
@@ -39,15 +39,15 @@
                 </div>
                 <div>
                   <div>
-                    <sl-input id="qSitePage_rows" placeholder="{{ displayName }}" class="" data-var="rows" autocomplete="off" value="{{ rows }}"></sl-input>
+                    <wa-input id="qSitePage_rows" placeholder="{{ displayName }}" class="" data-var="rows" autocomplete="off" value="{{ rows }}"></wa-input>
                     <div id="qSitePageDiv_rows" class="pageSearchVal ">rows={{ rows }}</div>
                   </div>
                 </div>
               </div>
               {%- endblock htmBodySearchSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFilters">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFilters">
             <div slot="label">
               <span>
               <i class="fad fa-filters "></i> Filters</span>
@@ -58,10 +58,10 @@
                 {% for key, value in varsFq.items() %}
                   <div class="">
                     <label for="fqSitePage_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
-                    <sl-tooltip for="buttonFacetSitePage_{{ key }}">see values</sl-tooltip>
+                    <wa-tooltip for="buttonFacetSitePage_{{ key }}">see values</wa-tooltip>
                     <div class="flex round-column pill-smart-border-radius ">
-                      <sl-button variant="primary" id="buttonFacetSitePage_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></sl-button>
-                      <sl-input id="fqSitePage_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('SitePage', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></sl-input>
+                      <wa-button variant="brand" id="buttonFacetSitePage_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></wa-button>
+                      <wa-input id="fqSitePage_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('SitePage', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
                     </div>
                   </div>
                   <div>
@@ -69,9 +69,9 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetSitePage_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldSitePage_{{ key }} " id="pageFacetFieldSitePage_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <sl-tooltip content="{{ facetFieldValue | e }} article total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <wa-tooltip content="{{ facetFieldValue | e }} article total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
                         <div class="cursor-pointer " data-class="SitePage" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('SitePage', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </sl-tooltip>
+                      </wa-tooltip>
                       {% endfor %}
                     </div>
                   </div>
@@ -79,8 +79,8 @@
               </div>
               {%- endblock htmBodyFiltersSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSort">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSort">
             <div slot="label">
               <i class="fad fa-solid fa-arrow-down-a-z "></i>
               Sort
@@ -94,17 +94,17 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-radio-group name="pageFacetSort" class="pageFacetSort " id="pageFacetSortSitePage_{{ key }}" value="{% if (key + ' asc') in defaultSortVars %}asc{% else %}{% if (key + ' desc') in defaultSortVars %}desc{% endif %}{% endif %}"{% if pivot is defined %} checked="checked"{% endif %} label={{ value.displayName | tojson }} size="small">
-                  <sl-radio-button value="" pill>none</sl-radio-button>
-                  <sl-radio-button value="asc" pill>ascending</sl-radio-button>
-                  <sl-radio-button value="desc" pill>descending</sl-radio-button>
-                </sl-radio-group>
+                <wa-radio-group name="pageFacetSort" class="pageFacetSort " id="pageFacetSortSitePage_{{ key }}" value="{% if (key + ' asc') in defaultSortVars %}asc{% else %}{% if (key + ' desc') in defaultSortVars %}desc{% endif %}{% endif %}"{% if pivot is defined %} checked="checked"{% endif %} label={{ value.displayName | tojson }} size="small">
+                  <wa-radio-button value="" pill>none</wa-radio-button>
+                  <wa-radio-button value="asc" pill>ascending</wa-radio-button>
+                  <wa-radio-button value="desc" pill>descending</wa-radio-button>
+                </wa-radio-group>
               </div>
               {% endfor %}
               {%- endblock htmBodySortSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleRange">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleRange">
             <div slot="label">
               <span>
               <i class="fad fa-calendar-range "></i> Range</span>
@@ -127,15 +127,15 @@
                     <span>Range Gap</span>
                   </td>
                   <td class="">
-                    <sl-select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
-                      <sl-option value="+1YEAR"{% if defaultRangeGap == '+1YEAR' %} selected="selected"{% else %}{% endif %}>Year</sl-option>
-                      <sl-option value="+1MONTH"{% if defaultRangeGap == '+1MONTH' %} selected="selected"{% else %}{% endif %}>Month</sl-option>
-                      <sl-option value="+1WEEK"{% if defaultRangeGap == '+1WEEK' %} selected="selected"{% else %}{% endif %}>Week</sl-option>
-                      <sl-option value="+1DAY"{% if defaultRangeGap == '+1DAY' %} selected="selected"{% else %}{% if defaultRangeGap is defined %}{% else %} selected="selected"{% endif %}{% endif %}>Day</sl-option>
-                      <sl-option value="+1HOUR"{% if defaultRangeGap == '+1HOUR' %} selected="selected"{% else %}{% endif %}>Hour</sl-option>
-                      <sl-option value="+1MINUTE"{% if defaultRangeGap == '+1MINUTE' %} selected="selected"{% else %}{% endif %}>Minute</sl-option>
-                      <sl-option value="+1SECOND"{% if defaultRangeGap == '+1SECOND' %} selected="selected"{% else %}{% endif %}>Second</sl-option>
-                    </sl-select>
+                    <wa-select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
+                      <wa-option value="+1YEAR"{% if defaultRangeGap == '+1YEAR' %} selected="selected"{% else %}{% endif %}>Year</wa-option>
+                      <wa-option value="+1MONTH"{% if defaultRangeGap == '+1MONTH' %} selected="selected"{% else %}{% endif %}>Month</wa-option>
+                      <wa-option value="+1WEEK"{% if defaultRangeGap == '+1WEEK' %} selected="selected"{% else %}{% endif %}>Week</wa-option>
+                      <wa-option value="+1DAY"{% if defaultRangeGap == '+1DAY' %} selected="selected"{% else %}{% if defaultRangeGap is defined %}{% else %} selected="selected"{% endif %}{% endif %}>Day</wa-option>
+                      <wa-option value="+1HOUR"{% if defaultRangeGap == '+1HOUR' %} selected="selected"{% else %}{% endif %}>Hour</wa-option>
+                      <wa-option value="+1MINUTE"{% if defaultRangeGap == '+1MINUTE' %} selected="selected"{% else %}{% endif %}>Minute</wa-option>
+                      <wa-option value="+1SECOND"{% if defaultRangeGap == '+1SECOND' %} selected="selected"{% else %}{% endif %}>Second</wa-option>
+                    </wa-select>
                   </td>
                 </tr>
                 <tr class="">
@@ -145,7 +145,7 @@
                 </tr>
                 <tr class="">
                   <td class="" colspan="2">
-                    <span><sl-input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-SitePage" value="{{ formatZonedDateTime(defaultRangeStart, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeStartChange('SitePage', this); "></sl-input></span>
+                    <span><wa-input type="datetime-local" name="facetRangeStart" id="pageFacetRangeStart-SitePage" value="{{ formatZonedDateTime(defaultRangeStart, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeStartChange('SitePage', this); "></wa-input></span>
                   </td>
                 </tr>
                 <tr class="">
@@ -155,18 +155,18 @@
                 </tr>
                 <tr class="">
                   <td class="" colspan="2">
-                    <span><sl-input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-SitePage" value="{{ formatZonedDateTime(defaultRangeEnd, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeEndChange('SitePage', this); "></sl-input></span>
+                    <span><wa-input type="datetime-local" name="facetRangeEnd" id="pageFacetRangeEnd-SitePage" value="{{ formatZonedDateTime(defaultRangeEnd, "yyyy-MM-dd'T'HH:mm", defaultLocaleId, defaultZoneId) }}" onclick="facetRangeEndChange('SitePage', this); "></wa-input></span>
                   </td>
                 </tr>
               </table>
-              <sl-radio-group id="pageFacetRangeSitePage">                {% for key, value in varsRange.items() %}
-                <sl-radio name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeSitePage_{{ key }}" value="{{ value.var }}"{% if defaultRangeVar == var %} checked="checked"{% endif %}>{{ value.displayName }}</sl-radio>
+              <wa-radio-group id="pageFacetRangeSitePage">                {% for key, value in varsRange.items() %}
+                <wa-radio name="pageFacetRange" class="pageFacetRange " id="pageFacetRangeSitePage_{{ key }}" value="{{ value.var }}"{% if defaultRangeVar == var %} checked="checked"{% endif %}>{{ value.displayName }}</wa-radio>
                 {% endfor %}
-              </sl-radio-group>
+              </wa-radio-group>
               {%- endblock htmBodyRangeSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarTogglePivot">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarTogglePivot">
             <div slot="label">
               <span>
               <i class="fad fa-table-pivot "></i> Pivot</span>
@@ -185,13 +185,13 @@
               </div>
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSitePage_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</sl-checkbox>
+                <wa-checkbox name="pageFacetPivot" class="pageFacetPivot " id="pageFacetPivotSitePage_{{ key }}" value="{{ value.var }}"{% if pivot is defined %} checked="checked"{% endif %}>{{ value.displayName }}</wa-checkbox>
               </div>
               {% endfor %}
               {%- endblock htmBodyPivotSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFieldList">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFieldList">
             <div slot="label">
               <span>
               <i class="fad fa-list-ul "></i> Field List</span>
@@ -212,13 +212,13 @@
               {% endif %}
               {% for key, value in varsFq.items() %}
               <div>
-                <sl-checkbox name="pageFieldList" class="pageFieldList " id="pageFieldListSitePage_{{ key }}" value="{{ value.var }}"{% if fieldList is defined %} checked="checked"{% endif %} onclick="facetFieldListChange('SitePage', value); ">{{ value.displayName }}</sl-checkbox>
+                <wa-checkbox name="pageFieldList" class="pageFieldList " id="pageFieldListSitePage_{{ key }}" value="{{ value.var }}"{% if fieldList is defined %} checked="checked"{% endif %} onclick="facetFieldListChange('SitePage', value); ">{{ value.displayName }}</wa-checkbox>
               </div>
                 {% endfor %}
 {%- endblock htmBodyFieldListSitePagePage %}
             </div>
-          </sl-drawer>
-          <sl-drawer with-header light-dismiss placement="end" id="siteSidebarToggleStats">
+          </wa-drawer>
+          <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleStats">
             <div slot="label">
               <i class="fad fa-chart-candlestick "></i>
               Stats
@@ -242,7 +242,7 @@
                   {% if enableStats is defined %}
                     <tr class="">
                       <td class="">
-                        <span><sl-checkbox name="pageStats" class="pageStats " id="pageStatsSitePage_{{ key }}" value="{{ value.var }}"{% if value.stats is defined %} checked="checked"{% endif %} onclick="facetStatsChange('SitePage', value); ">{{ value.displayName }}</sl-checkbox></span>
+                        <span><wa-checkbox name="pageStats" class="pageStats " id="pageStatsSitePage_{{ key }}" value="{{ value.var }}"{% if value.stats is defined %} checked="checked"{% endif %} onclick="facetStatsChange('SitePage', value); ">{{ value.displayName }}</wa-checkbox></span>
                       </td>
                       <td>
                         <div>
@@ -258,14 +258,14 @@
                             {% if value.stats.max is defined %}
                               <div>
                                 <span> step </span>
-                                <sl-input id="animateStatsStep" placeholder="step" value="1" style="width: 4em; "></sl-input>
+                                <wa-input id="animateStatsStep" placeholder="step" value="1" style="width: 4em; "></wa-input>
                                 <span> min </span>
-                                <sl-input id="animateStatsMin" placeholder="min" value="{{ value.stats.min }}" style="width: 4em; "></sl-input>
+                                <wa-input id="animateStatsMin" placeholder="min" value="{{ value.stats.min }}" style="width: 4em; "></wa-input>
                                 <span> max </span>
-                                <sl-input id="animateStatsMax" placeholder="max" value="{{ value.stats.max }}" style="width: 4em; "></sl-input>
+                                <wa-input id="animateStatsMax" placeholder="max" value="{{ value.stats.max }}" style="width: 4em; "></wa-input>
                                 <span> speed in seconds </span>
-                                <sl-input id="animateStatsSpeed" placeholder="speed" value="1" style="width: 4em; "></sl-input>
-                                <sl-button variant="primary" onclick="animateStats(); ">animate</sl-button>
+                                <wa-input id="animateStatsSpeed" placeholder="speed" value="1" style="width: 4em; "></wa-input>
+                                <wa-button variant="brand" onclick="animateStats(); ">animate</wa-button>
                               </div>
                             {% endif %}
                           {% endif %}
@@ -277,7 +277,7 @@
               </table>
 {%- endblock htmBodyStatsSitePagePage %}
             </div>
-          </sl-drawer>
+          </wa-drawer>
 {%- endblock htmBodySidebarSitePagePage %}
         </div>
 

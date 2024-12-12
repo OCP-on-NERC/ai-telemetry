@@ -3,387 +3,7 @@ info:
   title: "AI Telemetry"
   version: 3.0.0
 paths:
-  /ai-cluster/{id}:
-    get:
-      operationId: searchpageAiClusterId
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI cluster
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - name: id
-          in: path
-          description: >+
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchPageAiClusterResponse'
-  /ai-cluster:
-    get:
-      operationId: searchpageAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI cluster
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchPageAiClusterResponse'
-  /api/ai-cluster:
+  /en-us/api/ai-cluster:
     get:
       operationId: searchAiCluster
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
@@ -393,24 +13,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI cluster
+        - AI clusters
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -587,24 +191,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI cluster
+        - AI clusters
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -659,32 +247,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI cluster
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
+        - AI clusters
       requestBody:
         description: >+
         required: true
@@ -699,72 +262,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiClusterResponse'
-    delete:
-      operationId: deleteAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI cluster
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEAiClusterResponse'
-  /api/ai-cluster-import:
+  /en-us/api/ai-cluster-import:
     put:
       operationId: putimportAiCluster
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
@@ -774,24 +272,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI cluster
+        - AI clusters
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -837,7 +319,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiClusterResponse'
-  /api/ai-cluster/{id}:
+  /en-us/api/ai-cluster/{entityId}:
     get:
       operationId: getAiCluster
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
@@ -847,24 +329,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI cluster
+        - AI clusters
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -873,7 +339,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -886,7 +352,274 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETAiClusterResponse'
-  /api/gpu-device:
+    delete:
+      operationId: deleteAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: entityId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEAiClusterResponse'
+  /en-us/edit/ai-cluster/{pageId}:
+    get:
+      operationId: editpageAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pageId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageAiClusterResponse'
+  /en-us/search/ai-cluster:
+    get:
+      operationId: searchpageAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageAiClusterResponse'
+  /en-us/api/gpu-device:
     get:
       operationId: searchGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -896,24 +629,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -1090,24 +807,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -1162,32 +863,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
+        - GPU devices
       requestBody:
         description: >+
         required: true
@@ -1202,80 +878,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuDeviceResponse'
-    delete:
-      operationId: deleteGpuDevice
-      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - GPU device
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 1000
-            minimum: 0
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEGpuDeviceResponse'
-  /api/gpu-device-import:
+  /en-us/api/gpu-device-import:
     put:
       operationId: putimportGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -1285,24 +888,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -1348,7 +935,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportGpuDeviceResponse'
-  /api/gpu-device/{id}:
+  /en-us/api/gpu-device/{entityId}:
     get:
       operationId: getGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -1358,24 +945,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -1384,7 +955,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -1397,9 +968,8 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETGpuDeviceResponse'
-  /gpu-device/{id}:
-    get:
-      operationId: searchpageGpuDeviceId
+    delete:
+      operationId: deleteGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
@@ -1407,7 +977,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -1417,7 +987,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -1446,143 +1016,47 @@ paths:
             type: array
             items:
                 type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEGpuDeviceResponse'
+  /en-us/edit/gpu-device/{pageId}:
+    get:
+      operationId: editpageGpuDevice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU devices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
           schema:
             type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
+        - name: sessionIdBefore
+          in: cookie
           schema:
             type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
+        - name: pageId
+          in: path
+          description: >+
+          required: true
           schema:
             type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
       responses:
         '200':
           description: >+
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageGpuDeviceResponse'
-  /gpu-device:
+                $ref: '#/components/schemas/EditPageGpuDeviceResponse'
+  /en-us/search/gpu-device:
     get:
       operationId: searchpageGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -1592,24 +1066,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU device
+        - GPU devices
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -1777,7 +1235,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageGpuDeviceResponse'
-  /api/gpu-slice:
+  /en-us/api/gpu-slice:
     get:
       operationId: searchGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -1787,7 +1245,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -1965,7 +1423,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2021,7 +1479,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       requestBody:
         description: >+
         required: true
@@ -2036,56 +1494,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuSliceResponse'
-    delete:
-      operationId: deleteGpuSlice
-      x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - GPU slice
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEGpuSliceResponse'
-  /api/gpu-slice-import:
+  /en-us/api/gpu-slice-import:
     put:
       operationId: putimportGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -2095,7 +1504,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2142,7 +1551,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportGpuSliceResponse'
-  /api/gpu-slice/{id}:
+  /en-us/api/gpu-slice/{entityId}:
     get:
       operationId: getGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -2152,7 +1561,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2162,7 +1571,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -2175,9 +1584,8 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETGpuSliceResponse'
-  /gpu-slice/{id}:
-    get:
-      operationId: searchpageGpuSliceId
+    delete:
+      operationId: deleteGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
@@ -2185,7 +1593,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2195,7 +1603,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -2224,143 +1632,47 @@ paths:
             type: array
             items:
                 type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEGpuSliceResponse'
+  /en-us/edit/gpu-slice/{pageId}:
+    get:
+      operationId: editpageGpuSlice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU slices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
           schema:
             type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
+        - name: sessionIdBefore
+          in: cookie
           schema:
             type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
+        - name: pageId
+          in: path
+          description: >+
+          required: true
           schema:
             type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
       responses:
         '200':
           description: >+
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageGpuSliceResponse'
-  /gpu-slice:
+                $ref: '#/components/schemas/EditPageGpuSliceResponse'
+  /en-us/search/gpu-slice:
     get:
       operationId: searchpageGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -2370,7 +1682,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - GPU slice
+        - GPU slices
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2539,387 +1851,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageGpuSliceResponse'
-  /ai-node/{id}:
-    get:
-      operationId: searchpageAiNodeId
-      x-vertx-event-bus: ai-telemetry-enUS-AiNode
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI node
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - name: id
-          in: path
-          description: >+
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchPageAiNodeResponse'
-  /ai-node:
-    get:
-      operationId: searchpageAiNode
-      x-vertx-event-bus: ai-telemetry-enUS-AiNode
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI node
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchPageAiNodeResponse'
-  /api/ai-node:
+  /en-us/api/ai-node:
     get:
       operationId: searchAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -2929,24 +1861,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI node
+        - AI nodes
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -3123,24 +2039,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI node
+        - AI nodes
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -3195,32 +2095,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI node
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
+        - AI nodes
       requestBody:
         description: >+
         required: true
@@ -3235,72 +2110,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiNodeResponse'
-    delete:
-      operationId: deleteAiNode
-      x-vertx-event-bus: ai-telemetry-enUS-AiNode
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI node
-      parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEAiNodeResponse'
-  /api/ai-node-import:
+  /en-us/api/ai-node-import:
     put:
       operationId: putimportAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -3310,24 +2120,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI node
+        - AI nodes
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -3373,7 +2167,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiNodeResponse'
-  /api/ai-node/{id}:
+  /en-us/api/ai-node/{entityId}:
     get:
       operationId: getAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -3383,24 +2177,8 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI node
+        - AI nodes
       parameters:
-        - name: Fiware-Service
-          in: header
-          schema:
-            type: string
-        - name: Fiware-ServicePath
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Tenant
-          in: header
-          schema:
-            type: string
-        - name: NGSILD-Path
-          in: header
-          schema:
-            type: string
         - name: vertx-web.session
           in: cookie
           schema:
@@ -3409,7 +2187,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -3422,17 +2200,16 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETAiNodeResponse'
-  /ai-project/{id}:
-    get:
-      operationId: searchpageAiProjectId
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+    delete:
+      operationId: deleteAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
           - profile
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI nodes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3442,7 +2219,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -3471,153 +2248,57 @@ paths:
             type: array
             items:
                 type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
       responses:
         '200':
           description: >+
           content:
-            text/html; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageAiProjectResponse'
-  /ai-project:
+                $ref: '#/components/schemas/DELETEAiNodeResponse'
+  /en-us/edit/ai-node/{pageId}:
     get:
-      operationId: searchpageAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: editpageAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
           - profile
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pageId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageAiNodeResponse'
+  /en-us/search/ai-node:
+    get:
+      operationId: searchpageAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI nodes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3785,8 +2466,8 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageAiProjectResponse'
-  /api/ai-project:
+                $ref: '#/components/schemas/SearchPageAiNodeResponse'
+  /en-us/api/ai-project:
     get:
       operationId: searchAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -3796,7 +2477,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3974,7 +2655,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4030,7 +2711,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI projects
       requestBody:
         description: >+
         required: true
@@ -4045,56 +2726,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiProjectResponse'
-    delete:
-      operationId: deleteAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - AI project
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEAiProjectResponse'
-  /api/ai-project-import:
+  /en-us/api/ai-project-import:
     put:
       operationId: putimportAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -4104,7 +2736,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4151,7 +2783,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiProjectResponse'
-  /api/ai-project/{id}:
+  /en-us/api/ai-project/{entityId}:
     get:
       operationId: getAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -4161,7 +2793,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI project
+        - AI projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4171,7 +2803,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: entityId
           in: path
           description: >+
           required: true
@@ -4184,14 +2816,281 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETAiProjectResponse'
-  /api/page:
+    delete:
+      operationId: deleteAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: entityId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEAiProjectResponse'
+  /en-us/edit/ai-project/{pageId}:
+    get:
+      operationId: editpageAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pageId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageAiProjectResponse'
+  /en-us/search/ai-project:
+    get:
+      operationId: searchpageAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageAiProjectResponse'
+  /en-us/api/article:
     get:
       operationId: searchSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4369,7 +3268,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4425,7 +3324,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       requestBody:
         description: >+
         required: true
@@ -4440,56 +3339,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTSitePageResponse'
-    delete:
-      operationId: deleteSitePage
-      x-vertx-event-bus: ai-telemetry-enUS-SitePage
-      security:
-        - openIdConnect:
-          - profile
-      description: >+
-      summary: >+
-      tags:
-        - Page
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETESitePageResponse'
-  /api/page-import:
+  /en-us/api/article-import:
     put:
       operationId: putimportSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
@@ -4499,7 +3349,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4546,14 +3396,14 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportSitePageResponse'
-  /api/page/{id}:
+  /en-us/api/article/{pageId}:
     get:
       operationId: getSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4563,7 +3413,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: pageId
           in: path
           description: >+
           required: true
@@ -4576,14 +3426,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GETSitePageResponse'
-  /page/{id}:
+  /en-us/edit/article/{pageId}:
     get:
-      operationId: searchpageSitePageId
+      operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      security:
+        - openIdConnect:
+          - profile
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4593,179 +3446,27 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: pageId
           in: path
           description: >+
           required: true
           schema:
             type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
       responses:
         '200':
           description: >+
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageSitePageResponse'
-  /page:
+                $ref: '#/components/schemas/EditPageSitePageResponse'
+  /en-us/search/article:
     get:
       operationId: searchpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       description: >+
       summary: >+
       tags:
-        - Page
+        - articles
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4934,7 +3635,37 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageSitePageResponse'
-  /api/user:
+  /en-us/view/article/{pageId}:
+    get:
+      operationId: displaypageSitePage
+      x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      description: >+
+      summary: >+
+      tags:
+        - articles
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pageId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DisplayPageSitePageResponse'
+  /en-us/api/user:
     get:
       operationId: searchSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
@@ -4944,7 +3675,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - User
+        - site users
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5119,7 +3850,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - User
+        - site users
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5172,7 +3903,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - User
+        - site users
       requestBody:
         description: >+
         required: true
@@ -5187,117 +3918,14 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTSiteUserResponse'
-    delete:
-      operationId: deleteSiteUser
-      x-vertx-event-bus: ai-telemetry-enUS-SiteUser
-      description: >+
-      summary: >+
-      tags:
-        - User
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETESiteUserResponse'
-  /api/user-import:
-    put:
-      operationId: putimportSiteUser
-      x-vertx-event-bus: ai-telemetry-enUS-SiteUser
-      description: >+
-      summary: >+
-      tags:
-        - User
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      requestBody:
-        description: >+
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PUTImportSiteUserRequest'
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/PUTImportSiteUserResponse'
-  /user/{id}:
+  /en-us/edit/user/{pageId}:
     get:
-      operationId: searchpageSiteUserId
+      operationId: editpageSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
-      security:
-        - openIdConnect:
-          - profile
       description: >+
       summary: >+
       tags:
-        - User
+        - site users
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5307,172 +3935,20 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: pageId
           in: path
           description: >+
           required: true
           schema:
             type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
       responses:
         '200':
           description: >+
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageSiteUserResponse'
-  /user:
+                $ref: '#/components/schemas/EditPageSiteUserResponse'
+  /en-us/search/user:
     get:
       operationId: searchpageSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
@@ -5482,7 +3958,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - User
+        - site users
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5681,13 +4157,8 @@ components:
   securitySchemes:
     openIdConnect:
       type: openIdConnect
-      openIdConnectUrl: https://keycloak.apps.obs.nerc.mghpcc.org/realms/NERC/.well-known/openid-configuration
+      openIdConnectUrl: https://keycloak.apps-crc.testing/realms/NERC/.well-known/openid-configuration
   requestBodies:
-    SearchPageAiClusterResponse:
-      content:
-        text/html; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/SearchPageAiClusterResponse'
     SearchAiClusterResponse:
       content:
         application/json; charset=utf-8:
@@ -5713,11 +4184,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiClusterResponse'
-    DELETEAiClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEAiClusterResponse'
     PUTImportAiClusterRequest:
       content:
         application/json:
@@ -5733,6 +4199,21 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETAiClusterResponse'
+    DELETEAiClusterResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiClusterResponse'
+    EditPageAiClusterResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageAiClusterResponse'
+    SearchPageAiClusterResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageAiClusterResponse'
     SearchGpuDeviceResponse:
       content:
         application/json; charset=utf-8:
@@ -5758,11 +4239,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuDeviceResponse'
-    DELETEGpuDeviceResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEGpuDeviceResponse'
     PUTImportGpuDeviceRequest:
       content:
         application/json:
@@ -5778,6 +4254,16 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETGpuDeviceResponse'
+    DELETEGpuDeviceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEGpuDeviceResponse'
+    EditPageGpuDeviceResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageGpuDeviceResponse'
     SearchPageGpuDeviceResponse:
       content:
         text/html; charset=utf-8:
@@ -5808,11 +4294,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuSliceResponse'
-    DELETEGpuSliceResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEGpuSliceResponse'
     PUTImportGpuSliceRequest:
       content:
         application/json:
@@ -5828,16 +4309,21 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETGpuSliceResponse'
+    DELETEGpuSliceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEGpuSliceResponse'
+    EditPageGpuSliceResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageGpuSliceResponse'
     SearchPageGpuSliceResponse:
       content:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageGpuSliceResponse'
-    SearchPageAiNodeResponse:
-      content:
-        text/html; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/SearchPageAiNodeResponse'
     SearchAiNodeResponse:
       content:
         application/json; charset=utf-8:
@@ -5863,11 +4349,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiNodeResponse'
-    DELETEAiNodeResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEAiNodeResponse'
     PUTImportAiNodeRequest:
       content:
         application/json:
@@ -5883,11 +4364,21 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETAiNodeResponse'
-    SearchPageAiProjectResponse:
+    DELETEAiNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiNodeResponse'
+    EditPageAiNodeResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/SearchPageAiProjectResponse'
+            $ref: '#/components/schemas/EditPageAiNodeResponse'
+    SearchPageAiNodeResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageAiNodeResponse'
     SearchAiProjectResponse:
       content:
         application/json; charset=utf-8:
@@ -5913,11 +4404,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiProjectResponse'
-    DELETEAiProjectResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEAiProjectResponse'
     PUTImportAiProjectRequest:
       content:
         application/json:
@@ -5933,6 +4419,21 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETAiProjectResponse'
+    DELETEAiProjectResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEAiProjectResponse'
+    EditPageAiProjectResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageAiProjectResponse'
+    SearchPageAiProjectResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageAiProjectResponse'
     SearchSitePageResponse:
       content:
         application/json; charset=utf-8:
@@ -5958,11 +4459,6 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTSitePageResponse'
-    DELETESitePageResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETESitePageResponse'
     PUTImportSitePageRequest:
       content:
         application/json:
@@ -5978,11 +4474,21 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/GETSitePageResponse'
+    EditPageSitePageResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageSitePageResponse'
     SearchPageSitePageResponse:
       content:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageSitePageResponse'
+    DisplayPageSitePageResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DisplayPageSitePageResponse'
     SearchSiteUserResponse:
       content:
         application/json; charset=utf-8:
@@ -6008,30 +4514,17 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTSiteUserResponse'
-    DELETESiteUserResponse:
+    EditPageSiteUserResponse:
       content:
-        application/json; charset=utf-8:
+        text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/DELETESiteUserResponse'
-    PUTImportSiteUserRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PUTImportSiteUserRequest'
-    PUTImportSiteUserResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/PUTImportSiteUserResponse'
+            $ref: '#/components/schemas/EditPageSiteUserResponse'
     SearchPageSiteUserResponse:
       content:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageSiteUserResponse'
   schemas:
-    SearchPageAiClusterResponse:
-      allOf:
-        - type: string
     SearchAiClusterResponse:
       allOf:
         - type: object
@@ -6077,10 +4570,6 @@ components:
                   gpuDevicesTotal:
                     type: string
                   grafanaUrl:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     PATCHAiClusterRequest:
       allOf:
@@ -6193,20 +4682,6 @@ components:
               type: string
             removeAllGrafanaUrl:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     PATCHAiClusterResponse:
       allOf:
         - type: object
@@ -6318,20 +4793,6 @@ components:
               type: string
             removeAllGrafanaUrl:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     POSTAiClusterRequest:
       allOf:
         - type: object
@@ -6364,10 +4825,6 @@ components:
               type: string
             grafanaUrl:
               type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
     POSTAiClusterResponse:
       allOf:
         - type: object
@@ -6399,46 +4856,6 @@ components:
             gpuDevicesTotal:
               type: string
             grafanaUrl:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-    DELETEAiClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            clusterName:
-              type: string
-            description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
-              type: string
-            aiNodesTotal:
-              type: string
-            gpuDevicesTotal:
-              type: string
-            grafanaUrl:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     PUTImportAiClusterRequest:
       allOf:
@@ -6477,10 +4894,6 @@ components:
                     type: string
                   grafanaUrl:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     PUTImportAiClusterResponse:
       allOf:
         - type: object
@@ -6512,10 +4925,6 @@ components:
                   gpuDevicesTotal:
                     type: string
                   grafanaUrl:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     GETAiClusterResponse:
       allOf:
@@ -6549,10 +4958,44 @@ components:
               type: string
             grafanaUrl:
               type: string
-            objectTitle:
+    DELETEAiClusterResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
               type: string
-            objectId:
+            description:
               type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
+              type: string
+    EditPageAiClusterResponse:
+      allOf:
+        - type: string
+    SearchPageAiClusterResponse:
+      allOf:
+        - type: string
     SearchGpuDeviceResponse:
       allOf:
         - type: object
@@ -6600,10 +5043,6 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     PATCHGpuDeviceRequest:
       allOf:
@@ -6723,20 +5162,6 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     PATCHGpuDeviceResponse:
       allOf:
         - type: object
@@ -6855,20 +5280,6 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     POSTGpuDeviceRequest:
       allOf:
         - type: object
@@ -6903,10 +5314,6 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
     POSTGpuDeviceResponse:
       allOf:
         - type: object
@@ -6940,48 +5347,6 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-    DELETEGpuDeviceResponse:
-      allOf:
-        - type: object
-          properties:
-            gpuDeviceId:
-              type: string
-            clusterName:
-              type: string
-            nodeName:
-              type: string
-            gpuDeviceNumber:
-              type: string
-            gpuDeviceUtilization:
-              type: string
-            description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     PUTImportGpuDeviceRequest:
       allOf:
@@ -7022,10 +5387,6 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     PUTImportGpuDeviceResponse:
       allOf:
         - type: object
@@ -7059,10 +5420,6 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     GETGpuDeviceResponse:
       allOf:
@@ -7098,10 +5455,43 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
+    DELETEGpuDeviceResponse:
+      allOf:
+        - type: object
+          properties:
+            gpuDeviceId:
               type: string
-            objectId:
+            clusterName:
               type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceUtilization:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+    EditPageGpuDeviceResponse:
+      allOf:
+        - type: string
     SearchPageGpuDeviceResponse:
       allOf:
         - type: string
@@ -7123,7 +5513,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  sliceName:
                     type: string
                   description:
                     type: string
@@ -7145,20 +5535,16 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     PATCHGpuSliceRequest:
       allOf:
         - type: object
           properties:
-            setName:
+            setSliceName:
               type: string
               nullable: true
-            removeName:
+            removeSliceName:
               type: string
-            removeAllName:
+            removeAllSliceName:
               type: string
             setDescription:
               type: string
@@ -7238,31 +5624,17 @@ components:
             removeEntityShortId:
               type: string
             removeAllEntityShortId:
-              type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
               type: string
     PATCHGpuSliceResponse:
       allOf:
         - type: object
           properties:
-            setName:
+            setSliceName:
               type: string
               nullable: true
-            removeName:
+            removeSliceName:
               type: string
-            removeAllName:
+            removeAllSliceName:
               type: string
             setDescription:
               type: string
@@ -7343,25 +5715,11 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     POSTGpuSliceRequest:
       allOf:
         - type: object
           properties:
-            name:
+            sliceName:
               type: string
             description:
               type: string
@@ -7382,16 +5740,12 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     POSTGpuSliceResponse:
       allOf:
         - type: object
           properties:
-            name:
+            sliceName:
               type: string
             description:
               type: string
@@ -7412,40 +5766,6 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-    DELETEGpuSliceResponse:
-      allOf:
-        - type: object
-          properties:
-            name:
-              type: string
-            description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     PUTImportGpuSliceRequest:
       allOf:
@@ -7456,7 +5776,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  sliceName:
                     type: string
                   description:
                     type: string
@@ -7477,16 +5797,12 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     PUTImportGpuSliceResponse:
       allOf:
         - type: object
           properties:
-                  name:
+                  sliceName:
                     type: string
                   description:
                     type: string
@@ -7508,15 +5824,11 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     GETGpuSliceResponse:
       allOf:
         - type: object
           properties:
-            name:
+            sliceName:
               type: string
             description:
               type: string
@@ -7538,14 +5850,36 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
+    DELETEGpuSliceResponse:
+      allOf:
+        - type: object
+          properties:
+            sliceName:
               type: string
-            objectId:
+            description:
               type: string
-    SearchPageGpuSliceResponse:
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+    EditPageGpuSliceResponse:
       allOf:
         - type: string
-    SearchPageAiNodeResponse:
+    SearchPageGpuSliceResponse:
       allOf:
         - type: string
     SearchAiNodeResponse:
@@ -7591,10 +5925,6 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     PATCHAiNodeRequest:
       allOf:
@@ -7700,20 +6030,6 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     PATCHAiNodeResponse:
       allOf:
         - type: object
@@ -7818,20 +6134,6 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     POSTAiNodeRequest:
       allOf:
         - type: object
@@ -7862,10 +6164,6 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
     POSTAiNodeResponse:
       allOf:
         - type: object
@@ -7895,44 +6193,6 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-    DELETEAiNodeResponse:
-      allOf:
-        - type: object
-          properties:
-            clusterName:
-              type: string
-            nodeName:
-              type: string
-            description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            gpuDevicesTotal:
-              type: string
-            entityId:
-              type: string
-            entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     PUTImportAiNodeRequest:
       allOf:
@@ -7969,10 +6229,6 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     PUTImportAiNodeResponse:
       allOf:
         - type: object
@@ -8002,10 +6258,6 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     GETAiNodeResponse:
       allOf:
@@ -8037,11 +6289,40 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
+    DELETEAiNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
               type: string
-            objectId:
+            nodeName:
               type: string
-    SearchPageAiProjectResponse:
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            gpuDevicesTotal:
+              type: string
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+    EditPageAiNodeResponse:
+      allOf:
+        - type: string
+    SearchPageAiNodeResponse:
       allOf:
         - type: string
     SearchAiProjectResponse:
@@ -8062,7 +6343,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  projectName:
                     type: string
                   description:
                     type: string
@@ -8084,20 +6365,16 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     PATCHAiProjectRequest:
       allOf:
         - type: object
           properties:
-            setName:
+            setProjectName:
               type: string
               nullable: true
-            removeName:
+            removeProjectName:
               type: string
-            removeAllName:
+            removeAllProjectName:
               type: string
             setDescription:
               type: string
@@ -8177,31 +6454,17 @@ components:
             removeEntityShortId:
               type: string
             removeAllEntityShortId:
-              type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
               type: string
     PATCHAiProjectResponse:
       allOf:
         - type: object
           properties:
-            setName:
+            setProjectName:
               type: string
               nullable: true
-            removeName:
+            removeProjectName:
               type: string
-            removeAllName:
+            removeAllProjectName:
               type: string
             setDescription:
               type: string
@@ -8282,25 +6545,11 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
     POSTAiProjectRequest:
       allOf:
         - type: object
           properties:
-            name:
+            projectName:
               type: string
             description:
               type: string
@@ -8321,16 +6570,12 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     POSTAiProjectResponse:
       allOf:
         - type: object
           properties:
-            name:
+            projectName:
               type: string
             description:
               type: string
@@ -8351,40 +6596,6 @@ components:
             entityId:
               type: string
             entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-    DELETEAiProjectResponse:
-      allOf:
-        - type: object
-          properties:
-            name:
-              type: string
-            description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
               type: string
     PUTImportAiProjectRequest:
       allOf:
@@ -8395,7 +6606,7 @@ components:
               items:
                 type: object
                 properties:
-                  name:
+                  projectName:
                     type: string
                   description:
                     type: string
@@ -8416,16 +6627,12 @@ components:
                   entityId:
                     type: string
                   entityShortId:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
                     type: string
     PUTImportAiProjectResponse:
       allOf:
         - type: object
           properties:
-                  name:
+                  projectName:
                     type: string
                   description:
                     type: string
@@ -8447,15 +6654,11 @@ components:
                     type: string
                   entityShortId:
                     type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
     GETAiProjectResponse:
       allOf:
         - type: object
           properties:
-            name:
+            projectName:
               type: string
             description:
               type: string
@@ -8477,10 +6680,38 @@ components:
               type: string
             entityShortId:
               type: string
-            objectTitle:
+    DELETEAiProjectResponse:
+      allOf:
+        - type: object
+          properties:
+            projectName:
               type: string
-            objectId:
+            description:
               type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            entityId:
+              type: string
+            entityShortId:
+              type: string
+    EditPageAiProjectResponse:
+      allOf:
+        - type: string
+    SearchPageAiProjectResponse:
+      allOf:
+        - type: string
     SearchSitePageResponse:
       allOf:
         - type: object
@@ -8525,19 +6756,11 @@ components:
                     type: string
                   lessonNum:
                     type: string
-                  title:
+                  name:
                     type: string
                   author:
                     type: string
                   pageId:
-                    type: string
-                  resourceUri:
-                    type: string
-                  templateUri:
-                    type: string
-                  uri:
-                    type: string
-                  url:
                     type: string
                   h1:
                     type: string
@@ -8550,14 +6773,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
-                  id:
-                    type: string
-                  pageUrlId:
                     type: string
     PATCHSitePageRequest:
       allOf:
@@ -8654,12 +6869,12 @@ components:
               type: string
             removeAllLessonNum:
               type: string
-            setTitle:
+            setName:
               type: string
               nullable: true
-            removeTitle:
+            removeName:
               type: string
-            removeAllTitle:
+            removeAllName:
               type: string
             setAuthor:
               type: string
@@ -8674,34 +6889,6 @@ components:
             removePageId:
               type: string
             removeAllPageId:
-              type: string
-            setResourceUri:
-              type: string
-              nullable: true
-            removeResourceUri:
-              type: string
-            removeAllResourceUri:
-              type: string
-            setTemplateUri:
-              type: string
-              nullable: true
-            removeTemplateUri:
-              type: string
-            removeAllTemplateUri:
-              type: string
-            setUri:
-              type: string
-              nullable: true
-            removeUri:
-              type: string
-            removeAllUri:
-              type: string
-            setUrl:
-              type: string
-              nullable: true
-            removeUrl:
-              type: string
-            removeAllUrl:
               type: string
             setH1:
               type: string
@@ -8744,34 +6931,6 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
-              type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
               type: string
     PATCHSitePageResponse:
       allOf:
@@ -8868,12 +7027,12 @@ components:
               type: string
             removeAllLessonNum:
               type: string
-            setTitle:
+            setName:
               type: string
               nullable: true
-            removeTitle:
+            removeName:
               type: string
-            removeAllTitle:
+            removeAllName:
               type: string
             setAuthor:
               type: string
@@ -8888,34 +7047,6 @@ components:
             removePageId:
               type: string
             removeAllPageId:
-              type: string
-            setResourceUri:
-              type: string
-              nullable: true
-            removeResourceUri:
-              type: string
-            removeAllResourceUri:
-              type: string
-            setTemplateUri:
-              type: string
-              nullable: true
-            removeTemplateUri:
-              type: string
-            removeAllTemplateUri:
-              type: string
-            setUri:
-              type: string
-              nullable: true
-            removeUri:
-              type: string
-            removeAllUri:
-              type: string
-            setUrl:
-              type: string
-              nullable: true
-            removeUrl:
-              type: string
-            removeAllUrl:
               type: string
             setH1:
               type: string
@@ -8959,34 +7090,6 @@ components:
               type: string
             removeAllPageImageType:
               type: string
-            setObjectTitle:
-              type: string
-              nullable: true
-            removeObjectTitle:
-              type: string
-            removeAllObjectTitle:
-              type: string
-            setObjectId:
-              type: string
-              nullable: true
-            removeObjectId:
-              type: string
-            removeAllObjectId:
-              type: string
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
-            setPageUrlId:
-              type: string
-              nullable: true
-            removePageUrlId:
-              type: string
-            removeAllPageUrlId:
-              type: string
     POSTSitePageRequest:
       allOf:
         - type: object
@@ -9017,19 +7120,11 @@ components:
               type: string
             lessonNum:
               type: string
-            title:
+            name:
               type: string
             author:
               type: string
             pageId:
-              type: string
-            resourceUri:
-              type: string
-            templateUri:
-              type: string
-            uri:
-              type: string
-            url:
               type: string
             h1:
               type: string
@@ -9042,14 +7137,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            id:
-              type: string
-            pageUrlId:
               type: string
     POSTSitePageResponse:
       allOf:
@@ -9081,19 +7168,11 @@ components:
               type: string
             lessonNum:
               type: string
-            title:
+            name:
               type: string
             author:
               type: string
             pageId:
-              type: string
-            resourceUri:
-              type: string
-            templateUri:
-              type: string
-            uri:
-              type: string
-            url:
               type: string
             h1:
               type: string
@@ -9106,78 +7185,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            id:
-              type: string
-            pageUrlId:
-              type: string
-    DELETESitePageResponse:
-      allOf:
-        - type: object
-          properties:
-            article:
-              type: boolean
-            githubOrg:
-              type: string
-            siteName:
-              type: string
-            siteDisplayName:
-              type: string
-            sitePublicUrl:
-              type: string
-            mailingListUrl:
-              type: string
-            quayioOrg:
-              type: string
-            sitePomGroupId:
-              type: string
-            staticBaseUrl:
-              type: string
-            staticPath:
-              type: string
-            siteBaseUrl:
-              type: string
-            courseNum:
-              type: string
-            lessonNum:
-              type: string
-            title:
-              type: string
-            author:
-              type: string
-            pageId:
-              type: string
-            resourceUri:
-              type: string
-            templateUri:
-              type: string
-            uri:
-              type: string
-            url:
-              type: string
-            h1:
-              type: string
-            h2:
-              type: string
-            pageImageUri:
-              type: string
-            pageImageWidth:
-              type: string
-            pageImageHeight:
-              type: string
-            pageImageType:
-              type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            id:
-              type: string
-            pageUrlId:
               type: string
     PUTImportSitePageRequest:
       allOf:
@@ -9214,19 +7221,11 @@ components:
                     type: string
                   lessonNum:
                     type: string
-                  title:
+                  name:
                     type: string
                   author:
                     type: string
                   pageId:
-                    type: string
-                  resourceUri:
-                    type: string
-                  templateUri:
-                    type: string
-                  uri:
-                    type: string
-                  url:
                     type: string
                   h1:
                     type: string
@@ -9239,14 +7238,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
-                  id:
-                    type: string
-                  pageUrlId:
                     type: string
     PUTImportSitePageResponse:
       allOf:
@@ -9278,19 +7269,11 @@ components:
                     type: string
                   lessonNum:
                     type: string
-                  title:
+                  name:
                     type: string
                   author:
                     type: string
                   pageId:
-                    type: string
-                  resourceUri:
-                    type: string
-                  templateUri:
-                    type: string
-                  uri:
-                    type: string
-                  url:
                     type: string
                   h1:
                     type: string
@@ -9303,14 +7286,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  objectTitle:
-                    type: string
-                  objectId:
-                    type: string
-                  id:
-                    type: string
-                  pageUrlId:
                     type: string
     GETSitePageResponse:
       allOf:
@@ -9342,19 +7317,11 @@ components:
               type: string
             lessonNum:
               type: string
-            title:
+            name:
               type: string
             author:
               type: string
             pageId:
-              type: string
-            resourceUri:
-              type: string
-            templateUri:
-              type: string
-            uri:
-              type: string
-            url:
               type: string
             h1:
               type: string
@@ -9368,15 +7335,13 @@ components:
               type: string
             pageImageType:
               type: string
-            objectTitle:
-              type: string
-            objectId:
-              type: string
-            id:
-              type: string
-            pageUrlId:
-              type: string
+    EditPageSitePageResponse:
+      allOf:
+        - type: string
     SearchPageSitePageResponse:
+      allOf:
+        - type: string
+    DisplayPageSitePageResponse:
       allOf:
         - type: string
     SearchSiteUserResponse:
@@ -9417,7 +7382,7 @@ components:
                     type: boolean
                   seeDeleted:
                     type: boolean
-                  objectTitle:
+                  displayName:
                     type: string
     PATCHSiteUserRequest:
       allOf:
@@ -9496,12 +7461,12 @@ components:
               type: boolean
             removeAllSeeDeleted:
               type: boolean
-            setObjectTitle:
+            setDisplayName:
               type: string
               nullable: true
-            removeObjectTitle:
+            removeDisplayName:
               type: string
-            removeAllObjectTitle:
+            removeAllDisplayName:
               type: string
     PATCHSiteUserResponse:
       allOf:
@@ -9580,12 +7545,12 @@ components:
               type: boolean
             removeAllSeeDeleted:
               type: boolean
-            setObjectTitle:
+            setDisplayName:
               type: string
               nullable: true
-            removeObjectTitle:
+            removeDisplayName:
               type: string
-            removeAllObjectTitle:
+            removeAllDisplayName:
               type: string
     POSTSiteUserRequest:
       allOf:
@@ -9611,7 +7576,7 @@ components:
               type: boolean
             seeDeleted:
               type: boolean
-            objectTitle:
+            displayName:
               type: string
     POSTSiteUserResponse:
       allOf:
@@ -9637,91 +7602,11 @@ components:
               type: boolean
             seeDeleted:
               type: boolean
-            objectTitle:
+            displayName:
               type: string
-    DELETESiteUserResponse:
+    EditPageSiteUserResponse:
       allOf:
-        - type: object
-          properties:
-            userKeys:
-              type: array
-              items:
-                type: string
-            userId:
-              type: string
-            userName:
-              type: string
-            userEmail:
-              type: string
-            userFirstName:
-              type: string
-            userLastName:
-              type: string
-            userFullName:
-              type: string
-            seeArchived:
-              type: boolean
-            seeDeleted:
-              type: boolean
-            objectTitle:
-              type: string
-    PUTImportSiteUserRequest:
-      allOf:
-        - type: object
-          properties:
-            list:
-              type: array
-              items:
-                type: object
-                properties:
-                  userKeys:
-                    type: array
-                    items:
-                      type: string
-                  userId:
-                    type: string
-                  userName:
-                    type: string
-                  userEmail:
-                    type: string
-                  userFirstName:
-                    type: string
-                  userLastName:
-                    type: string
-                  userFullName:
-                    type: string
-                  seeArchived:
-                    type: boolean
-                  seeDeleted:
-                    type: boolean
-                  objectTitle:
-                    type: string
-    PUTImportSiteUserResponse:
-      allOf:
-        - type: object
-          properties:
-                  userKeys:
-                    type: array
-                    items:
-                      type: string
-                  userId:
-                    type: string
-                  userName:
-                    type: string
-                  userEmail:
-                    type: string
-                  userFirstName:
-                    type: string
-                  userLastName:
-                    type: string
-                  userFullName:
-                    type: string
-                  seeArchived:
-                    type: boolean
-                  seeDeleted:
-                    type: boolean
-                  objectTitle:
-                    type: string
+        - type: string
     SearchPageSiteUserResponse:
       allOf:
         - type: string

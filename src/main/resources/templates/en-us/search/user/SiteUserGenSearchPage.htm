@@ -54,8 +54,8 @@
 {% endif %}
       window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
       Promise.all([
-        customElements.whenDefined('sl-button')
-        , customElements.whenDefined('sl-input')
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
       ]).then(() => {
 
         var userId = {% if result.userId is defined %}{{ result.userId | tojson }}{% else %}null{% endif %};
@@ -89,16 +89,16 @@
         pageGraphSiteUser();
         {% for key, value in varsQ.items() %}
 
-        document.querySelector('#qSiteUser_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+        document.querySelector('#qSiteUser_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
           qChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_{{ key }}'));
         });
         {% endfor %}
 
-        document.querySelector('#qSiteUser_rows')?.addEventListener('sl-change', event => {
+        document.querySelector('#qSiteUser_rows')?.addEventListener('wa-change', event => {
           paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_rows'));
         });
 
-        document.querySelector('#qSiteUser_start')?.addEventListener('sl-change', event => {
+        document.querySelector('#qSiteUser_start')?.addEventListener('wa-change', event => {
           paramChange('SiteUser', event.target, document.querySelector('#qSiteUserDiv_start'));
         });
 
@@ -158,14 +158,12 @@
 {%- include en-us/search/user/SiteUserSidebar.htm %}
 {%- include en-us/search/user/SiteUserSuggestedSearch.htm %}
 {% if resultCount == 0 %}
-          <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-        <div>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all site users
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+          <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all site users
+          </wa-button>
+        </wa-tooltip>
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -183,11 +181,11 @@
             <div id="site-calendar"><!-- // --></div>
           </div>
           <div class="margin-block">
-            <sl-tooltip for="return-to-SiteUser">back to all site users</sl-tooltip>
-            <sl-button id="return-to-SiteUser" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
+            <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
               <i class="fa-solid fa-angle-left"></i>
               all site users
-            </sl-button>
+            </wa-button>
           </div>
           <h1><a href="{{pageUri}}"><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></a></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
@@ -195,32 +193,32 @@
 {% include en-us/search/user/SiteUserPaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
-              <sl-dropdown id="htmDropdown-userFullName">
-                <sl-button variant="primary" slot="trigger" caret></sl-button>
-                <sl-menu>
-                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-userFullName-asc">
+              <wa-dropdown id="htmDropdown-userFullName">
+                <wa-button variant="brand" slot="trigger" caret></wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-userFullName-asc">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     sort by null ascending
-                  </sl-menu-item>
-                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-userFullName-desc">
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-userFullName-desc">
                     <i class="fa-solid fa-arrow-down-z-a"></i>
                     sort by null descending
-                  </sl-menu-item>
-                </sl-menu>
-              </sl-dropdown>
-              <sl-dropdown id="htmDropdown-userName">
-                <sl-button variant="primary" slot="trigger" caret></sl-button>
-                <sl-menu>
-                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-userName-asc">
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-userName">
+                <wa-button variant="brand" slot="trigger" caret></wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-userName-asc">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     sort by null ascending
-                  </sl-menu-item>
-                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-userName-desc">
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-userName-desc">
                     <i class="fa-solid fa-arrow-down-z-a"></i>
                     sort by null descending
-                  </sl-menu-item>
-                </sl-menu>
-              </sl-dropdown>
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
               <div></div>
             </div>
             {% for item in listSiteUser%}
@@ -232,7 +230,7 @@
               <a href="{{ item.displayPage }}">
               {{ item.userName }}
               </a>
-              <sl-button variant="primary"
+              <wa-button variant="brand"
                   id="{{classApiMethodMethod}}_editPage"
                   placeholder="[String] edit"
                   label="edit"
@@ -243,7 +241,7 @@
                   >
                 <i class="fa-solid fa-pen-to-square"></i>
                 edit
-              </sl-button>
+              </wa-button>
             </div>
             {% endfor %}
               {% if getColumnUserFullName is defined %}
@@ -259,6 +257,7 @@
                 </div>
               {% endif %}
           </div>
+        </div>
 {% endif %}
 {%- endblock htmBodyMiddleSiteUserPage %}
 {%- endblock htmBodyMiddlePageLayout %}

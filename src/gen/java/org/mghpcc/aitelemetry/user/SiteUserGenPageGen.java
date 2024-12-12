@@ -413,7 +413,6 @@ public abstract class SiteUserGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = SiteUserGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class SiteUserGenPageGen<DEV> extends PageLayout {
 	public String getPageUriSiteUser() {
 		return pageUriSiteUser;
 	}
-	@JsonIgnore
 	public void setPageUriSiteUser(String o) {
 		this.pageUriSiteUser = SiteUserGenPage.staticSetPageUriSiteUser(siteRequest_, o);
 	}
