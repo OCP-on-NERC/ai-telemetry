@@ -133,9 +133,14 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
   }
 
   @Override
+  protected void _varsFqCount(Wrap<Integer> w) {
+  }
+
+  @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    AiNode.varsFqForClass().forEach(var -> {
+    Integer varsFqCount = 0;
+    for(String var : AiNode.varsFqForClass()) {
       String varIndexed = AiNode.varIndexedAiNode(var);
       String varStored = AiNode.varStoredAiNode(var);
       JsonObject json = new JsonObject();
@@ -145,7 +150,11 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
       String type = StringUtils.substringAfterLast(varIndexed, "_");
       json.put("displayName", Optional.ofNullable(AiNode.displayNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
       json.put("classSimpleName", Optional.ofNullable(AiNode.classSimpleNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListAiNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiNode.varIndexedAiNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      Object v = searchListAiNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiNode.varIndexedAiNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      if(v != null) {
+        json.put("val", v);
+        varsFqCount++;
+      }
       Optional.ofNullable(stats).map(s -> s.get(varIndexed)).ifPresent(stat -> {
         json.put("stats", JsonObject.mapFrom(stat));
       });
@@ -202,7 +211,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
         json.put("pivot", true);
       }
       vars.put(var, json);
-    });
+    }
   }
 
   @Override

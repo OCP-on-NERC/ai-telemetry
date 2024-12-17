@@ -1,5 +1,4 @@
 ---
-# ansible-playbook playbooks/deploy-microservices.yaml -e GITHUB_GROUP_SYNC_APP_ID= -e GITHUB_GROUP_SYNC_APP_PRIVATE_KEY= -e GITHUB_ORG= -e CLUSTER_ADMIN_GROUP= -e GITHUB_AUTH_CLIENT= -e AUTH_REALM= -e AUTH_CLIENT=
 - name: Deploy microservices
   hosts: localhost
   connection: local

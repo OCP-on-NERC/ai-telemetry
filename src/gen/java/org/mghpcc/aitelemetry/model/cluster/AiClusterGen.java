@@ -253,7 +253,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getClusterName() {
 		return clusterName;
 	}
-	@JsonIgnore
 	public void setClusterName(String o) {
 		this.clusterName = AiCluster.staticSetClusterName(siteRequest_, o);
 	}
@@ -310,7 +309,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
-	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = AiCluster.staticSetDescription(siteRequest_, o);
 	}
@@ -695,7 +693,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
-	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = AiCluster.staticSetEntityId(siteRequest_, o);
 	}
@@ -752,7 +749,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
-	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = AiCluster.staticSetEntityShortId(siteRequest_, o);
 	}
@@ -933,7 +929,6 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public String getGrafanaUrl() {
 		return grafanaUrl;
 	}
-	@JsonIgnore
 	public void setGrafanaUrl(String o) {
 		this.grafanaUrl = AiCluster.staticSetGrafanaUrl(siteRequest_, o);
 	}

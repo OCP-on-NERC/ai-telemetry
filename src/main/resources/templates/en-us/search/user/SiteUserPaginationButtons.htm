@@ -1,26 +1,26 @@
 
-            <div id="htmPaginationButtons">
-              <sl-button-group>
-                <sl-tooltip placement="top" content="Show the previous results">
-                  <sl-button variant="primary" pill{% if pagination.pagePrevious is defined %} href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
-                    <i slot="prefix" class="fas fa-arrow-square-left "></i>
-                  </sl-button>
-                </sl-tooltip>
-                <sl-tooltip placement="top" content="Show half the results">
-                  <sl-button variant="primary"{% if pagination.rowsPrevious >= pagination['1L'] %} href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}"{% else %} disabled{% endif %}>
-                    <i slot="prefix" class="fas fa-minus-square "></i>
-                  </sl-button>
-                </sl-tooltip>
-                <sl-tooltip placement="top" content="Show double the results">
-                  <sl-button variant="primary" href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
-                    <i slot="prefix" class="fas fa-plus-square "></i>
-                  </sl-button>
-                </sl-tooltip>
-                <sl-tooltip placement="top" content="Show the next results">
-                  <sl-button variant="primary" pill{% if pagination.pageNext is defined %} href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
-                    <i slot="prefix" class="fas fa-arrow-square-right "></i>
-                  </sl-button>
-                </sl-tooltip>
-              </sl-button-group>
-              <div>{{ pagination.startNum }} – {{ pagination.endNum }} of {{ pagination.foundNum }}</div>
-            </div>
+          <div id="htmPaginationButtons">
+            <wa-button-group>
+              <wa-tooltip placement="top" content="Show the previous results">
+                <wa-button variant="brand" pill{% if pagination.pagePrevious is defined %} href="{{pageUri}}?start={{pagination.pagePrevious.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
+                  <i slot="prefix" class="fas fa-arrow-square-left "></i>
+                </wa-button>
+              </wa-tooltip>
+              <wa-tooltip placement="top" content="Show half the results">
+                <wa-button variant="brand"{% if pagination.rowsPrevious >= pagination['1L'] %} href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsPrevious }}"{% else %} disabled{% endif %}>
+                  <i slot="prefix" class="fas fa-minus-square "></i>
+                </wa-button>
+              </wa-tooltip>
+              <wa-tooltip placement="top" content="Show double the results">
+                <wa-button variant="brand" href="{{pageUri}}?start={{pagination.start}}&amp;rows={{ pagination.rowsNext }}">
+                  <i slot="prefix" class="fas fa-plus-square "></i>
+                </wa-button>
+              </wa-tooltip>
+              <wa-tooltip placement="top" content="Show the next results">
+                <wa-button variant="brand" pill{% if pagination.pageNext is defined %} href="{{pageUri}}?start={{pagination.pageNext.start}}&amp;rows={{pagination.rows}}"{% else %} disabled{% endif %}>
+                  <i slot="prefix" class="fas fa-arrow-square-right "></i>
+                </wa-button>
+              </wa-tooltip>
+            </wa-button-group>
+            <div>{{ pagination.startNum }} – {{ pagination.endNum }} of {{ pagination.foundNum }}</div>
+          </div>

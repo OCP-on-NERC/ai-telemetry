@@ -413,7 +413,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getClassCanonicalName() {
 		return classCanonicalName;
 	}
-	@JsonIgnore
 	public void setClassCanonicalName(String o) {
 		this.classCanonicalName = BaseResult.staticSetClassCanonicalName(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getClassSimpleName() {
 		return classSimpleName;
 	}
-	@JsonIgnore
 	public void setClassSimpleName(String o) {
 		this.classSimpleName = BaseResult.staticSetClassSimpleName(siteRequest_, o);
 	}
@@ -669,7 +667,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getTitle() {
 		return title;
 	}
-	@JsonIgnore
 	public void setTitle(String o) {
 		this.title = BaseResult.staticSetTitle(siteRequest_, o);
 	}
@@ -726,7 +723,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getDisplayPage() {
 		return displayPage;
 	}
-	@JsonIgnore
 	public void setDisplayPage(String o) {
 		this.displayPage = BaseResult.staticSetDisplayPage(siteRequest_, o);
 	}
@@ -783,7 +779,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getEditPage() {
 		return editPage;
 	}
-	@JsonIgnore
 	public void setEditPage(String o) {
 		this.editPage = BaseResult.staticSetEditPage(siteRequest_, o);
 	}
@@ -836,7 +831,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getUserPage() {
 		return userPage;
 	}
-	@JsonIgnore
 	public void setUserPage(String o) {
 		this.userPage = BaseResult.staticSetUserPage(siteRequest_, o);
 	}
@@ -889,7 +883,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getObjectSuggest() {
 		return objectSuggest;
 	}
-	@JsonIgnore
 	public void setObjectSuggest(String o) {
 		this.objectSuggest = BaseResult.staticSetObjectSuggest(siteRequest_, o);
 	}
@@ -1017,7 +1010,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = BaseResult.staticSetSolrId(siteRequest_, o);
 	}

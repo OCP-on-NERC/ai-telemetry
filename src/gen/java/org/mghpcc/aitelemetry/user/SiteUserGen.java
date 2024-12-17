@@ -310,7 +310,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserId() {
 		return userId;
 	}
-	@JsonIgnore
 	public void setUserId(String o) {
 		this.userId = SiteUser.staticSetUserId(siteRequest_, o);
 	}
@@ -367,7 +366,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserName() {
 		return userName;
 	}
-	@JsonIgnore
 	public void setUserName(String o) {
 		this.userName = SiteUser.staticSetUserName(siteRequest_, o);
 	}
@@ -424,7 +422,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserEmail() {
 		return userEmail;
 	}
-	@JsonIgnore
 	public void setUserEmail(String o) {
 		this.userEmail = SiteUser.staticSetUserEmail(siteRequest_, o);
 	}
@@ -481,7 +478,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserFirstName() {
 		return userFirstName;
 	}
-	@JsonIgnore
 	public void setUserFirstName(String o) {
 		this.userFirstName = SiteUser.staticSetUserFirstName(siteRequest_, o);
 	}
@@ -538,7 +534,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserLastName() {
 		return userLastName;
 	}
-	@JsonIgnore
 	public void setUserLastName(String o) {
 		this.userLastName = SiteUser.staticSetUserLastName(siteRequest_, o);
 	}
@@ -595,7 +590,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getUserFullName() {
 		return userFullName;
 	}
-	@JsonIgnore
 	public void setUserFullName(String o) {
 		this.userFullName = SiteUser.staticSetUserFullName(siteRequest_, o);
 	}
@@ -774,7 +768,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public String getDisplayName() {
 		return displayName;
 	}
-	@JsonIgnore
 	public void setDisplayName(String o) {
 		this.displayName = SiteUser.staticSetDisplayName(siteRequest_, o);
 	}

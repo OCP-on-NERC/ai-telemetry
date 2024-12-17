@@ -127,8 +127,8 @@
 {% endif %}
       window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
       Promise.all([
-        customElements.whenDefined('sl-button')
-        , customElements.whenDefined('sl-input')
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
       ]).then(() => {
 
         var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
@@ -162,16 +162,16 @@
         pageGraphAiProject();
         {% for key, value in varsQ.items() %}
 
-        document.querySelector('#qAiProject_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+        document.querySelector('#qAiProject_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
           qChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_{{ key }}'));
         });
         {% endfor %}
 
-        document.querySelector('#qAiProject_rows')?.addEventListener('sl-change', event => {
+        document.querySelector('#qAiProject_rows')?.addEventListener('wa-change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_rows'));
         });
 
-        document.querySelector('#qAiProject_start')?.addEventListener('sl-change', event => {
+        document.querySelector('#qAiProject_start')?.addEventListener('wa-change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_start'));
         });
 
@@ -252,14 +252,14 @@
 {%- include en-us/search/ai-project/AiProjectSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
-          <sl-tooltip for="return-to-AiProject">back to all AI projects</sl-tooltip>
-        <div>
-            <sl-button id="return-to-AiProject" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all AI projects
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        {% if varsFqCount > 0 %}
+        <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
+          <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all AI projects
+          </wa-button>
+        </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-school"></i> <span>AI projects</span></h1>
 {% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
 {% include en-us/search/ai-project/AiProjectSearchForm.htm %}
@@ -275,24 +275,24 @@
   {% if resultCount == 1 %}
     {% if solrId is defined %}
           <div class="margin-block">
-            <sl-tooltip for="return-to-AiProject">back to all AI projects</sl-tooltip>
-            <sl-button id="return-to-AiProject" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
+            <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
               <i class="fa-solid fa-angle-left"></i>
               all AI projects
-            </sl-button>
+            </wa-button>
           </div>
 {% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
 {% include en-us/search/ai-project/AiProjectSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-regular fa-school"></i> {{ result.title | e }}</h1>
     {% else %}
-          <sl-tooltip for="return-to-AiProject">back to all AI projects</sl-tooltip>
-        <div>
-            <sl-button id="return-to-AiProject" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all AI projects
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        {% if varsFqCount > 0 %}
+        <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
+          <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all AI projects
+          </wa-button>
+        </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-school"></i> <span>AI projects</span></h1>
 {% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
 {% include en-us/search/ai-project/AiProjectSearchForm.htm %}
@@ -306,14 +306,14 @@
         </h2>
     {% endif %}
   {% else %}
-          <sl-tooltip for="return-to-AiProject">back to all AI projects</sl-tooltip>
-        <div>
-            <sl-button id="return-to-AiProject" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all AI projects
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        {% if varsFqCount > 0 %}
+        <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
+          <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all AI projects
+          </wa-button>
+        </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-school"></i> <span>AI projects</span></h1>
 {% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
 {% include en-us/search/ai-project/AiProjectSearchForm.htm %}
@@ -355,7 +355,7 @@
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_pk">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       readonly
                       placeholder="[Long] primary key"
                       label="primary key"
@@ -378,7 +378,7 @@ The primary key of this object in the database"
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.pk | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -392,7 +392,7 @@ The primary key of this object in the database"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_created">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       type="text"
                       readonly
                       help-text="A created timestamp for this record in the database"
@@ -406,7 +406,7 @@ The primary key of this object in the database"
   {%- endif %}
                       data-entityId={{ result.entityId | tojson }}
                       >
-                  </sl-input>
+                  </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
   {%- endif %}
@@ -419,7 +419,7 @@ The primary key of this object in the database"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_modified">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       type="text"
                       readonly
                       help-text="A modified timestamp for this record in the database"
@@ -433,7 +433,7 @@ The primary key of this object in the database"
   {%- endif %}
                       data-entityId={{ result.entityId | tojson }}
                       >
-                  </sl-input>
+                  </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
   {%- endif %}
@@ -447,7 +447,7 @@ The primary key of this object in the database"
                 <form class="subgrid-2col " id="PageForm_archived">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-button variant="primary"
+                  <wa-button variant="brand"
                       id="{{classApiMethodMethod}}_archived"
                       placeholder="archive"
                       label="archive"
@@ -456,14 +456,14 @@ The primary key of this object in the database"
                       name="setArchived"
                       data-entityId={{ result.entityId | tojson }}
                       data-val="{{ result.archived | e }}"
-                      >archive</sl-button>
+                      >archive</wa-button>
   {%- else %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-checkbox
+                  <wa-checkbox
                       id="{{classApiMethodMethod}}_archived"
                       value="true"
   {%- else %}
-                  <sl-select
+                  <wa-select
                       id="{{classApiMethodMethod}}_archived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -487,13 +487,13 @@ The primary key of this object in the database"
                       checked
     {%- endif %}
                       data-entityId={{ result.entityId | tojson }}
-                      >archive</sl-checkbox>
+                      >archive</wa-checkbox>
   {%- else %}
                       >
-                    <sl-option value="" selected="selected"></sl-option>
-                    <sl-option value="true">true</sl-option>
-                    <sl-option value="false">false</sl-option>
-                  </sl-select>
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
   {%- endif %}
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -508,7 +508,7 @@ The primary key of this object in the database"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_projectName">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] name"
                       label="name"
@@ -531,7 +531,7 @@ The name of this AI project"
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.projectName | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -545,7 +545,7 @@ The name of this AI project"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_description">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] description"
                       label="description"
@@ -568,7 +568,7 @@ A description of this AI project"
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.description | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -582,7 +582,7 @@ A description of this AI project"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_entityId">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] entity ID"
                       label="entity ID"
@@ -605,7 +605,7 @@ A unique ID for this Smart Data Model"
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.entityId | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -619,7 +619,7 @@ A unique ID for this Smart Data Model"
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_location">
   {%- endif %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[Point] location"
                       label="location"
@@ -642,7 +642,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
   {%- if "Page" == classApiMethodMethod %}
                       value="{{ toJsonObjectString(result.location) | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -657,7 +657,7 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
                 <form class="subgrid-2col " id="PageForm_displayPage">
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
-                  <sl-button variant="primary"
+                  <wa-button variant="brand"
                       id="{{classApiMethodMethod}}_displayPage"
                       placeholder="[String] product page"
                       label="product page"
@@ -667,10 +667,10 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
                       href="{{ result.displayPage | e }}"
                       >
                     product page
-                  </sl-button>
+                  </wa-button>
                   <div class="button-description-on-right ">Visit this product's landing page. </div>
   {%- else %}
-                  <sl-input
+                  <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] product page"
                       label="product page"
@@ -693,7 +693,7 @@ Visit this product's landing page. "
   {%- if "Page" == classApiMethodMethod %}
                       value="{{result.displayPage | e }}"
   {%- endif %}
-                      ></sl-input>
+                      ></wa-input>
 
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}

@@ -39,6 +39,7 @@ import java.lang.String;
 import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
 import io.vertx.core.json.JsonObject;
+import java.lang.Integer;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.lang.Long;
@@ -51,7 +52,6 @@ import java.util.Date;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.lang.Integer;
 import java.math.BigDecimal;
 import io.vertx.core.json.JsonArray;
 import java.lang.Void;
@@ -413,7 +413,6 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	public String getSolrId() {
 		return solrId;
 	}
-	@JsonIgnore
 	public void setSolrId(String o) {
 		this.solrId = GpuDeviceGenPage.staticSetSolrId(siteRequest_, o);
 	}
@@ -466,7 +465,6 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	public String getPageUriGpuDevice() {
 		return pageUriGpuDevice;
 	}
-	@JsonIgnore
 	public void setPageUriGpuDevice(String o) {
 		this.pageUriGpuDevice = GpuDeviceGenPage.staticSetPageUriGpuDevice(siteRequest_, o);
 	}

@@ -259,6 +259,9 @@ public class PageLayout extends PageLayoutGen<Object> {
 	protected void _varsFq(JsonObject vars) {
 	}
 
+	protected void _varsFqCount(Wrap<Integer> w) {
+	}
+
 	protected void _varsRange(JsonObject vars) {
 	}
 

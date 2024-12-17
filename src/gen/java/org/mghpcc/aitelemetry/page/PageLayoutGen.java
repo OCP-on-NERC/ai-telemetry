@@ -41,6 +41,7 @@ import java.lang.Void;
 import io.vertx.core.json.JsonArray;
 import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
+import java.lang.Integer;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.time.ZonedDateTime;
@@ -52,7 +53,6 @@ import java.util.Date;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.lang.Integer;
 import java.math.BigDecimal;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
@@ -197,7 +197,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getLang() {
 		return lang;
 	}
-	@JsonIgnore
 	public void setLang(String o) {
 		this.lang = PageLayout.staticSetLang(siteRequest_, o);
 	}
@@ -332,7 +331,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getStaticBaseUrl() {
 		return staticBaseUrl;
 	}
-	@JsonIgnore
 	public void setStaticBaseUrl(String o) {
 		this.staticBaseUrl = PageLayout.staticSetStaticBaseUrl(siteRequest_, o);
 	}
@@ -385,7 +383,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteBaseUrl() {
 		return siteBaseUrl;
 	}
-	@JsonIgnore
 	public void setSiteBaseUrl(String o) {
 		this.siteBaseUrl = PageLayout.staticSetSiteBaseUrl(siteRequest_, o);
 	}
@@ -438,7 +435,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteAuthUrl() {
 		return siteAuthUrl;
 	}
-	@JsonIgnore
 	public void setSiteAuthUrl(String o) {
 		this.siteAuthUrl = PageLayout.staticSetSiteAuthUrl(siteRequest_, o);
 	}
@@ -491,7 +487,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getSiteAuthRealm() {
 		return siteAuthRealm;
 	}
-	@JsonIgnore
 	public void setSiteAuthRealm(String o) {
 		this.siteAuthRealm = PageLayout.staticSetSiteAuthRealm(siteRequest_, o);
 	}
@@ -544,7 +539,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFontAwesomeKit() {
 		return fontAwesomeKit;
 	}
-	@JsonIgnore
 	public void setFontAwesomeKit(String o) {
 		this.fontAwesomeKit = PageLayout.staticSetFontAwesomeKit(siteRequest_, o);
 	}
@@ -597,7 +591,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFacebookGraphVersion() {
 		return facebookGraphVersion;
 	}
-	@JsonIgnore
 	public void setFacebookGraphVersion(String o) {
 		this.facebookGraphVersion = PageLayout.staticSetFacebookGraphVersion(siteRequest_, o);
 	}
@@ -650,7 +643,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getFacebookAppId() {
 		return facebookAppId;
 	}
-	@JsonIgnore
 	public void setFacebookAppId(String o) {
 		this.facebookAppId = PageLayout.staticSetFacebookAppId(siteRequest_, o);
 	}
@@ -703,7 +695,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageUri() {
 		return pageUri;
 	}
-	@JsonIgnore
 	public void setPageUri(String o) {
 		this.pageUri = PageLayout.staticSetPageUri(siteRequest_, o);
 	}
@@ -756,7 +747,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageId() {
 		return pageId;
 	}
-	@JsonIgnore
 	public void setPageId(String o) {
 		this.pageId = PageLayout.staticSetPageId(siteRequest_, o);
 	}
@@ -809,7 +799,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getApiUri() {
 		return apiUri;
 	}
-	@JsonIgnore
 	public void setApiUri(String o) {
 		this.apiUri = PageLayout.staticSetApiUri(siteRequest_, o);
 	}
@@ -862,7 +851,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageMethod() {
 		return pageMethod;
 	}
-	@JsonIgnore
 	public void setPageMethod(String o) {
 		this.pageMethod = PageLayout.staticSetPageMethod(siteRequest_, o);
 	}
@@ -1035,7 +1023,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserFullName() {
 		return userFullName;
 	}
-	@JsonIgnore
 	public void setUserFullName(String o) {
 		this.userFullName = PageLayout.staticSetUserFullName(siteRequest_, o);
 	}
@@ -1088,7 +1075,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserName() {
 		return userName;
 	}
-	@JsonIgnore
 	public void setUserName(String o) {
 		this.userName = PageLayout.staticSetUserName(siteRequest_, o);
 	}
@@ -1141,7 +1127,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getUserEmail() {
 		return userEmail;
 	}
-	@JsonIgnore
 	public void setUserEmail(String o) {
 		this.userEmail = PageLayout.staticSetUserEmail(siteRequest_, o);
 	}
@@ -1194,7 +1179,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getLogoutUrl() {
 		return logoutUrl;
 	}
-	@JsonIgnore
 	public void setLogoutUrl(String o) {
 		this.logoutUrl = PageLayout.staticSetLogoutUrl(siteRequest_, o);
 	}
@@ -1290,7 +1274,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getClassSimpleName() {
 		return classSimpleName;
 	}
-	@JsonIgnore
 	public void setClassSimpleName(String o) {
 		this.classSimpleName = PageLayout.staticSetClassSimpleName(siteRequest_, o);
 	}
@@ -1343,7 +1326,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageTitle() {
 		return pageTitle;
 	}
-	@JsonIgnore
 	public void setPageTitle(String o) {
 		this.pageTitle = PageLayout.staticSetPageTitle(siteRequest_, o);
 	}
@@ -2142,6 +2124,66 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return PageLayout.staticSearchVarsFq(siteRequest_, PageLayout.staticSetVarsFq(siteRequest_, o)).toString();
 	}
 
+	/////////////////
+	// varsFqCount //
+	/////////////////
+
+
+	/**	 The entity varsFqCount
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer varsFqCount;
+
+	/**	<br> The entity varsFqCount
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.PageLayout&fq=entiteVar_enUS_indexed_string:varsFqCount">Find the entity varsFqCount in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _varsFqCount(Wrap<Integer> w);
+
+	public Integer getVarsFqCount() {
+		return varsFqCount;
+	}
+
+	public void setVarsFqCount(Integer varsFqCount) {
+		this.varsFqCount = varsFqCount;
+	}
+	@JsonIgnore
+	public void setVarsFqCount(String o) {
+		this.varsFqCount = PageLayout.staticSetVarsFqCount(siteRequest_, o);
+	}
+	public static Integer staticSetVarsFqCount(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected PageLayout varsFqCountInit() {
+		Wrap<Integer> varsFqCountWrap = new Wrap<Integer>().var("varsFqCount");
+		if(varsFqCount == null) {
+			_varsFqCount(varsFqCountWrap);
+			Optional.ofNullable(varsFqCountWrap.getO()).ifPresent(o -> {
+				setVarsFqCount(o);
+			});
+		}
+		return (PageLayout)this;
+	}
+
+	public static Integer staticSearchVarsFqCount(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrVarsFqCount(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqVarsFqCount(SiteRequest siteRequest_, String o) {
+		return PageLayout.staticSearchVarsFqCount(siteRequest_, PageLayout.staticSetVarsFqCount(siteRequest_, o)).toString();
+	}
+
 	///////////////
 	// varsRange //
 	///////////////
@@ -2273,7 +2315,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageResponse() {
 		return pageResponse;
 	}
-	@JsonIgnore
 	public void setPageResponse(String o) {
 		this.pageResponse = PageLayout.staticSetPageResponse(siteRequest_, o);
 	}
@@ -2326,7 +2367,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultZoneId() {
 		return defaultZoneId;
 	}
-	@JsonIgnore
 	public void setDefaultZoneId(String o) {
 		this.defaultZoneId = PageLayout.staticSetDefaultZoneId(siteRequest_, o);
 	}
@@ -2420,7 +2460,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultLocaleId() {
 		return defaultLocaleId;
 	}
-	@JsonIgnore
 	public void setDefaultLocaleId(String o) {
 		this.defaultLocaleId = PageLayout.staticSetDefaultLocaleId(siteRequest_, o);
 	}
@@ -2634,7 +2673,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getRangeGap() {
 		return rangeGap;
 	}
-	@JsonIgnore
 	public void setRangeGap(String o) {
 		this.rangeGap = PageLayout.staticSetRangeGap(siteRequest_, o);
 	}
@@ -2899,7 +2937,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultRangeGap() {
 		return defaultRangeGap;
 	}
-	@JsonIgnore
 	public void setDefaultRangeGap(String o) {
 		this.defaultRangeGap = PageLayout.staticSetDefaultRangeGap(siteRequest_, o);
 	}
@@ -3104,7 +3141,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultRangeVar() {
 		return defaultRangeVar;
 	}
-	@JsonIgnore
 	public void setDefaultRangeVar(String o) {
 		this.defaultRangeVar = PageLayout.staticSetDefaultRangeVar(siteRequest_, o);
 	}
@@ -3157,7 +3193,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getDefaultFacetSort() {
 		return defaultFacetSort;
 	}
-	@JsonIgnore
 	public void setDefaultFacetSort(String o) {
 		this.defaultFacetSort = PageLayout.staticSetDefaultFacetSort(siteRequest_, o);
 	}
@@ -3523,7 +3558,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getQueryStr() {
 		return queryStr;
 	}
-	@JsonIgnore
 	public void setQueryStr(String o) {
 		this.queryStr = PageLayout.staticSetQueryStr(siteRequest_, o);
 	}
@@ -3619,7 +3653,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageImageUri() {
 		return pageImageUri;
 	}
-	@JsonIgnore
 	public void setPageImageUri(String o) {
 		this.pageImageUri = PageLayout.staticSetPageImageUri(siteRequest_, o);
 	}
@@ -3792,7 +3825,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageVideoId() {
 		return pageVideoId;
 	}
-	@JsonIgnore
 	public void setPageVideoId(String o) {
 		this.pageVideoId = PageLayout.staticSetPageVideoId(siteRequest_, o);
 	}
@@ -3845,7 +3877,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getClassIcon() {
 		return classIcon;
 	}
-	@JsonIgnore
 	public void setClassIcon(String o) {
 		this.classIcon = PageLayout.staticSetClassIcon(siteRequest_, o);
 	}
@@ -3898,7 +3929,6 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public String getPageDescription() {
 		return pageDescription;
 	}
-	@JsonIgnore
 	public void setPageDescription(String o) {
 		this.pageDescription = PageLayout.staticSetPageDescription(siteRequest_, o);
 	}
@@ -4004,6 +4034,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				defaultPivotVarsInit();
 				varsQInit();
 				varsFqInit();
+				varsFqCountInit();
 				varsRangeInit();
 				queryInit();
 				pageResponseInit();
@@ -4174,6 +4205,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				return oPageLayout.varsQ;
 			case "varsFq":
 				return oPageLayout.varsFq;
+			case "varsFqCount":
+				return oPageLayout.varsFqCount;
 			case "varsRange":
 				return oPageLayout.varsRange;
 			case "query":
@@ -4335,6 +4368,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSetVarsQ(siteRequest_, o);
 		case "varsFq":
 			return PageLayout.staticSetVarsFq(siteRequest_, o);
+		case "varsFqCount":
+			return PageLayout.staticSetVarsFqCount(siteRequest_, o);
 		case "varsRange":
 			return PageLayout.staticSetVarsRange(siteRequest_, o);
 		case "query":
@@ -4465,6 +4500,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchVarsQ(siteRequest_, (JsonObject)o);
 		case "varsFq":
 			return PageLayout.staticSearchVarsFq(siteRequest_, (JsonObject)o);
+		case "varsFqCount":
+			return PageLayout.staticSearchVarsFqCount(siteRequest_, (Integer)o);
 		case "varsRange":
 			return PageLayout.staticSearchVarsRange(siteRequest_, (JsonObject)o);
 		case "query":
@@ -4595,6 +4632,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchStrVarsQ(siteRequest_, (String)o);
 		case "varsFq":
 			return PageLayout.staticSearchStrVarsFq(siteRequest_, (String)o);
+		case "varsFqCount":
+			return PageLayout.staticSearchStrVarsFqCount(siteRequest_, (Integer)o);
 		case "varsRange":
 			return PageLayout.staticSearchStrVarsRange(siteRequest_, (String)o);
 		case "query":
@@ -4725,6 +4764,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchFqVarsQ(siteRequest_, o);
 		case "varsFq":
 			return PageLayout.staticSearchFqVarsFq(siteRequest_, o);
+		case "varsFqCount":
+			return PageLayout.staticSearchFqVarsFqCount(siteRequest_, o);
 		case "varsRange":
 			return PageLayout.staticSearchFqVarsRange(siteRequest_, o);
 		case "query":
@@ -4832,6 +4873,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_defaultPivotVars = "defaultPivotVars";
 	public static final String VAR_varsQ = "varsQ";
 	public static final String VAR_varsFq = "varsFq";
+	public static final String VAR_varsFqCount = "varsFqCount";
 	public static final String VAR_varsRange = "varsRange";
 	public static final String VAR_query = "query";
 	public static final String VAR_pageResponse = "pageResponse";
@@ -4900,6 +4942,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_defaultPivotVars = "";
 	public static final String DISPLAY_NAME_varsQ = "";
 	public static final String DISPLAY_NAME_varsFq = "";
+	public static final String DISPLAY_NAME_varsFqCount = "";
 	public static final String DISPLAY_NAME_varsRange = "";
 	public static final String DISPLAY_NAME_query = "";
 	public static final String DISPLAY_NAME_pageResponse = "";
@@ -5041,6 +5084,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return DISPLAY_NAME_varsQ;
 		case VAR_varsFq:
 			return DISPLAY_NAME_varsFq;
+		case VAR_varsFqCount:
+			return DISPLAY_NAME_varsFqCount;
 		case VAR_varsRange:
 			return DISPLAY_NAME_varsRange;
 		case VAR_query:
@@ -5249,6 +5294,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return "JsonObject";
 		case VAR_varsFq:
 			return "JsonObject";
+		case VAR_varsFqCount:
+			return "Integer";
 		case VAR_varsRange:
 			return "JsonObject";
 		case VAR_query:

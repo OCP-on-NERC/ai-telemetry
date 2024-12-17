@@ -252,7 +252,6 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public String getSliceName() {
 		return sliceName;
 	}
-	@JsonIgnore
 	public void setSliceName(String o) {
 		this.sliceName = GpuSlice.staticSetSliceName(siteRequest_, o);
 	}
@@ -309,7 +308,6 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public String getDescription() {
 		return description;
 	}
-	@JsonIgnore
 	public void setDescription(String o) {
 		this.description = GpuSlice.staticSetDescription(siteRequest_, o);
 	}
@@ -694,7 +692,6 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public String getEntityId() {
 		return entityId;
 	}
-	@JsonIgnore
 	public void setEntityId(String o) {
 		this.entityId = GpuSlice.staticSetEntityId(siteRequest_, o);
 	}
@@ -751,7 +748,6 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public String getEntityShortId() {
 		return entityShortId;
 	}
-	@JsonIgnore
 	public void setEntityShortId(String o) {
 		this.entityShortId = GpuSlice.staticSetEntityShortId(siteRequest_, o);
 	}

@@ -132,9 +132,14 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
   }
 
   @Override
+  protected void _varsFqCount(Wrap<Integer> w) {
+  }
+
+  @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    AiProject.varsFqForClass().forEach(var -> {
+    Integer varsFqCount = 0;
+    for(String var : AiProject.varsFqForClass()) {
       String varIndexed = AiProject.varIndexedAiProject(var);
       String varStored = AiProject.varStoredAiProject(var);
       JsonObject json = new JsonObject();
@@ -144,7 +149,11 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
       String type = StringUtils.substringAfterLast(varIndexed, "_");
       json.put("displayName", Optional.ofNullable(AiProject.displayNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
       json.put("classSimpleName", Optional.ofNullable(AiProject.classSimpleNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListAiProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiProject.varIndexedAiProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      Object v = searchListAiProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiProject.varIndexedAiProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      if(v != null) {
+        json.put("val", v);
+        varsFqCount++;
+      }
       Optional.ofNullable(stats).map(s -> s.get(varIndexed)).ifPresent(stat -> {
         json.put("stats", JsonObject.mapFrom(stat));
       });
@@ -201,7 +210,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
         json.put("pivot", true);
       }
       vars.put(var, json);
-    });
+    }
   }
 
   @Override

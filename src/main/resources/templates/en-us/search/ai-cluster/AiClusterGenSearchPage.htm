@@ -127,8 +127,8 @@
 {% endif %}
       window.DEFAULT_ZONE_ID = '{{ defaultZoneId }}';
       Promise.all([
-        customElements.whenDefined('sl-button')
-        , customElements.whenDefined('sl-input')
+        customElements.whenDefined('wa-button')
+        , customElements.whenDefined('wa-input')
       ]).then(() => {
 
         var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
@@ -162,16 +162,16 @@
         pageGraphAiCluster();
         {% for key, value in varsQ.items() %}
 
-        document.querySelector('#qAiCluster_{{ key }}')?.addEventListener('sl-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
+        document.querySelector('#qAiCluster_{{ key }}')?.addEventListener('wa-{% if var == 'objectSuggest' %}keyup{% else %}change{% endif %}', event => {
           qChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_{{ key }}'));
         });
         {% endfor %}
 
-        document.querySelector('#qAiCluster_rows')?.addEventListener('sl-change', event => {
+        document.querySelector('#qAiCluster_rows')?.addEventListener('wa-change', event => {
           paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_rows'));
         });
 
-        document.querySelector('#qAiCluster_start')?.addEventListener('sl-change', event => {
+        document.querySelector('#qAiCluster_start')?.addEventListener('wa-change', event => {
           paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_start'));
         });
 
@@ -251,14 +251,14 @@
 {%- include en-us/search/ai-cluster/AiClusterSidebar.htm %}
 {%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
 {% if resultCount == 0 %}
-          <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
-        <div>
-            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
-              all AI clusters
-            </sl-button>
-          </sl-tooltip>
-        </div>
+        {% if varsFqCount > 0 %}
+        <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
+          <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <i class="fa-solid fa-angle-left"></i>
+            all AI clusters
+          </wa-button>
+        </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
@@ -275,45 +275,47 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
-            <sl-tooltip for="return-to-AiCluster">back to all AI clusters</sl-tooltip>
-            <sl-button id="return-to-AiCluster" variant="primary" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+            <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
+            <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
               <i class="fa-solid fa-angle-left"></i>
               all AI clusters
-            </sl-button>
+            </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-regular fa-server"></i> <span>AI clusters</span></a></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
 {% include en-us/search/ai-cluster/AiClusterPaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
-              <sl-dropdown id="htmDropdown-clusterName">
-                <sl-button variant="primary" slot="trigger" caret>cluster name</sl-button>
-                <sl-menu>
-                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-clusterName-asc">
+              <wa-dropdown id="htmDropdown-clusterName">
+                <wa-button variant="brand" slot="trigger" caret>cluster name</wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-clusterName-asc">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     sort by cluster name ascending
-                  </sl-menu-item>
-                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-clusterName-desc">
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-clusterName-desc">
                     <i class="fa-solid fa-arrow-down-z-a"></i>
                     sort by cluster name descending
-                  </sl-menu-item>
-                </sl-menu>
-              </sl-dropdown>
-              <sl-dropdown id="htmDropdown-description">
-                <sl-button variant="primary" slot="trigger" caret>description</sl-button>
-                <sl-menu>
-                  <sl-menu-item data-action="sort" data-order="asc" id="htmDropdown-description-asc">
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-description">
+                <wa-button variant="brand" slot="trigger" caret>description</wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-description-asc">
                     <i class="fa-solid fa-arrow-down-a-z"></i>
                     sort by description ascending
-                  </sl-menu-item>
-                  <sl-menu-item data-action="sort" data-order="desc" id="htmDropdown-description-desc">
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-description-desc">
                     <i class="fa-solid fa-arrow-down-z-a"></i>
                     sort by description descending
-                  </sl-menu-item>
-                </sl-menu>
-              </sl-dropdown>
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
               <div></div>
             </div>
             {% for item in listAiCluster%}
@@ -325,7 +327,7 @@
               <a href="{{ item.displayPage }}">
               {{ item.description }}
               </a>
-              <sl-button variant="primary"
+              <wa-button variant="brand"
                   id="{{classApiMethodMethod}}_editPage"
                   placeholder="[String] edit"
                   label="edit"
@@ -336,7 +338,7 @@
                   >
                 <i class="fa-solid fa-pen-to-square"></i>
                 edit
-              </sl-button>
+              </wa-button>
             </div>
             {% endfor %}
               {% if getColumnClusterName is defined %}
@@ -352,6 +354,7 @@
                 </div>
               {% endif %}
           </div>
+        </div>
 {% endif %}
 {%- endblock htmBodyMiddleAiClusterPage %}
 {%- endblock htmBodyMiddlePageLayout %}

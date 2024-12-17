@@ -1,16 +1,16 @@
 
-{%- macro htmButton_patchAiNode() %}<sl-button variant="primary" id="htmButton_patchAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-edit "></i>Modify</sl-button>{%- endmacro %}
+{%- macro htmButton_patchAiNode() %}<wa-button variant="brand" id="htmButton_patchAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-edit "></i>Modify</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_patchAiNode() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_patchAiNode"
-                >Modify AI node</sl-button>
+                >Modify AI node</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_patchAiNode() %}
-        <sl-dialog id="patchAiNodeDialog" label="Modify AI node">
+        <wa-dialog id="patchAiNodeDialog" label="Modify AI node">
           <form id="htmForm_patchAiNode" class="round-row primary-smart-border-radius ">
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -58,8 +58,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="cluster-details">
+            </wa-details>
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
@@ -139,25 +139,25 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </form>
           {{ htmFormButton_patchAiNode() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_postAiNode() %}<sl-button variant="primary" id="htmButton_postAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-file-plus "></i>Create</sl-button>{%- endmacro %}
+{%- macro htmButton_postAiNode() %}<wa-button variant="brand" id="htmButton_postAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-file-plus "></i>Create</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_postAiNode() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_postAiNode"
-                >Create an AI node</sl-button>
+                >Create an AI node</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_postAiNode() %}
-        <sl-dialog id="postAiNodeDialog" label="Create an AI node">
+        <wa-dialog id="postAiNodeDialog" label="Create an AI node">
           <form id="htmForm_postAiNode" class="round-row primary-smart-border-radius ">
             <div>You can override any default values below: </div>
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -205,8 +205,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="cluster-details">
+            </wa-details>
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
@@ -286,64 +286,64 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </form>
           {{ htmFormButton_postAiNode() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_deleteAiNode() %}<sl-button variant="primary" id="htmButton_deleteAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-trash "></i>Delete</sl-button>{%- endmacro %}
+{%- macro htmButton_deleteAiNode() %}<wa-button variant="brand" id="htmButton_deleteAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-trash "></i>Delete</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_deleteAiNode() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_deleteAiNode"
-                >Delete AI node</sl-button>
+                >Delete AI node</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_deleteAiNode() %}
-        <sl-dialog id="deleteAiNodeDialog" label="Delete AI node">
+        <wa-dialog id="deleteAiNodeDialog" label="Delete AI node">
           <form id="htmForm_deleteAiNode" class="round-row primary-smart-border-radius ">
           </form>
           {{ htmFormButton_deleteAiNode() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_putimportAiNode() %}<sl-button variant="primary" id="htmButton_putimportAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-file-import "></i>Import</sl-button>{%- endmacro %}
+{%- macro htmButton_putimportAiNode() %}<wa-button variant="brand" id="htmButton_putimportAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="fas fa-file-import "></i>Import</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiNode() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_putimportAiNode"
-                >Import AI nodes</sl-button>
+                >Import AI nodes</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_putimportAiNode() %}
-        <sl-dialog id="putimportAiNodeDialog" label="Import AI nodes">
+        <wa-dialog id="putimportAiNodeDialog" label="Import AI nodes">
           <form id="htmForm_putimportAiNode" class="round-row primary-smart-border-radius ">
             <div>
-              <sl-textarea
+              <wa-textarea
                   class="PUTImport_searchList "
                   style="height: 300px; "
                   placeholder="{ 'searchList': [ { 'entityId': ... , 'saves': [ ... ] }, ... ] }"
                   >
-              </sl-textarea>
+              </wa-textarea>
             </div>
           </form>
           {{ htmFormButton_putimportAiNode() }}
-        </sl-dialog>
+        </wa-dialog>
 {%- endmacro %}
 
 {%- macro htmButton_searchpageAiNode() %}{%- endmacro %}
 
 {%- macro htmFormButton_searchpageAiNode() %}
-            <sl-button variant="primary" slot="footer" type="submit" variant="primary"
+            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
                 id="htmFormButton_searchpageAiNode"
-                >Search AI nodes</sl-button>
+                >Search AI nodes</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_searchpageAiNode() %}
         <div id="searchpageAiNodeDialog" label="Search AI nodes">
           <div id="htmForm_searchpageAiNode" class="round-row primary-smart-border-radius ">
-            <sl-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
+            <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
                 <span>primary key, ID, created, modified, archive details</span>
               </div>
@@ -391,8 +391,8 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
-            <sl-details open class="HtmRow" id="cluster-details">
+            </wa-details>
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
                 <span>cluster details</span>
               </div>
@@ -472,28 +472,29 @@
                 {%- endif %}
               {%- endif %}
               </div>
-            </sl-details>
+            </wa-details>
           </div>
         </div>
 {%- endmacro %}
+          <wa-divider></wa-divider>
+          <div id="htmButtonGroup">
+            <div class="flex flex-wrap round-column pill-smart-border-radius ">
 {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {% if "PATCH" in scopes %}
-        <sl-divider></sl-divider>
-        <div id="htmButtonGroup">
-          <div class="flex flex-wrap round-column pill-smart-border-radius ">
-    {% if resultCount == 1 %}              <sl-button variant="primary" id="refreshThisAiNodeGenPage"
+    {% if resultCount == 1 %}
+              <wa-button variant="brand" id="refreshThisAiNodeGenPage"
                    onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'entityId:{{entityId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiNodeGenPage')); }, function() { addError(document.querySelector('#refreshThisAiNodeGenPage')); }); return false; ">
                 <i slot="prefix" class="fas fa-sync-alt "></i>
                 refresh
-              </sl-button>
+              </wa-button>
     {% endif %}
     {% if resultCount > 0 %}
-              <sl-button variant="primary" id="refreshAllAiNodeGenPage{{ result.entityId | e }}"
+              <wa-button variant="brand" id="refreshAllAiNodeGenPage{{ result.entityId | e }}"
                    onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiNodeGenPage{{ result.entityId | e }}')); }, function() { addError(document.querySelector('#refreshAllAiNodeGenPage{{ result.entityId | e }}')); }); "
                   >
                 <i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>
                 Refresh all 
-              </sl-button>
+              </wa-button>
     {% endif %}
   {% endif %}
 {% endif %}
@@ -526,6 +527,7 @@
   {{ htmButton_putimportAiNode() }}
 {%- endif %}
 
+            </div>
           </div>
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {%- if resultCount > 0 %}
@@ -555,4 +557,3 @@
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportAiNode() }}
 {%- endif %}
-        </div>
