@@ -326,9 +326,9 @@ AUTH_SSL_REQUIRED: all
 # The Auth realm. 
 AUTH_REALM: "NERC"
 # The Auth client. 
-AUTH_CLIENT: "nerc"
+AUTH_CLIENT: "ai-telemetry"
 # The Auth secret. 
-AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.secret | b64decode }}"
+AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
 # The Auth admin username. 
 AUTH_ADMIN_USERNAME: admin
 # The Auth admin password. 
@@ -480,7 +480,7 @@ ENABLE_IMPORT_DATA: true
 # Enable the Zookeeper cluster manager. 
 ENABLE_ZOOKEEPER_CLUSTER: false
 # Enable support for Open Telemetry in the application. 
-ENABLE_OPEN_TELEMETRY: true
+ENABLE_OPEN_TELEMETRY: false
 # Enable a login link and Keycloak integration in the application. 
 ENABLE_LOGIN: true
 # Enable the code generation service for the project

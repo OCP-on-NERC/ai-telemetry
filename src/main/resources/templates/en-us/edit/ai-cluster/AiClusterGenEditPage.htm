@@ -252,12 +252,14 @@
 {%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
@@ -283,12 +285,14 @@
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-regular fa-server"></i> {{ result.title | e }}</h1>
     {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
@@ -302,12 +306,14 @@
         </h2>
     {% endif %}
   {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}

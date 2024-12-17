@@ -9,6 +9,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -187,6 +188,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -243,6 +245,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -268,6 +271,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -325,6 +329,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -357,6 +362,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -413,6 +419,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -446,6 +453,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -625,6 +633,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -803,6 +812,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -859,6 +869,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -884,6 +895,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -941,6 +953,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -973,6 +986,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1029,6 +1043,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1062,6 +1077,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1241,6 +1257,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1419,6 +1436,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1475,6 +1493,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1500,6 +1519,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1557,6 +1577,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1589,6 +1610,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1645,6 +1667,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1678,6 +1701,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -1857,6 +1881,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2035,6 +2060,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2091,6 +2117,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2116,6 +2143,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2173,6 +2201,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2205,6 +2234,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2261,6 +2291,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2294,6 +2325,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2473,6 +2505,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2651,6 +2684,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2707,6 +2741,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2732,6 +2767,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2789,6 +2825,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2821,6 +2858,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2877,6 +2915,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -2910,6 +2949,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3264,6 +3304,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3320,6 +3361,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3345,6 +3387,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3432,6 +3475,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3671,6 +3715,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+
@@ -3954,6 +3999,7 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
       security:
         - openIdConnect:
+          - openid
           - profile
       description: >+
       summary: >+

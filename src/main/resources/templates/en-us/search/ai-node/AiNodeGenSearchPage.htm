@@ -273,6 +273,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFq %}
           <div class="margin-block">
             <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
             <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -280,6 +281,7 @@
               all AI nodes
             </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-regular fa-computer"></i> <span>AI nodes</span></a></h1>
 {% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
 {% include en-us/search/ai-node/AiNodeSearchForm.htm %}

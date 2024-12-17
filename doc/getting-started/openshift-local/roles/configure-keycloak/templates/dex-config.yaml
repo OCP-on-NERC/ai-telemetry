@@ -34,11 +34,6 @@ data:
           - https://minio-console-minio.apps-crc.testing/oauth_callback
           - https://minio-minio.apps-crc.testing/oauth_callback
         secretEnv: MINIO_IDENTITY_OPENID_CLIENT_SECRET
-      - id: ai-telemetry
-        name: AI Telemetry
-        redirectURIs:
-          - https://keycloak.apps-crc.testing/realms/{{ AUTH_REALM }}/broker/OpenShift/endpoint
-        secretEnv: AI_TELEMETRY_AUTH_SECRET
 
     connectors:
       - type: openshift

@@ -114,9 +114,11 @@ import io.vertx.core.streams.Pump;
 import io.vertx.core.tracing.TracingPolicy;
 import io.vertx.core.tracing.TracingOptions;
 import io.vertx.ext.auth.User;
+import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
+import io.vertx.ext.auth.oauth2.Oauth2Credentials;
 import io.vertx.ext.auth.oauth2.authorization.KeycloakAuthorization;
 import io.vertx.ext.auth.oauth2.impl.OAuth2AuthProviderImpl;
 import io.vertx.ext.auth.oauth2.providers.OpenIDConnectAuth;
@@ -164,14 +166,19 @@ import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePage;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.project.AiProject;
 
 
 /**
@@ -456,8 +463,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					.put("service.name", SITE_NAME)
 					.build();
 			SdkTracerProvider sdkTracerProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
-					SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(OtlpHttpSpanExporter.builder().setEndpoint("http://localhost:4318/v1/traces").build()))
-					.setResource(resource).build() : null;
+					SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(OtlpHttpSpanExporter.builder().build())).build() : null;
 			SdkMeterProvider sdkMeterProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
 					SdkMeterProvider.builder().build() : null;
 			if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
@@ -475,15 +481,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(enableZookeeperCluster) {
 				VertxBuilder vertxBuilder = Vertx.builder();
 				vertxBuilder.with(vertxOptions);
-
-				// OpenTracingTracerFactory tracerFactory = new OpenTracingTracerFactory();
-				// TracingOptions tracingOptions = new TracingOptions();
-				// Tracer tracer = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? tracerFactory.tracer(tracingOptions) : null;
-				// TracerBuilder tracerBuilder = sdkTracerProvider.tracerBuilder("instrumentationScopeName");
-				// Tracer tracer2 = tracerBuilder.build();
-				// if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
-				// 	vertxBuilder.withTracer(tracerFactory);
-				// }
 				vertxBuilder.withClusterManager(clusterManager);
 				vertxBuilder.buildClustered().onSuccess(vertx -> {
 					runVerticles(vertx, config, sdkTracerProvider, sdkMeterProvider).onSuccess(a -> {
@@ -496,13 +493,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			} else {
 				VertxBuilder vertxBuilder = Vertx.builder();
 				vertxBuilder.with(vertxOptions);
-
-				// OpenTracingTracerFactory tracerFactory = new OpenTracingTracerFactory();
-				// TracingOptions tracingOptions = new TracingOptions();
-				// VertxTracer tracer = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? tracerFactory.tracer(tracingOptions) : null;
-				// if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
-				// 	vertxBuilder.withTracer(tracerFactory);
-				// }
 				Vertx vertx = vertxBuilder.build();
 				runVerticles(vertx, config, sdkTracerProvider, sdkMeterProvider).onSuccess(a -> {
 					promise.complete();
@@ -1001,7 +991,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						config.put("redirectUri", siteBaseUrl + authCallbackUri);
 						OAuth2Auth authProvider = authProviders.get(authClientOpenApiId);
 
-						authProvider.authenticate(config, res -> {
+						authProvider.authenticate(new Oauth2Credentials(config), res -> {
 							if (res.failed()) {
 								LOG.error("Failed to authenticate user. ", res.cause());
 								ctx.fail(res.cause());
@@ -1014,7 +1004,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 									Cookie cookie = Cookie.cookie("sessionIdBefore", session.id());
 									if(StringUtils.startsWith(siteBaseUrl, "https://"))
 										cookie.setSecure(true);
-									ctx.addCookie(cookie);
+									ctx.response().addCookie(cookie);
 									session.regenerateId();
 									String redirectUri = session.get("redirect_uri");
 									// we should redirect the UA so this link becomes invalid
@@ -1220,16 +1210,26 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			initializeApiService(apiSitePage);
 			registerApiService(SitePageEnUSGenApiService.class, apiSitePage, SitePage.getClassApiAddress());
 			// apiSitePage.configureUiResult(router, SitePage.class, SiteRequest.class, "/en-us/view/article/{pageId}");
-// 
-			// AiClusterEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-// 
-			// AiNodeEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-// 
-			// GpuDeviceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-// 
-			// GpuSliceEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
-// 
-			// AiProjectEnUSGenApiService.registerService(vertx, config(), workerExecutor, oauth2AuthHandler, pgPool, kafkaProducer, mqttClient, amqpSender, rabbitmqClient, webClient, oauth2AuthenticationProvider, authorizationProvider, jinjava);
+
+			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
+			initializeApiService(apiAiCluster);
+			registerApiService(AiClusterEnUSGenApiService.class, apiAiCluster, AiCluster.getClassApiAddress());
+
+			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
+			initializeApiService(apiAiNode);
+			registerApiService(AiNodeEnUSGenApiService.class, apiAiNode, AiNode.getClassApiAddress());
+
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
+			initializeApiService(apiGpuDevice);
+			registerApiService(GpuDeviceEnUSGenApiService.class, apiGpuDevice, GpuDevice.getClassApiAddress());
+
+			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
+			initializeApiService(apiGpuSlice);
+			registerApiService(GpuSliceEnUSGenApiService.class, apiGpuSlice, GpuSlice.getClassApiAddress());
+
+			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
+			initializeApiService(apiAiProject);
+			registerApiService(AiProjectEnUSGenApiService.class, apiAiProject, AiProject.getClassApiAddress());
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");

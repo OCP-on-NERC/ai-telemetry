@@ -251,12 +251,14 @@
 {%- include en-us/search/ai-cluster/AiClusterSidebar.htm %}
 {%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
@@ -273,6 +275,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
             <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -280,6 +283,7 @@
               all AI clusters
             </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-regular fa-server"></i> <span>AI clusters</span></a></h1>
 {% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
 {% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}

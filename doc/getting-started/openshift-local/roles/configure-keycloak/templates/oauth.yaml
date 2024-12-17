@@ -11,7 +11,7 @@ spec:
     name: developer
     type: HTPasswd
   - github:
-      clientID: {{ GITHUB_AUTH_CLIENT }}
+      clientID: {{ GITHUB_OPENSHIFT_CLIENT }}
       clientSecret:
         name: github-client-secret
       teams:
