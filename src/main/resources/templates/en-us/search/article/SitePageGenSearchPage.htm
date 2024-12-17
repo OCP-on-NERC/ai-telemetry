@@ -168,12 +168,14 @@
 {%- include en-us/search/article/SitePageSidebar.htm %}
 {%- include en-us/search/article/SitePageSuggestedSearch.htm %}
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
           <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all articles
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></h1>
 {% include en-us/search/article/SitePageSearchButtons.htm %}
 {% include en-us/search/article/SitePageSearchForm.htm %}
@@ -190,6 +192,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
             <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -197,6 +200,7 @@
               all articles
             </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></a></h1>
 {% include en-us/search/article/SitePageSearchButtons.htm %}
 {% include en-us/search/article/SitePageSearchForm.htm %}

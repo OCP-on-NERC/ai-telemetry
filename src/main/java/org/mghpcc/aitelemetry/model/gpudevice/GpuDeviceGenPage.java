@@ -133,9 +133,14 @@ public class GpuDeviceGenPage extends GpuDeviceGenPageGen<PageLayout> {
   }
 
   @Override
+  protected void _varsFqCount(Wrap<Integer> w) {
+  }
+
+  @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    GpuDevice.varsFqForClass().forEach(var -> {
+    Integer varsFqCount = 0;
+    for(String var : GpuDevice.varsFqForClass()) {
       String varIndexed = GpuDevice.varIndexedGpuDevice(var);
       String varStored = GpuDevice.varStoredGpuDevice(var);
       JsonObject json = new JsonObject();
@@ -145,7 +150,11 @@ public class GpuDeviceGenPage extends GpuDeviceGenPageGen<PageLayout> {
       String type = StringUtils.substringAfterLast(varIndexed, "_");
       json.put("displayName", Optional.ofNullable(GpuDevice.displayNameGpuDevice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
       json.put("classSimpleName", Optional.ofNullable(GpuDevice.classSimpleNameGpuDevice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListGpuDevice_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(GpuDevice.varIndexedGpuDevice(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      Object v = searchListGpuDevice_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(GpuDevice.varIndexedGpuDevice(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      if(v != null) {
+        json.put("val", v);
+        varsFqCount++;
+      }
       Optional.ofNullable(stats).map(s -> s.get(varIndexed)).ifPresent(stat -> {
         json.put("stats", JsonObject.mapFrom(stat));
       });
@@ -202,7 +211,7 @@ public class GpuDeviceGenPage extends GpuDeviceGenPageGen<PageLayout> {
         json.put("pivot", true);
       }
       vars.put(var, json);
-    });
+    }
   }
 
   @Override

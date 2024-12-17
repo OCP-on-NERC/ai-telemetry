@@ -251,12 +251,14 @@
 {%- include en-us/search/gpu-slice/GpuSliceSidebar.htm %}
 {%- include en-us/search/gpu-slice/GpuSliceSuggestedSearch.htm %}
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
           <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU slices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
 {% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
@@ -273,6 +275,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
             <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -280,6 +283,7 @@
               all GPU slices
             </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></a></h1>
 {% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}

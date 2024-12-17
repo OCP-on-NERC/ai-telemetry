@@ -251,12 +251,14 @@
 {%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
 {%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
 {% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
@@ -273,6 +275,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
             <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -280,6 +283,7 @@
               all GPU devices
             </wa-button>
           </div>
+          {% endif %}
           <h1><a href="{{pageUri}}"><i class="fa-regular fa-memory"></i> <span>GPU devices</span></a></h1>
 {% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}

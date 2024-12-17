@@ -252,12 +252,14 @@
 {%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
 {% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
@@ -283,12 +285,14 @@
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-regular fa-memory"></i> {{ result.title | e }}</h1>
     {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
 {% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
@@ -302,12 +306,14 @@
         </h2>
     {% endif %}
   {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
 {% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
 {% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}

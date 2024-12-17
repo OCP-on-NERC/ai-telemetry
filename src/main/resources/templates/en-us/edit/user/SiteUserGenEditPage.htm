@@ -159,12 +159,14 @@
 {%- include en-us/search/user/SiteUserSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
           <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all site users
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -190,12 +192,14 @@
 {% include en-us/search/user/SiteUserSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-duotone fa-solid fa-user-gear"></i> {{ result.title | e }}</h1>
     {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
           <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all site users
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
@@ -209,12 +213,14 @@
         </h2>
     {% endif %}
   {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
           <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all site users
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}

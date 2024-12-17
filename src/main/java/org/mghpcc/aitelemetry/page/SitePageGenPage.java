@@ -133,9 +133,14 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
   }
 
   @Override
+  protected void _varsFqCount(Wrap<Integer> w) {
+  }
+
+  @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    SitePage.varsFqForClass().forEach(var -> {
+    Integer varsFqCount = 0;
+    for(String var : SitePage.varsFqForClass()) {
       String varIndexed = SitePage.varIndexedSitePage(var);
       String varStored = SitePage.varStoredSitePage(var);
       JsonObject json = new JsonObject();
@@ -145,7 +150,11 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
       String type = StringUtils.substringAfterLast(varIndexed, "_");
       json.put("displayName", Optional.ofNullable(SitePage.displayNameSitePage(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
       json.put("classSimpleName", Optional.ofNullable(SitePage.classSimpleNameSitePage(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListSitePage_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(SitePage.varIndexedSitePage(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      Object v = searchListSitePage_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(SitePage.varIndexedSitePage(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      if(v != null) {
+        json.put("val", v);
+        varsFqCount++;
+      }
       Optional.ofNullable(stats).map(s -> s.get(varIndexed)).ifPresent(stat -> {
         json.put("stats", JsonObject.mapFrom(stat));
       });
@@ -202,7 +211,7 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
         json.put("pivot", true);
       }
       vars.put(var, json);
-    });
+    }
   }
 
   @Override

@@ -169,12 +169,14 @@
 {%- include en-us/search/article/SitePageSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
           <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all articles
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></h1>
 {% include en-us/search/article/SitePageSearchButtons.htm %}
 {% include en-us/search/article/SitePageSearchForm.htm %}
@@ -200,12 +202,14 @@
 {% include en-us/search/article/SitePageSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-duotone fa-solid fa-newspaper"></i> {{ result.title | e }}</h1>
     {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
           <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all articles
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></h1>
 {% include en-us/search/article/SitePageSearchButtons.htm %}
 {% include en-us/search/article/SitePageSearchForm.htm %}
@@ -219,12 +223,14 @@
         </h2>
     {% endif %}
   {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
           <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all articles
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></h1>
 {% include en-us/search/article/SitePageSearchButtons.htm %}
 {% include en-us/search/article/SitePageSearchForm.htm %}

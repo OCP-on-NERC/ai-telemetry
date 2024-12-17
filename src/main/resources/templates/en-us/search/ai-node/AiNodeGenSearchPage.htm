@@ -251,12 +251,14 @@
 {%- include en-us/search/ai-node/AiNodeSidebar.htm %}
 {%- include en-us/search/ai-node/AiNodeSuggestedSearch.htm %}
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
           <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all AI nodes
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-computer"></i> <span>AI nodes</span></h1>
 {% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
 {% include en-us/search/ai-node/AiNodeSearchForm.htm %}
@@ -273,7 +275,7 @@
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
           </div>
-          {% if varsFq %}
+          {% if varsFqCount > 0 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
             <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">

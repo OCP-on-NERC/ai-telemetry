@@ -252,12 +252,14 @@
 {%- include en-us/search/gpu-slice/GpuSliceSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
           <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU slices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
 {% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
@@ -283,12 +285,14 @@
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-regular fa-cake-slice"></i> {{ result.title | e }}</h1>
     {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
           <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU slices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
 {% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
@@ -302,12 +306,14 @@
         </h2>
     {% endif %}
   {% else %}
+        {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
           <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
             <i class="fa-solid fa-angle-left"></i>
             all GPU slices
           </wa-button>
         </wa-tooltip>
+        {% endif %}
         <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
 {% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
 {% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
