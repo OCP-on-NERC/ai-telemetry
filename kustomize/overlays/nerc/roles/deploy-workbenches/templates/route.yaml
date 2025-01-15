@@ -1,0 +1,18 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+  labels:
+    notebook-name: {{ WORKBENCH_NAME }}
+spec:
+  host: {{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}
+  to:
+    kind: Service
+    name: {{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}
+    weight: 100
+  port:
+    targetPort: {{ SITE_PORT }}
+  tls:
+    termination: edge
+  wildcardPolicy: None

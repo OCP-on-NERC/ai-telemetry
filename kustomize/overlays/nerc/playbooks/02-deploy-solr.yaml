@@ -1,0 +1,7 @@
+---
+- name: Deploy solr
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy-solr

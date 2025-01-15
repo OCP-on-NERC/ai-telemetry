@@ -1,0 +1,3 @@
+- name: "Load vars"
+  ansible.builtin.include_vars:
+    file: "overlay-vars.yaml"

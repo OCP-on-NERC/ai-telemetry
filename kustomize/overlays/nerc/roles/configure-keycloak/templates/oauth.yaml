@@ -1,0 +1,26 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - htpasswd:
+      fileData:
+        name: htpass-secret
+    mappingMethod: claim
+    name: developer
+    type: HTPasswd
+  - github:
+      clientID: {{ GITHUB_OPENSHIFT_CLIENT }}
+      clientSecret:
+        name: github-client-secret
+      teams:
+      - computate-org/smart-aquaculture
+    mappingMethod: claim
+    name: github
+    type: GitHub
+  templates:
+    login:
+      name: login-template
+  tokenConfig:
+    accessTokenMaxAgeSeconds: 0

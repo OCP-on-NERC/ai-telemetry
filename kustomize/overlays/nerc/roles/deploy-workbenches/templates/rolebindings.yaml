@@ -1,0 +1,130 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ WORKBENCH_NAME }}-edit-rolebindings
+  namespace: {{ WORKBENCH_NAMESPACE }}
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - roles
+      - rolebindings
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sa-{{ WORKBENCH_NAME }}-edit
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sa-{{ WORKBENCH_NAME }}-edit-rolebindings
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ WORKBENCH_NAME }}-edit-rolebindings
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}-edit
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: User
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}-edit-rolebindings
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: User
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ WORKBENCH_NAME }}-edit-rolebindings
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+rules:
+  - verbs:
+      - get
+    apiGroups:
+      - ''
+    resources:
+      - secrets
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: user-{{ WORKBENCH_NAME }}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+rules:
+  - verbs:
+      - get
+    apiGroups:
+      - ''
+    resources:
+      - secrets
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ WORKBENCH_NAME }}
+    namespace: {{ WORKBENCH_NAMESPACE }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: user-{{ WORKBENCH_NAME }}
