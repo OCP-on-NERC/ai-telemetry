@@ -116,9 +116,6 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 	public static final String configureKafkaSuccess1 = "The Kafka producer was initialized successfully. ";
 	public static final String configureKafkaSuccess = configureKafkaSuccess1;
 
-	public static final String authorizeDataFail1 = "Adding Keycloak authorization resources, policies, and permissions failed. ";
-	public static final String authorizeDataFail = authorizeDataFail1;
-
 	public static final String importDataSkip1 = "The data import is disabled. ";
 	public static final String importDataSkip = importDataSkip1;
 
@@ -262,7 +259,7 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 		return sb.toString();
 	}
 
-	public static final String[] WorkerVerticleVals = new String[] { configureI18nFileError1, configureI18nError1, configureI18nComplete1, configureI18nLoaded1, configureDataConnectionError1, configureDataConnectionSuccess1, configureDataInitError1, configureDataInitSuccess1, configureSharedWorkerExecutorFail1, configureSharedWorkerExecutorComplete1, configureKafkaSuccess1, authorizeDataFail1, importDataSkip1 };
+	public static final String[] WorkerVerticleVals = new String[] { configureI18nFileError1, configureI18nError1, configureI18nComplete1, configureI18nLoaded1, configureDataConnectionError1, configureDataConnectionSuccess1, configureDataInitError1, configureDataInitSuccess1, configureSharedWorkerExecutorFail1, configureSharedWorkerExecutorComplete1, configureKafkaSuccess1, importDataSkip1 };
 
 	public static final String CLASS_SIMPLE_NAME = "WorkerVerticle";
 

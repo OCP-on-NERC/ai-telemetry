@@ -114,7 +114,6 @@ import io.vertx.core.streams.Pump;
 import io.vertx.core.tracing.TracingPolicy;
 import io.vertx.core.tracing.TracingOptions;
 import io.vertx.ext.auth.User;
-import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
@@ -147,9 +146,11 @@ import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
-import io.vertx.pgclient.PgPool;
+import io.vertx.pgclient.PgBuilder;
 import io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager;
+import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.Transaction;
 import io.vertx.sqlclient.Tuple;
 import io.vertx.tracing.opentelemetry.OpenTelemetryOptions;
 import io.vertx.tracing.opentracing.OpenTracingTracerFactory;
@@ -202,7 +203,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	/**
 	 * A io.vertx.ext.jdbc.JDBCClient for connecting to the relational database PostgreSQL. 
 	 **/
-	private PgPool pgPool;
+	private Pool pgPool;
 
 	private WebClient webClient;
 
@@ -251,6 +252,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
 				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
+				Boolean runAuthorizationGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_AUTHORIZATION_GENERATOR)).orElse(false);
 				Boolean runFiwareGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_FIWARE_GENERATOR)).orElse(false);
 				Boolean runProjectGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_PROJECT_GENERATOR)).orElse(false);
 
@@ -266,8 +268,12 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					api.initDeepOpenApi3Generator(siteRequest);
 					if(runOpenApi3Generator)
 						future = future.compose(a -> api.writeOpenApi());
-					if(runSqlGenerator)
+					if(runSqlGenerator) {
 						future = future.compose(a -> api.writeSql());
+						future = future.compose(a -> configureDatabaseSchema(vertx, config));
+					}
+					if(runAuthorizationGenerator)
+						future = future.compose(a -> authorizeData(vertx, config, webClient));
 					if(runFiwareGenerator)
 						future = future.compose(a -> api.writeFiware());
 					if(runProjectGenerator)
@@ -293,6 +299,164 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			LOG.error(String.format("Error loading config: %s", configVarsPath), ex);
 			vertx.close();
 		});
+	}
+
+	/**
+	 * Description: Add Keycloak authorization resources, policies, and permissions for a data model. 
+	 * Val.Fail.enUS: Adding Keycloak authorization resources, policies, and permissions failed. 
+	 **/
+	private static Future<Void> authorizeData(Vertx vertx, JsonObject config, WebClient webClient) {
+		Promise<Void> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = new SiteRequest();
+			siteRequest.setConfig(config);
+			siteRequest.setWebClient(webClient);
+			siteRequest.initDeepSiteRequest(siteRequest);
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
+			apiSitePage.setVertx(vertx);
+			apiSitePage.setConfig(config);
+			apiSitePage.setWebClient(webClient);
+			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
+			apiSiteUser.setVertx(vertx);
+			apiSiteUser.setConfig(config);
+			apiSiteUser.setWebClient(webClient);
+			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
+			apiAiCluster.setVertx(vertx);
+			apiAiCluster.setConfig(config);
+			apiAiCluster.setWebClient(webClient);
+			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
+			apiAiNode.setVertx(vertx);
+			apiAiNode.setConfig(config);
+			apiAiNode.setWebClient(webClient);
+			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
+			apiGpuDevice.setVertx(vertx);
+			apiGpuDevice.setConfig(config);
+			apiGpuDevice.setWebClient(webClient);
+			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
+			apiGpuSlice.setVertx(vertx);
+			apiGpuSlice.setConfig(config);
+			apiGpuSlice.setWebClient(webClient);
+			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
+			apiAiProject.setVertx(vertx);
+			apiAiProject.setConfig(config);
+			apiAiProject.setWebClient(webClient);
+			apiSiteUser.createAuthorizationScopes().onSuccess(authToken -> {
+				apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+						.compose(q1 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+						.onSuccess(q1 -> {
+					apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q2 -> {
+						apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+								.compose(q3 -> apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+								.onSuccess(q3 -> {
+							apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+									.compose(q4 -> apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+									.onSuccess(q4 -> {
+								apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+										.compose(q5 -> apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+										.onSuccess(q5 -> {
+									apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+											.compose(q6 -> apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+											.onSuccess(q6 -> {
+										apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+												.onSuccess(q7 -> {
+											LOG.info("authorize data complete");
+											promise.complete();
+										}).onFailure(ex -> promise.fail(ex));
+									}).onFailure(ex -> promise.fail(ex));
+								}).onFailure(ex -> promise.fail(ex));
+							}).onFailure(ex -> promise.fail(ex));
+						}).onFailure(ex -> promise.fail(ex));
+					}).onFailure(ex -> promise.fail(ex));
+				}).onFailure(ex -> promise.fail(ex));
+			}).onFailure(ex -> promise.fail(ex));
+		} catch(Throwable ex) {
+			LOG.error(authorizeDataFail, ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	/**	
+	 *	Configure shared database connections across the cluster for massive scaling of the application. 
+	 *	Return a promise that configures a shared database client connection. 
+	 *	Load the database configuration into a shared io.vertx.ext.jdbc.JDBCClient for a scalable, clustered datasource connection pool. 
+	 **/
+	public static Future<Void> configureDatabaseSchema(Vertx vertx, JsonObject config) {
+		Promise<Void> promise = Promise.promise();
+		try {
+			if(config.getBoolean(ConfigKeys.ENABLE_DATABASE, true)) {
+				PgConnectOptions pgOptions = new PgConnectOptions();
+				pgOptions.setPort(config.getInteger(ConfigKeys.DATABASE_PORT));
+				pgOptions.setHost(config.getString(ConfigKeys.DATABASE_HOST));
+				pgOptions.setDatabase(config.getString(ConfigKeys.DATABASE_DATABASE));
+				pgOptions.setUser(config.getString(ConfigKeys.DATABASE_USERNAME));
+				pgOptions.setPassword(config.getString(ConfigKeys.DATABASE_PASSWORD));
+				pgOptions.setIdleTimeout(config.getInteger(ConfigKeys.DATABASE_MAX_IDLE_TIME, 10));
+				pgOptions.setIdleTimeoutUnit(TimeUnit.SECONDS);
+				pgOptions.setConnectTimeout(config.getInteger(ConfigKeys.DATABASE_CONNECT_TIMEOUT, 1000));
+
+				PoolOptions poolOptions = new PoolOptions();
+				poolOptions.setMaxSize(config.getInteger(ConfigKeys.DATABASE_MAX_POOL_SIZE, 1));
+				poolOptions.setMaxWaitQueueSize(config.getInteger(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE, 10));
+
+				Pool pgPool = PgBuilder.pool().connectingTo(pgOptions).with(poolOptions).using(vertx).build();
+				Promise<Void> promise1 = Promise.promise();
+				pgPool.withConnection(sqlConnection -> {
+					try {
+						String sqlPath = String.format("%s/src/main/resources/sql/db-create.sql", config.getString(ConfigKeys.SITE_SRC));
+						vertx.fileSystem().readFile(sqlPath).onSuccess(buffer -> {
+							Future<Transaction> transactionFuture = sqlConnection.begin();
+							String sql = buffer.toString();
+							List<Future<String>> futures = new ArrayList<>();
+							List<String> nonBlankLines = Arrays.stream(sql.split("\n"))
+									.filter(line -> !line.trim().isEmpty())
+									.collect(Collectors.toList());
+							for(String line : nonBlankLines) {
+								LOG.info(line);
+								transactionFuture.compose(transaction -> 
+									sqlConnection.preparedQuery(line)
+											.execute(Tuple.tuple())
+								);
+							}
+
+							transactionFuture.onSuccess(transaction -> {
+								transaction.commit().onSuccess(c -> {
+									LOG.info("All database schema statements ran successfully.");
+									promise.complete();
+								}).onFailure(ex -> {
+									LOG.error("Could not initialize the database schema.", ex);
+									promise.fail(ex);
+								});
+							}).onFailure(ex -> {
+								LOG.error("Could not initialize the database schema.", ex);
+								promise.fail(ex);
+							});
+						}).onFailure(ex -> {
+							LOG.error("Could not initialize the database schema.", ex);
+							promise.fail(ex);
+						});
+					} catch (Exception ex) {
+						LOG.error("Could not initialize the database schema.", ex);
+						promise.fail(ex);
+					}
+					return promise1.future();
+				}).onSuccess(a -> {
+					LOG.info("The database schema initialization was completed successfully.");
+					promise.complete();
+				}).onFailure(ex -> {
+					LOG.error("Could not initialize the database schema.", ex);
+					promise.fail(ex);
+				});
+			} else {
+				promise.complete();
+			}
+		} catch (Exception ex) {
+			LOG.error("Could not initialize the database schema.", ex);
+			promise.fail(ex);
+		}
+
+		return promise.future();
 	}
 
 	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
@@ -835,7 +999,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				poolOptions.setMaxSize(jdbcMaxPoolSize);
 				poolOptions.setMaxWaitQueueSize(jdbcMaxWaitQueueSize);
 
-				pgPool = PgPool.pool(vertx, pgOptions, poolOptions);
+				pgPool = PgBuilder.pool().connectingTo(pgOptions).with(poolOptions).using(vertx).build();
 				Promise<Void> promise1 = Promise.promise();
 				pgPool.withConnection(sqlConnection -> {
 					sqlConnection.preparedQuery("SELECT")
@@ -1549,11 +1713,11 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		this.jdbcMaxWaitQueueSize = jdbcMaxWaitQueueSize;
 	}
 
-	public PgPool getPgPool() {
+	public Pool getPgPool() {
 		return pgPool;
 	}
 
-	public void setPgPool(PgPool pgPool) {
+	public void setPgPool(Pool pgPool) {
 		this.pgPool = pgPool;
 	}
 

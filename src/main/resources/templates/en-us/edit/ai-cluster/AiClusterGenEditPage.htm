@@ -76,7 +76,7 @@
         htm += `{%- block htmLegendAiClusterPage %}
     <div title="${quoteattr(title)}">
     <div style="width: 20px; ">
-      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+      <i class="{{ FONTAWESOME_STYLE }} fa-circle" style="color: ${color}; "></i>
     </div>
     <div class="text-overflow-ellipsis ">
       <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
@@ -99,6 +99,15 @@
             , weight: 1
             , opacity: 0.7
             , fillOpacity: 0.7
+            , contextmenu: true
+            , contextmenuItems: [
+              {
+                text: 'Show coordinates'
+                , callback: function(event) {
+                  alert(event2.target.getLatLngs());
+                }
+              }
+            ]
           };
         } else if(feature.geometry.type == 'LineString') {
           return {
@@ -255,7 +264,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
@@ -277,7 +286,7 @@
           <div class="margin-block">
             <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
             <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
               all AI clusters
             </wa-button>
           </div>
@@ -288,7 +297,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
@@ -309,7 +318,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
           <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all AI clusters
           </wa-button>
         </wa-tooltip>
@@ -351,482 +360,3 @@
 {%- block htmBodyEndAiClusterPage %}
 {%- endblock htmBodyEndAiClusterPage %}
 {%- endblock htmBodyEndPageLayout %}
-{%- macro inputPkAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_pk">
-  {%- endif %}
-                  <wa-input
-                      readonly
-                      placeholder="[Long] primary key"
-                      label="primary key"
-                      help-text="
-The primary key of this object in the database"
-                      id="{{classApiMethodMethod}}_pk"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiCluster inputAiCluster{{entityId}}Pk "
-                      name="setPk"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiCluster inputAiCluster{{entityId}}Pk "
-                      name="setPk"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiCluster inputAiCluster{{entityId}}Pk "
-                      name="pk"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.pk | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmPkAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputPkAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputCreatedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_created">
-  {%- endif %}
-                  <wa-input
-                      type="text"
-                      readonly
-                      help-text="A created timestamp for this record in the database"
-                      label="created"
-                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiCluster inputAiCluster{{entityId}}Created "
-                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
-                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
-                      id="{{classApiMethodMethod}}_created"
-                      value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
-  {%- if 'Page' == classApiMethodMethod %}
-  {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >
-                  </wa-input>
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmCreatedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputCreatedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputModifiedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_modified">
-  {%- endif %}
-                  <wa-input
-                      type="text"
-                      readonly
-                      help-text="A modified timestamp for this record in the database"
-                      label="modified"
-                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiCluster inputAiCluster{{entityId}}Modified "
-                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
-                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
-                      id="{{classApiMethodMethod}}_modified"
-                      value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
-  {%- if 'Page' == classApiMethodMethod %}
-  {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >
-                  </wa-input>
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmModifiedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputModifiedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputArchivedAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_archived">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_archived"
-                      placeholder="archive"
-                      label="archive"
-                      help-text="For archiving this record"
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
-                      name="setArchived"
-                      data-entityId={{ result.entityId | tojson }}
-                      data-val="{{ result.archived | e }}"
-                      >archive</wa-button>
-  {%- else %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-checkbox
-                      id="{{classApiMethodMethod}}_archived"
-                      value="true"
-  {%- else %}
-                  <wa-select
-                      id="{{classApiMethodMethod}}_archived"
-  {%- endif %}
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="archive"
-                      label="archive"
-                      help-text="For archiving this record"
-  {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
-                      name="setArchived"
-  {%- else %}
-    {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiCluster inputAiCluster{{entityId}}Archived "
-                      name="setArchived"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiCluster inputAiCluster{{entityId}}Archived "
-                      name="setArchived"
-    {%- endif %}
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-    {%- if result.archived == true %}
-                      checked
-    {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >archive</wa-checkbox>
-  {%- else %}
-                      >
-                    <wa-option value="" selected="selected"></wa-option>
-                    <wa-option value="true">true</wa-option>
-                    <wa-option value="false">false</wa-option>
-                  </wa-select>
-  {%- endif %}
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmArchivedAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputArchivedAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputClusterNameAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_clusterName">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] cluster name"
-                      label="cluster name"
-                      help-text="
-The name of this cluster"
-                      id="{{classApiMethodMethod}}_clusterName"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
-                      name="setClusterName"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
-                      name="setClusterName"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiCluster inputAiCluster{{entityId}}ClusterName "
-                      name="clusterName"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.clusterName | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmClusterNameAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputClusterNameAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputDescriptionAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_description">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] description"
-                      label="description"
-                      help-text="
-A description of this cluster"
-                      id="{{classApiMethodMethod}}_description"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiCluster inputAiCluster{{entityId}}Description "
-                      name="setDescription"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiCluster inputAiCluster{{entityId}}Description "
-                      name="setDescription"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiCluster inputAiCluster{{entityId}}Description "
-                      name="description"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.description | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDescriptionAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDescriptionAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputEntityIdAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_entityId">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] entity ID"
-                      label="entity ID"
-                      help-text="
-A unique ID for this Smart Data Model"
-                      id="{{classApiMethodMethod}}_entityId"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
-                      name="setEntityId"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
-                      name="setEntityId"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId valueEntityId classAiCluster inputAiCluster{{entityId}}EntityId "
-                      name="entityId"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.entityId | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmEntityIdAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputEntityIdAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputLocationAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_location">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Point] location"
-                      label="location"
-                      help-text="
-Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
-                      id="{{classApiMethodMethod}}_location"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{entityId}}Location "
-                      name="setLocation"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiCluster inputAiCluster{{entityId}}Location "
-                      name="setLocation"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiCluster inputAiCluster{{entityId}}Location "
-                      name="location"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(result.location) | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmLocationAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputLocationAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputAiNodesTotalAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_aiNodesTotal">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Integer] AI nodes total"
-                      label="AI nodes total"
-                      help-text="
-The total number of AI nodes on this cluster. "
-                      id="{{classApiMethodMethod}}_aiNodesTotal"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal setAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
-                      name="setAiNodesTotal"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal setAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
-                      name="setAiNodesTotal"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_aiNodesTotal valueAiNodesTotal classAiCluster inputAiCluster{{entityId}}AiNodesTotal "
-                      name="aiNodesTotal"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.aiNodesTotal | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmAiNodesTotalAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputAiNodesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputGpuDevicesTotalAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_gpuDevicesTotal">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Integer] GPU devices total"
-                      label="GPU devices total"
-                      help-text="
-The total number of GPU devices on this cluster. "
-                      id="{{classApiMethodMethod}}_gpuDevicesTotal"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
-                      name="setGpuDevicesTotal"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
-                      name="setGpuDevicesTotal"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal valueGpuDevicesTotal classAiCluster inputAiCluster{{entityId}}GpuDevicesTotal "
-                      name="gpuDevicesTotal"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.gpuDevicesTotal | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmGpuDevicesTotalAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputGpuDevicesTotalAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputGrafanaUrlAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_grafanaUrl">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_grafanaUrl"
-                      placeholder="[String] Grafana GPU utilization"
-                      label="Grafana GPU utilization"
-                      help-text="Explore this cluster's GPU utilization in Grafana. "
-                      class="button-on-left {{classApiMethodMethod}}_grafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
-                      name="setGrafanaUrl"
-                      href="{{ result.grafanaUrl | e }}"
-                      >
-                    Grafana GPU utilization
-                  </wa-button>
-                  <div class="button-description-on-right ">Explore this cluster's GPU utilization in Grafana. </div>
-  {%- else %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] Grafana GPU utilization"
-                      label="Grafana GPU utilization"
-                      help-text="
-Explore this cluster's GPU utilization in Grafana. "
-                      id="{{classApiMethodMethod}}_grafanaUrl"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
-                      name="setGrafanaUrl"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl setGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
-                      name="setGrafanaUrl"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_grafanaUrl valueGrafanaUrl classAiCluster inputAiCluster{{entityId}}GrafanaUrl "
-                      name="grafanaUrl"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.grafanaUrl | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmGrafanaUrlAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputGrafanaUrlAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputDisplayPageAiClusterPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_displayPage">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_displayPage"
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="Visit this product's landing page. "
-                      class="button-on-left {{classApiMethodMethod}}_displayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-                      href="{{ result.displayPage | e }}"
-                      >
-                    product page
-                  </wa-button>
-                  <div class="button-description-on-right ">Visit this product's landing page. </div>
-  {%- else %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="
-Visit this product's landing page. "
-                      id="{{classApiMethodMethod}}_displayPage"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classAiCluster inputAiCluster{{entityId}}DisplayPage "
-                      name="displayPage"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.displayPage | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDisplayPageAiClusterPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDisplayPageAiClusterPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}

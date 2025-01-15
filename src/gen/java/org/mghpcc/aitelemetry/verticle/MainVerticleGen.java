@@ -92,6 +92,9 @@ public abstract class MainVerticleGen<DEV> extends AbstractVerticle {
 	protected static final Logger LOG = LoggerFactory.getLogger(MainVerticle.class);
 
 	public static final String SITE_NAME = "ai-telemetry";
+	public static final String authorizeDataFail1 = "Adding Keycloak authorization resources, policies, and permissions failed. ";
+	public static final String authorizeDataFail = authorizeDataFail1;
+
 	public static final String configureI18nFileError1 = "Failed to load internationalization data from file: %s";
 	public static final String configureI18nFileError = configureI18nFileError1;
 	public static final String configureI18nError1 = "Failed to load internationalization data. ";
@@ -241,7 +244,7 @@ public abstract class MainVerticleGen<DEV> extends AbstractVerticle {
 		return sb.toString();
 	}
 
-	public static final String[] MainVerticleVals = new String[] { configureI18nFileError1, configureI18nError1, configureI18nComplete1, configureI18nLoaded1 };
+	public static final String[] MainVerticleVals = new String[] { authorizeDataFail1, configureI18nFileError1, configureI18nError1, configureI18nComplete1, configureI18nLoaded1 };
 
 	public static final String CLASS_SIMPLE_NAME = "MainVerticle";
 

@@ -76,7 +76,7 @@
         htm += `{%- block htmLegendGpuDevicePage %}
     <div title="${quoteattr(title)}">
     <div style="width: 20px; ">
-      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+      <i class="{{ FONTAWESOME_STYLE }} fa-circle" style="color: ${color}; "></i>
     </div>
     <div class="text-overflow-ellipsis ">
       <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
@@ -99,6 +99,15 @@
             , weight: 1
             , opacity: 0.7
             , fillOpacity: 0.7
+            , contextmenu: true
+            , contextmenuItems: [
+              {
+                text: 'Show coordinates'
+                , callback: function(event) {
+                  alert(event2.target.getLatLngs());
+                }
+              }
+            ]
           };
         } else if(feature.geometry.type == 'LineString') {
           return {
@@ -255,7 +264,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
@@ -277,7 +286,7 @@
           <div class="margin-block">
             <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
             <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
               all GPU devices
             </wa-button>
           </div>
@@ -288,7 +297,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
@@ -309,7 +318,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
           <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all GPU devices
           </wa-button>
         </wa-tooltip>
@@ -351,467 +360,3 @@
 {%- block htmBodyEndGpuDevicePage %}
 {%- endblock htmBodyEndGpuDevicePage %}
 {%- endblock htmBodyEndPageLayout %}
-{%- macro inputPkGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_pk">
-  {%- endif %}
-                  <wa-input
-                      readonly
-                      placeholder="[Long] primary key"
-                      label="primary key"
-                      help-text="
-The primary key of this object in the database"
-                      id="{{classApiMethodMethod}}_pk"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classGpuDevice inputGpuDevice{{entityId}}Pk "
-                      name="setPk"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classGpuDevice inputGpuDevice{{entityId}}Pk "
-                      name="setPk"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classGpuDevice inputGpuDevice{{entityId}}Pk "
-                      name="pk"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.pk | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmPkGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputPkGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputCreatedGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_created">
-  {%- endif %}
-                  <wa-input
-                      type="text"
-                      readonly
-                      help-text="A created timestamp for this record in the database"
-                      label="created"
-                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classGpuDevice inputGpuDevice{{entityId}}Created "
-                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
-                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
-                      id="{{classApiMethodMethod}}_created"
-                      value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
-  {%- if 'Page' == classApiMethodMethod %}
-  {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >
-                  </wa-input>
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmCreatedGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputCreatedGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputModifiedGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_modified">
-  {%- endif %}
-                  <wa-input
-                      type="text"
-                      readonly
-                      help-text="A modified timestamp for this record in the database"
-                      label="modified"
-                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classGpuDevice inputGpuDevice{{entityId}}Modified "
-                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
-                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
-                      id="{{classApiMethodMethod}}_modified"
-                      value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
-  {%- if 'Page' == classApiMethodMethod %}
-  {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >
-                  </wa-input>
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmModifiedGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputModifiedGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputArchivedGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_archived">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_archived"
-                      placeholder="archive"
-                      label="archive"
-                      help-text="For archiving this record"
-                      class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{entityId}}Archived "
-                      name="setArchived"
-                      data-entityId={{ result.entityId | tojson }}
-                      data-val="{{ result.archived | e }}"
-                      >archive</wa-button>
-  {%- else %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-checkbox
-                      id="{{classApiMethodMethod}}_archived"
-                      value="true"
-  {%- else %}
-                  <wa-select
-                      id="{{classApiMethodMethod}}_archived"
-  {%- endif %}
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="archive"
-                      label="archive"
-                      help-text="For archiving this record"
-  {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{entityId}}Archived "
-                      name="setArchived"
-  {%- else %}
-    {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{entityId}}Archived "
-                      name="setArchived"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classGpuDevice inputGpuDevice{{entityId}}Archived "
-                      name="setArchived"
-    {%- endif %}
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-    {%- if result.archived == true %}
-                      checked
-    {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
-                      >archive</wa-checkbox>
-  {%- else %}
-                      >
-                    <wa-option value="" selected="selected"></wa-option>
-                    <wa-option value="true">true</wa-option>
-                    <wa-option value="false">false</wa-option>
-                  </wa-select>
-  {%- endif %}
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmArchivedGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputArchivedGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputClusterNameGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_clusterName">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] cluster name"
-                      label="cluster name"
-                      help-text="
-The cluster name of this GPU device"
-                      id="{{classApiMethodMethod}}_clusterName"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classGpuDevice inputGpuDevice{{entityId}}ClusterName "
-                      name="setClusterName"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classGpuDevice inputGpuDevice{{entityId}}ClusterName "
-                      name="setClusterName"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classGpuDevice inputGpuDevice{{entityId}}ClusterName "
-                      name="clusterName"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.clusterName | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmClusterNameGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputClusterNameGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputNodeNameGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_nodeName">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] node name"
-                      label="node name"
-                      help-text="
-The node name of this GPU device"
-                      id="{{classApiMethodMethod}}_nodeName"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classGpuDevice inputGpuDevice{{entityId}}NodeName "
-                      name="setNodeName"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classGpuDevice inputGpuDevice{{entityId}}NodeName "
-                      name="setNodeName"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName valueNodeName classGpuDevice inputGpuDevice{{entityId}}NodeName "
-                      name="nodeName"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.nodeName | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmNodeNameGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputNodeNameGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputDescriptionGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_description">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] description"
-                      label="description"
-                      help-text="
-A description of this GPU device"
-                      id="{{classApiMethodMethod}}_description"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classGpuDevice inputGpuDevice{{entityId}}Description "
-                      name="setDescription"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classGpuDevice inputGpuDevice{{entityId}}Description "
-                      name="setDescription"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classGpuDevice inputGpuDevice{{entityId}}Description "
-                      name="description"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.description | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDescriptionGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDescriptionGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputGpuDeviceNumberGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_gpuDeviceNumber">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Integer] GPU device number"
-                      label="GPU device number"
-                      help-text="
-The number of this GPU device"
-                      id="{{classApiMethodMethod}}_gpuDeviceNumber"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber setGpuDeviceNumber classGpuDevice inputGpuDevice{{entityId}}GpuDeviceNumber "
-                      name="setGpuDeviceNumber"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber setGpuDeviceNumber classGpuDevice inputGpuDevice{{entityId}}GpuDeviceNumber "
-                      name="setGpuDeviceNumber"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceNumber valueGpuDeviceNumber classGpuDevice inputGpuDevice{{entityId}}GpuDeviceNumber "
-                      name="gpuDeviceNumber"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.gpuDeviceNumber | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmGpuDeviceNumberGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputGpuDeviceNumberGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputEntityIdGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_entityId">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] entity ID"
-                      label="entity ID"
-                      help-text="
-A unique ID for this Smart Data Model"
-                      id="{{classApiMethodMethod}}_entityId"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classGpuDevice inputGpuDevice{{entityId}}EntityId "
-                      name="setEntityId"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classGpuDevice inputGpuDevice{{entityId}}EntityId "
-                      name="setEntityId"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId valueEntityId classGpuDevice inputGpuDevice{{entityId}}EntityId "
-                      name="entityId"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.entityId | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmEntityIdGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputEntityIdGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_gpuDeviceUtilization">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Integer] GPU device utilization"
-                      label="GPU device utilization"
-                      help-text="
-Current utilization of the GPU device. "
-                      id="{{classApiMethodMethod}}_gpuDeviceUtilization"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization setGpuDeviceUtilization classGpuDevice inputGpuDevice{{entityId}}GpuDeviceUtilization "
-                      name="setGpuDeviceUtilization"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization setGpuDeviceUtilization classGpuDevice inputGpuDevice{{entityId}}GpuDeviceUtilization "
-                      name="setGpuDeviceUtilization"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDeviceUtilization valueGpuDeviceUtilization classGpuDevice inputGpuDevice{{entityId}}GpuDeviceUtilization "
-                      name="gpuDeviceUtilization"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.gpuDeviceUtilization | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputGpuDeviceUtilizationGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputLocationGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_location">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Point] location"
-                      label="location"
-                      help-text="
-Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
-                      id="{{classApiMethodMethod}}_location"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classGpuDevice inputGpuDevice{{entityId}}Location "
-                      name="setLocation"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classGpuDevice inputGpuDevice{{entityId}}Location "
-                      name="setLocation"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classGpuDevice inputGpuDevice{{entityId}}Location "
-                      name="location"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(result.location) | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmLocationGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputLocationGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputDisplayPageGpuDevicePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_displayPage">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_displayPage"
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="Visit this product's landing page. "
-                      class="button-on-left {{classApiMethodMethod}}_displayPage classGpuDevice inputGpuDevice{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-                      href="{{ result.displayPage | e }}"
-                      >
-                    product page
-                  </wa-button>
-                  <div class="button-description-on-right ">Visit this product's landing page. </div>
-  {%- else %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="
-Visit this product's landing page. "
-                      id="{{classApiMethodMethod}}_displayPage"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classGpuDevice inputGpuDevice{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classGpuDevice inputGpuDevice{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classGpuDevice inputGpuDevice{{entityId}}DisplayPage "
-                      name="displayPage"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.displayPage | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDisplayPageGpuDevicePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDisplayPageGpuDevicePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}

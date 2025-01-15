@@ -626,6 +626,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
+	@JsonIgnore
 	public void setLocation(JsonObject o) {
 		this.location = AiCluster.staticSetLocation(siteRequest_, o);
 	}

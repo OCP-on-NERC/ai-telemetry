@@ -1,14 +1,315 @@
+{%- macro inputPkSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_pk">
+  {%- endif %}
+                  <wa-input
+                      readonly
+                      placeholder="[Long] primary key"
+                      label="primary key"
+                      help-text="
+The primary key of this object in the database"
+                      id="{{classApiMethodMethod}}_pk"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-userId={{ result.userId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classSiteUser inputSiteUser{{userId}}Pk "
+                      name="setPk"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classSiteUser inputSiteUser{{userId}}Pk "
+                      name="setPk"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classSiteUser inputSiteUser{{userId}}Pk "
+                      name="pk"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.pk | e }}"
+  {%- endif %}
+                      ></wa-input>
 
-{%- macro htmButton_patchSiteUser() %}<wa-button variant="brand" id="htmButton_patchSiteUser" data-userId={{ result.userId | tojson }}><i slot="prefix" class="fas fa-edit "></i>Modify</wa-button>{%- endmacro %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmPkSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputPkSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputCreatedSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_created">
+  {%- endif %}
+                  <wa-input
+                      type="text"
+                      readonly
+                      help-text="A created timestamp for this record in the database"
+                      label="created"
+                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classSiteUser inputSiteUser{{userId}}Created "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_created"
+                      value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-userId={{ result.userId | tojson }}
+                      >
+                  </wa-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmCreatedSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputCreatedSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputModifiedSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_modified">
+  {%- endif %}
+                  <wa-input
+                      type="text"
+                      readonly
+                      help-text="A modified timestamp for this record in the database"
+                      label="modified"
+                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classSiteUser inputSiteUser{{userId}}Modified "
+                      placeholder="MM/dd/yyyy h:mm a '['VV']'"
+                      data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
+                      id="{{classApiMethodMethod}}_modified"
+                      value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
+  {%- if 'Page' == classApiMethodMethod %}
+  {%- endif %}
+                      data-userId={{ result.userId | tojson }}
+                      >
+                  </wa-input>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmModifiedSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputModifiedSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputArchivedSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_archived">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <wa-button variant="brand"
+                      id="{{classApiMethodMethod}}_archived"
+                      placeholder="archive"
+                      label="archive"
+                      help-text="For archiving this record"
+                      class="label-on-left {{classApiMethodMethod}}_archived classSiteUser inputSiteUser{{userId}}Archived "
+                      name="setArchived"
+                      data-userId={{ result.userId | tojson }}
+                      data-val="{{ result.archived | e }}"
+                      >archive</wa-button>
+  {%- else %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <wa-checkbox
+                      id="{{classApiMethodMethod}}_archived"
+                      value="true"
+  {%- else %}
+                  <wa-select
+                      id="{{classApiMethodMethod}}_archived"
+  {%- endif %}
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="archive"
+                      label="archive"
+                      help-text="For archiving this record"
+  {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classSiteUser inputSiteUser{{userId}}Archived "
+                      name="setArchived"
+  {%- else %}
+    {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_archived classSiteUser inputSiteUser{{userId}}Archived "
+                      name="setArchived"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classSiteUser inputSiteUser{{userId}}Archived "
+                      name="setArchived"
+    {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+    {%- if result.archived == true %}
+                      checked
+    {%- endif %}
+                      data-userId={{ result.userId | tojson }}
+                      >archive</wa-checkbox>
+  {%- else %}
+                      >
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
+  {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmArchivedSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputArchivedSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputSeeArchivedSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_seeArchived">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <wa-checkbox
+                      id="{{classApiMethodMethod}}_seeArchived"
+                      value="true"
+  {%- else %}
+                  <wa-select
+                      id="{{classApiMethodMethod}}_seeArchived"
+  {%- endif %}
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="see archived"
+                      label="see archived"
+                      help-text="A user field allowing a user to see archived records"
+  {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_seeArchived classSiteUser inputSiteUser{{userId}}SeeArchived "
+                      name="setSeeArchived"
+  {%- else %}
+    {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_seeArchived classSiteUser inputSiteUser{{userId}}SeeArchived "
+                      name="setSeeArchived"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_seeArchived setSeeArchived valueSeeArchived classSiteUser inputSiteUser{{userId}}SeeArchived "
+                      name="setSeeArchived"
+    {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+    {%- if result.seeArchived == true %}
+                      checked
+    {%- endif %}
+                      data-userId={{ result.userId | tojson }}
+                      >see archived</wa-checkbox>
+  {%- else %}
+                      >
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmSeeArchivedSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputSeeArchivedSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputSeeDeletedSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_seeDeleted">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <wa-checkbox
+                      id="{{classApiMethodMethod}}_seeDeleted"
+                      value="true"
+  {%- else %}
+                  <wa-select
+                      id="{{classApiMethodMethod}}_seeDeleted"
+  {%- endif %}
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="see deleted"
+                      label="see deleted"
+                      help-text="A user field allowing a user to see deleted records"
+  {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_seeDeleted classSiteUser inputSiteUser{{userId}}SeeDeleted "
+                      name="setSeeDeleted"
+  {%- else %}
+    {%- if 'Page' == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_seeDeleted classSiteUser inputSiteUser{{userId}}SeeDeleted "
+                      name="setSeeDeleted"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_seeDeleted setSeeDeleted valueSeeDeleted classSiteUser inputSiteUser{{userId}}SeeDeleted "
+                      name="setSeeDeleted"
+    {%- endif %}
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+    {%- if result.seeDeleted == true %}
+                      checked
+    {%- endif %}
+                      data-userId={{ result.userId | tojson }}
+                      >see deleted</wa-checkbox>
+  {%- else %}
+                      >
+                    <wa-option value="" selected="selected"></wa-option>
+                    <wa-option value="true">true</wa-option>
+                    <wa-option value="false">false</wa-option>
+                  </wa-select>
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmSeeDeletedSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputSeeDeletedSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputDisplayPageSiteUserPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_displayPage">
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                  <wa-button variant="brand"
+                      id="{{classApiMethodMethod}}_displayPage"
+                      placeholder="[String] product page"
+                      label="product page"
+                      help-text="Visit this product's landing page. "
+                      class="button-on-left {{classApiMethodMethod}}_displayPage classSiteUser inputSiteUser{{userId}}DisplayPage "
+                      name="setDisplayPage"
+                      href="{{ result.displayPage | e }}"
+                      >
+                    product page
+                  </wa-button>
+                  <div class="button-description-on-right ">Visit this product's landing page. </div>
+  {%- else %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] product page"
+                      label="product page"
+                      help-text="
+Visit this product's landing page. "
+                      id="{{classApiMethodMethod}}_displayPage"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-userId={{ result.userId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classSiteUser inputSiteUser{{userId}}DisplayPage "
+                      name="setDisplayPage"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classSiteUser inputSiteUser{{userId}}DisplayPage "
+                      name="setDisplayPage"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classSiteUser inputSiteUser{{userId}}DisplayPage "
+                      name="displayPage"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.displayPage | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- endif %}
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmDisplayPageSiteUserPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputDisplayPageSiteUserPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+
+{%- macro htmButton_patchSiteUser() %}<wa-button variant="brand" id="htmButton_patchSiteUser" data-userId={{ result.userId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_patchSiteUser() %}
-            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
-                id="htmFormButton_patchSiteUser"
-                >Modify site user</wa-button>
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_patchSiteUser">Modify site user</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_patchSiteUser() %}
-        <wa-dialog id="patchSiteUserDialog" label="Modify site user">
+        <wa-dialog with-footer id="patchSiteUserDialog" label="Modify site user">
           <form id="htmForm_patchSiteUser" class="round-row primary-smart-border-radius ">
             <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -103,16 +404,14 @@
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_postSiteUser() %}<wa-button variant="brand" id="htmButton_postSiteUser" data-userId={{ result.userId | tojson }}><i slot="prefix" class="fas fa-file-plus "></i>Create</wa-button>{%- endmacro %}
+{%- macro htmButton_postSiteUser() %}<wa-button variant="brand" id="htmButton_postSiteUser" data-userId={{ result.userId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_postSiteUser() %}
-            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
-                id="htmFormButton_postSiteUser"
-                >Create a site user</wa-button>
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_postSiteUser">Create a site user</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_postSiteUser() %}
-        <wa-dialog id="postSiteUserDialog" label="Create a site user">
+        <wa-dialog with-footer id="postSiteUserDialog" label="Create a site user">
           <form id="htmForm_postSiteUser" class="round-row primary-smart-border-radius ">
             <div>You can override any default values below: </div>
             <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
@@ -211,13 +510,11 @@
 {%- macro htmButton_searchpageSiteUser() %}{%- endmacro %}
 
 {%- macro htmFormButton_searchpageSiteUser() %}
-            <wa-button variant="brand" slot="footer" type="submit" variant="primary"
-                id="htmFormButton_searchpageSiteUser"
-                >Search site users</wa-button>
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_searchpageSiteUser">Search site users</wa-button>
 {%- endmacro %}
 
 {%- macro htmForm_searchpageSiteUser() %}
-        <div id="searchpageSiteUserDialog" label="Search site users">
+        <div with-footer id="searchpageSiteUserDialog" label="Search site users">
           <div id="htmForm_searchpageSiteUser" class="round-row primary-smart-border-radius ">
             <wa-details class="HtmRow" id="primary-key-id-created-modified-archive-details">
               <div slot="summary">
@@ -318,7 +615,7 @@
     {% if resultCount == 1 %}
               <wa-button variant="brand" id="refreshThisSiteUserGenPage"
                    onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'userId:{{userId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSiteUserGenPage')); }, function() { addError(document.querySelector('#refreshThisSiteUserGenPage')); }); return false; ">
-                <i slot="prefix" class="fas fa-sync-alt "></i>
+                <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-sync-alt "></i>
                 refresh
               </wa-button>
     {% endif %}
@@ -326,7 +623,7 @@
               <wa-button variant="brand" id="refreshAllSiteUserGenPage{{ result.userId | e }}"
                    onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllSiteUserGenPage{{ result.userId | e }}')); }, function() { addError(document.querySelector('#refreshAllSiteUserGenPage{{ result.userId | e }}')); }); "
                   >
-                <i slot="prefix" class="fa-kit fa-solid-arrows-rotate-rotate"></i>
+                <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-arrows-rotate"></i>
                 Refresh all 
               </wa-button>
     {% endif %}
