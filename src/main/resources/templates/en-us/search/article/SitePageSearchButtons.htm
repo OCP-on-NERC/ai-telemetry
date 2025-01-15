@@ -1,34 +1,34 @@
           <div id="htmSearchButtons" class="flex flex-wrap round-column pill-smart-border-radius ">
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleSearch').open = true; ">
-              <i slot="prefix" class="fad fa-magnifying-glass hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-magnifying-glass hover-box-shadow "></i> 
               Search
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleFilters').open = true; ">
-              <i slot="prefix" class="fad fa-filters hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-filters hover-box-shadow "></i> 
               Filters
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleSort').open = true; ">
-              <i slot="prefix" class="fa-solid fa-arrow-down-a-z hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z hover-box-shadow "></i> 
               Sort
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleRange').open = true; ">
-              <i slot="prefix" class="fad fa-calendar-range hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-calendar-range hover-box-shadow "></i> 
               Range
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarTogglePivot').open = true; ">
-              <i slot="prefix" class="fad fa-table-pivot hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-table-pivot hover-box-shadow "></i> 
               Pivot
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleFieldList').open = true; ">
-              <i slot="prefix" class="fad fa-list-ul hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-list-ul hover-box-shadow "></i> 
               FieldList
             </wa-button>
             <wa-button variant="brand" onclick="document.querySelector('#siteSidebarToggleStats').open = true; ">
-              <i slot="prefix" class="fad fa-chart-candlestick hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-chart-candlestick hover-box-shadow "></i> 
               Stats
             </wa-button>
             <wa-button variant="brand" href="{{ apiUri }}{% if result.pageId is defined %}/{{ result.pageId }}{% else %}{{ queryStr }}{% endif %}">
-              <i slot="prefix" class="fad fa-brackets-curly hover-box-shadow "></i> 
+              <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-brackets-curly hover-box-shadow "></i> 
               Api
             </wa-button>
           </div>

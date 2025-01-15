@@ -1,0 +1,16 @@
+---
+GITHUB_ORG: OCP-on-NERC
+CLUSTER_ADMIN_GROUP: nerc-ops
+AUTH_URL: https://keycloak.apps.obs.nerc.mghpcc.org
+AUTH_REALM: NERC
+AUTH_CLIENT: ai-telemetry
+SITE_NAMESPACE: ai-telemetry-cbca60
+OPENSHIFT_APPS_DOMAIN: apps.shift.nerc.mghpcc.org
+WORKBENCH_SIZE: 20Gi
+SITE_SHORT_NAME: aitelemetry
+SITE_NAME: ai-telemetry
+SITE_PORT: 10210
+DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_NAME }}"
+DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_NAME }}"
+WORKBENCH_NAMES:
+  - schwesig

@@ -1,0 +1,5 @@
+- "https://oauth-openshift.{{ OPENSHIFT_APPS_DOMAIN }}/oauth2callback/Keycloak"
+{% for WORKBENCH_NAME in WORKBENCH_NAMES %}
+- "https://{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}/callback"
+- "https://{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}/logout"
+{% endfor %}

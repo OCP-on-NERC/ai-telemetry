@@ -866,6 +866,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
+	@JsonIgnore
 	public void setLocation(JsonObject o) {
 		this.location = GpuDevice.staticSetLocation(siteRequest_, o);
 	}

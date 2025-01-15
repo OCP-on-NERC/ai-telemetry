@@ -1,0 +1,7 @@
+---
+- name: Deploy zookeeper
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy-zookeeper

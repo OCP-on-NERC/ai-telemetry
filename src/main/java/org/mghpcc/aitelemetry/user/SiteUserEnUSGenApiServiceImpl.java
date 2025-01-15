@@ -80,6 +80,7 @@ import java.net.URLEncoder;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.HttpResponseExpectation;
 import java.nio.charset.Charset;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.web.api.service.ServiceRequest;

@@ -76,7 +76,7 @@
         htm += `{%- block htmLegendGpuSlicePage %}
     <div title="${quoteattr(title)}">
     <div style="width: 20px; ">
-      <i class="fa-light fa-circle" style="color: ${color}; "></i>
+      <i class="{{ FONTAWESOME_STYLE }} fa-circle" style="color: ${color}; "></i>
     </div>
     <div class="text-overflow-ellipsis ">
       <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
@@ -99,6 +99,15 @@
             , weight: 1
             , opacity: 0.7
             , fillOpacity: 0.7
+            , contextmenu: true
+            , contextmenuItems: [
+              {
+                text: 'Show coordinates'
+                , callback: function(event) {
+                  alert(event2.target.getLatLngs());
+                }
+              }
+            ]
           };
         } else if(feature.geometry.type == 'LineString') {
           return {
@@ -254,7 +263,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
           <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all GPU slices
           </wa-button>
         </wa-tooltip>
@@ -271,6 +280,11 @@
           </span>
         </h2>
 {% else %}
+          <form action="/en-us/api/gpu-slice" id="GpuSliceForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="listGpuSlice" id="listGpuSlice" class="listGpuSlice"  value='{{ toJsonArrayStringInApostrophes(listGpuSlice) }}' type="hidden"/>
+          </form>
         <div class="pageContent ">
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
@@ -279,7 +293,7 @@
           <div class="margin-block">
             <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
             <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
               all GPU slices
             </wa-button>
           </div>
@@ -294,11 +308,11 @@
                 <wa-button variant="brand" slot="trigger" caret>name</wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-sliceName-asc">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
                     sort by name ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-sliceName-desc">
-                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by name descending
                   </wa-menu-item>
                 </wa-menu>
@@ -307,11 +321,11 @@
                 <wa-button variant="brand" slot="trigger" caret>description</wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-description-asc">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
                     sort by description ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-description-desc">
-                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by description descending
                   </wa-menu-item>
                 </wa-menu>

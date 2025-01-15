@@ -682,6 +682,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
+	@JsonIgnore
 	public void setLocation(JsonObject o) {
 		this.location = AiNode.staticSetLocation(siteRequest_, o);
 	}

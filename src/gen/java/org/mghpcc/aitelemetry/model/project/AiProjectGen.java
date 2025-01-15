@@ -625,6 +625,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
+	@JsonIgnore
 	public void setLocation(JsonObject o) {
 		this.location = AiProject.staticSetLocation(siteRequest_, o);
 	}

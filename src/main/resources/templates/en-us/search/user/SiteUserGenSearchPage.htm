@@ -161,7 +161,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
           <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all site users
           </wa-button>
         </wa-tooltip>
@@ -178,6 +178,11 @@
           </span>
         </h2>
 {% else %}
+          <form action="/en-us/api/user" id="SiteUserForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="listSiteUser" id="listSiteUser" class="listSiteUser"  value='{{ toJsonArrayStringInApostrophes(listSiteUser) }}' type="hidden"/>
+          </form>
         <div class="pageContent ">
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
@@ -186,7 +191,7 @@
           <div class="margin-block">
             <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
             <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
               all site users
             </wa-button>
           </div>
@@ -201,11 +206,11 @@
                 <wa-button variant="brand" slot="trigger" caret></wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-userFullName-asc">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
                     sort by null ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-userFullName-desc">
-                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by null descending
                   </wa-menu-item>
                 </wa-menu>
@@ -214,11 +219,11 @@
                 <wa-button variant="brand" slot="trigger" caret></wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-userName-asc">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
                     sort by null ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-userName-desc">
-                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by null descending
                   </wa-menu-item>
                 </wa-menu>

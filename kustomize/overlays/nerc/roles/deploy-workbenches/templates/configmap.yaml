@@ -1,0 +1,30 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: workbench-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+data:
+  USING_OPENSHIFT_AI: 'true'
+  OPENSHIFT_APPS_DOMAIN: '{{ OPENSHIFT_APPS_DOMAIN }}'
+  OPENSHIFT_AI_WORKBENCH: {{ WORKBENCH_NAME }}
+  SITE_SRC: /opt/app-root/src/smart-aquaculture
+  SITE_NAMESPACE: {{ WORKBENCH_NAMESPACE }}
+  SITE_HOST_NAME: '{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}'
+  SITE_BASE_URL: 'https://{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}'
+  AUTH_NAMESPACE: keycloak
+  AUTH_HOST_NAME: "sso.computate.org"
+  ZOOKEEPER_ROOT_PATH: '{{ WORKBENCH_NAMESPACE }}'
+  SSL_VERIFY: 'true'
+  ZOOKEEPER_NAMESPACE: zookeeper
+  ZOOKEEPER_HOST_NAME: zookeeper.zookeeper.svc
+  ZOOKEEPER_PORT: '2181'
+  SOLR_NAMESPACE: solr
+  SOLR_HOST_NAME: solr.solr.svc
+  SOLR_PORT: '8983'
+  SOLR_SSL: 'false'
+  SOLR_COLLECTION: '{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}'
+  SOLR_COLLECTION_COMPUTATE: 'computate-{{ WORKBENCH_NAME }}'
+  SOLR_COLLECTION_FIWARE: 'fiware'
+  COMPUTATE_SEARCH_SRC: '/opt/app-root/src/computate-search'
+  COMPUTATE_VERTX_SRC: '/opt/app-root/src/computate-vertx'
+  COMPUTATE_SRC: '/opt/app-root/src/computate'

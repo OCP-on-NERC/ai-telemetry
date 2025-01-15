@@ -102,8 +102,9 @@ import com.rabbitmq.client.AMQP.BasicProperties;
 import io.vertx.amqp.AmqpMessage;
 import io.vertx.amqp.AmqpMessageBuilder;
 import io.vertx.amqp.AmqpSenderOptions;
+import io.vertx.pgclient.PgBuilder;
 import io.vertx.pgclient.PgConnectOptions;
-import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.Cursor;
 import io.vertx.sqlclient.PoolOptions;
 import io.vertx.sqlclient.Row;
@@ -147,13 +148,13 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 	/**
 	 * A io.vertx.ext.jdbc.JDBCClient for connecting to the relational database PostgreSQL. 
 	 **/
-	private PgPool pgPool;
+	private Pool pgPool;
 
-	public PgPool getPgPool() {
+	public Pool getPgPool() {
 		return pgPool;
 	}
 
-	public void setPgPool(PgPool pgPool) {
+	public void setPgPool(Pool pgPool) {
 		this.pgPool = pgPool;
 	}
 
@@ -194,10 +195,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 									configureMqtt().onSuccess(g -> 
 										configureAmqp().onSuccess(h -> 
 											configureRabbitmq().onSuccess(i -> 
-												authorizeData().onSuccess(j -> 
-													importData().onSuccess(k -> 
-														startPromise.complete()
-													).onFailure(ex -> startPromise.fail(ex))
+												importData().onSuccess(j -> 
+													startPromise.complete()
 												).onFailure(ex -> startPromise.fail(ex))
 											).onFailure(ex -> startPromise.fail(ex))
 										).onFailure(ex -> startPromise.fail(ex))
@@ -325,7 +324,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			poolOptions.setMaxSize(jdbcMaxPoolSize);
 			poolOptions.setMaxWaitQueueSize(config().getInteger(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE, 10));
 
-			pgPool = PgPool.pool(vertx, pgOptions, poolOptions);
+			pgPool = PgBuilder.pool().connectingTo(pgOptions).with(poolOptions).using(vertx).build();
 
 			LOG.info(configureDataInitSuccess);
 			promise.complete();
@@ -537,68 +536,6 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 		service.setWebClient(webClient);
 		service.setJinjava(jinjava);
 		service.setI18n(i18n);
-	}
-
-	/**
-	 * Description: Add Keycloak authorization resources, policies, and permissions for a data model. 
-	 * Val.Fail.enUS: Adding Keycloak authorization resources, policies, and permissions failed. 
-	 **/
-	private Future<Void> authorizeData() {
-		Promise<Void> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = new SiteRequest();
-			siteRequest.setConfig(config());
-			siteRequest.setWebClient(webClient);
-			siteRequest.initDeepSiteRequest(siteRequest);
-			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
-			initializeApiService(apiSitePage);
-			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
-			initializeApiService(apiSiteUser);
-			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
-			initializeApiService(apiAiCluster);
-			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
-			initializeApiService(apiAiNode);
-			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
-			initializeApiService(apiGpuDevice);
-			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
-			initializeApiService(apiGpuSlice);
-			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
-			initializeApiService(apiAiProject);
-			apiSiteUser.createAuthorizationScopes().onSuccess(authToken -> {
-				apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-						.compose(q1 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-						.onSuccess(q1 -> {
-					apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config().getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q2 -> {
-						apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-								.compose(q3 -> apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-								.onSuccess(q3 -> {
-							apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-									.compose(q4 -> apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-									.onSuccess(q4 -> {
-								apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-										.compose(q5 -> apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-										.onSuccess(q5 -> {
-									apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-											.compose(q6 -> apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-											.onSuccess(q6 -> {
-										apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-												.onSuccess(q7 -> {
-											LOG.info("authorize data complete");
-											promise.complete();
-										}).onFailure(ex -> promise.fail(ex));
-									}).onFailure(ex -> promise.fail(ex));
-								}).onFailure(ex -> promise.fail(ex));
-							}).onFailure(ex -> promise.fail(ex));
-						}).onFailure(ex -> promise.fail(ex));
-					}).onFailure(ex -> promise.fail(ex));
-				}).onFailure(ex -> promise.fail(ex));
-			}).onFailure(ex -> promise.fail(ex));
-		} catch(Throwable ex) {
-			LOG.error(authorizeDataFail, ex);
-			promise.fail(ex);
-		}
-		return promise.future();
 	}
 
 	/**

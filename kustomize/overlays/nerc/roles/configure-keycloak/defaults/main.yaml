@@ -1,0 +1,7 @@
+---
+# The port of the site. 
+SITE_PORT: 10210
+# The host name of the site. 
+SITE_HOST_NAME: "localhost"
+# The base URL of the site. 
+SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"

@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: dev
+      protocol: TCP
+      port: {{ SITE_PORT }}
+      targetPort: {{ SITE_PORT }}
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    notebook-name: {{ WORKBENCH_NAME }}

@@ -625,6 +625,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
+	@JsonIgnore
 	public void setLocation(JsonObject o) {
 		this.location = GpuSlice.staticSetLocation(siteRequest_, o);
 	}

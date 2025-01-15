@@ -1,0 +1,15 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+spec:
+  podSelector:
+    matchLabels:
+      notebook-name: {{ WORKBENCH_NAME }}
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: {{ SITE_PORT }}
+  policyTypes:
+    - Ingress

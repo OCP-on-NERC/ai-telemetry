@@ -2,7 +2,7 @@
 {%- block htmBodySidebarAiNodePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
-              <i class="fad fa-magnifying-glass "></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-magnifying-glass "></i>
               Search
             </div>
             <div>
@@ -50,7 +50,7 @@
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFilters">
             <div slot="label">
               <span>
-              <i class="fad fa-filters "></i> Filters</span>
+              <i class="{{ FONTAWESOME_STYLE }} fa-filters "></i> Filters</span>
             </div>
             <div>
               {%- block htmBodyFiltersAiNodePage %}
@@ -60,7 +60,7 @@
                     <label for="fqAiNode_{{ key }}">{{ value.displayName }}<sup> ({{ value.classSimpleName }})</sup></label>
                     <wa-tooltip for="buttonFacetAiNode_{{ key }}">see values</wa-tooltip>
                     <div class="flex round-column pill-smart-border-radius ">
-                      <wa-button variant="brand" id="buttonFacetAiNode_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="fas fa-list "></i></wa-button>
+                      <wa-button variant="brand" id="buttonFacetAiNode_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="{{ FONTAWESOME_STYLE }} fa-list "></i></wa-button>
                       <wa-input id="fqAiNode_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('AiNode', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
                     </div>
                   </div>
@@ -82,7 +82,7 @@
           </wa-drawer>
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSort">
             <div slot="label">
-              <i class="fad fa-solid fa-arrow-down-a-z "></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z "></i>
               Sort
             </div>
             <div>
@@ -107,7 +107,7 @@
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleRange">
             <div slot="label">
               <span>
-              <i class="fad fa-calendar-range "></i> Range</span>
+              <i class="{{ FONTAWESOME_STYLE }} fa-calendar-range "></i> Range</span>
             </div>
             <div>
               {%- block htmBodyRangeAiNodePage %}
@@ -169,7 +169,7 @@
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarTogglePivot">
             <div slot="label">
               <span>
-              <i class="fad fa-table-pivot "></i> Pivot</span>
+              <i class="{{ FONTAWESOME_STYLE }} fa-table-pivot "></i> Pivot</span>
             </div>
             <div>
               {%- block htmBodyPivotAiNodePage %}
@@ -194,7 +194,7 @@
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleFieldList">
             <div slot="label">
               <span>
-              <i class="fad fa-list-ul "></i> Field List</span>
+              <i class="{{ FONTAWESOME_STYLE }} fa-list-ul "></i> Field List</span>
             </div>
             <div>
 {%- block htmBodyFieldListAiNodePage %}
@@ -220,7 +220,7 @@
           </wa-drawer>
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleStats">
             <div slot="label">
-              <i class="fad fa-chart-candlestick "></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-chart-candlestick "></i>
               Stats
             </div>
             <div>
@@ -282,7 +282,9 @@
         </div>
 
 {%- block htmBodyGraphLocationAiNodePage %}
+{% if resultCount > 0 %}
         <div id="htmBodyGraphLocationAiNodePage" class="htmBodyGraphLocation "></div>
+{% endif %}
 {%- endblock htmBodyGraphLocationAiNodePage %}
 
 {%- block htmBodyGraphAiNodePage %}

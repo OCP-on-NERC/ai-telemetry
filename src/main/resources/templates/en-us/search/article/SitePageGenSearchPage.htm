@@ -171,7 +171,7 @@
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
           <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="fa-solid fa-angle-left"></i>
+            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
             all articles
           </wa-button>
         </wa-tooltip>
@@ -188,6 +188,11 @@
           </span>
         </h2>
 {% else %}
+          <form action="/en-us/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
+            <input name="focusId" type="hidden"/>
+            <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
+            <input name="listSitePage" id="listSitePage" class="listSitePage"  value='{{ toJsonArrayStringInApostrophes(listSitePage) }}' type="hidden"/>
+          </form>
         <div class="pageContent ">
           <div id="site-calendar-box">
             <div id="site-calendar"><!-- // --></div>
@@ -196,7 +201,7 @@
           <div class="margin-block">
             <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
             <wa-button id="return-to-SitePage" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="fa-solid fa-angle-left"></i>
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
               all articles
             </wa-button>
           </div>
@@ -211,11 +216,11 @@
                 <wa-button variant="brand" slot="trigger" caret>title</wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-name-asc">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
                     sort by title ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-name-desc">
-                    <i class="fa-solid fa-arrow-down-z-a"></i>
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by title descending
                   </wa-menu-item>
                 </wa-menu>

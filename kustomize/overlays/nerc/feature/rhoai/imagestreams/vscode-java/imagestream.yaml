@@ -1,0 +1,32 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: vscode-java
+  namespace: redhat-ods-applications
+  labels:
+    opendatahub.io/notebook-image: "true"
+  annotations:
+    opendatahub.io/notebook-image-url: >-
+      https://github.com/nerc-images/vscode-java
+    opendatahub.io/notebook-image-name: >-
+      VSCode IJava java-17-openjdk
+    opendatahub.io/notebook-image-desc: >-
+      An OpenShift AI Image for Java development.
+      Based on IJava project by SpencerPark on GitHub for Jupyter
+      Lab Notebook integration.  Uses java-17-openjdk-devel and
+      maven package support.  Used by the Smarta Byar Smart Village
+      Community using AI/ML code generation technology for Smart
+      Data Model APIs.
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: 1.2.0
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/computate/vscode-java:ansible'
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Source

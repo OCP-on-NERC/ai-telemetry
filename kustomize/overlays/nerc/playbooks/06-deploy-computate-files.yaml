@@ -1,0 +1,7 @@
+---
+- name: Deploy computate files
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy-computate-files

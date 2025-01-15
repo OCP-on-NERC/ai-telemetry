@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ WORKBENCH_NAME }}
+  namespace: {{ WORKBENCH_NAMESPACE }}
+  labels:
+    opendatahub.io/dashboard: 'true'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ WORKBENCH_SIZE }}
+  volumeMode: Filesystem
