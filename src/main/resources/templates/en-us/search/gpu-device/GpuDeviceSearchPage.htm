@@ -1,1 +1,125 @@
 {% extends "en-us/search/gpu-device/GpuDeviceGenSearchPage.htm" %}
+{%- block htmBodyMiddleGpuDevicePage %}
+<div id="notebooks-cpu"></div>
+{{ super() }}
+{%- endblock htmBodyMiddleGpuDevicePage %}
+{%- block htmScriptsGpuDevicePage %}
+{{ super() }}
+  <script type="module">
+    Promise.all([
+      customElements.whenDefined('wa-button')
+      , customElements.whenDefined('wa-input')
+    ]).then(() => {
+      var end = new Date();
+      var start = new Date(new Date().setHours(end.getHours() - 1));
+      var query = {
+        start: start.toISOString()
+        , end: end.toISOString()
+        , step: '5'
+      };
+      var cpuQuery = Object.assign({ query: 'sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.cpu",type="used"}[10m:5m])) / sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.cpu",type="hard"}[10m:5m])) * 100' }, query);
+      fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(cpuQuery).toString() , { method: 'GET' }).then(cpuResponse => {
+        if(cpuResponse.ok) {
+          cpuResponse.json().then(function(cpuBody) {
+            var memoryQuery = Object.assign({ query: 'sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.memory",type="used"}[10m:5m])) / sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.memory",type="hard"}[10m:5m])) * 100' }, query);
+            fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(memoryQuery).toString() , { method: 'GET' }).then(memoryResponse => {
+              if(memoryResponse.ok) {
+                memoryResponse.json().then(function(memoryBody) {
+                  var persistentvolumeclaimsQuery = Object.assign({ query: 'sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="persistentvolumeclaims",type="used"}[10m:5m])) / sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="persistentvolumeclaims",type="hard"}[10m:5m])) * 100' }, query);
+                  fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(persistentvolumeclaimsQuery).toString() , { method: 'GET' }).then(persistentvolumeclaimsResponse => {
+                    if(persistentvolumeclaimsResponse.ok) {
+                      persistentvolumeclaimsResponse.json().then(function(persistentvolumeclaimsBody) {
+                        var ephemeralstorageQuery = Object.assign({ query: 'sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.ephemeral-storage",type="used"}[10m:5m])) / sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="limits.ephemeral-storage",type="hard"}[10m:5m])) * 100' }, query);
+                        fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(ephemeralstorageQuery).toString() , { method: 'GET' }).then(ephemeralstorageResponse => {
+                          if(ephemeralstorageResponse.ok) {
+                            ephemeralstorageResponse.json().then(function(ephemeralstorageBody) {
+                              var requestsstorageQuery = Object.assign({ query: 'sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="requests.storage",type="used"}[10m:5m])) / sum(avg_over_time(kube_resourcequota{cluster="nerc-ocp-prod",namespace="rhods-notebooks",resource="requests.storage",type="hard"}[10m:5m])) * 100' }, query);
+                              fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(requestsstorageQuery).toString() , { method: 'GET' }).then(requestsstorageResponse => {
+                                if(requestsstorageResponse.ok) {
+                                  requestsstorageResponse.json().then(function(requestsstorageBody) {
+
+                                    var traces = [];
+
+                                    var cpuValues = cpuBody.data.result[0].values;
+                                    traces.push({
+                                      x: cpuValues.map(subArray => subArray[0])
+                                      , y: cpuValues.map(subArray => subArray[1])
+                                      , mode: 'lines+markers'
+                                      , name: 'cpu in % of limits'
+                                    });
+
+                                    var memoryValues = memoryBody.data.result[0].values;
+                                    traces.push({
+                                      x: memoryValues.map(subArray => subArray[0])
+                                      , y: memoryValues.map(subArray => subArray[1])
+                                      , mode: 'lines+markers'
+                                      , name: 'memory in % of limits'
+                                    });
+
+                                    var persistentvolumeclaimsValues = persistentvolumeclaimsBody.data.result[0].values;
+                                    traces.push({
+                                      x: persistentvolumeclaimsValues.map(subArray => subArray[0])
+                                      , y: persistentvolumeclaimsValues.map(subArray => subArray[1])
+                                      , mode: 'lines+markers'
+                                      , name: 'persistent volume claims in % of limits'
+                                    });
+
+                                    var ephemeralstorageValues = ephemeralstorageBody.data.result[0].values;
+                                    traces.push({
+                                      x: ephemeralstorageValues.map(subArray => subArray[0])
+                                      , y: ephemeralstorageValues.map(subArray => subArray[1])
+                                      , mode: 'lines+markers'
+                                      , name: 'ephemeral storage in % of limits'
+                                    });
+
+                                    var requestsstorageValues = requestsstorageBody.data.result[0].values;
+                                    traces.push({
+                                      x: requestsstorageValues.map(subArray => subArray[0])
+                                      , y: requestsstorageValues.map(subArray => subArray[1])
+                                      , mode: 'lines+markers'
+                                      , name: 'requests storage in % of limits'
+                                    });
+
+                                    var layout = {
+                                      title: {text: 'used in % of limits'}
+                                    };
+                                    Plotly.newPlot('notebooks-cpu', traces, layout);
+
+                                  });
+                                } else {
+                                  console.log(response);
+                                }
+                              }).catch(response => function (response, target) {
+                                console.log(response);
+                              });
+                            });
+                          } else {
+                            console.log(response);
+                          }
+                        }).catch(response => function (response, target) {
+                          console.log(response);
+                        });
+                      });
+                    } else {
+                      console.log(response);
+                    }
+                  }).catch(response => function (response, target) {
+                    console.log(response);
+                  });
+                });
+              } else {
+                console.log(response);
+              }
+            }).catch(response => function (response, target) {
+              console.log(response);
+            });
+          });
+        } else {
+          console.log(response);
+        }
+      }).catch(response => function (response, target) {
+        console.log(response);
+      });
+    });
+  </script>
+{%- endblock htmScriptsGpuDevicePage %}

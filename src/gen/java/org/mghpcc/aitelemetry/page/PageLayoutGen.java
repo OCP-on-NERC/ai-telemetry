@@ -33,6 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.core.Vertx;
 import java.lang.String;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonObject;
@@ -132,6 +134,88 @@ import io.vertx.core.Future;
  **/
 public abstract class PageLayoutGen<DEV> extends Object {
 	protected static final Logger LOG = LoggerFactory.getLogger(PageLayout.class);
+
+	///////////////
+	// webClient //
+	///////////////
+
+
+	/**	 The entity webClient
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonIgnore
+	@JsonInclude(Include.NON_NULL)
+	protected WebClient webClient;
+
+	/**	<br> The entity webClient
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.PageLayout&fq=entiteVar_enUS_indexed_string:webClient">Find the entity webClient in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _webClient(Wrap<WebClient> w);
+
+	public WebClient getWebClient() {
+		return webClient;
+	}
+
+	public void setWebClient(WebClient webClient) {
+		this.webClient = webClient;
+	}
+	public static WebClient staticSetWebClient(SiteRequest siteRequest_, String o) {
+		return null;
+	}
+	protected PageLayout webClientInit() {
+		Wrap<WebClient> webClientWrap = new Wrap<WebClient>().var("webClient");
+		if(webClient == null) {
+			_webClient(webClientWrap);
+			Optional.ofNullable(webClientWrap.getO()).ifPresent(o -> {
+				setWebClient(o);
+			});
+		}
+		return (PageLayout)this;
+	}
+
+	///////////
+	// vertx //
+	///////////
+
+
+	/**	 The entity vertx
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonIgnore
+	@JsonInclude(Include.NON_NULL)
+	protected Vertx vertx;
+
+	/**	<br> The entity vertx
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.PageLayout&fq=entiteVar_enUS_indexed_string:vertx">Find the entity vertx in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _vertx(Wrap<Vertx> w);
+
+	public Vertx getVertx() {
+		return vertx;
+	}
+
+	public void setVertx(Vertx vertx) {
+		this.vertx = vertx;
+	}
+	public static Vertx staticSetVertx(SiteRequest siteRequest_, String o) {
+		return null;
+	}
+	protected PageLayout vertxInit() {
+		Wrap<Vertx> vertxWrap = new Wrap<Vertx>().var("vertx");
+		if(vertx == null) {
+			_vertx(vertxWrap);
+			Optional.ofNullable(vertxWrap.getO()).ifPresent(o -> {
+				setVertx(o);
+			});
+		}
+		return (PageLayout)this;
+	}
 
 	//////////////////
 	// siteRequest_ //
@@ -3983,6 +4067,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
+				webClientInit();
+				vertxInit();
 				siteRequest_Init();
 				langInit();
 				requestVarsInit();
@@ -4133,6 +4219,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public Object obtainPageLayout(String var) {
 		PageLayout oPageLayout = (PageLayout)this;
 		switch(var) {
+			case "webClient":
+				return oPageLayout.webClient;
+			case "vertx":
+				return oPageLayout.vertx;
 			case "siteRequest_":
 				return oPageLayout.siteRequest_;
 			case "lang":
@@ -4837,6 +4927,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "PageLayout";
+	public static final String VAR_webClient = "webClient";
+	public static final String VAR_vertx = "vertx";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_lang = "lang";
 	public static final String VAR_requestVars = "requestVars";
@@ -4906,6 +4998,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_classIcon = "classIcon";
 	public static final String VAR_pageDescription = "pageDescription";
 
+	public static final String DISPLAY_NAME_webClient = "";
+	public static final String DISPLAY_NAME_vertx = "";
 	public static final String DISPLAY_NAME_siteRequest_ = "";
 	public static final String DISPLAY_NAME_lang = "";
 	public static final String DISPLAY_NAME_requestVars = "";
@@ -5012,6 +5106,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	}
 	public static String displayNamePageLayout(String var) {
 		switch(var) {
+		case VAR_webClient:
+			return DISPLAY_NAME_webClient;
+		case VAR_vertx:
+			return DISPLAY_NAME_vertx;
 		case VAR_siteRequest_:
 			return DISPLAY_NAME_siteRequest_;
 		case VAR_lang:
@@ -5155,6 +5253,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 
 	public static String descriptionPageLayout(String var) {
 		switch(var) {
+		case VAR_webClient:
+			return "The current request object";
+		case VAR_vertx:
+			return "The current request object";
 		case VAR_siteRequest_:
 			return "The current request object";
 		case VAR_lang:
@@ -5222,6 +5324,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 
 	public static String classSimpleNamePageLayout(String var) {
 		switch(var) {
+		case VAR_webClient:
+			return "WebClient";
+		case VAR_vertx:
+			return "Vertx";
 		case VAR_siteRequest_:
 			return "SiteRequest";
 		case VAR_lang:

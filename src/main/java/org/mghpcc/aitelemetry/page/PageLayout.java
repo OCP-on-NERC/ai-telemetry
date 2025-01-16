@@ -25,9 +25,11 @@ import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
 
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
+import io.vertx.ext.web.client.WebClient;
 
 
 /**
@@ -51,6 +53,24 @@ public class PageLayout extends PageLayoutGen<Object> {
 	public static DateTimeFormatter FORMATZonedDateTimeDisplay = DateTimeFormatter.ofPattern("EEEE MMMM d yyyy H:mm:ss.SSS zz VV", Locale.US);
 
 	public static DateTimeFormatter FORMATTimeDisplay = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+
+	/**
+	 * {@inheritDoc}
+	 * Ignore: true
+	 * Description: The current request object
+	 * Initialized: true
+	**/
+	protected void _webClient(Wrap<WebClient> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Ignore: true
+	 * Description: The current request object
+	 * Initialized: true
+	**/
+	protected void _vertx(Wrap<Vertx> w) {
+	}
 
 	/**
 	 * Ignore: true

@@ -14,6 +14,7 @@
     {{ WEB_COMPONENTS_CSS }}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/leaflet.contextmenu.css"/>
     <link rel="stylesheet" href="{{ STATIC_BASE_URL }}/css/site.css"/>
 {%- endblock htmStylesPageLayout %}
     <style>{%- block htmStylePageLayout %}{%- endblock htmStylePageLayout %}</style>
@@ -31,7 +32,7 @@
           filters.push({ name: 'q', value: 'objectSuggest:' + event.target.value });
 
         fetch(
-          '{{ PUBLIC_SEARCH_URI }}?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
+          '{{ USER_SEARCH_URI if userName is defined else PUBLIC_SEARCH_URI }}?' + filters.map(function(m) { return m.name + '=' + encodeURIComponent(m.value) }).join('&')
           , {
             headers: {'Content-Type':'application/json; charset=utf-8'}
           }).then(response => {
@@ -72,6 +73,7 @@
     <script src="{{ STATIC_BASE_URL }}/js/plotly-2.9.0.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="{{ STATIC_BASE_URL }}/js/leaflet.contextmenu.js"></script>
 {%- endblock htmScriptsPageLayout %}
 {%- block htmScriptPageLayout %}
 {%- endblock htmScriptPageLayout %}
@@ -81,13 +83,10 @@
     </script>
    </head>
   <body>
-    <wa-page>
+    <wa-page disable-sticky="header">
 {%- block htmBodyPageLayout %}
 {%- block htmBodyStartPageLayout %}
       <aside class="main-sidebar" slot="navigation">
-        <div class="text-end">
-          <wa-icon-button name="xmark" label="Close" data-drawer="close" class="hide-desktop sidebar-close-button"></wa-icon-button>
-        </div>
         <nav>
           <div>
             <a href="/">
@@ -112,13 +111,13 @@
               <div>
                 <wa-tooltip content="see or change your user profile">
                   <wa-button variant="brand" href="/user" label="see or change your user profile">
-                    <i slot="prefix" class="fad fa-house-user"></i>
+                    <i slot="prefix" class="fa-duotone fa-regular fa-house-user"></i>
                     <span>my user page</span>
                   </wa-button>
                 </wa-tooltip>
                 <wa-tooltip placement="right" content="sign out">
                   <wa-button variant="brand" href="{{ logoutUrl }}" label="sign out">
-                    <i slot="prefix" class="fa-duotone fa-person-from-portal"></i>
+                    <i slot="prefix" class="fa-duotone fa-regular fa-person-from-portal"></i>
                     <span>sign out</span>
                   </wa-button>
                 </wa-tooltip>
@@ -126,7 +125,7 @@
             </wa-details>
 {%- else %}
             <wa-button variant="brand" href="{{ SITE_BASE_URL }}/user">
-              <i class="fa-duotone fa-person-to-portal"></i> login
+              <i class="fa-duotone fa-regular fa-person-to-portal"></i> login
             </wa-button>
 {%- endif %}
           </div>
@@ -159,10 +158,10 @@
         </nav>
       </aside>
       <main>
-        <header class="margin-block flex gap-m align-items-center">
-          <wa-icon-button data-toggle-nav name="bars" class="nav-toggle-button hide-desktop" class="hide-desktop " label="open menu" appearance="text"></wa-icon-button>
+        <header slot="header" class="margin-block ">
+          <wa-icon-button data-toggle-nav name="bars" class="nav-toggle-button hide-desktop " label="open menu" appearance="text"></wa-icon-button>
           <wa-input placeholder="search" id="siteSearchInput">
-            <i slot="prefix" class="fa-light fa-magnifying-glass"></i>
+            <i slot="prefix" class="fa-duotone fa-regular fa-magnifying-glass"></i>
           </wa-input>
         </header>
         <wa-dropdown id="siteSearchDropdown" class="display-block ">
@@ -177,19 +176,25 @@
 {%- endblock htmBodyMiddlePageLayout %}
 {%- block htmBodyEndPageLayout %}
       </main>
-      <footer class="flex flex-column round-row primary-smart-border-radius" slot="main-footer">
+      <footer class="flex flex-column round-row primary-smart-border-radius margin-block">
         {% if GITHUB_ORG is defined %}
-        <wa-button variant="brand" size="large" href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank">
-          This site is <b><i class="fa-brands fa-github"></i> open source</b>.
-        </wa-button>
+        <a href="https://github.com/{{ GITHUB_ORG }}/{{ SITE_NAME }}/" target="_blank">
+          <wa-card>
+            This site is <b><i class="fa-brands fa-github fa-xl"></i> open source</b>
+          </wa-card>
+        </a>
         {% endif %}
-        <wa-button variant="brand" size="large" id="footer-generated-by" href="https://www.computate.org/" target="_blank">
-            Generated with <b><img class="footer-img" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg" alt="Computate"/></b>.
-        </wa-button>
+        <a href="https://www.computate.org/" target="_blank" id="footer-generated-by">
+          <wa-card>
+              Generated with <b><img class="footer-img" src="{{ STATIC_BASE_URL }}/svg/computate-keys.svg" alt="Computate"/></b>
+          </wa-card>
+        </a>
         {% if SITE_POWERED_BY_URL is defined %}
-        <wa-button variant="brand" size="large" id="footer-powered-by" href="{{ SITE_POWERED_BY_URL }}" target="_blank">
-          Powered by <b><img class="footer-img" alt="Google Kubernetes Engine" src="{{ STATIC_BASE_URL }}/png/nerc-logo.png"/> {{ SITE_POWERED_BY_NAME | e }}</b>
-        </wa-button>
+        <a href="{{ SITE_POWERED_BY_URL }}" target="_blank" id="footer-powered-by">
+          <wa-card>
+            Powered by <i class="fa-brands fa-redhat fa-xl" style="color: #ff0000;"></i> <b>{{ SITE_POWERED_BY_NAME | e }}</b>
+          </wa-card>
+        </a>
         {% endif %}
       </footer>
     </wa-page>
