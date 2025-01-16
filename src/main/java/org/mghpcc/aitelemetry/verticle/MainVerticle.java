@@ -129,6 +129,7 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.Session;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.api.service.ServiceResponse;
+import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
@@ -1525,6 +1526,47 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						}).onFailure(ex -> {
 							LOG.error(String.format("Failed to render page %s", originalUri), ex);
 							handler.fail(ex);
+						});
+					} catch(Exception ex) {
+						LOG.error("Failed to load page. ", ex);
+						handler.fail(ex);
+					}
+				}).onFailure(ex -> {
+					LOG.error(String.format("Failed to render page %s", originalUri), ex);
+					handler.fail(ex);
+				});
+			});
+
+			router.getWithRegex("\\/prom-keycloak-proxy(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
+				String originalUri = handler.pathParam("uri");
+				SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
+				initializeApiService(apiSiteUser);
+				ServiceRequest serviceRequest = apiSiteUser.generateServiceRequest(handler);
+				apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+					try {
+
+						String uri = handler.pathParam("uri");
+
+						Integer promKeycloakProxyPort = Integer.parseInt(config().getString(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT));
+						String promKeycloakProxyHostName = config().getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
+						Boolean promKeycloakProxySsl = Boolean.parseBoolean(config().getString(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL));
+
+						HttpRequest<Buffer> get = webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, uri).ssl(promKeycloakProxySsl);
+						for(Entry<String, String> entry : handler.queryParams()) {
+							String paramName = entry.getKey();
+							String paramObject = entry.getValue();
+							get.addQueryParam(paramName, paramObject);
+						}
+						get
+								.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUserPrincipal().getString("access_token")))
+								.send()
+								.expecting(HttpResponseExpectation.SC_OK)
+								.onSuccess(metricsResponse -> {
+							handler.response().putHeader("Content-Type", "application/json");
+							handler.end(metricsResponse.bodyAsJsonObject().toBuffer());
+						}).onFailure(ex -> {
+							LOG.error("Failed to query the prom-keycloak-proxy. ", ex);
+							handler.fail(403, ex);
 						});
 					} catch(Exception ex) {
 						LOG.error("Failed to load page. ", ex);

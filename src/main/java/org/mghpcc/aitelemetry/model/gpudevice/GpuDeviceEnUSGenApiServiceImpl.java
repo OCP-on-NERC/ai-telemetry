@@ -2094,6 +2094,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setSearchListGpuDevice_(listGpuDevice);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
 			page.promiseDeepGpuDevicePage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
@@ -2268,6 +2269,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setSearchListGpuDevice_(listGpuDevice);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
 			page.promiseDeepGpuDevicePage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);

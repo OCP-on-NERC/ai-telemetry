@@ -195,6 +195,8 @@ DYNAMIC_PAGE_PATHS:
   - "en-us/article"
 # An optional FontAwesome Pro Kit for additional FontAwesome icons. 
 FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
+# A default FontAwesome style. 
+FONTAWESOME_STYLE: "fa-duotone fa-regular"
 # An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
 WEB_COMPONENTS_CSS: |-
   {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode | default('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />') }}
@@ -257,36 +259,37 @@ ZOOKEEPER_SESSION_TIMEOUT_MILLIS: 5000
 # Solr defaults #
 #################
 
+# The namespace in OpenShift where Solr will run. 
+SOLR_NAMESPACE: "{{ lookup('env', 'SOLR_NAMESPACE') | default('solr', true) }}"
 # Whether to use SSL when connecting to Solr. 
-SOLR_SSL: true
+SOLR_SSL: "{{ (lookup('env', 'SOLR_SSL') | lower) != 'false' }}"
 # The host name to connect to Solr in OpenShift. 
-SOLR_HOST_NAME: "solr.{{ OPENSHIFT_APPS_DOMAIN }}"
+SOLR_HOST_NAME: "{{ lookup('env', 'SOLR_HOST_NAME') | default('solr.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The default port that Solr runs. 
-SOLR_PORT: 443
+SOLR_PORT: "{{ lookup('env', 'SOLR_PORT') | default('443', true) }}"
+# The solr collection to use for the site. 
+SOLR_COLLECTION: "{{ lookup('env', 'SOLR_COLLECTION') | default(SITE_SHORT_NAME, true) }}"
+# The URL to the Solr collection. 
+SOLR_URL: "{{ ('https://' if SOLR_SSL == True else 'http://') + SOLR_HOST_NAME + ('' if SOLR_PORT == 443 else (':' + SOLR_PORT)) }}/solr/{{ SOLR_COLLECTION }}"
 # The solr pod name to connect and create Solr configsets and collections. 
 SOLR_POD_NAME: "solr-0"
-# The solr collection to use for the site. 
-SOLR_COLLECTION: "{{ SITE_SHORT_NAME }}"
 # The solr configset to use for the site. 
 SOLR_CONFIGSET: "computate"
 # The Solr admin username
 SOLR_USERNAME: admin
 # The Solr admin password
-SOLR_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr', namespace='solr')[0].data['solr-password'] | b64decode }}"
-# The URL to the Solr collection. 
-SOLR_URL: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/{{ SOLR_COLLECTION }}"
+SOLR_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-secret', namespace=SOLR_NAMESPACE)[0].data['solr-password'] | b64decode }}"
+
 # Whether to use SSL when connecting to Solr. 
-SOLR_SSL_COMPUTATE: true
+SOLR_SSL_COMPUTATE: "{{ lookup('env', 'SOLR_SSL_COMPUTATE') | default(SOLR_SSL, true) | bool }}"
 # The host name to connect to Solr in OpenShift. 
-SOLR_HOST_NAME_COMPUTATE: "solr.{{ OPENSHIFT_APPS_DOMAIN }}"
+SOLR_HOST_NAME_COMPUTATE: "{{ lookup('env', 'SOLR_HOST_NAME_COMPUTATE') | default(SOLR_HOST_NAME, true) }}"
 # The default port that Solr runs. 
-SOLR_PORT_COMPUTATE: 443
+SOLR_PORT_COMPUTATE: "{{ lookup('env', 'SOLR_PORT_COMPUTATE') | default(SOLR_PORT, true) }}"
 # The solr collection to use for the site. 
-SOLR_COLLECTION_COMPUTATE: computate
-# The URL to the Solr collection for the watched Java code API. 
-SOLR_URL_COMPUTATE: "https://{{ SOLR_HOST_NAME }}:{{ SOLR_PORT }}/solr/{{ SOLR_COLLECTION_COMPUTATE }}"
-# The namespace in OpenShift where Solr will run. 
-SOLR_NAMESPACE: solr
+SOLR_COLLECTION_COMPUTATE: "{{ lookup('env', 'SOLR_COLLECTION_COMPUTATE') | default('computate', true) }}"
+# The URL to the Solr collection. 
+SOLR_URL_COMPUTATE: "{{ ('https://' if SOLR_SSL_COMPUTATE == True else 'http://') + SOLR_HOST_NAME_COMPUTATE + ('' if SOLR_PORT_COMPUTATE == 443 else (':' + SOLR_PORT_COMPUTATE)) }}/solr/{{ SOLR_COLLECTION_COMPUTATE }}"
 
 #####################
 # Database defaults #
@@ -316,7 +319,7 @@ DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}"
 # The namespace in OpenShift where Keycloak will run. 
 AUTH_NAMESPACE: keycloak
 # The Auth host name. 
-AUTH_HOST_NAME: "keycloak.{{ OPENSHIFT_APPS_DOMAIN }}"
+AUTH_HOST_NAME: "keycloak.apps.obs.nerc.mghpcc.org"
 # The Auth port. 
 AUTH_PORT: 443
 # Whether the Auth server uses SSL. 
@@ -501,3 +504,18 @@ ENABLE_OPENID_CONNECT: true
 WRITE_API: true
 # Write code comments into generated code. 
 WRITE_COMMENTS: true
+
+#######################
+# prom-keycloak-proxy #
+#######################
+# Whether to use SSL when connecting to the Prometheus Keycloak Proxy. 
+PROM_KEYCLOAK_PROXY_SSL: "{{ (lookup('env', 'PROM_KEYCLOAK_PROXY_SSL') | lower) != 'false' }}"
+# The host name to connect to the Prometheus Keycloak Proxy in OpenShift. 
+PROM_KEYCLOAK_PROXY_HOST_NAME: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_HOST_NAME') | default('prom-keycloak-proxy.' + OPENSHIFT_APPS_DOMAIN, true) }}"
+# The default port that the Prometheus Keycloak Proxy runs. 
+PROM_KEYCLOAK_PROXY_PORT: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_PORT') | default('443', true) }}"
+
+###########
+# grafana #
+###########
+GRAFANA_BASE_URL: https://grafana.apps.obs.nerc.mghpcc.org
