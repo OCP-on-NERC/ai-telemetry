@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
+import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
@@ -23,7 +24,8 @@ import io.vertx.pgclient.data.Polygon;
  * Icon: <i class="fa-regular fa-memory"></i>
  *
  * SearchPageUri: /en-us/search/gpu-device
- * EditPageUri: /en-us/edit/gpu-device/{pageId}
+ * EditPageUri: /en-us/edit/gpu-device/{gpuDeviceId}
+ * UserPageUri: /en-us/user/gpu-device/{gpuDeviceId}
  * ApiUri: /en-us/api/gpu-device
  * ApiMethod:
  *   Search:
@@ -38,27 +40,18 @@ import io.vertx.pgclient.data.Polygon;
  *     POST:
  *     PATCH:
  *     GET:
+ *     PUT:
  *     DELETE:
  *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:
  *     GET:
+ *     PUT:
  *     DELETE:
  *     SuperAdmin:
  **/
 public class GpuDevice extends GpuDeviceGen<BaseModel> {
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * DisplayName: GPU device ID
-	 * Description: A unique ID for a gpu device per cluster, and node. 
-	 * Facet: true
-	 * VarName: true
-	 **/
-	protected void _gpuDeviceId(Wrap<String> w) {}
 
 	/**
 	 * {@inheritDoc}
@@ -99,6 +92,20 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * Facet: true
 	 **/
 	protected void _gpuDeviceNumber(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: GPU device ID
+	 * Description: A unique ID for a gpu device per cluster, and node. 
+	 * Facet: true
+	 * VarName: true
+	 * VarId: true
+	 **/
+	protected void _gpuDeviceId(Wrap<String> w) {
+		w.o(GpuDevice.toId(String.format("%s-%s-%s", clusterName, nodeName, gpuDeviceNumber)));
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -175,7 +182,9 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * HtmCell: 1
 	 * Facet: true
 	 **/
-	protected void _location(Wrap<Point> w) {}
+	protected void _location(Wrap<Point> w) {
+		w.o(staticSetLocation(siteRequest_, siteRequest_.getConfig().getString(ComputateConfigKeys.DEFAULT_MAP_LOCATION)));
+	}
 
 
 	/**
@@ -187,9 +196,8 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
-	 * VarId: true
 	 */
-	protected void _entityId(Wrap<String> w) {
+	protected void _id(Wrap<String> w) {
 		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(gpuDeviceId)));
 	}
 
@@ -197,11 +205,68 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DisplayName: short entity ID
 	 * Description: A short ID for this Smart Data Model
+	 * DocValues: true
 	 * Facet: true
 	 */
 	protected void _entityShortId(Wrap<String> w) {
-		if(entityId != null) {
-			w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
+		if(id != null) {
+			w.o(StringUtils.substringAfter(id, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD-Tenant
+	 * Description: The NGSILD-Tenant or Fiware-Service
+	 * HtmRow: 5
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _ngsildTenant(Wrap<String> w) {
+		w.o(System.getenv("NGSILD_TENANT"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD-Path
+	 * Description: The NGSILD-Path or Fiware-ServicePath
+	 * HtmRow: 5
+	 * HtmCell: 2
+	 * Facet: true
+	 */
+	protected void _ngsildPath(Wrap<String> w) {
+		w.o(System.getenv("NGSILD_PATH"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD context
+	 * Description: The NGSILD context URL for @context data
+	 * HtmRow: 5
+	 * HtmCell: 3
+	 * Facet: true
+	 */
+	protected void _ngsildContext(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD data
+	 * Description: The NGSILD data with @context from the context broker
+	 * HtmRow: 5
+	 * HtmCell: 4
+	 * Facet: true
+	 * Multiline: true
+	 */
+	protected void _ngsildData(Wrap<JsonObject> w) {
 	}
 }

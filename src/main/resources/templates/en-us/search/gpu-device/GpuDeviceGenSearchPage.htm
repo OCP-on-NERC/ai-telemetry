@@ -31,7 +31,7 @@
 {%- block htmScriptGpuDevicePage %}
     <script>
 
-      function jsWebsocketGpuDevice(entityId, vars, $response) {
+      function jsWebsocketGpuDevice(gpuDeviceId, vars, $response) {
 {%- block jsWebsocketGpuDevicePage %}{%- endblock %}
       }
 
@@ -129,7 +129,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +140,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var gpuDeviceId = {% if result.gpuDeviceId is defined %}{{ result.gpuDeviceId | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(gpuDeviceId == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +159,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if gpuDeviceId is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listGpuDevice')?.value;
@@ -191,7 +191,7 @@
         });
         document.querySelector('#htmFormButton_patchGpuDevice')?.addEventListener('click', event => {
           event.preventDefault();
-          patchGpuDevice(null, document.querySelector('#htmForm_patchGpuDevice'), document.querySelector('#htmFormButton_patchGpuDevice'), event.target.getAttribute('data-entityId'));
+          patchGpuDevice(null, document.querySelector('#htmForm_patchGpuDevice'), document.querySelector('#htmFormButton_patchGpuDevice'), event.target.getAttribute('data-gpuDeviceId'));
           return false;
         });
 
@@ -211,7 +211,7 @@
         });
         document.querySelector('#htmFormButton_deleteGpuDevice')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteGpuDevice(event.target, event.target.getAttribute('data-entityId'));
+          deleteGpuDevice(event.target, event.target.getAttribute('data-gpuDeviceId'));
           return false;
         });
 
@@ -378,11 +378,11 @@
                   placeholder="[String] edit"
                   label="edit"
                   title="Edit this"
-                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuDevice inputGpuDevice{{entityId}}EditPage "
+                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuDevice inputGpuDevice{{gpuDeviceId}}EditPage "
                   name="setEditPage"
                   href="{{ item.editPage | e }}"
                   >
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-duotone fa-regular fa-pen-to-square"></i>
                 edit
               </wa-button>
             </div>

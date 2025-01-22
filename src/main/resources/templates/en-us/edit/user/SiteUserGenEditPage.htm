@@ -47,7 +47,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -179,8 +179,7 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount == 1 %}
-    {% if solrId is defined %}
+  {% if resultCount >= 1 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
             <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -191,27 +190,6 @@
 {% include en-us/search/user/SiteUserSearchButtons.htm %}
 {% include en-us/search/user/SiteUserSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-duotone fa-solid fa-user-gear"></i> {{ result.title | e }}</h1>
-    {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>
-          <wa-button id="return-to-SiteUser" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all site users
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-duotone fa-solid fa-user-gear"></i> <span>site users</span></h1>
-{% include en-us/search/user/SiteUserSearchButtons.htm %}
-{% include en-us/search/user/SiteUserSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no site user found</span>
-          </span>
-        </h2>
-    {% endif %}
   {% else %}
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SiteUser">back to all site users</wa-tooltip>

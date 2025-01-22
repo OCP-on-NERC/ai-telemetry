@@ -69,9 +69,10 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetAiProject_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldAiProject_{{ key }} " id="pageFacetFieldAiProject_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <wa-tooltip content="{{ facetFieldValue | e }} AI project total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <div>
+                        <wa-tooltip content="{{ facetFieldValue | e }} AI project total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;"></wa-tooltip>
                         <div class="cursor-pointer " data-class="AiProject" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('AiProject', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </wa-tooltip>
+                      </div>
                       {% endfor %}
                     </div>
                   </div>
@@ -280,12 +281,6 @@
           </wa-drawer>
 {%- endblock htmBodySidebarAiProjectPage %}
         </div>
-
-{%- block htmBodyGraphLocationAiProjectPage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationAiProjectPage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationAiProjectPage %}
 
 {%- block htmBodyGraphAiProjectPage %}
         <div id="htmBodyGraphAiProjectPage" class="htmBodyGraph "></div>

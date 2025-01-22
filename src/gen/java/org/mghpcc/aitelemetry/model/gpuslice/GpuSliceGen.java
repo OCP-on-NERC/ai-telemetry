@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
+import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -106,6 +107,9 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <h2>ApiMethode: EditPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
+ * </p>
+ * <h2>ApiMethode: UserPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: GPU slices"</b>, which groups all of the OpenAPIs for GpuSlice objects under the tag "GPU slices". 
@@ -197,7 +201,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no GPU slice found";
 	public static final String ApiUri_enUS = "/en-us/api/gpu-slice";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/gpu-slice";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/gpu-slice/{pageId}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/gpu-slice/{sliceName}";
 	public static final String OfName_enUS = "of GPU slice";
 	public static final String ANameAdjective_enUS = "a GPU slice";
 	public static final String NameAdjectiveSingular_enUS = "GPU slice";
@@ -205,7 +209,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/gpu-slice";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/gpu-slice";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice";
-	public static final String GET_enUS_OpenApiUri = "/en-us/api/gpu-slice/{entityId}";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/gpu-slice/{sliceName}";
 	public static final String GET_enUS_StringFormatUri = "/en-us/api/gpu-slice/%s";
 	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice/%s";
 	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/gpu-slice";
@@ -214,7 +218,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String POST_enUS_OpenApiUri = "/en-us/api/gpu-slice";
 	public static final String POST_enUS_StringFormatUri = "/en-us/api/gpu-slice";
 	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice";
-	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/gpu-slice/{entityId}";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/gpu-slice/{sliceName}";
 	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/gpu-slice/%s";
 	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice/%s";
 	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/gpu-slice-import";
@@ -223,9 +227,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/gpu-slice";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/gpu-slice";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/gpu-slice";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/gpu-slice/{pageId}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/gpu-slice/{sliceName}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/gpu-slice/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/gpu-slice/%s";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/gpu-slice/{sliceName}";
+	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/gpu-slice/%s";
+	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/gpu-slice/%s";
 
 	public static final String Icon = "<i class=\"fa-regular fa-cake-slice\"></i>";
 
@@ -670,60 +677,60 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		return location;
 	}
 
-	//////////////
-	// entityId //
-	//////////////
+	////////
+	// id //
+	////////
 
 
-	/**	 The entity entityId
+	/**	 The entity id
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String entityId;
+	protected String id;
 
-	/**	<br> The entity entityId
+	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _entityId(Wrap<String> w);
+	protected abstract void _id(Wrap<String> w);
 
-	public String getEntityId() {
-		return entityId;
+	public String getId() {
+		return id;
 	}
-	public void setEntityId(String o) {
-		this.entityId = GpuSlice.staticSetEntityId(siteRequest_, o);
+	public void setId(String o) {
+		this.id = GpuSlice.staticSetId(siteRequest_, o);
 	}
-	public static String staticSetEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSetId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected GpuSlice entityIdInit() {
-		Wrap<String> entityIdWrap = new Wrap<String>().var("entityId");
-		if(entityId == null) {
-			_entityId(entityIdWrap);
-			Optional.ofNullable(entityIdWrap.getO()).ifPresent(o -> {
-				setEntityId(o);
+	protected GpuSlice idInit() {
+		Wrap<String> idWrap = new Wrap<String>().var("id");
+		if(id == null) {
+			_id(idWrap);
+			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
+				setId(o);
 			});
 		}
 		return (GpuSlice)this;
 	}
 
-	public static String staticSearchEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqEntityId(SiteRequest siteRequest_, String o) {
-		return GpuSlice.staticSearchEntityId(siteRequest_, GpuSlice.staticSetEntityId(siteRequest_, o)).toString();
+	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
+		return GpuSlice.staticSearchId(siteRequest_, GpuSlice.staticSetId(siteRequest_, o)).toString();
 	}
 
-	public String sqlEntityId() {
-		return entityId;
+	public String sqlId() {
+		return id;
 	}
 
 	///////////////////
@@ -778,6 +785,239 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		return GpuSlice.staticSearchEntityShortId(siteRequest_, GpuSlice.staticSetEntityShortId(siteRequest_, o)).toString();
 	}
 
+	//////////////////
+	// ngsildTenant //
+	//////////////////
+
+
+	/**	 The entity ngsildTenant
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildTenant;
+
+	/**	<br> The entity ngsildTenant
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:ngsildTenant">Find the entity ngsildTenant in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildTenant(Wrap<String> w);
+
+	public String getNgsildTenant() {
+		return ngsildTenant;
+	}
+	public void setNgsildTenant(String o) {
+		this.ngsildTenant = GpuSlice.staticSetNgsildTenant(siteRequest_, o);
+	}
+	public static String staticSetNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuSlice ngsildTenantInit() {
+		Wrap<String> ngsildTenantWrap = new Wrap<String>().var("ngsildTenant");
+		if(ngsildTenant == null) {
+			_ngsildTenant(ngsildTenantWrap);
+			Optional.ofNullable(ngsildTenantWrap.getO()).ifPresent(o -> {
+				setNgsildTenant(o);
+			});
+		}
+		return (GpuSlice)this;
+	}
+
+	public static String staticSearchNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildTenant(SiteRequest siteRequest_, String o) {
+		return GpuSlice.staticSearchNgsildTenant(siteRequest_, GpuSlice.staticSetNgsildTenant(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildTenant() {
+		return ngsildTenant;
+	}
+
+	////////////////
+	// ngsildPath //
+	////////////////
+
+
+	/**	 The entity ngsildPath
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildPath;
+
+	/**	<br> The entity ngsildPath
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:ngsildPath">Find the entity ngsildPath in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildPath(Wrap<String> w);
+
+	public String getNgsildPath() {
+		return ngsildPath;
+	}
+	public void setNgsildPath(String o) {
+		this.ngsildPath = GpuSlice.staticSetNgsildPath(siteRequest_, o);
+	}
+	public static String staticSetNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuSlice ngsildPathInit() {
+		Wrap<String> ngsildPathWrap = new Wrap<String>().var("ngsildPath");
+		if(ngsildPath == null) {
+			_ngsildPath(ngsildPathWrap);
+			Optional.ofNullable(ngsildPathWrap.getO()).ifPresent(o -> {
+				setNgsildPath(o);
+			});
+		}
+		return (GpuSlice)this;
+	}
+
+	public static String staticSearchNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildPath(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildPath(SiteRequest siteRequest_, String o) {
+		return GpuSlice.staticSearchNgsildPath(siteRequest_, GpuSlice.staticSetNgsildPath(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildPath() {
+		return ngsildPath;
+	}
+
+	///////////////////
+	// ngsildContext //
+	///////////////////
+
+
+	/**	 The entity ngsildContext
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildContext;
+
+	/**	<br> The entity ngsildContext
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:ngsildContext">Find the entity ngsildContext in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildContext(Wrap<String> w);
+
+	public String getNgsildContext() {
+		return ngsildContext;
+	}
+	public void setNgsildContext(String o) {
+		this.ngsildContext = GpuSlice.staticSetNgsildContext(siteRequest_, o);
+	}
+	public static String staticSetNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuSlice ngsildContextInit() {
+		Wrap<String> ngsildContextWrap = new Wrap<String>().var("ngsildContext");
+		if(ngsildContext == null) {
+			_ngsildContext(ngsildContextWrap);
+			Optional.ofNullable(ngsildContextWrap.getO()).ifPresent(o -> {
+				setNgsildContext(o);
+			});
+		}
+		return (GpuSlice)this;
+	}
+
+	public static String staticSearchNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildContext(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildContext(SiteRequest siteRequest_, String o) {
+		return GpuSlice.staticSearchNgsildContext(siteRequest_, GpuSlice.staticSetNgsildContext(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildContext() {
+		return ngsildContext;
+	}
+
+	////////////////
+	// ngsildData //
+	////////////////
+
+
+	/**	 The entity ngsildData
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected JsonObject ngsildData;
+
+	/**	<br> The entity ngsildData
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpuslice.GpuSlice&fq=entiteVar_enUS_indexed_string:ngsildData">Find the entity ngsildData in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildData(Wrap<JsonObject> w);
+
+	public JsonObject getNgsildData() {
+		return ngsildData;
+	}
+
+	public void setNgsildData(JsonObject ngsildData) {
+		this.ngsildData = ngsildData;
+	}
+	@JsonIgnore
+	public void setNgsildData(String o) {
+		this.ngsildData = GpuSlice.staticSetNgsildData(siteRequest_, o);
+	}
+	public static JsonObject staticSetNgsildData(SiteRequest siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
+		return null;
+	}
+	protected GpuSlice ngsildDataInit() {
+		Wrap<JsonObject> ngsildDataWrap = new Wrap<JsonObject>().var("ngsildData");
+		if(ngsildData == null) {
+			_ngsildData(ngsildDataWrap);
+			Optional.ofNullable(ngsildDataWrap.getO()).ifPresent(o -> {
+				setNgsildData(o);
+			});
+		}
+		return (GpuSlice)this;
+	}
+
+	public static String staticSearchNgsildData(SiteRequest siteRequest_, JsonObject o) {
+		return o.toString();
+	}
+
+	public static String staticSearchStrNgsildData(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildData(SiteRequest siteRequest_, String o) {
+		return GpuSlice.staticSearchNgsildData(siteRequest_, GpuSlice.staticSetNgsildData(siteRequest_, o)).toString();
+	}
+
+	public JsonObject sqlNgsildData() {
+		return ngsildData;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -813,8 +1053,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				locationTitlesInit();
 				locationLinksInit();
 				locationInit();
-				entityIdInit();
+				idInit();
 				entityShortIdInit();
+				ngsildTenantInit();
+				ngsildPathInit();
+				ngsildContextInit();
+				ngsildDataInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -880,10 +1124,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				return oGpuSlice.locationLinks;
 			case "location":
 				return oGpuSlice.location;
-			case "entityId":
-				return oGpuSlice.entityId;
+			case "id":
+				return oGpuSlice.id;
 			case "entityShortId":
 				return oGpuSlice.entityShortId;
+			case "ngsildTenant":
+				return oGpuSlice.ngsildTenant;
+			case "ngsildPath":
+				return oGpuSlice.ngsildPath;
+			case "ngsildContext":
+				return oGpuSlice.ngsildContext;
+			case "ngsildData":
+				return oGpuSlice.ngsildData;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -935,10 +1187,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return GpuSlice.staticSetLocationLinks(siteRequest_, o);
 		case "location":
 			return GpuSlice.staticSetLocation(siteRequest_, o);
-		case "entityId":
-			return GpuSlice.staticSetEntityId(siteRequest_, o);
+		case "id":
+			return GpuSlice.staticSetId(siteRequest_, o);
 		case "entityShortId":
 			return GpuSlice.staticSetEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return GpuSlice.staticSetNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return GpuSlice.staticSetNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return GpuSlice.staticSetNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return GpuSlice.staticSetNgsildData(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -965,10 +1225,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return GpuSlice.staticSearchLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return GpuSlice.staticSearchLocation(siteRequest_, (Point)o);
-		case "entityId":
-			return GpuSlice.staticSearchEntityId(siteRequest_, (String)o);
+		case "id":
+			return GpuSlice.staticSearchId(siteRequest_, (String)o);
 		case "entityShortId":
 			return GpuSlice.staticSearchEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return GpuSlice.staticSearchNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return GpuSlice.staticSearchNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return GpuSlice.staticSearchNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return GpuSlice.staticSearchNgsildData(siteRequest_, (JsonObject)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -995,10 +1263,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return GpuSlice.staticSearchStrLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return GpuSlice.staticSearchStrLocation(siteRequest_, (Point)o);
-		case "entityId":
-			return GpuSlice.staticSearchStrEntityId(siteRequest_, (String)o);
+		case "id":
+			return GpuSlice.staticSearchStrId(siteRequest_, (String)o);
 		case "entityShortId":
 			return GpuSlice.staticSearchStrEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return GpuSlice.staticSearchStrNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return GpuSlice.staticSearchStrNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return GpuSlice.staticSearchStrNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return GpuSlice.staticSearchStrNgsildData(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1025,10 +1301,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return GpuSlice.staticSearchFqLocationLinks(siteRequest_, o);
 		case "location":
 			return GpuSlice.staticSearchFqLocation(siteRequest_, o);
-		case "entityId":
-			return GpuSlice.staticSearchFqEntityId(siteRequest_, o);
+		case "id":
+			return GpuSlice.staticSearchFqId(siteRequest_, o);
 		case "entityShortId":
 			return GpuSlice.staticSearchFqEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return GpuSlice.staticSearchFqNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return GpuSlice.staticSearchFqNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return GpuSlice.staticSearchFqNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return GpuSlice.staticSearchFqNgsildData(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1075,11 +1359,37 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				}
 				saves.add("location");
 				return val;
-			} else if("entityid".equals(varLower)) {
+			} else if("id".equals(varLower)) {
 				if(val instanceof String) {
-					setEntityId((String)val);
+					setId((String)val);
 				}
-				saves.add("entityId");
+				saves.add("id");
+				return val;
+			} else if("ngsildtenant".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildTenant((String)val);
+				}
+				saves.add("ngsildTenant");
+				return val;
+			} else if("ngsildpath".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildPath((String)val);
+				}
+				saves.add("ngsildPath");
+				return val;
+			} else if("ngsildcontext".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildContext((String)val);
+				}
+				saves.add("ngsildContext");
+				return val;
+			} else if("ngsilddata".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildData((String)val);
+				} else if(val instanceof JsonObject) {
+					setNgsildData((JsonObject)val);
+				}
+				saves.add("ngsildData");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -1134,10 +1444,40 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 					oGpuSlice.setLocation(location);
 			}
 
-			if(saves.contains("entityId")) {
-				String entityId = (String)doc.get("entityId_docvalues_string");
-				if(entityId != null)
-					oGpuSlice.setEntityId(entityId);
+			if(saves.contains("id")) {
+				String id = (String)doc.get("id_docvalues_string");
+				if(id != null)
+					oGpuSlice.setId(id);
+			}
+
+			if(saves.contains("entityShortId")) {
+				String entityShortId = (String)doc.get("entityShortId_docvalues_string");
+				if(entityShortId != null)
+					oGpuSlice.setEntityShortId(entityShortId);
+			}
+
+			if(saves.contains("ngsildTenant")) {
+				String ngsildTenant = (String)doc.get("ngsildTenant_docvalues_string");
+				if(ngsildTenant != null)
+					oGpuSlice.setNgsildTenant(ngsildTenant);
+			}
+
+			if(saves.contains("ngsildPath")) {
+				String ngsildPath = (String)doc.get("ngsildPath_docvalues_string");
+				if(ngsildPath != null)
+					oGpuSlice.setNgsildPath(ngsildPath);
+			}
+
+			if(saves.contains("ngsildContext")) {
+				String ngsildContext = (String)doc.get("ngsildContext_docvalues_string");
+				if(ngsildContext != null)
+					oGpuSlice.setNgsildContext(ngsildContext);
+			}
+
+			if(saves.contains("ngsildData")) {
+				String ngsildData = (String)doc.get("ngsildData_docvalues_string");
+				if(ngsildData != null)
+					oGpuSlice.setNgsildData(ngsildData);
 			}
 		}
 
@@ -1175,8 +1515,23 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		if(location != null) {
 			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
 		}
-		if(entityId != null) {
-			doc.put("entityId_docvalues_string", entityId);
+		if(id != null) {
+			doc.put("id_docvalues_string", id);
+		}
+		if(entityShortId != null) {
+			doc.put("entityShortId_docvalues_string", entityShortId);
+		}
+		if(ngsildTenant != null) {
+			doc.put("ngsildTenant_docvalues_string", ngsildTenant);
+		}
+		if(ngsildPath != null) {
+			doc.put("ngsildPath_docvalues_string", ngsildPath);
+		}
+		if(ngsildContext != null) {
+			doc.put("ngsildContext_docvalues_string", ngsildContext);
+		}
+		if(ngsildData != null) {
+			doc.put("ngsildData_docvalues_string", ngsildData.toString());
 		}
 		super.indexBaseModel(doc);
 
@@ -1196,8 +1551,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1217,8 +1582,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1238,8 +1613,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				return "locationLinks";
 			case "location_docvalues_location":
 				return "location";
-			case "entityId_docvalues_string":
-				return "entityId";
+			case "id_docvalues_string":
+				return "id";
+			case "entityShortId_docvalues_string":
+				return "entityShortId";
+			case "ngsildTenant_docvalues_string":
+				return "ngsildTenant";
+			case "ngsildPath_docvalues_string":
+				return "ngsildPath";
+			case "ngsildContext_docvalues_string":
+				return "ngsildContext";
+			case "ngsildData_docvalues_string":
+				return "ngsildData";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1282,7 +1667,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			oGpuSlice.addLocationLinks(GpuSlice.staticSetLocationLinks(siteRequest, v.toString()));
 		});
 		oGpuSlice.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
-		oGpuSlice.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setId(Optional.ofNullable(doc.get("id_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setEntityShortId(Optional.ofNullable(doc.get("entityShortId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setNgsildTenant(Optional.ofNullable(doc.get("ngsildTenant_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuSlice.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1308,8 +1698,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				apiRequest.addVars("locationLinks");
 			if(!Objects.equals(location, original.getLocation()))
 				apiRequest.addVars("location");
-			if(!Objects.equals(entityId, original.getEntityId()))
-				apiRequest.addVars("entityId");
+			if(!Objects.equals(id, original.getId()))
+				apiRequest.addVars("id");
+			if(!Objects.equals(entityShortId, original.getEntityShortId()))
+				apiRequest.addVars("entityShortId");
+			if(!Objects.equals(ngsildTenant, original.getNgsildTenant()))
+				apiRequest.addVars("ngsildTenant");
+			if(!Objects.equals(ngsildPath, original.getNgsildPath()))
+				apiRequest.addVars("ngsildPath");
+			if(!Objects.equals(ngsildContext, original.getNgsildContext()))
+				apiRequest.addVars("ngsildContext");
+			if(!Objects.equals(ngsildData, original.getNgsildData()))
+				apiRequest.addVars("ngsildData");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1327,7 +1727,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationLinks).map(v -> "locationLinks: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(id).map(v -> "id: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(entityShortId).map(v -> "entityShortId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildTenant).map(v -> "ngsildTenant: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildPath).map(v -> "ngsildPath: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildContext).map(v -> "ngsildContext: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
 		return sb.toString();
 	}
 
@@ -1342,8 +1747,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String VAR_locationTitles = "locationTitles";
 	public static final String VAR_locationLinks = "locationLinks";
 	public static final String VAR_location = "location";
-	public static final String VAR_entityId = "entityId";
+	public static final String VAR_id = "id";
 	public static final String VAR_entityShortId = "entityShortId";
+	public static final String VAR_ngsildTenant = "ngsildTenant";
+	public static final String VAR_ngsildPath = "ngsildPath";
+	public static final String VAR_ngsildContext = "ngsildContext";
+	public static final String VAR_ngsildData = "ngsildData";
 
 	public static List<String> varsQForClass() {
 		return GpuSlice.varsQGpuSlice(new ArrayList<String>());
@@ -1360,7 +1769,12 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 		vars.add(VAR_sliceName);
 		vars.add(VAR_description);
 		vars.add(VAR_location);
-		vars.add(VAR_entityId);
+		vars.add(VAR_id);
+		vars.add(VAR_entityShortId);
+		vars.add(VAR_ngsildTenant);
+		vars.add(VAR_ngsildPath);
+		vars.add(VAR_ngsildContext);
+		vars.add(VAR_ngsildData);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1370,6 +1784,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	}
 	public static List<String> varsRangeGpuSlice(List<String> vars) {
 		vars.add(VAR_location);
+		vars.add(VAR_ngsildData);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -1380,12 +1795,16 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_locationTitles = "location titles";
 	public static final String DISPLAY_NAME_locationLinks = "location links";
 	public static final String DISPLAY_NAME_location = "location";
-	public static final String DISPLAY_NAME_entityId = "entity ID";
+	public static final String DISPLAY_NAME_id = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
+	public static final String DISPLAY_NAME_ngsildTenant = "NGSILD-Tenant";
+	public static final String DISPLAY_NAME_ngsildPath = "NGSILD-Path";
+	public static final String DISPLAY_NAME_ngsildContext = "NGSILD context";
+	public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
 
 	@Override
 	public String idForClass() {
-		return entityId;
+		return sliceName;
 	}
 
 	@Override
@@ -1420,7 +1839,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
-		return null;
+		return "%s/en-us/user/gpu-slice/%s";
 	}
 
 	public static String displayNameForClass(String var) {
@@ -1440,10 +1859,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_locationLinks;
 		case VAR_location:
 			return DISPLAY_NAME_location;
-		case VAR_entityId:
-			return DISPLAY_NAME_entityId;
+		case VAR_id:
+			return DISPLAY_NAME_id;
 		case VAR_entityShortId:
 			return DISPLAY_NAME_entityShortId;
+		case VAR_ngsildTenant:
+			return DISPLAY_NAME_ngsildTenant;
+		case VAR_ngsildPath:
+			return DISPLAY_NAME_ngsildPath;
+		case VAR_ngsildContext:
+			return DISPLAY_NAME_ngsildContext;
+		case VAR_ngsildData:
+			return DISPLAY_NAME_ngsildData;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1463,10 +1890,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return "The links of each location Paths. ";
 		case VAR_location:
 			return "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon";
-		case VAR_entityId:
+		case VAR_id:
 			return "A unique ID for this Smart Data Model";
 		case VAR_entityShortId:
 			return "A short ID for this Smart Data Model";
+		case VAR_ngsildTenant:
+			return "The NGSILD-Tenant or Fiware-Service";
+		case VAR_ngsildPath:
+			return "The NGSILD-Path or Fiware-ServicePath";
+		case VAR_ngsildContext:
+			return "The NGSILD context URL for @context data";
+		case VAR_ngsildData:
+			return "The NGSILD data with @context from the context broker";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1486,10 +1921,18 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return "List";
 		case VAR_location:
 			return "Point";
-		case VAR_entityId:
+		case VAR_id:
 			return "String";
 		case VAR_entityShortId:
 			return "String";
+		case VAR_ngsildTenant:
+			return "String";
+		case VAR_ngsildPath:
+			return "String";
+		case VAR_ngsildContext:
+			return "String";
+		case VAR_ngsildData:
+			return "JsonObject";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1514,8 +1957,16 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_location:
 			return 10;
-		case VAR_entityId:
+		case VAR_id:
 			return 3;
+		case VAR_ngsildTenant:
+			return 5;
+		case VAR_ngsildPath:
+			return 5;
+		case VAR_ngsildContext:
+			return 5;
+		case VAR_ngsildData:
+			return 5;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1529,7 +1980,15 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			return 2;
 		case VAR_location:
 			return 1;
-		case VAR_entityId:
+		case VAR_id:
+			return 4;
+		case VAR_ngsildTenant:
+			return 1;
+		case VAR_ngsildPath:
+			return 2;
+		case VAR_ngsildContext:
+			return 3;
+		case VAR_ngsildData:
 			return 4;
 			default:
 				return BaseModel.htmCellBaseModel(var);

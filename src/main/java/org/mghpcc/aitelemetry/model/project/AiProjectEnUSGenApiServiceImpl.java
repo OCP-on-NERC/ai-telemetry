@@ -243,8 +243,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			json.put("list", l);
 			response200Search(listAiProject.getRequest(), listAiProject.getResponse(), json);
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -389,8 +389,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
 			JsonObject json = JsonObject.mapFrom(listAiProject.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -462,7 +462,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getEntityId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
 
@@ -582,7 +582,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getEntityId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiProject o2 = jsonObject.mapTo(AiProject.class);
@@ -613,7 +613,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiProject> patchAiProjectFuture(AiProject o, Boolean entityId) {
+	public Future<AiProject> patchAiProjectFuture(AiProject o, Boolean projectId) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<AiProject> promise = Promise.promise();
 
@@ -623,7 +623,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiProject(siteRequest).onSuccess(a -> {
-					sqlPATCHAiProject(o, entityId).onSuccess(aiProject -> {
+					sqlPATCHAiProject(o, projectId).onSuccess(aiProject -> {
 						persistAiProject(aiProject, true).onSuccess(c -> {
 							relateAiProject(aiProject).onSuccess(d -> {
 								indexAiProject(aiProject).onSuccess(o2 -> {
@@ -677,7 +677,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPATCHAiProject(AiProject o, Boolean entityId) {
+	public Future<AiProject> sqlPATCHAiProject(AiProject o, Boolean projectId) {
 		Promise<AiProject> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -706,13 +706,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlProjectName());
 						break;
-					case "setDescription":
-							o2.setDescription(jsonObject.getString(entityVar));
+					case "setProjectId":
+							o2.setProjectId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_description + "=$" + num);
+							bSql.append(AiProject.VAR_projectId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlDescription());
+							bParams.add(o2.sqlProjectId());
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
@@ -722,6 +722,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
+					case "setDescription":
+							o2.setDescription(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiProject.VAR_description + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDescription());
+						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
@@ -729,22 +737,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(AiProject.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
-						break;
-					case "setLocation":
-							o2.setLocation(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiProject.VAR_location + "=$" + num);
-							num++;
-							bParams.add(o2.sqlLocation());
-						break;
-					case "setEntityId":
-							o2.setEntityId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiProject.VAR_entityId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlEntityId());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -822,8 +814,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -995,7 +987,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiProject> postAiProjectFuture(SiteRequest siteRequest, Boolean entityId) {
+	public Future<AiProject> postAiProjectFuture(SiteRequest siteRequest, Boolean projectId) {
 		Promise<AiProject> promise = Promise.promise();
 
 		try {
@@ -1004,7 +996,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiProject(siteRequest).onSuccess(a -> {
 					createAiProject(siteRequest).onSuccess(aiProject -> {
-						sqlPOSTAiProject(aiProject, entityId).onSuccess(b -> {
+						sqlPOSTAiProject(aiProject, projectId).onSuccess(b -> {
 							persistAiProject(aiProject, false).onSuccess(c -> {
 								relateAiProject(aiProject).onSuccess(d -> {
 									indexAiProject(aiProject).onSuccess(o2 -> {
@@ -1075,7 +1067,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean entityId) {
+	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean projectId) {
 		Promise<AiProject> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1123,14 +1115,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlProjectName());
 						break;
-					case AiProject.VAR_description:
-						o2.setDescription(jsonObject.getString(entityVar));
+					case AiProject.VAR_projectId:
+						o2.setProjectId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_description + "=$" + num);
+						bSql.append(AiProject.VAR_projectId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlDescription());
+						bParams.add(o2.sqlProjectId());
 						break;
 					case AiProject.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
@@ -1141,6 +1133,15 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
+					case AiProject.VAR_description:
+						o2.setDescription(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiProject.VAR_description + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDescription());
+						break;
 					case AiProject.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
@@ -1149,24 +1150,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiProject.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
-						break;
-					case AiProject.VAR_location:
-						o2.setLocation(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiProject.VAR_location + "=$" + num);
-						num++;
-						bParams.add(o2.sqlLocation());
-						break;
-					case AiProject.VAR_entityId:
-						o2.setEntityId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiProject.VAR_entityId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlEntityId());
 						break;
 					case AiProject.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -1247,8 +1230,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1439,7 +1422,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getEntityId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteAiProjectFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -1589,8 +1572,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1771,7 +1754,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String entityId = Optional.ofNullable(body.getString(AiProject.VAR_entityId)).orElse(body.getString(AiProject.VAR_solrId));
+				String projectId = Optional.ofNullable(body.getString(AiProject.VAR_projectId)).orElse(body.getString(AiProject.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
@@ -1781,7 +1764,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				searchList.q("*:*");
 				searchList.setC(AiProject.class);
 				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId));
+				searchList.fq("projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId));
 				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					try {
 						if(searchList.size() >= 1) {
@@ -1817,24 +1800,24 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								} else {
 									o2.persistForClass(f, bodyVal);
 									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "entityId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "projectId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
 							}
 							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "entityId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "projectId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.putNull("set" + StringUtils.capitalize(f));
 								}
 							}
 							if(searchList.size() == 1) {
 								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getEntityId());
+								apiRequest.setId(o.getProjectId());
 								apiRequest.setPk(o.getPk());
 							}
 							siteRequest.setJsonObject(body2);
 							patchAiProjectFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import AiProject {} succeeded, modified AiProject. ", body.getValue(AiProject.VAR_entityId));
+								LOG.debug("Import AiProject {} succeeded, modified AiProject. ", body.getValue(AiProject.VAR_projectId));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
@@ -1842,7 +1825,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							});
 						} else {
 							postAiProjectFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import AiProject {} succeeded, created new AiProject. ", body.getValue(AiProject.VAR_entityId));
+								LOG.debug("Import AiProject {} succeeded, created new AiProject. ", body.getValue(AiProject.VAR_projectId));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
@@ -1892,8 +1875,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI project", entityId);
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2021,11 +2004,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiProject.size() == 1)
+			if(listAiProject.size() >= 1)
 				siteRequest.setRequestPk(listAiProject.get(0).getPk());
 			page.setSearchListAiProject_(listAiProject);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
 			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
@@ -2195,11 +2180,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiProject.size() == 1)
+			if(listAiProject.size() >= 1)
 				siteRequest.setRequestPk(listAiProject.get(0).getPk());
 			page.setSearchListAiProject_(listAiProject);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
 			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
@@ -2250,6 +2237,182 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
 					responsePivotEditPageAiProject(pivotFields2, pivotArray2);
+				}
+			}
+		}
+	}
+
+	// UserPage //
+
+	@Override
+	public void userpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.expect(ResponsePredicate.status(200))
+					.sendForm(MultiMap.caseInsensitiveMultiMap()
+							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
+							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
+							.add("response_mode", "permissions")
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+			).onFailure(ex -> {
+				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(403, "FORBIDDEN",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "403")
+								.put("errorMessage", msg)
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+					)
+				));
+			}).onSuccess(authorizationDecision -> {
+				try {
+					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
+							response200UserPageAiProject(listAiProject).onSuccess(response -> {
+								eventHandler.handle(Future.succeededFuture(response));
+								LOG.debug(String.format("userpageAiProject succeeded. "));
+							}).onFailure(ex -> {
+								LOG.error(String.format("userpageAiProject failed. "), ex);
+								error(siteRequest, eventHandler, ex);
+							});
+						}).onFailure(ex -> {
+							LOG.error(String.format("userpageAiProject failed. "), ex);
+							error(siteRequest, eventHandler, ex);
+						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("userpageAiProject failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("userpageAiProject failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("userpageAiProject failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
+	}
+
+	public void userpageAiProjectPageInit(AiProjectPage page, SearchList<AiProject> listAiProject) {
+	}
+
+	public String templateUserPageAiProject(ServiceRequest serviceRequest) {
+		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
+	}
+	public Future<ServiceResponse> response200UserPageAiProject(SearchList<AiProject> listAiProject) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateUserPageAiProject(siteRequest.getServiceRequest());
+			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
+			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
+			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
+			AiProjectPage page = new AiProjectPage();
+			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
+			siteRequest.setRequestHeaders(requestHeaders);
+
+			if(listAiProject.size() >= 1)
+				siteRequest.setRequestPk(listAiProject.get(0).getPk());
+			page.setSearchListAiProject_(listAiProject);
+			page.setSiteRequest_(siteRequest);
+			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
+			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
+				try {
+					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					ctx.mergeIn(JsonObject.mapFrom(page));
+					String renderedTemplate = jinjava.render(template, ctx.getMap());
+					Buffer buffer = Buffer.buffer(renderedTemplate);
+					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
+				} catch(Exception ex) {
+					LOG.error(String.format("response200UserPageAiProject failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("response200UserPageAiProject failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+	public void responsePivotUserPageAiProject(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+		if(pivots != null) {
+			for(SolrResponse.Pivot pivotField : pivots) {
+				String entityIndexed = pivotField.getField();
+				String entityVar = StringUtils.substringBefore(entityIndexed, "_docvalues_");
+				JsonObject pivotJson = new JsonObject();
+				pivotArray.add(pivotJson);
+				pivotJson.put("field", entityVar);
+				pivotJson.put("value", pivotField.getValue());
+				pivotJson.put("count", pivotField.getCount());
+				Collection<SolrResponse.PivotRange> pivotRanges = pivotField.getRanges().values();
+				List<SolrResponse.Pivot> pivotFields2 = pivotField.getPivotList();
+				if(pivotRanges != null) {
+					JsonObject rangeJson = new JsonObject();
+					pivotJson.put("ranges", rangeJson);
+					for(SolrResponse.PivotRange rangeFacet : pivotRanges) {
+						JsonObject rangeFacetJson = new JsonObject();
+						String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
+						rangeJson.put(rangeFacetVar, rangeFacetJson);
+						JsonObject rangeFacetCountsObject = new JsonObject();
+						rangeFacetJson.put("counts", rangeFacetCountsObject);
+						rangeFacet.getCounts().forEach((value, count) -> {
+							rangeFacetCountsObject.put(value, count);
+						});
+					}
+				}
+				if(pivotFields2 != null) {
+					JsonArray pivotArray2 = new JsonArray();
+					pivotJson.put("pivot", pivotArray2);
+					responsePivotUserPageAiProject(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2383,11 +2546,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 
-			String entityId = serviceRequest.getParams().getJsonObject("path").getString("entityId");
-			if(entityId != null && NumberUtils.isCreatable(entityId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(entityId) + " OR entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId) + ")");
-			} else if(entityId != null) {
-				searchList.fq("entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId));
+			String projectId = serviceRequest.getParams().getJsonObject("path").getString("projectId");
+			if(projectId != null && NumberUtils.isCreatable(projectId)) {
+				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(projectId) + " OR projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId) + ")");
+			} else if(projectId != null) {
+				searchList.fq("projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -2658,9 +2821,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
-			Integer solrPort = siteRequest.getConfig().getInteger(ConfigKeys.SOLR_PORT);
+			Integer solrPort = Integer.parseInt(siteRequest.getConfig().getString(ConfigKeys.SOLR_PORT));
 			String solrCollection = siteRequest.getConfig().getString(ConfigKeys.SOLR_COLLECTION);
-			Boolean solrSsl = siteRequest.getConfig().getBoolean(ConfigKeys.SOLR_SSL);
+			Boolean solrSsl = Boolean.parseBoolean(siteRequest.getConfig().getString(ConfigKeys.SOLR_SSL));
 			Boolean softCommit = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getBoolean("softCommit")).orElse(null);
 			Integer commitWithin = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getInteger("commitWithin")).orElse(null);
 				if(softCommit == null && commitWithin == null)
@@ -2690,14 +2853,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(entityId_docvalues_string:%s)", o.obtainForClass("entityId"));
+				String query = String.format("filter(projectId_docvalues_string:%s)", o.obtainForClass("projectId"));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 				String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
-				Integer solrPort = siteRequest.getConfig().getInteger(ConfigKeys.SOLR_PORT);
+				Integer solrPort = Integer.parseInt(siteRequest.getConfig().getString(ConfigKeys.SOLR_PORT));
 				String solrCollection = siteRequest.getConfig().getString(ConfigKeys.SOLR_COLLECTION);
-				Boolean solrSsl = siteRequest.getConfig().getBoolean(ConfigKeys.SOLR_SSL);
+				Boolean solrSsl = Boolean.parseBoolean(siteRequest.getConfig().getString(ConfigKeys.SOLR_SSL));
 				Boolean softCommit = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getBoolean("softCommit")).orElse(null);
 				Integer commitWithin = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getInteger("commitWithin")).orElse(null);
 					if(softCommit == null && commitWithin == null)
@@ -2794,11 +2957,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
 			page.persistForClass(AiProject.VAR_projectName, AiProject.staticSetProjectName(siteRequest2, (String)result.get(AiProject.VAR_projectName)));
-			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
+			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
 			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created)));
+			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
 			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
-			page.persistForClass(AiProject.VAR_location, AiProject.staticSetLocation(siteRequest2, (String)result.get(AiProject.VAR_location)));
-			page.persistForClass(AiProject.VAR_entityId, AiProject.staticSetEntityId(siteRequest2, (String)result.get(AiProject.VAR_entityId)));
 			page.persistForClass(AiProject.VAR_sessionId, AiProject.staticSetSessionId(siteRequest2, (String)result.get(AiProject.VAR_sessionId)));
 			page.persistForClass(AiProject.VAR_userKey, AiProject.staticSetUserKey(siteRequest2, (String)result.get(AiProject.VAR_userKey)));
 			page.persistForClass(AiProject.VAR_title, AiProject.staticSetTitle(siteRequest2, (String)result.get(AiProject.VAR_title)));

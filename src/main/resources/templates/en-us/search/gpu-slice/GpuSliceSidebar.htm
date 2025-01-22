@@ -69,9 +69,10 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetGpuSlice_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldGpuSlice_{{ key }} " id="pageFacetFieldGpuSlice_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <wa-tooltip content="{{ facetFieldValue | e }} GPU slice total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <div>
+                        <wa-tooltip content="{{ facetFieldValue | e }} GPU slice total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;"></wa-tooltip>
                         <div class="cursor-pointer " data-class="GpuSlice" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('GpuSlice', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </wa-tooltip>
+                      </div>
                       {% endfor %}
                     </div>
                   </div>

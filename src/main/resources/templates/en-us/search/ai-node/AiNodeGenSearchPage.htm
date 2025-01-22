@@ -31,7 +31,7 @@
 {%- block htmScriptAiNodePage %}
     <script>
 
-      function jsWebsocketAiNode(entityId, vars, $response) {
+      function jsWebsocketAiNode(nodeId, vars, $response) {
 {%- block jsWebsocketAiNodePage %}{%- endblock %}
       }
 
@@ -129,7 +129,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +140,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var nodeId = {% if result.nodeId is defined %}{{ result.nodeId | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(nodeId == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +159,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if nodeId is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listAiNode')?.value;
@@ -191,7 +191,7 @@
         });
         document.querySelector('#htmFormButton_patchAiNode')?.addEventListener('click', event => {
           event.preventDefault();
-          patchAiNode(null, document.querySelector('#htmForm_patchAiNode'), document.querySelector('#htmFormButton_patchAiNode'), event.target.getAttribute('data-entityId'));
+          patchAiNode(null, document.querySelector('#htmForm_patchAiNode'), document.querySelector('#htmFormButton_patchAiNode'), event.target.getAttribute('data-nodeId'));
           return false;
         });
 
@@ -211,7 +211,7 @@
         });
         document.querySelector('#htmFormButton_deleteAiNode')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteAiNode(event.target, event.target.getAttribute('data-entityId'));
+          deleteAiNode(event.target, event.target.getAttribute('data-nodeId'));
           return false;
         });
 
@@ -304,19 +304,6 @@
 {% include en-us/search/ai-node/AiNodePaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
-              <wa-dropdown id="htmDropdown-nodeName">
-                <wa-button variant="brand" slot="trigger" caret>node name</wa-button>
-                <wa-menu>
-                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-nodeName-asc">
-                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by node name ascending
-                  </wa-menu-item>
-                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-nodeName-desc">
-                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by node name descending
-                  </wa-menu-item>
-                </wa-menu>
-              </wa-dropdown>
               <wa-dropdown id="htmDropdown-clusterName">
                 <wa-button variant="brand" slot="trigger" caret>cluster name</wa-button>
                 <wa-menu>
@@ -327,6 +314,19 @@
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-clusterName-desc">
                     <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
                     sort by cluster name descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
+              <wa-dropdown id="htmDropdown-nodeName">
+                <wa-button variant="brand" slot="trigger" caret>node name</wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-nodeName-asc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by node name ascending
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-nodeName-desc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by node name descending
                   </wa-menu-item>
                 </wa-menu>
               </wa-dropdown>
@@ -349,10 +349,10 @@
             <div>
               <a href="{{ item.displayPage }}">
                 <i class="fa-regular fa-computer"></i>
-              {{ item.nodeName }}
+              {{ item.clusterName }}
               </a>
               <a href="{{ item.displayPage }}">
-              {{ item.clusterName }}
+              {{ item.nodeName }}
               </a>
               <a href="{{ item.displayPage }}">
               {{ item.description }}
@@ -362,7 +362,7 @@
                   placeholder="[String] edit"
                   label="edit"
                   title="Edit this"
-                  class="button-on-left {{classApiMethodMethod}}_editPage classAiNode inputAiNode{{entityId}}EditPage "
+                  class="button-on-left {{classApiMethodMethod}}_editPage classAiNode inputAiNode{{nodeId}}EditPage "
                   name="setEditPage"
                   href="{{ item.editPage | e }}"
                   >
@@ -371,11 +371,11 @@
               </wa-button>
             </div>
             {% endfor %}
-              {% if getColumnNodeName is defined %}
+              {% if getColumnClusterName is defined %}
                 <div>
                 </div>
               {% endif %}
-              {% if getColumnClusterName is defined %}
+              {% if getColumnNodeName is defined %}
                 <div>
                 </div>
               {% endif %}

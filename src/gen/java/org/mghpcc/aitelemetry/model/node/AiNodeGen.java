@@ -49,6 +49,7 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
 import java.lang.Integer;
+import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -107,6 +108,9 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <h2>ApiMethode: EditPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
+ * </p>
+ * <h2>ApiMethode: UserPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: AI nodes"</b>, which groups all of the OpenAPIs for AiNode objects under the tag "AI nodes". 
@@ -198,7 +202,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no AI node found";
 	public static final String ApiUri_enUS = "/en-us/api/ai-node";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-node";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-node/{pageId}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-node/{nodeId}";
 	public static final String OfName_enUS = "of AI node";
 	public static final String ANameAdjective_enUS = "an AI node";
 	public static final String NameAdjectiveSingular_enUS = "AI node";
@@ -206,7 +210,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-node";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-node";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-node";
-	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-node/{entityId}";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-node/{nodeId}";
 	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-node/%s";
 	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-node/%s";
 	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-node";
@@ -215,7 +219,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-node";
 	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-node";
 	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-node";
-	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-node/{entityId}";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-node/{nodeId}";
 	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-node/%s";
 	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-node/%s";
 	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-node-import";
@@ -224,9 +228,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-node";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-node";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-node";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-node/{pageId}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-node/{nodeId}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-node/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-node/%s";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-node/{nodeId}";
+	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/ai-node/%s";
+	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/ai-node/%s";
 
 	public static final String Icon = "<i class=\"fa-regular fa-computer\"></i>";
 
@@ -340,6 +347,62 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	public String sqlNodeName() {
 		return nodeName;
+	}
+
+	////////////
+	// nodeId //
+	////////////
+
+
+	/**	 The entity nodeId
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String nodeId;
+
+	/**	<br> The entity nodeId
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:nodeId">Find the entity nodeId in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _nodeId(Wrap<String> w);
+
+	public String getNodeId() {
+		return nodeId;
+	}
+	public void setNodeId(String o) {
+		this.nodeId = AiNode.staticSetNodeId(siteRequest_, o);
+	}
+	public static String staticSetNodeId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiNode nodeIdInit() {
+		Wrap<String> nodeIdWrap = new Wrap<String>().var("nodeId");
+		if(nodeId == null) {
+			_nodeId(nodeIdWrap);
+			Optional.ofNullable(nodeIdWrap.getO()).ifPresent(o -> {
+				setNodeId(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNodeId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNodeId(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNodeId(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNodeId(siteRequest_, AiNode.staticSetNodeId(siteRequest_, o)).toString();
+	}
+
+	public String sqlNodeId() {
+		return nodeId;
 	}
 
 	/////////////////
@@ -791,60 +854,60 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		return gpuDevicesTotal;
 	}
 
-	//////////////
-	// entityId //
-	//////////////
+	////////
+	// id //
+	////////
 
 
-	/**	 The entity entityId
+	/**	 The entity id
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String entityId;
+	protected String id;
 
-	/**	<br> The entity entityId
+	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _entityId(Wrap<String> w);
+	protected abstract void _id(Wrap<String> w);
 
-	public String getEntityId() {
-		return entityId;
+	public String getId() {
+		return id;
 	}
-	public void setEntityId(String o) {
-		this.entityId = AiNode.staticSetEntityId(siteRequest_, o);
+	public void setId(String o) {
+		this.id = AiNode.staticSetId(siteRequest_, o);
 	}
-	public static String staticSetEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSetId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiNode entityIdInit() {
-		Wrap<String> entityIdWrap = new Wrap<String>().var("entityId");
-		if(entityId == null) {
-			_entityId(entityIdWrap);
-			Optional.ofNullable(entityIdWrap.getO()).ifPresent(o -> {
-				setEntityId(o);
+	protected AiNode idInit() {
+		Wrap<String> idWrap = new Wrap<String>().var("id");
+		if(id == null) {
+			_id(idWrap);
+			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
+				setId(o);
 			});
 		}
 		return (AiNode)this;
 	}
 
-	public static String staticSearchEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqEntityId(SiteRequest siteRequest_, String o) {
-		return AiNode.staticSearchEntityId(siteRequest_, AiNode.staticSetEntityId(siteRequest_, o)).toString();
+	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchId(siteRequest_, AiNode.staticSetId(siteRequest_, o)).toString();
 	}
 
-	public String sqlEntityId() {
-		return entityId;
+	public String sqlId() {
+		return id;
 	}
 
 	///////////////////
@@ -899,6 +962,239 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		return AiNode.staticSearchEntityShortId(siteRequest_, AiNode.staticSetEntityShortId(siteRequest_, o)).toString();
 	}
 
+	//////////////////
+	// ngsildTenant //
+	//////////////////
+
+
+	/**	 The entity ngsildTenant
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildTenant;
+
+	/**	<br> The entity ngsildTenant
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:ngsildTenant">Find the entity ngsildTenant in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildTenant(Wrap<String> w);
+
+	public String getNgsildTenant() {
+		return ngsildTenant;
+	}
+	public void setNgsildTenant(String o) {
+		this.ngsildTenant = AiNode.staticSetNgsildTenant(siteRequest_, o);
+	}
+	public static String staticSetNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiNode ngsildTenantInit() {
+		Wrap<String> ngsildTenantWrap = new Wrap<String>().var("ngsildTenant");
+		if(ngsildTenant == null) {
+			_ngsildTenant(ngsildTenantWrap);
+			Optional.ofNullable(ngsildTenantWrap.getO()).ifPresent(o -> {
+				setNgsildTenant(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildTenant(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNgsildTenant(siteRequest_, AiNode.staticSetNgsildTenant(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildTenant() {
+		return ngsildTenant;
+	}
+
+	////////////////
+	// ngsildPath //
+	////////////////
+
+
+	/**	 The entity ngsildPath
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildPath;
+
+	/**	<br> The entity ngsildPath
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:ngsildPath">Find the entity ngsildPath in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildPath(Wrap<String> w);
+
+	public String getNgsildPath() {
+		return ngsildPath;
+	}
+	public void setNgsildPath(String o) {
+		this.ngsildPath = AiNode.staticSetNgsildPath(siteRequest_, o);
+	}
+	public static String staticSetNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiNode ngsildPathInit() {
+		Wrap<String> ngsildPathWrap = new Wrap<String>().var("ngsildPath");
+		if(ngsildPath == null) {
+			_ngsildPath(ngsildPathWrap);
+			Optional.ofNullable(ngsildPathWrap.getO()).ifPresent(o -> {
+				setNgsildPath(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildPath(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildPath(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNgsildPath(siteRequest_, AiNode.staticSetNgsildPath(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildPath() {
+		return ngsildPath;
+	}
+
+	///////////////////
+	// ngsildContext //
+	///////////////////
+
+
+	/**	 The entity ngsildContext
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildContext;
+
+	/**	<br> The entity ngsildContext
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:ngsildContext">Find the entity ngsildContext in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildContext(Wrap<String> w);
+
+	public String getNgsildContext() {
+		return ngsildContext;
+	}
+	public void setNgsildContext(String o) {
+		this.ngsildContext = AiNode.staticSetNgsildContext(siteRequest_, o);
+	}
+	public static String staticSetNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiNode ngsildContextInit() {
+		Wrap<String> ngsildContextWrap = new Wrap<String>().var("ngsildContext");
+		if(ngsildContext == null) {
+			_ngsildContext(ngsildContextWrap);
+			Optional.ofNullable(ngsildContextWrap.getO()).ifPresent(o -> {
+				setNgsildContext(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildContext(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildContext(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNgsildContext(siteRequest_, AiNode.staticSetNgsildContext(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildContext() {
+		return ngsildContext;
+	}
+
+	////////////////
+	// ngsildData //
+	////////////////
+
+
+	/**	 The entity ngsildData
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected JsonObject ngsildData;
+
+	/**	<br> The entity ngsildData
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.node.AiNode&fq=entiteVar_enUS_indexed_string:ngsildData">Find the entity ngsildData in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildData(Wrap<JsonObject> w);
+
+	public JsonObject getNgsildData() {
+		return ngsildData;
+	}
+
+	public void setNgsildData(JsonObject ngsildData) {
+		this.ngsildData = ngsildData;
+	}
+	@JsonIgnore
+	public void setNgsildData(String o) {
+		this.ngsildData = AiNode.staticSetNgsildData(siteRequest_, o);
+	}
+	public static JsonObject staticSetNgsildData(SiteRequest siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
+		return null;
+	}
+	protected AiNode ngsildDataInit() {
+		Wrap<JsonObject> ngsildDataWrap = new Wrap<JsonObject>().var("ngsildData");
+		if(ngsildData == null) {
+			_ngsildData(ngsildDataWrap);
+			Optional.ofNullable(ngsildDataWrap.getO()).ifPresent(o -> {
+				setNgsildData(o);
+			});
+		}
+		return (AiNode)this;
+	}
+
+	public static String staticSearchNgsildData(SiteRequest siteRequest_, JsonObject o) {
+		return o.toString();
+	}
+
+	public static String staticSearchStrNgsildData(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildData(SiteRequest siteRequest_, String o) {
+		return AiNode.staticSearchNgsildData(siteRequest_, AiNode.staticSetNgsildData(siteRequest_, o)).toString();
+	}
+
+	public JsonObject sqlNgsildData() {
+		return ngsildData;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -930,14 +1226,19 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			try {
 				clusterNameInit();
 				nodeNameInit();
+				nodeIdInit();
 				descriptionInit();
 				locationColorsInit();
 				locationTitlesInit();
 				locationLinksInit();
 				locationInit();
 				gpuDevicesTotalInit();
-				entityIdInit();
+				idInit();
 				entityShortIdInit();
+				ngsildTenantInit();
+				ngsildPathInit();
+				ngsildContextInit();
+				ngsildDataInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -995,6 +1296,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return oAiNode.clusterName;
 			case "nodeName":
 				return oAiNode.nodeName;
+			case "nodeId":
+				return oAiNode.nodeId;
 			case "description":
 				return oAiNode.description;
 			case "locationColors":
@@ -1007,10 +1310,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return oAiNode.location;
 			case "gpuDevicesTotal":
 				return oAiNode.gpuDevicesTotal;
-			case "entityId":
-				return oAiNode.entityId;
+			case "id":
+				return oAiNode.id;
 			case "entityShortId":
 				return oAiNode.entityShortId;
+			case "ngsildTenant":
+				return oAiNode.ngsildTenant;
+			case "ngsildPath":
+				return oAiNode.ngsildPath;
+			case "ngsildContext":
+				return oAiNode.ngsildContext;
+			case "ngsildData":
+				return oAiNode.ngsildData;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1054,6 +1365,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSetClusterName(siteRequest_, o);
 		case "nodeName":
 			return AiNode.staticSetNodeName(siteRequest_, o);
+		case "nodeId":
+			return AiNode.staticSetNodeId(siteRequest_, o);
 		case "description":
 			return AiNode.staticSetDescription(siteRequest_, o);
 		case "locationColors":
@@ -1066,10 +1379,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSetLocation(siteRequest_, o);
 		case "gpuDevicesTotal":
 			return AiNode.staticSetGpuDevicesTotal(siteRequest_, o);
-		case "entityId":
-			return AiNode.staticSetEntityId(siteRequest_, o);
+		case "id":
+			return AiNode.staticSetId(siteRequest_, o);
 		case "entityShortId":
 			return AiNode.staticSetEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return AiNode.staticSetNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return AiNode.staticSetNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return AiNode.staticSetNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return AiNode.staticSetNgsildData(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1088,6 +1409,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchClusterName(siteRequest_, (String)o);
 		case "nodeName":
 			return AiNode.staticSearchNodeName(siteRequest_, (String)o);
+		case "nodeId":
+			return AiNode.staticSearchNodeId(siteRequest_, (String)o);
 		case "description":
 			return AiNode.staticSearchDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -1100,10 +1423,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchLocation(siteRequest_, (Point)o);
 		case "gpuDevicesTotal":
 			return AiNode.staticSearchGpuDevicesTotal(siteRequest_, (Integer)o);
-		case "entityId":
-			return AiNode.staticSearchEntityId(siteRequest_, (String)o);
+		case "id":
+			return AiNode.staticSearchId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiNode.staticSearchEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return AiNode.staticSearchNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return AiNode.staticSearchNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return AiNode.staticSearchNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return AiNode.staticSearchNgsildData(siteRequest_, (JsonObject)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1122,6 +1453,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchStrClusterName(siteRequest_, (String)o);
 		case "nodeName":
 			return AiNode.staticSearchStrNodeName(siteRequest_, (String)o);
+		case "nodeId":
+			return AiNode.staticSearchStrNodeId(siteRequest_, (String)o);
 		case "description":
 			return AiNode.staticSearchStrDescription(siteRequest_, (String)o);
 		case "locationColors":
@@ -1134,10 +1467,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchStrLocation(siteRequest_, (Point)o);
 		case "gpuDevicesTotal":
 			return AiNode.staticSearchStrGpuDevicesTotal(siteRequest_, (Integer)o);
-		case "entityId":
-			return AiNode.staticSearchStrEntityId(siteRequest_, (String)o);
+		case "id":
+			return AiNode.staticSearchStrId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiNode.staticSearchStrEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return AiNode.staticSearchStrNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return AiNode.staticSearchStrNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return AiNode.staticSearchStrNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return AiNode.staticSearchStrNgsildData(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1156,6 +1497,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchFqClusterName(siteRequest_, o);
 		case "nodeName":
 			return AiNode.staticSearchFqNodeName(siteRequest_, o);
+		case "nodeId":
+			return AiNode.staticSearchFqNodeId(siteRequest_, o);
 		case "description":
 			return AiNode.staticSearchFqDescription(siteRequest_, o);
 		case "locationColors":
@@ -1168,10 +1511,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return AiNode.staticSearchFqLocation(siteRequest_, o);
 		case "gpuDevicesTotal":
 			return AiNode.staticSearchFqGpuDevicesTotal(siteRequest_, o);
-		case "entityId":
-			return AiNode.staticSearchFqEntityId(siteRequest_, o);
+		case "id":
+			return AiNode.staticSearchFqId(siteRequest_, o);
 		case "entityShortId":
 			return AiNode.staticSearchFqEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return AiNode.staticSearchFqNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return AiNode.staticSearchFqNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return AiNode.staticSearchFqNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return AiNode.staticSearchFqNgsildData(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1210,6 +1561,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				}
 				saves.add("nodeName");
 				return val;
+			} else if("nodeid".equals(varLower)) {
+				if(val instanceof String) {
+					setNodeId((String)val);
+				}
+				saves.add("nodeId");
+				return val;
 			} else if("description".equals(varLower)) {
 				if(val instanceof String) {
 					setDescription((String)val);
@@ -1232,11 +1589,37 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				}
 				saves.add("gpuDevicesTotal");
 				return val;
-			} else if("entityid".equals(varLower)) {
+			} else if("id".equals(varLower)) {
 				if(val instanceof String) {
-					setEntityId((String)val);
+					setId((String)val);
 				}
-				saves.add("entityId");
+				saves.add("id");
+				return val;
+			} else if("ngsildtenant".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildTenant((String)val);
+				}
+				saves.add("ngsildTenant");
+				return val;
+			} else if("ngsildpath".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildPath((String)val);
+				}
+				saves.add("ngsildPath");
+				return val;
+			} else if("ngsildcontext".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildContext((String)val);
+				}
+				saves.add("ngsildContext");
+				return val;
+			} else if("ngsilddata".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildData((String)val);
+				} else if(val instanceof JsonObject) {
+					setNgsildData((JsonObject)val);
+				}
+				saves.add("ngsildData");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -1265,6 +1648,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				String nodeName = (String)doc.get("nodeName_docvalues_string");
 				if(nodeName != null)
 					oAiNode.setNodeName(nodeName);
+			}
+
+			if(saves.contains("nodeId")) {
+				String nodeId = (String)doc.get("nodeId_docvalues_string");
+				if(nodeId != null)
+					oAiNode.setNodeId(nodeId);
 			}
 
 			if(saves.contains("description")) {
@@ -1303,10 +1692,40 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 					oAiNode.setGpuDevicesTotal(gpuDevicesTotal);
 			}
 
-			if(saves.contains("entityId")) {
-				String entityId = (String)doc.get("entityId_docvalues_string");
-				if(entityId != null)
-					oAiNode.setEntityId(entityId);
+			if(saves.contains("id")) {
+				String id = (String)doc.get("id_docvalues_string");
+				if(id != null)
+					oAiNode.setId(id);
+			}
+
+			if(saves.contains("entityShortId")) {
+				String entityShortId = (String)doc.get("entityShortId_docvalues_string");
+				if(entityShortId != null)
+					oAiNode.setEntityShortId(entityShortId);
+			}
+
+			if(saves.contains("ngsildTenant")) {
+				String ngsildTenant = (String)doc.get("ngsildTenant_docvalues_string");
+				if(ngsildTenant != null)
+					oAiNode.setNgsildTenant(ngsildTenant);
+			}
+
+			if(saves.contains("ngsildPath")) {
+				String ngsildPath = (String)doc.get("ngsildPath_docvalues_string");
+				if(ngsildPath != null)
+					oAiNode.setNgsildPath(ngsildPath);
+			}
+
+			if(saves.contains("ngsildContext")) {
+				String ngsildContext = (String)doc.get("ngsildContext_docvalues_string");
+				if(ngsildContext != null)
+					oAiNode.setNgsildContext(ngsildContext);
+			}
+
+			if(saves.contains("ngsildData")) {
+				String ngsildData = (String)doc.get("ngsildData_docvalues_string");
+				if(ngsildData != null)
+					oAiNode.setNgsildData(ngsildData);
 			}
 		}
 
@@ -1319,6 +1738,9 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		}
 		if(nodeName != null) {
 			doc.put("nodeName_docvalues_string", nodeName);
+		}
+		if(nodeId != null) {
+			doc.put("nodeId_docvalues_string", nodeId);
 		}
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
@@ -1350,8 +1772,23 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		if(gpuDevicesTotal != null) {
 			doc.put("gpuDevicesTotal_docvalues_int", gpuDevicesTotal);
 		}
-		if(entityId != null) {
-			doc.put("entityId_docvalues_string", entityId);
+		if(id != null) {
+			doc.put("id_docvalues_string", id);
+		}
+		if(entityShortId != null) {
+			doc.put("entityShortId_docvalues_string", entityShortId);
+		}
+		if(ngsildTenant != null) {
+			doc.put("ngsildTenant_docvalues_string", ngsildTenant);
+		}
+		if(ngsildPath != null) {
+			doc.put("ngsildPath_docvalues_string", ngsildPath);
+		}
+		if(ngsildContext != null) {
+			doc.put("ngsildContext_docvalues_string", ngsildContext);
+		}
+		if(ngsildData != null) {
+			doc.put("ngsildData_docvalues_string", ngsildData.toString());
 		}
 		super.indexBaseModel(doc);
 
@@ -1363,6 +1800,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "clusterName_docvalues_string";
 			case "nodeName":
 				return "nodeName_docvalues_string";
+			case "nodeId":
+				return "nodeId_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1375,8 +1814,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "location_docvalues_location";
 			case "gpuDevicesTotal":
 				return "gpuDevicesTotal_docvalues_int";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1388,6 +1837,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "clusterName_docvalues_string";
 			case "nodeName":
 				return "nodeName_docvalues_string";
+			case "nodeId":
+				return "nodeId_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1400,8 +1851,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "location_docvalues_location";
 			case "gpuDevicesTotal":
 				return "gpuDevicesTotal_docvalues_int";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1413,6 +1874,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "clusterName";
 			case "nodeName_docvalues_string":
 				return "nodeName";
+			case "nodeId_docvalues_string":
+				return "nodeId";
 			case "description_docvalues_string":
 				return "description";
 			case "locationColors_indexedstored_strings":
@@ -1425,8 +1888,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				return "location";
 			case "gpuDevicesTotal_docvalues_int":
 				return "gpuDevicesTotal";
-			case "entityId_docvalues_string":
-				return "entityId";
+			case "id_docvalues_string":
+				return "id";
+			case "entityShortId_docvalues_string":
+				return "entityShortId";
+			case "ngsildTenant_docvalues_string":
+				return "ngsildTenant";
+			case "ngsildPath_docvalues_string":
+				return "ngsildPath";
+			case "ngsildContext_docvalues_string":
+				return "ngsildContext";
+			case "ngsildData_docvalues_string":
+				return "ngsildData";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1459,6 +1932,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 		oAiNode.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiNode.setNodeName(Optional.ofNullable(doc.get("nodeName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNodeId(Optional.ofNullable(doc.get("nodeId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiNode.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oAiNode.addLocationColors(AiNode.staticSetLocationColors(siteRequest, v.toString()));
@@ -1471,7 +1945,12 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		});
 		oAiNode.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
 		oAiNode.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oAiNode.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setId(Optional.ofNullable(doc.get("id_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setEntityShortId(Optional.ofNullable(doc.get("entityShortId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNgsildTenant(Optional.ofNullable(doc.get("ngsildTenant_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiNode.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1489,6 +1968,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				apiRequest.addVars("clusterName");
 			if(!Objects.equals(nodeName, original.getNodeName()))
 				apiRequest.addVars("nodeName");
+			if(!Objects.equals(nodeId, original.getNodeId()))
+				apiRequest.addVars("nodeId");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
 			if(!Objects.equals(locationColors, original.getLocationColors()))
@@ -1501,8 +1982,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				apiRequest.addVars("location");
 			if(!Objects.equals(gpuDevicesTotal, original.getGpuDevicesTotal()))
 				apiRequest.addVars("gpuDevicesTotal");
-			if(!Objects.equals(entityId, original.getEntityId()))
-				apiRequest.addVars("entityId");
+			if(!Objects.equals(id, original.getId()))
+				apiRequest.addVars("id");
+			if(!Objects.equals(entityShortId, original.getEntityShortId()))
+				apiRequest.addVars("entityShortId");
+			if(!Objects.equals(ngsildTenant, original.getNgsildTenant()))
+				apiRequest.addVars("ngsildTenant");
+			if(!Objects.equals(ngsildPath, original.getNgsildPath()))
+				apiRequest.addVars("ngsildPath");
+			if(!Objects.equals(ngsildContext, original.getNgsildContext()))
+				apiRequest.addVars("ngsildContext");
+			if(!Objects.equals(ngsildData, original.getNgsildData()))
+				apiRequest.addVars("ngsildData");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1516,13 +2007,19 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		sb.append(super.toString());
 		sb.append(Optional.ofNullable(clusterName).map(v -> "clusterName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(nodeName).map(v -> "nodeName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(nodeId).map(v -> "nodeId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationLinks).map(v -> "locationLinks: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(gpuDevicesTotal).map(v -> "gpuDevicesTotal: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(id).map(v -> "id: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(entityShortId).map(v -> "entityShortId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildTenant).map(v -> "ngsildTenant: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildPath).map(v -> "ngsildPath: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildContext).map(v -> "ngsildContext: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
 		return sb.toString();
 	}
 
@@ -1533,14 +2030,19 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 	public static final String VAR_clusterName = "clusterName";
 	public static final String VAR_nodeName = "nodeName";
+	public static final String VAR_nodeId = "nodeId";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
 	public static final String VAR_locationTitles = "locationTitles";
 	public static final String VAR_locationLinks = "locationLinks";
 	public static final String VAR_location = "location";
 	public static final String VAR_gpuDevicesTotal = "gpuDevicesTotal";
-	public static final String VAR_entityId = "entityId";
+	public static final String VAR_id = "id";
 	public static final String VAR_entityShortId = "entityShortId";
+	public static final String VAR_ngsildTenant = "ngsildTenant";
+	public static final String VAR_ngsildPath = "ngsildPath";
+	public static final String VAR_ngsildContext = "ngsildContext";
+	public static final String VAR_ngsildData = "ngsildData";
 
 	public static List<String> varsQForClass() {
 		return AiNode.varsQAiNode(new ArrayList<String>());
@@ -1556,9 +2058,15 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static List<String> varsFqAiNode(List<String> vars) {
 		vars.add(VAR_clusterName);
 		vars.add(VAR_nodeName);
+		vars.add(VAR_nodeId);
 		vars.add(VAR_location);
 		vars.add(VAR_gpuDevicesTotal);
-		vars.add(VAR_entityId);
+		vars.add(VAR_id);
+		vars.add(VAR_entityShortId);
+		vars.add(VAR_ngsildTenant);
+		vars.add(VAR_ngsildPath);
+		vars.add(VAR_ngsildContext);
+		vars.add(VAR_ngsildData);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1569,24 +2077,30 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static List<String> varsRangeAiNode(List<String> vars) {
 		vars.add(VAR_location);
 		vars.add(VAR_gpuDevicesTotal);
+		vars.add(VAR_ngsildData);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
 
 	public static final String DISPLAY_NAME_clusterName = "cluster name";
 	public static final String DISPLAY_NAME_nodeName = "node name";
+	public static final String DISPLAY_NAME_nodeId = "node ID";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
 	public static final String DISPLAY_NAME_locationTitles = "area served titles";
 	public static final String DISPLAY_NAME_locationLinks = "area served links";
 	public static final String DISPLAY_NAME_location = "location";
 	public static final String DISPLAY_NAME_gpuDevicesTotal = "GPU devices total";
-	public static final String DISPLAY_NAME_entityId = "entity ID";
+	public static final String DISPLAY_NAME_id = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
+	public static final String DISPLAY_NAME_ngsildTenant = "NGSILD-Tenant";
+	public static final String DISPLAY_NAME_ngsildPath = "NGSILD-Path";
+	public static final String DISPLAY_NAME_ngsildContext = "NGSILD context";
+	public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
 
 	@Override
 	public String idForClass() {
-		return entityId;
+		return nodeId;
 	}
 
 	@Override
@@ -1621,7 +2135,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
-		return null;
+		return "%s/en-us/user/ai-node/%s";
 	}
 
 	public static String displayNameForClass(String var) {
@@ -1633,6 +2147,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_clusterName;
 		case VAR_nodeName:
 			return DISPLAY_NAME_nodeName;
+		case VAR_nodeId:
+			return DISPLAY_NAME_nodeId;
 		case VAR_description:
 			return DISPLAY_NAME_description;
 		case VAR_locationColors:
@@ -1645,10 +2161,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_location;
 		case VAR_gpuDevicesTotal:
 			return DISPLAY_NAME_gpuDevicesTotal;
-		case VAR_entityId:
-			return DISPLAY_NAME_entityId;
+		case VAR_id:
+			return DISPLAY_NAME_id;
 		case VAR_entityShortId:
 			return DISPLAY_NAME_entityShortId;
+		case VAR_ngsildTenant:
+			return DISPLAY_NAME_ngsildTenant;
+		case VAR_ngsildPath:
+			return DISPLAY_NAME_ngsildPath;
+		case VAR_ngsildContext:
+			return DISPLAY_NAME_ngsildContext;
+		case VAR_ngsildData:
+			return DISPLAY_NAME_ngsildData;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1660,6 +2184,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return "The name of this cluster";
 		case VAR_nodeName:
 			return "The name of this node";
+		case VAR_nodeId:
+			return "The unique ID of this node";
 		case VAR_description:
 			return "A description of this node";
 		case VAR_locationColors:
@@ -1672,10 +2198,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon";
 		case VAR_gpuDevicesTotal:
 			return "The total number of GPU devices on this cluster. ";
-		case VAR_entityId:
+		case VAR_id:
 			return "A unique ID for this Smart Data Model";
 		case VAR_entityShortId:
 			return "A short ID for this Smart Data Model";
+		case VAR_ngsildTenant:
+			return "The NGSILD-Tenant or Fiware-Service";
+		case VAR_ngsildPath:
+			return "The NGSILD-Path or Fiware-ServicePath";
+		case VAR_ngsildContext:
+			return "The NGSILD context URL for @context data";
+		case VAR_ngsildData:
+			return "The NGSILD data with @context from the context broker";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1686,6 +2220,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		case VAR_clusterName:
 			return "String";
 		case VAR_nodeName:
+			return "String";
+		case VAR_nodeId:
 			return "String";
 		case VAR_description:
 			return "String";
@@ -1699,10 +2235,18 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return "Point";
 		case VAR_gpuDevicesTotal:
 			return "Integer";
-		case VAR_entityId:
+		case VAR_id:
 			return "String";
 		case VAR_entityShortId:
 			return "String";
+		case VAR_ngsildTenant:
+			return "String";
+		case VAR_ngsildPath:
+			return "String";
+		case VAR_ngsildContext:
+			return "String";
+		case VAR_ngsildData:
+			return "JsonObject";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1711,9 +2255,9 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static Integer htmColumnAiNode(String var) {
 		switch(var) {
 		case VAR_clusterName:
-			return 2;
-		case VAR_nodeName:
 			return 1;
+		case VAR_nodeName:
+			return 2;
 		case VAR_description:
 			return 3;
 			default:
@@ -1727,14 +2271,24 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_nodeName:
 			return 3;
+		case VAR_nodeId:
+			return 3;
 		case VAR_description:
 			return 3;
 		case VAR_location:
 			return 10;
 		case VAR_gpuDevicesTotal:
 			return 3;
-		case VAR_entityId:
+		case VAR_id:
 			return 3;
+		case VAR_ngsildTenant:
+			return 5;
+		case VAR_ngsildPath:
+			return 5;
+		case VAR_ngsildContext:
+			return 5;
+		case VAR_ngsildData:
+			return 5;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1745,14 +2299,24 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 		case VAR_clusterName:
 			return 1;
 		case VAR_nodeName:
-			return 1;
+			return 2;
+		case VAR_nodeId:
+			return 3;
 		case VAR_description:
 			return 2;
 		case VAR_location:
 			return 1;
 		case VAR_gpuDevicesTotal:
 			return 6;
-		case VAR_entityId:
+		case VAR_id:
+			return 4;
+		case VAR_ngsildTenant:
+			return 1;
+		case VAR_ngsildPath:
+			return 2;
+		case VAR_ngsildContext:
+			return 3;
+		case VAR_ngsildData:
 			return 4;
 			default:
 				return BaseModel.htmCellBaseModel(var);

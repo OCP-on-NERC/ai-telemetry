@@ -31,7 +31,7 @@
 {%- block htmScriptGpuSlicePage %}
     <script>
 
-      function jsWebsocketGpuSlice(entityId, vars, $response) {
+      function jsWebsocketGpuSlice(sliceName, vars, $response) {
 {%- block jsWebsocketGpuSlicePage %}{%- endblock %}
       }
 
@@ -129,7 +129,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +140,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var sliceName = {% if result.sliceName is defined %}{{ result.sliceName | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(sliceName == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +159,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if sliceName is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listGpuSlice')?.value;
@@ -191,7 +191,7 @@
         });
         document.querySelector('#htmFormButton_patchGpuSlice')?.addEventListener('click', event => {
           event.preventDefault();
-          patchGpuSlice(null, document.querySelector('#htmForm_patchGpuSlice'), document.querySelector('#htmFormButton_patchGpuSlice'), event.target.getAttribute('data-entityId'));
+          patchGpuSlice(null, document.querySelector('#htmForm_patchGpuSlice'), document.querySelector('#htmFormButton_patchGpuSlice'), event.target.getAttribute('data-sliceName'));
           return false;
         });
 
@@ -211,7 +211,7 @@
         });
         document.querySelector('#htmFormButton_deleteGpuSlice')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteGpuSlice(event.target, event.target.getAttribute('data-entityId'));
+          deleteGpuSlice(event.target, event.target.getAttribute('data-sliceName'));
           return false;
         });
 
@@ -346,7 +346,7 @@
                   placeholder="[String] edit"
                   label="edit"
                   title="Edit this"
-                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuSlice inputGpuSlice{{entityId}}EditPage "
+                  class="button-on-left {{classApiMethodMethod}}_editPage classGpuSlice inputGpuSlice{{sliceName}}EditPage "
                   name="setEditPage"
                   href="{{ item.editPage | e }}"
                   >

@@ -31,7 +31,7 @@
 {%- block htmScriptAiNodePage %}
     <script>
 
-      function jsWebsocketAiNode(entityId, vars, $response) {
+      function jsWebsocketAiNode(nodeId, vars, $response) {
 {%- block jsWebsocketAiNodePage %}{%- endblock %}
       }
 
@@ -129,7 +129,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +140,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var nodeId = {% if result.nodeId is defined %}{{ result.nodeId | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(nodeId == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +159,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if nodeId is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listAiNode')?.value;
@@ -191,7 +191,7 @@
         });
         document.querySelector('#htmFormButton_patchAiNode')?.addEventListener('click', event => {
           event.preventDefault();
-          patchAiNode(null, document.querySelector('#htmForm_patchAiNode'), document.querySelector('#htmFormButton_patchAiNode'), event.target.getAttribute('data-entityId'));
+          patchAiNode(null, document.querySelector('#htmForm_patchAiNode'), document.querySelector('#htmFormButton_patchAiNode'), event.target.getAttribute('data-nodeId'));
           return false;
         });
 
@@ -211,7 +211,7 @@
         });
         document.querySelector('#htmFormButton_deleteAiNode')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteAiNode(event.target, event.target.getAttribute('data-entityId'));
+          deleteAiNode(event.target, event.target.getAttribute('data-nodeId'));
           return false;
         });
 
@@ -281,8 +281,7 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount == 1 %}
-    {% if solrId is defined %}
+  {% if resultCount >= 1 %}
           <div class="margin-block">
             <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
             <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
@@ -293,27 +292,6 @@
 {% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
 {% include en-us/search/ai-node/AiNodeSearchForm.htm %}
           <h1 class="Page_title"><i class="fa-regular fa-computer"></i> {{ result.title | e }}</h1>
-    {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
-          <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all AI nodes
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-computer"></i> <span>AI nodes</span></h1>
-{% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
-{% include en-us/search/ai-node/AiNodeSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no AI node found</span>
-          </span>
-        </h2>
-    {% endif %}
   {% else %}
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
@@ -338,8 +316,8 @@
 {% endif %}
 {%- block htmFormAiNodePage %}
           <form action="/en-us/api/ai-node" id="AiNodeForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
-{% if entityId is defined %}
-            <input name="entityId" class="valueEntityId" type="hidden" value="{{entityId}}"/>
+{% if nodeId is defined %}
+            <input name="nodeId" class="valueNodeId" type="hidden" value="{{nodeId}}"/>
             {% endif %}
             <input name="focusId" type="hidden"/>
             <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>

@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
+import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import java.lang.Integer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
@@ -107,6 +108,9 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <h2>ApiMethode: EditPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: EditPage"</b>, which creates an API "EditPage". 
+ * </p>
+ * <h2>ApiMethode: UserPage</h2>
+ * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: AI clusters"</b>, which groups all of the OpenAPIs for AiCluster objects under the tag "AI clusters". 
@@ -198,7 +202,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no AI cluster found";
 	public static final String ApiUri_enUS = "/en-us/api/ai-cluster";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-cluster";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-cluster/{pageId}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-cluster/{clusterName}";
 	public static final String OfName_enUS = "of AI cluster";
 	public static final String ANameAdjective_enUS = "an AI cluster";
 	public static final String NameAdjectiveSingular_enUS = "AI cluster";
@@ -206,7 +210,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-cluster";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-cluster";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
-	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-cluster/{entityId}";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-cluster/{clusterName}";
 	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
 	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
 	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-cluster";
@@ -215,7 +219,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-cluster";
 	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-cluster";
 	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
-	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-cluster/{entityId}";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-cluster/{clusterName}";
 	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
 	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
 	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-cluster-import";
@@ -224,9 +228,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-cluster";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-cluster";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-cluster";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-cluster/{pageId}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-cluster/{clusterName}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-cluster/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-cluster/%s";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-cluster/{clusterName}";
+	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/ai-cluster/%s";
+	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/ai-cluster/%s";
 
 	public static final String Icon = "<i class=\"fa-regular fa-server\"></i>";
 
@@ -671,60 +678,60 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return location;
 	}
 
-	//////////////
-	// entityId //
-	//////////////
+	////////
+	// id //
+	////////
 
 
-	/**	 The entity entityId
+	/**	 The entity id
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String entityId;
+	protected String id;
 
-	/**	<br> The entity entityId
+	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityId">Find the entity entityId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _entityId(Wrap<String> w);
+	protected abstract void _id(Wrap<String> w);
 
-	public String getEntityId() {
-		return entityId;
+	public String getId() {
+		return id;
 	}
-	public void setEntityId(String o) {
-		this.entityId = AiCluster.staticSetEntityId(siteRequest_, o);
+	public void setId(String o) {
+		this.id = AiCluster.staticSetId(siteRequest_, o);
 	}
-	public static String staticSetEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSetId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster entityIdInit() {
-		Wrap<String> entityIdWrap = new Wrap<String>().var("entityId");
-		if(entityId == null) {
-			_entityId(entityIdWrap);
-			Optional.ofNullable(entityIdWrap.getO()).ifPresent(o -> {
-				setEntityId(o);
+	protected AiCluster idInit() {
+		Wrap<String> idWrap = new Wrap<String>().var("id");
+		if(id == null) {
+			_id(idWrap);
+			Optional.ofNullable(idWrap.getO()).ifPresent(o -> {
+				setId(o);
 			});
 		}
 		return (AiCluster)this;
 	}
 
-	public static String staticSearchEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrEntityId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrId(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqEntityId(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchEntityId(siteRequest_, AiCluster.staticSetEntityId(siteRequest_, o)).toString();
+	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchId(siteRequest_, AiCluster.staticSetId(siteRequest_, o)).toString();
 	}
 
-	public String sqlEntityId() {
-		return entityId;
+	public String sqlId() {
+		return id;
 	}
 
 	///////////////////
@@ -777,6 +784,239 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	public static String staticSearchFqEntityShortId(SiteRequest siteRequest_, String o) {
 		return AiCluster.staticSearchEntityShortId(siteRequest_, AiCluster.staticSetEntityShortId(siteRequest_, o)).toString();
+	}
+
+	//////////////////
+	// ngsildTenant //
+	//////////////////
+
+
+	/**	 The entity ngsildTenant
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildTenant;
+
+	/**	<br> The entity ngsildTenant
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildTenant">Find the entity ngsildTenant in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildTenant(Wrap<String> w);
+
+	public String getNgsildTenant() {
+		return ngsildTenant;
+	}
+	public void setNgsildTenant(String o) {
+		this.ngsildTenant = AiCluster.staticSetNgsildTenant(siteRequest_, o);
+	}
+	public static String staticSetNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiCluster ngsildTenantInit() {
+		Wrap<String> ngsildTenantWrap = new Wrap<String>().var("ngsildTenant");
+		if(ngsildTenant == null) {
+			_ngsildTenant(ngsildTenantWrap);
+			Optional.ofNullable(ngsildTenantWrap.getO()).ifPresent(o -> {
+				setNgsildTenant(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static String staticSearchNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildTenant(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildTenant(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchNgsildTenant(siteRequest_, AiCluster.staticSetNgsildTenant(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildTenant() {
+		return ngsildTenant;
+	}
+
+	////////////////
+	// ngsildPath //
+	////////////////
+
+
+	/**	 The entity ngsildPath
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildPath;
+
+	/**	<br> The entity ngsildPath
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildPath">Find the entity ngsildPath in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildPath(Wrap<String> w);
+
+	public String getNgsildPath() {
+		return ngsildPath;
+	}
+	public void setNgsildPath(String o) {
+		this.ngsildPath = AiCluster.staticSetNgsildPath(siteRequest_, o);
+	}
+	public static String staticSetNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiCluster ngsildPathInit() {
+		Wrap<String> ngsildPathWrap = new Wrap<String>().var("ngsildPath");
+		if(ngsildPath == null) {
+			_ngsildPath(ngsildPathWrap);
+			Optional.ofNullable(ngsildPathWrap.getO()).ifPresent(o -> {
+				setNgsildPath(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static String staticSearchNgsildPath(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildPath(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildPath(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchNgsildPath(siteRequest_, AiCluster.staticSetNgsildPath(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildPath() {
+		return ngsildPath;
+	}
+
+	///////////////////
+	// ngsildContext //
+	///////////////////
+
+
+	/**	 The entity ngsildContext
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String ngsildContext;
+
+	/**	<br> The entity ngsildContext
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildContext">Find the entity ngsildContext in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildContext(Wrap<String> w);
+
+	public String getNgsildContext() {
+		return ngsildContext;
+	}
+	public void setNgsildContext(String o) {
+		this.ngsildContext = AiCluster.staticSetNgsildContext(siteRequest_, o);
+	}
+	public static String staticSetNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiCluster ngsildContextInit() {
+		Wrap<String> ngsildContextWrap = new Wrap<String>().var("ngsildContext");
+		if(ngsildContext == null) {
+			_ngsildContext(ngsildContextWrap);
+			Optional.ofNullable(ngsildContextWrap.getO()).ifPresent(o -> {
+				setNgsildContext(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static String staticSearchNgsildContext(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNgsildContext(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildContext(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchNgsildContext(siteRequest_, AiCluster.staticSetNgsildContext(siteRequest_, o)).toString();
+	}
+
+	public String sqlNgsildContext() {
+		return ngsildContext;
+	}
+
+	////////////////
+	// ngsildData //
+	////////////////
+
+
+	/**	 The entity ngsildData
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected JsonObject ngsildData;
+
+	/**	<br> The entity ngsildData
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildData">Find the entity ngsildData in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _ngsildData(Wrap<JsonObject> w);
+
+	public JsonObject getNgsildData() {
+		return ngsildData;
+	}
+
+	public void setNgsildData(JsonObject ngsildData) {
+		this.ngsildData = ngsildData;
+	}
+	@JsonIgnore
+	public void setNgsildData(String o) {
+		this.ngsildData = AiCluster.staticSetNgsildData(siteRequest_, o);
+	}
+	public static JsonObject staticSetNgsildData(SiteRequest siteRequest_, String o) {
+		if(o != null) {
+				return new JsonObject(o);
+		}
+		return null;
+	}
+	protected AiCluster ngsildDataInit() {
+		Wrap<JsonObject> ngsildDataWrap = new Wrap<JsonObject>().var("ngsildData");
+		if(ngsildData == null) {
+			_ngsildData(ngsildDataWrap);
+			Optional.ofNullable(ngsildDataWrap.getO()).ifPresent(o -> {
+				setNgsildData(o);
+			});
+		}
+		return (AiCluster)this;
+	}
+
+	public static String staticSearchNgsildData(SiteRequest siteRequest_, JsonObject o) {
+		return o.toString();
+	}
+
+	public static String staticSearchStrNgsildData(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNgsildData(SiteRequest siteRequest_, String o) {
+		return AiCluster.staticSearchNgsildData(siteRequest_, AiCluster.staticSetNgsildData(siteRequest_, o)).toString();
+	}
+
+	public JsonObject sqlNgsildData() {
+		return ngsildData;
 	}
 
 	//////////////////
@@ -994,8 +1234,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				locationTitlesInit();
 				locationLinksInit();
 				locationInit();
-				entityIdInit();
+				idInit();
 				entityShortIdInit();
+				ngsildTenantInit();
+				ngsildPathInit();
+				ngsildContextInit();
+				ngsildDataInit();
 				aiNodesTotalInit();
 				gpuDevicesTotalInit();
 				grafanaUrlInit();
@@ -1064,10 +1308,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return oAiCluster.locationLinks;
 			case "location":
 				return oAiCluster.location;
-			case "entityId":
-				return oAiCluster.entityId;
+			case "id":
+				return oAiCluster.id;
 			case "entityShortId":
 				return oAiCluster.entityShortId;
+			case "ngsildTenant":
+				return oAiCluster.ngsildTenant;
+			case "ngsildPath":
+				return oAiCluster.ngsildPath;
+			case "ngsildContext":
+				return oAiCluster.ngsildContext;
+			case "ngsildData":
+				return oAiCluster.ngsildData;
 			case "aiNodesTotal":
 				return oAiCluster.aiNodesTotal;
 			case "gpuDevicesTotal":
@@ -1125,10 +1377,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSetLocationLinks(siteRequest_, o);
 		case "location":
 			return AiCluster.staticSetLocation(siteRequest_, o);
-		case "entityId":
-			return AiCluster.staticSetEntityId(siteRequest_, o);
+		case "id":
+			return AiCluster.staticSetId(siteRequest_, o);
 		case "entityShortId":
 			return AiCluster.staticSetEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return AiCluster.staticSetNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return AiCluster.staticSetNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return AiCluster.staticSetNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return AiCluster.staticSetNgsildData(siteRequest_, o);
 		case "aiNodesTotal":
 			return AiCluster.staticSetAiNodesTotal(siteRequest_, o);
 		case "gpuDevicesTotal":
@@ -1161,10 +1421,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return AiCluster.staticSearchLocation(siteRequest_, (Point)o);
-		case "entityId":
-			return AiCluster.staticSearchEntityId(siteRequest_, (String)o);
+		case "id":
+			return AiCluster.staticSearchId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiCluster.staticSearchEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return AiCluster.staticSearchNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return AiCluster.staticSearchNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return AiCluster.staticSearchNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return AiCluster.staticSearchNgsildData(siteRequest_, (JsonObject)o);
 		case "aiNodesTotal":
 			return AiCluster.staticSearchAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
@@ -1197,10 +1465,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchStrLocationLinks(siteRequest_, (String)o);
 		case "location":
 			return AiCluster.staticSearchStrLocation(siteRequest_, (Point)o);
-		case "entityId":
-			return AiCluster.staticSearchStrEntityId(siteRequest_, (String)o);
+		case "id":
+			return AiCluster.staticSearchStrId(siteRequest_, (String)o);
 		case "entityShortId":
 			return AiCluster.staticSearchStrEntityShortId(siteRequest_, (String)o);
+		case "ngsildTenant":
+			return AiCluster.staticSearchStrNgsildTenant(siteRequest_, (String)o);
+		case "ngsildPath":
+			return AiCluster.staticSearchStrNgsildPath(siteRequest_, (String)o);
+		case "ngsildContext":
+			return AiCluster.staticSearchStrNgsildContext(siteRequest_, (String)o);
+		case "ngsildData":
+			return AiCluster.staticSearchStrNgsildData(siteRequest_, (String)o);
 		case "aiNodesTotal":
 			return AiCluster.staticSearchStrAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
@@ -1233,10 +1509,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return AiCluster.staticSearchFqLocationLinks(siteRequest_, o);
 		case "location":
 			return AiCluster.staticSearchFqLocation(siteRequest_, o);
-		case "entityId":
-			return AiCluster.staticSearchFqEntityId(siteRequest_, o);
+		case "id":
+			return AiCluster.staticSearchFqId(siteRequest_, o);
 		case "entityShortId":
 			return AiCluster.staticSearchFqEntityShortId(siteRequest_, o);
+		case "ngsildTenant":
+			return AiCluster.staticSearchFqNgsildTenant(siteRequest_, o);
+		case "ngsildPath":
+			return AiCluster.staticSearchFqNgsildPath(siteRequest_, o);
+		case "ngsildContext":
+			return AiCluster.staticSearchFqNgsildContext(siteRequest_, o);
+		case "ngsildData":
+			return AiCluster.staticSearchFqNgsildData(siteRequest_, o);
 		case "aiNodesTotal":
 			return AiCluster.staticSearchFqAiNodesTotal(siteRequest_, o);
 		case "gpuDevicesTotal":
@@ -1289,11 +1573,37 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				}
 				saves.add("location");
 				return val;
-			} else if("entityid".equals(varLower)) {
+			} else if("id".equals(varLower)) {
 				if(val instanceof String) {
-					setEntityId((String)val);
+					setId((String)val);
 				}
-				saves.add("entityId");
+				saves.add("id");
+				return val;
+			} else if("ngsildtenant".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildTenant((String)val);
+				}
+				saves.add("ngsildTenant");
+				return val;
+			} else if("ngsildpath".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildPath((String)val);
+				}
+				saves.add("ngsildPath");
+				return val;
+			} else if("ngsildcontext".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildContext((String)val);
+				}
+				saves.add("ngsildContext");
+				return val;
+			} else if("ngsilddata".equals(varLower)) {
+				if(val instanceof String) {
+					setNgsildData((String)val);
+				} else if(val instanceof JsonObject) {
+					setNgsildData((JsonObject)val);
+				}
+				saves.add("ngsildData");
 				return val;
 			} else if("ainodestotal".equals(varLower)) {
 				if(val instanceof Integer) {
@@ -1364,10 +1674,40 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 					oAiCluster.setLocation(location);
 			}
 
-			if(saves.contains("entityId")) {
-				String entityId = (String)doc.get("entityId_docvalues_string");
-				if(entityId != null)
-					oAiCluster.setEntityId(entityId);
+			if(saves.contains("id")) {
+				String id = (String)doc.get("id_docvalues_string");
+				if(id != null)
+					oAiCluster.setId(id);
+			}
+
+			if(saves.contains("entityShortId")) {
+				String entityShortId = (String)doc.get("entityShortId_docvalues_string");
+				if(entityShortId != null)
+					oAiCluster.setEntityShortId(entityShortId);
+			}
+
+			if(saves.contains("ngsildTenant")) {
+				String ngsildTenant = (String)doc.get("ngsildTenant_docvalues_string");
+				if(ngsildTenant != null)
+					oAiCluster.setNgsildTenant(ngsildTenant);
+			}
+
+			if(saves.contains("ngsildPath")) {
+				String ngsildPath = (String)doc.get("ngsildPath_docvalues_string");
+				if(ngsildPath != null)
+					oAiCluster.setNgsildPath(ngsildPath);
+			}
+
+			if(saves.contains("ngsildContext")) {
+				String ngsildContext = (String)doc.get("ngsildContext_docvalues_string");
+				if(ngsildContext != null)
+					oAiCluster.setNgsildContext(ngsildContext);
+			}
+
+			if(saves.contains("ngsildData")) {
+				String ngsildData = (String)doc.get("ngsildData_docvalues_string");
+				if(ngsildData != null)
+					oAiCluster.setNgsildData(ngsildData);
 			}
 
 			if(saves.contains("aiNodesTotal")) {
@@ -1423,8 +1763,23 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		if(location != null) {
 			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
 		}
-		if(entityId != null) {
-			doc.put("entityId_docvalues_string", entityId);
+		if(id != null) {
+			doc.put("id_docvalues_string", id);
+		}
+		if(entityShortId != null) {
+			doc.put("entityShortId_docvalues_string", entityShortId);
+		}
+		if(ngsildTenant != null) {
+			doc.put("ngsildTenant_docvalues_string", ngsildTenant);
+		}
+		if(ngsildPath != null) {
+			doc.put("ngsildPath_docvalues_string", ngsildPath);
+		}
+		if(ngsildContext != null) {
+			doc.put("ngsildContext_docvalues_string", ngsildContext);
+		}
+		if(ngsildData != null) {
+			doc.put("ngsildData_docvalues_string", ngsildData.toString());
 		}
 		if(aiNodesTotal != null) {
 			doc.put("aiNodesTotal_docvalues_int", aiNodesTotal);
@@ -1453,8 +1808,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			case "aiNodesTotal":
 				return "aiNodesTotal_docvalues_int";
 			case "gpuDevicesTotal":
@@ -1480,8 +1845,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "locationLinks_indexedstored_strings";
 			case "location":
 				return "location_docvalues_location";
-			case "entityId":
-				return "entityId_docvalues_string";
+			case "id":
+				return "id_docvalues_string";
+			case "entityShortId":
+				return "entityShortId_docvalues_string";
+			case "ngsildTenant":
+				return "ngsildTenant_docvalues_string";
+			case "ngsildPath":
+				return "ngsildPath_docvalues_string";
+			case "ngsildContext":
+				return "ngsildContext_docvalues_string";
+			case "ngsildData":
+				return "ngsildData_docvalues_string";
 			case "aiNodesTotal":
 				return "aiNodesTotal_docvalues_int";
 			case "gpuDevicesTotal":
@@ -1507,8 +1882,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				return "locationLinks";
 			case "location_docvalues_location":
 				return "location";
-			case "entityId_docvalues_string":
-				return "entityId";
+			case "id_docvalues_string":
+				return "id";
+			case "entityShortId_docvalues_string":
+				return "entityShortId";
+			case "ngsildTenant_docvalues_string":
+				return "ngsildTenant";
+			case "ngsildPath_docvalues_string":
+				return "ngsildPath";
+			case "ngsildContext_docvalues_string":
+				return "ngsildContext";
+			case "ngsildData_docvalues_string":
+				return "ngsildData";
 			case "aiNodesTotal_docvalues_int":
 				return "aiNodesTotal";
 			case "gpuDevicesTotal_docvalues_int":
@@ -1557,7 +1942,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			oAiCluster.addLocationLinks(AiCluster.staticSetLocationLinks(siteRequest, v.toString()));
 		});
 		oAiCluster.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setEntityId(Optional.ofNullable(doc.get("entityId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setId(Optional.ofNullable(doc.get("id_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setEntityShortId(Optional.ofNullable(doc.get("entityShortId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setNgsildTenant(Optional.ofNullable(doc.get("ngsildTenant_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiCluster.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setAiNodesTotal(Optional.ofNullable(doc.get("aiNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oAiCluster.setGrafanaUrl(Optional.ofNullable(doc.get("grafanaUrl_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -1586,8 +1976,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				apiRequest.addVars("locationLinks");
 			if(!Objects.equals(location, original.getLocation()))
 				apiRequest.addVars("location");
-			if(!Objects.equals(entityId, original.getEntityId()))
-				apiRequest.addVars("entityId");
+			if(!Objects.equals(id, original.getId()))
+				apiRequest.addVars("id");
+			if(!Objects.equals(entityShortId, original.getEntityShortId()))
+				apiRequest.addVars("entityShortId");
+			if(!Objects.equals(ngsildTenant, original.getNgsildTenant()))
+				apiRequest.addVars("ngsildTenant");
+			if(!Objects.equals(ngsildPath, original.getNgsildPath()))
+				apiRequest.addVars("ngsildPath");
+			if(!Objects.equals(ngsildContext, original.getNgsildContext()))
+				apiRequest.addVars("ngsildContext");
+			if(!Objects.equals(ngsildData, original.getNgsildData()))
+				apiRequest.addVars("ngsildData");
 			if(!Objects.equals(aiNodesTotal, original.getAiNodesTotal()))
 				apiRequest.addVars("aiNodesTotal");
 			if(!Objects.equals(gpuDevicesTotal, original.getGpuDevicesTotal()))
@@ -1611,7 +2011,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationLinks).map(v -> "locationLinks: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(location).map(v -> "location: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(entityId).map(v -> "entityId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(id).map(v -> "id: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(entityShortId).map(v -> "entityShortId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildTenant).map(v -> "ngsildTenant: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildPath).map(v -> "ngsildPath: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildContext).map(v -> "ngsildContext: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(aiNodesTotal).map(v -> "aiNodesTotal: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(gpuDevicesTotal).map(v -> "gpuDevicesTotal: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(grafanaUrl).map(v -> "grafanaUrl: \"" + v + "\"\n" ).orElse(""));
@@ -1629,8 +2034,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String VAR_locationTitles = "locationTitles";
 	public static final String VAR_locationLinks = "locationLinks";
 	public static final String VAR_location = "location";
-	public static final String VAR_entityId = "entityId";
+	public static final String VAR_id = "id";
 	public static final String VAR_entityShortId = "entityShortId";
+	public static final String VAR_ngsildTenant = "ngsildTenant";
+	public static final String VAR_ngsildPath = "ngsildPath";
+	public static final String VAR_ngsildContext = "ngsildContext";
+	public static final String VAR_ngsildData = "ngsildData";
 	public static final String VAR_aiNodesTotal = "aiNodesTotal";
 	public static final String VAR_gpuDevicesTotal = "gpuDevicesTotal";
 	public static final String VAR_grafanaUrl = "grafanaUrl";
@@ -1649,7 +2058,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static List<String> varsFqAiCluster(List<String> vars) {
 		vars.add(VAR_clusterName);
 		vars.add(VAR_location);
-		vars.add(VAR_entityId);
+		vars.add(VAR_id);
+		vars.add(VAR_entityShortId);
+		vars.add(VAR_ngsildTenant);
+		vars.add(VAR_ngsildPath);
+		vars.add(VAR_ngsildContext);
+		vars.add(VAR_ngsildData);
 		vars.add(VAR_aiNodesTotal);
 		vars.add(VAR_gpuDevicesTotal);
 		vars.add(VAR_grafanaUrl);
@@ -1662,6 +2076,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	public static List<String> varsRangeAiCluster(List<String> vars) {
 		vars.add(VAR_location);
+		vars.add(VAR_ngsildData);
 		vars.add(VAR_aiNodesTotal);
 		vars.add(VAR_gpuDevicesTotal);
 		BaseModel.varsRangeBaseModel(vars);
@@ -1674,15 +2089,19 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_locationTitles = "area served titles";
 	public static final String DISPLAY_NAME_locationLinks = "area served links";
 	public static final String DISPLAY_NAME_location = "location";
-	public static final String DISPLAY_NAME_entityId = "entity ID";
+	public static final String DISPLAY_NAME_id = "entity ID";
 	public static final String DISPLAY_NAME_entityShortId = "short entity ID";
+	public static final String DISPLAY_NAME_ngsildTenant = "NGSILD-Tenant";
+	public static final String DISPLAY_NAME_ngsildPath = "NGSILD-Path";
+	public static final String DISPLAY_NAME_ngsildContext = "NGSILD context";
+	public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
 	public static final String DISPLAY_NAME_aiNodesTotal = "AI nodes total";
 	public static final String DISPLAY_NAME_gpuDevicesTotal = "GPU devices total";
 	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization";
 
 	@Override
 	public String idForClass() {
-		return entityId;
+		return clusterName;
 	}
 
 	@Override
@@ -1717,7 +2136,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
-		return null;
+		return "%s/en-us/user/ai-cluster/%s";
 	}
 
 	public static String displayNameForClass(String var) {
@@ -1737,10 +2156,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_locationLinks;
 		case VAR_location:
 			return DISPLAY_NAME_location;
-		case VAR_entityId:
-			return DISPLAY_NAME_entityId;
+		case VAR_id:
+			return DISPLAY_NAME_id;
 		case VAR_entityShortId:
 			return DISPLAY_NAME_entityShortId;
+		case VAR_ngsildTenant:
+			return DISPLAY_NAME_ngsildTenant;
+		case VAR_ngsildPath:
+			return DISPLAY_NAME_ngsildPath;
+		case VAR_ngsildContext:
+			return DISPLAY_NAME_ngsildContext;
+		case VAR_ngsildData:
+			return DISPLAY_NAME_ngsildData;
 		case VAR_aiNodesTotal:
 			return DISPLAY_NAME_aiNodesTotal;
 		case VAR_gpuDevicesTotal:
@@ -1766,10 +2193,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "The links of each location Paths. ";
 		case VAR_location:
 			return "Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon";
-		case VAR_entityId:
+		case VAR_id:
 			return "A unique ID for this Smart Data Model";
 		case VAR_entityShortId:
 			return "A short ID for this Smart Data Model";
+		case VAR_ngsildTenant:
+			return "The NGSILD-Tenant or Fiware-Service";
+		case VAR_ngsildPath:
+			return "The NGSILD-Path or Fiware-ServicePath";
+		case VAR_ngsildContext:
+			return "The NGSILD context URL for @context data";
+		case VAR_ngsildData:
+			return "The NGSILD data with @context from the context broker";
 		case VAR_aiNodesTotal:
 			return "The total number of AI nodes on this cluster. ";
 		case VAR_gpuDevicesTotal:
@@ -1795,10 +2230,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return "List";
 		case VAR_location:
 			return "Point";
-		case VAR_entityId:
+		case VAR_id:
 			return "String";
 		case VAR_entityShortId:
 			return "String";
+		case VAR_ngsildTenant:
+			return "String";
+		case VAR_ngsildPath:
+			return "String";
+		case VAR_ngsildContext:
+			return "String";
+		case VAR_ngsildData:
+			return "JsonObject";
 		case VAR_aiNodesTotal:
 			return "Integer";
 		case VAR_gpuDevicesTotal:
@@ -1829,8 +2272,16 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_location:
 			return 3;
-		case VAR_entityId:
+		case VAR_id:
 			return 3;
+		case VAR_ngsildTenant:
+			return 5;
+		case VAR_ngsildPath:
+			return 5;
+		case VAR_ngsildContext:
+			return 5;
+		case VAR_ngsildData:
+			return 5;
 		case VAR_aiNodesTotal:
 			return 4;
 		case VAR_gpuDevicesTotal:
@@ -1850,7 +2301,15 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			return 2;
 		case VAR_location:
 			return 5;
-		case VAR_entityId:
+		case VAR_id:
+			return 4;
+		case VAR_ngsildTenant:
+			return 1;
+		case VAR_ngsildPath:
+			return 2;
+		case VAR_ngsildContext:
+			return 3;
+		case VAR_ngsildData:
 			return 4;
 		case VAR_aiNodesTotal:
 			return 1;

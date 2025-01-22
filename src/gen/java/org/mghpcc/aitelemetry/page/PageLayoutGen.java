@@ -38,6 +38,7 @@ import io.vertx.core.Vertx;
 import java.lang.String;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonObject;
+import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import java.lang.Long;
 import java.lang.Void;
 import io.vertx.core.json.JsonArray;
@@ -973,6 +974,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject params;
 
@@ -1755,6 +1757,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject pagination = new JsonObject();
 
@@ -2109,6 +2112,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject varsQ = new JsonObject();
 
@@ -2163,6 +2167,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject varsFq = new JsonObject();
 
@@ -2277,6 +2282,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject varsRange = new JsonObject();
 
@@ -2331,6 +2337,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject query = new JsonObject();
 
@@ -2947,6 +2954,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject defaultRangeStats;
 
@@ -3495,6 +3503,7 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonObjectDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonObject DEFAULT_MAP_LOCATION;
 

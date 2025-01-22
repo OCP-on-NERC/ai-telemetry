@@ -10,15 +10,15 @@
 The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_pk"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiNode inputAiNode{{entityId}}Pk "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiNode inputAiNode{{nodeId}}Pk "
                       name="setPk"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiNode inputAiNode{{entityId}}Pk "
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiNode inputAiNode{{nodeId}}Pk "
                       name="setPk"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiNode inputAiNode{{entityId}}Pk "
+                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiNode inputAiNode{{nodeId}}Pk "
                       name="pk"
     {%- endif %}
   {%- endif %}
@@ -44,14 +44,14 @@ The primary key of this object in the database"
                       readonly
                       help-text="A created timestamp for this record in the database"
                       label="created"
-                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiNode inputAiNode{{entityId}}Created "
+                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiNode inputAiNode{{nodeId}}Created "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
                       value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-nodeId={{ result.nodeId | tojson }}
                       >
                   </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
@@ -71,14 +71,14 @@ The primary key of this object in the database"
                       readonly
                       help-text="A modified timestamp for this record in the database"
                       label="modified"
-                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiNode inputAiNode{{entityId}}Modified "
+                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiNode inputAiNode{{nodeId}}Modified "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
                       value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-nodeId={{ result.nodeId | tojson }}
                       >
                   </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
@@ -99,9 +99,9 @@ The primary key of this object in the database"
                       placeholder="archive"
                       label="archive"
                       help-text="For archiving this record"
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{nodeId}}Archived "
                       name="setArchived"
-                      data-entityId={{ result.entityId | tojson }}
+                      data-nodeId={{ result.nodeId | tojson }}
                       data-val="{{ result.archived | e }}"
                       >archive</wa-button>
   {%- else %}
@@ -118,14 +118,14 @@ The primary key of this object in the database"
                       label="archive"
                       help-text="For archiving this record"
   {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{nodeId}}Archived "
                       name="setArchived"
   {%- else %}
     {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiNode inputAiNode{{nodeId}}Archived "
                       name="setArchived"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiNode inputAiNode{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiNode inputAiNode{{nodeId}}Archived "
                       name="setArchived"
     {%- endif %}
   {%- endif %}
@@ -133,7 +133,7 @@ The primary key of this object in the database"
     {%- if result.archived == true %}
                       checked
     {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-nodeId={{ result.nodeId | tojson }}
                       >archive</wa-checkbox>
   {%- else %}
                       >
@@ -163,15 +163,15 @@ The primary key of this object in the database"
 The name of this cluster"
                       id="{{classApiMethodMethod}}_clusterName"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{entityId}}ClusterName "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{nodeId}}ClusterName "
                       name="setClusterName"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{entityId}}ClusterName "
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiNode inputAiNode{{nodeId}}ClusterName "
                       name="setClusterName"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiNode inputAiNode{{entityId}}ClusterName "
+                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiNode inputAiNode{{nodeId}}ClusterName "
                       name="clusterName"
     {%- endif %}
   {%- endif %}
@@ -200,15 +200,15 @@ The name of this cluster"
 The name of this node"
                       id="{{classApiMethodMethod}}_nodeName"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{entityId}}NodeName "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{nodeId}}NodeName "
                       name="setNodeName"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{entityId}}NodeName "
+                      class="label-on-left {{classApiMethodMethod}}_nodeName setNodeName classAiNode inputAiNode{{nodeId}}NodeName "
                       name="setNodeName"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_nodeName valueNodeName classAiNode inputAiNode{{entityId}}NodeName "
+                      class="label-on-left {{classApiMethodMethod}}_nodeName valueNodeName classAiNode inputAiNode{{nodeId}}NodeName "
                       name="nodeName"
     {%- endif %}
   {%- endif %}
@@ -237,15 +237,15 @@ The name of this node"
 A description of this node"
                       id="{{classApiMethodMethod}}_description"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiNode inputAiNode{{entityId}}Description "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiNode inputAiNode{{nodeId}}Description "
                       name="setDescription"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiNode inputAiNode{{entityId}}Description "
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiNode inputAiNode{{nodeId}}Description "
                       name="setDescription"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiNode inputAiNode{{entityId}}Description "
+                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiNode inputAiNode{{nodeId}}Description "
                       name="description"
     {%- endif %}
   {%- endif %}
@@ -262,32 +262,32 @@ A description of this node"
 {%- macro htmDescriptionAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputDescriptionAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
-{%- macro inputEntityIdAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+{%- macro inputNodeIdAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_entityId">
+                <form class="subgrid-2col " id="PageForm_nodeId">
   {%- endif %}
                   <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] entity ID"
-                      label="entity ID"
+                      placeholder="[String] node ID"
+                      label="node ID"
                       help-text="
-A unique ID for this Smart Data Model"
-                      id="{{classApiMethodMethod}}_entityId"
+The unique ID of this node"
+                      id="{{classApiMethodMethod}}_nodeId"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiNode inputAiNode{{entityId}}EntityId "
-                      name="setEntityId"
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_nodeId setNodeId classAiNode inputAiNode{{nodeId}}NodeId "
+                      name="setNodeId"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiNode inputAiNode{{entityId}}EntityId "
-                      name="setEntityId"
+                      class="label-on-left {{classApiMethodMethod}}_nodeId setNodeId classAiNode inputAiNode{{nodeId}}NodeId "
+                      name="setNodeId"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId valueEntityId classAiNode inputAiNode{{entityId}}EntityId "
-                      name="entityId"
+                      class="label-on-left {{classApiMethodMethod}}_nodeId valueNodeId classAiNode inputAiNode{{nodeId}}NodeId "
+                      name="nodeId"
     {%- endif %}
   {%- endif %}
   {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.entityId | e }}"
+                      value="{{result.nodeId | e }}"
   {%- endif %}
                       ></wa-input>
 
@@ -296,8 +296,45 @@ A unique ID for this Smart Data Model"
   {%- endif %}
 {%- endmacro %}
 
-{%- macro htmEntityIdAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputEntityIdAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- macro htmNodeIdAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputNodeIdAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputIdAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_id">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] entity ID"
+                      label="entity ID"
+                      help-text="
+A unique ID for this Smart Data Model"
+                      id="{{classApiMethodMethod}}_id"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_id setId classAiNode inputAiNode{{nodeId}}Id "
+                      name="setId"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_id setId classAiNode inputAiNode{{nodeId}}Id "
+                      name="setId"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_id valueId classAiNode inputAiNode{{nodeId}}Id "
+                      name="id"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.id | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmIdAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputIdAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
 {%- macro inputGpuDevicesTotalAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -311,15 +348,15 @@ A unique ID for this Smart Data Model"
 The total number of GPU devices on this cluster. "
                       id="{{classApiMethodMethod}}_gpuDevicesTotal"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{entityId}}GpuDevicesTotal "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{nodeId}}GpuDevicesTotal "
                       name="setGpuDevicesTotal"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{entityId}}GpuDevicesTotal "
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal setGpuDevicesTotal classAiNode inputAiNode{{nodeId}}GpuDevicesTotal "
                       name="setGpuDevicesTotal"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal valueGpuDevicesTotal classAiNode inputAiNode{{entityId}}GpuDevicesTotal "
+                      class="label-on-left {{classApiMethodMethod}}_gpuDevicesTotal valueGpuDevicesTotal classAiNode inputAiNode{{nodeId}}GpuDevicesTotal "
                       name="gpuDevicesTotal"
     {%- endif %}
   {%- endif %}
@@ -336,6 +373,154 @@ The total number of GPU devices on this cluster. "
 {%- macro htmGpuDevicesTotalAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputGpuDevicesTotalAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
+{%- macro inputNgsildTenantAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_ngsildTenant">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] NGSILD-Tenant"
+                      label="NGSILD-Tenant"
+                      help-text="
+The NGSILD-Tenant or Fiware-Service"
+                      id="{{classApiMethodMethod}}_ngsildTenant"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildTenant setNgsildTenant classAiNode inputAiNode{{nodeId}}NgsildTenant "
+                      name="setNgsildTenant"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildTenant setNgsildTenant classAiNode inputAiNode{{nodeId}}NgsildTenant "
+                      name="setNgsildTenant"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildTenant valueNgsildTenant classAiNode inputAiNode{{nodeId}}NgsildTenant "
+                      name="ngsildTenant"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.ngsildTenant | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNgsildTenantAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputNgsildTenantAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputNgsildPathAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_ngsildPath">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] NGSILD-Path"
+                      label="NGSILD-Path"
+                      help-text="
+The NGSILD-Path or Fiware-ServicePath"
+                      id="{{classApiMethodMethod}}_ngsildPath"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildPath setNgsildPath classAiNode inputAiNode{{nodeId}}NgsildPath "
+                      name="setNgsildPath"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildPath setNgsildPath classAiNode inputAiNode{{nodeId}}NgsildPath "
+                      name="setNgsildPath"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildPath valueNgsildPath classAiNode inputAiNode{{nodeId}}NgsildPath "
+                      name="ngsildPath"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.ngsildPath | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNgsildPathAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputNgsildPathAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputNgsildContextAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_ngsildContext">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] NGSILD context"
+                      label="NGSILD context"
+                      help-text="
+The NGSILD context URL for @context data"
+                      id="{{classApiMethodMethod}}_ngsildContext"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildContext setNgsildContext classAiNode inputAiNode{{nodeId}}NgsildContext "
+                      name="setNgsildContext"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildContext setNgsildContext classAiNode inputAiNode{{nodeId}}NgsildContext "
+                      name="setNgsildContext"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildContext valueNgsildContext classAiNode inputAiNode{{nodeId}}NgsildContext "
+                      name="ngsildContext"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.ngsildContext | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNgsildContextAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputNgsildContextAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
+{%- macro inputNgsildDataAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_ngsildData">
+  {%- endif %}
+                  <wa-textarea resize="auto"
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[JsonObject] NGSILD data"
+                      label="NGSILD data"
+                      help-text="
+The NGSILD data with @context from the context broker"
+                      id="{{classApiMethodMethod}}_ngsildData"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildData setNgsildData classAiNode inputAiNode{{nodeId}}NgsildData "
+                      name="setNgsildData"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildData setNgsildData classAiNode inputAiNode{{nodeId}}NgsildData "
+                      name="setNgsildData"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_ngsildData valueNgsildData classAiNode inputAiNode{{nodeId}}NgsildData "
+                      name="ngsildData"
+    {%- endif %}
+  {%- endif %}
+{%- if "Page" == classApiMethodMethod %}
+                      value="{{ toJsonObjectString(result.ngsildData) | e }}"
+{%- endif %}
+                      >
+</wa-textarea>
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmNgsildDataAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputNgsildDataAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
 {%- macro inputLocationAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_location">
@@ -348,15 +533,15 @@ The total number of GPU devices on this cluster. "
 Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
                       id="{{classApiMethodMethod}}_location"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiNode inputAiNode{{entityId}}Location "
+                      data-nodeId={{ result.nodeId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiNode inputAiNode{{nodeId}}Location "
                       name="setLocation"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiNode inputAiNode{{entityId}}Location "
+                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiNode inputAiNode{{nodeId}}Location "
                       name="setLocation"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiNode inputAiNode{{entityId}}Location "
+                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiNode inputAiNode{{nodeId}}Location "
                       name="location"
     {%- endif %}
   {%- endif %}
@@ -373,60 +558,8 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
 {%- macro htmLocationAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputLocationAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
-{%- macro inputDisplayPageAiNodePage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_displayPage">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_displayPage"
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="Visit this product's landing page. "
-                      class="button-on-left {{classApiMethodMethod}}_displayPage classAiNode inputAiNode{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-                      href="{{ result.displayPage | e }}"
-                      >
-                    product page
-                  </wa-button>
-                  <div class="button-description-on-right ">Visit this product's landing page. </div>
-  {%- else %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="
-Visit this product's landing page. "
-                      id="{{classApiMethodMethod}}_displayPage"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiNode inputAiNode{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiNode inputAiNode{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classAiNode inputAiNode{{entityId}}DisplayPage "
-                      name="displayPage"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.displayPage | e }}"
-  {%- endif %}
-                      ></wa-input>
 
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDisplayPageAiNodePage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDisplayPageAiNodePage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-
-{%- macro htmButton_patchAiNode() %}<wa-button variant="brand" id="htmButton_patchAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
+{%- macro htmButton_patchAiNode() %}<wa-button variant="brand" id="htmButton_patchAiNode" data-nodeId={{ result.nodeId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_patchAiNode() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_patchAiNode">Modify AI node</wa-button>
@@ -521,12 +654,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+                {{ htmNodeIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -543,6 +686,48 @@ Visit this product's landing page. "
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
+                {{ htmNgsildTenantAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildPathAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildContextAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildDataAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
                 {{ htmLocationAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
@@ -552,25 +737,13 @@ Visit this product's landing page. "
                 {%- endif %}
               {%- endif %}
               </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
             </wa-details>
           </form>
           {{ htmFormButton_patchAiNode() }}
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_postAiNode() %}<wa-button variant="brand" id="htmButton_postAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
+{%- macro htmButton_postAiNode() %}<wa-button variant="brand" id="htmButton_postAiNode" data-nodeId={{ result.nodeId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_postAiNode() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_postAiNode">Create an AI node</wa-button>
@@ -666,12 +839,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+                {{ htmNodeIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -688,6 +871,48 @@ Visit this product's landing page. "
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
+                {{ htmNgsildTenantAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildPathAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildContextAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildDataAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+              </div>
+              <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
                 {{ htmLocationAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
@@ -697,25 +922,13 @@ Visit this product's landing page. "
                 {%- endif %}
               {%- endif %}
               </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiNodePage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
             </wa-details>
           </form>
           {{ htmFormButton_postAiNode() }}
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_deleteAiNode() %}<wa-button variant="brand" id="htmButton_deleteAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+{%- macro htmButton_deleteAiNode() %}<wa-button variant="brand" id="htmButton_deleteAiNode" data-nodeId={{ result.nodeId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_deleteAiNode() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deleteAiNode">Delete AI node</wa-button>
@@ -729,7 +942,7 @@ Visit this product's landing page. "
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_putimportAiNode() %}<wa-button variant="brand" id="htmButton_putimportAiNode" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-import "></i>Import</wa-button>{%- endmacro %}
+{%- macro htmButton_putimportAiNode() %}<wa-button variant="brand" id="htmButton_putimportAiNode" data-nodeId={{ result.nodeId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-import "></i>Import</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiNode() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_putimportAiNode">Import AI nodes</wa-button>
@@ -742,7 +955,7 @@ Visit this product's landing page. "
               <wa-textarea
                   class="PUTImport_searchList "
                   style="height: 300px; "
-                  placeholder="{ 'searchList': [ { 'entityId': ... , 'saves': [ ... ] }, ... ] }"
+                  placeholder="{ 'searchList': [ { 'nodeId': ... , 'saves': [ ... ] }, ... ] }"
                   >
               </wa-textarea>
             </div>
@@ -846,12 +1059,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+                {{ htmNodeIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
-                  {{ htmEntityIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                  {{ htmNodeIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmIdAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
 
@@ -868,24 +1091,54 @@ Visit this product's landing page. "
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+                {{ htmNgsildTenantAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
-                  {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                  {{ htmNgsildTenantAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildPathAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildPathAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildContextAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildContextAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
+                {{ htmNgsildDataAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmNgsildDataAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
               <div class="grid-with-subgrid-2col ">
 
               {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+                {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                  {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
-                  {{ htmDisplayPageAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                  {{ htmLocationAiNodePage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -898,16 +1151,16 @@ Visit this product's landing page. "
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
 {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {% if "PATCH" in scopes %}
-    {% if resultCount == 1 %}
+    {% if resultCount >= 1 %}
               <wa-button variant="brand" id="refreshThisAiNodeGenPage"
-                   onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'entityId:{{entityId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiNodeGenPage')); }, function() { addError(document.querySelector('#refreshThisAiNodeGenPage')); }); return false; ">
+                   onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'nodeId:{{nodeId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiNodeGenPage')); }, function() { addError(document.querySelector('#refreshThisAiNodeGenPage')); }); return false; ">
                 <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-sync-alt "></i>
                 refresh
               </wa-button>
     {% endif %}
     {% if resultCount > 0 %}
-              <wa-button variant="brand" id="refreshAllAiNodeGenPage{{ result.entityId | e }}"
-                   onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiNodeGenPage{{ result.entityId | e }}')); }, function() { addError(document.querySelector('#refreshAllAiNodeGenPage{{ result.entityId | e }}')); }); "
+              <wa-button variant="brand" id="refreshAllAiNodeGenPage{{ result.nodeId | e }}"
+                   onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiNodeGenPage{{ result.nodeId | e }}')); }, function() { addError(document.querySelector('#refreshAllAiNodeGenPage{{ result.nodeId | e }}')); }); "
                   >
                 <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-arrows-rotate"></i>
                 Refresh all 
@@ -921,22 +1174,15 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmButton_postAiNode() }}
-    {%- else %}
-      {{ htmButton_postAiNode() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_postAiNode() }}
   {%- else %}
     {{ htmButton_postAiNode() }}
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmButton_deleteAiNode() }}
-    {%- else %}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_deleteAiNode() }}
   {%- else %}
   {%- endif %}
 {%- endif %}
@@ -952,22 +1198,15 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmForm_postAiNode() }}
-    {%- else %}
-      {{ htmForm_postAiNode() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_postAiNode() }}
   {%- else %}
     {{ htmForm_postAiNode() }}
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmForm_deleteAiNode() }}
-    {%- else %}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deleteAiNode() }}
   {%- else %}
   {%- endif %}
 {%- endif %}

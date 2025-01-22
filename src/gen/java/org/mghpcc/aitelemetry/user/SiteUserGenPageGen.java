@@ -39,6 +39,7 @@ import java.lang.String;
 import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
 import io.vertx.core.json.JsonObject;
+import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import java.lang.Integer;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -54,6 +55,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.math.BigDecimal;
 import io.vertx.core.json.JsonArray;
+import org.computate.vertx.serialize.vertx.JsonArrayDeserializer;
 import java.lang.Void;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
@@ -184,6 +186,7 @@ public abstract class SiteUserGenPageGen<DEV> extends PageLayout {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
+	@JsonDeserialize(using = JsonArrayDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected JsonArray listSiteUser = new JsonArray();
 
