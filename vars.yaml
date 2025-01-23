@@ -348,9 +348,9 @@ AUTH_SSL: true
 # Whether the Auth server requires SSL. 
 AUTH_SSL_REQUIRED: all
 # The Auth realm. 
-AUTH_REALM: "{{ lookup('env', 'AUTH_REALM') | default(SITE_SHORT_NAME | upper, true) }}"
+AUTH_REALM: "{{ lookup('env', 'AUTH_REALM') | default(SITE_NAME | upper, true) }}"
 # The Auth client. 
-AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT') | default(SITE_SHORT_NAME, true) }}"
+AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT') | default(SITE_NAME, true) }}"
 # The Auth openshift secret with the client secret credentials. 
 AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET') | default('keycloak-client-' + AUTH_CLIENT, true) }}"
 # The Auth secret. 
