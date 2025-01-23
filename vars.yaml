@@ -1,15 +1,27 @@
 
+######################
+# OpenShift defaults #
+######################
+
+# The path to kustomize resources for production deployment
+OVERLAY_SITE_PATH: kustomize/overlays/prod
+# The wildcard domain suffix where OpenShift Routes are available by default. 
+OPENSHIFT_APPS_DOMAIN: "{{ lookup('env', 'OPENSHIFT_APPS_DOMAIN') | default('apps-crc.testing', true) }}"
+# Look up the default container namespace to see if using OpenShift AI.
+USING_OPENSHIFT_AI: "{{ lookup('env', 'USING_OPENSHIFT_AI') | default(false, true) | bool }}"
+# The name of the OpenShift AI Workbench. 
+OPENSHIFT_AI_WORKBENCH: "{{ lookup('env', 'OPENSHIFT_AI_WORKBENCH') | default('', true) }}"
+# Whether this workbench is considered an admin workbench. 
+WORKBENCH_ADMIN: "{{ lookup('env', 'WORKBENCH_ADMIN') | bool }}"
+
 #############
 # Site vars #
 #############
 
-OVERLAY_SITE_PATH: kustomize/overlays/prod
-USING_OPENSHIFT_AI: "{{ true if lookup('file', '/var/run/secrets/kubernetes.io/serviceaccount/namespace') else false | default(false) }}"
-
 # The name of this application. 
 SITE_NAME: ai-telemetry
 # The source code directory for the project. 
-SITE_SRC: "{{ lookup('env', 'HOME') }}/.local/src/{{ SITE_NAME }}"
+SITE_SRC: "{{ lookup('env', 'HOME') + ('/' if USING_OPENSHIFT_AI | bool else '/.local/src/') + SITE_NAME }}"
 # The parent source directory. 
 PARENT_SRC: "{{ (SITE_SRC + '/..') | realpath }}"
 # The vars.yaml filename to load when running in development. 
@@ -19,7 +31,7 @@ VARS_PATH: "{{ SITE_SRC }}/{{ VARS_FILENAME }}"
 # A shorter name for the application used for database names, collections, and artifact IDs. 
 SITE_SHORT_NAME: "{{ SITE_NAME | replace('-', '') | replace('_', '') | replace('.', '') | lower }}"
 # The namespace in OpenShift where the site will run. 
-SITE_NAMESPACE: "{{ SITE_SHORT_NAME }}"
+SITE_NAMESPACE: "{{ lookup('env', 'SITE_NAMESPACE') | default(SITE_SHORT_NAME, true) }}"
 # A pretty version of the site name. 
 SITE_DISPLAY_NAME: AI Telemetry
 # A short description of the site. 
@@ -48,6 +60,8 @@ SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"
 SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
 CLUSTER_PORT: "{{ (SITE_PORT | int) + 1 }}"
+# Zookeeper root path to avoid conflicts with other apps using Zookeeper for clustering. 
+ZOOKEEPER_ROOT_PATH: "{{ lookup('env', 'ZOOKEEPER_ROOT_PATH') | default(SITE_NAME, true) }}"
 # Verify SSL connections. 
 SSL_VERIFY: false
 # The public search endpoint for searching public items in the site. 
@@ -125,6 +139,8 @@ JAVA_MAIN_CLASS: "{{ SITE_MAIN_VERTICLE_PACKAGE }}.MainVerticle"
 ENABLE_VERTX: true
 # Enables a Quarkus application to also be created in addition to the Vert.x main verticle. 
 ENABLE_QUARKUS: false
+# Enables the worker verticle. 
+ENABLE_WORKER_VERTICLE: true
 
 ###################
 # Vert.x defaults #
@@ -151,13 +167,6 @@ NUMBER_EXECUTORS: 2
 SITE_LICENSE_NAME: GNU GENERAL PUBLIC LICENSE, Version 3
 # The URL of the open source license for the software. 
 SITE_LICENSE_URL: https://www.gnu.org/licenses/gpl-3.0.en.html
-
-######################
-# OpenShift defaults #
-######################
-
-# The wildcard domain suffix where OpenShift Routes are available by default. 
-OPENSHIFT_APPS_DOMAIN: "apps-crc.testing"
 
 ######################
 # Container defaults #
@@ -199,10 +208,10 @@ FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='
 FONTAWESOME_STYLE: "fa-duotone fa-regular"
 # An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
 WEB_COMPONENTS_CSS: |-
-  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode | default('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />') }}
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_CSS'] | b64decode | default('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/themes/light.css" />', true) }}
 # An optional link element to either a Shoelace web components JavaScript or a Web Awesome Backer web components JavaScript. 
 WEB_COMPONENTS_JS: |-
-  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>') }}
+  {{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.18.0/cdn/shoelace-autoloader.js"></script>', true) }}
 # Switch between Shoelace "sl-" and Web Awesome "wa-" element prefixes. 
 WEB_COMPONENTS_PREFIX: "wa-"
 # Site default theme, light or dark. 
@@ -223,6 +232,8 @@ DEVELOPER_ORG_URL: ''
 # Service defaults #
 ####################
 
+# Enable systemd. 
+ENABLE_SYSTEMD: "{{ not USING_OPENSHIFT_AI | bool }}"
 # The systemd service name for project that generates and translates most of the code. 
 SITE_SERVICE: "watch-{{ SITE_NAME }}"
 # The systemd service file for project that generates and translates most of the code. 
@@ -237,18 +248,18 @@ SITE_POWERED_BY_NAME: New England Research Cloud
 # The URL of the cloud provider where the public site is deployed. 
 SITE_POWERED_BY_URL: https://nerc.mghpcc.org/
 # The static path to the logo of the cloud provider where the public site is deployed. 
-SITE_POWERED_BY_IMAGE: '<img class="footer-img" alt="Google Kubernetes Engine" src="\{\{ STATIC_BASE_URL \}\}/png/nerc-logo.png"/>'
+SITE_POWERED_BY_IMAGE: '<img class="footer-img" alt="Google Kubernetes Engine" src="{{ STATIC_BASE_URL }}/png/nerc-logo.png"/>'
 
 ######################
 # Zookeeper defaults #
 ######################
 
 # The namespace in OpenShift where Zookeeper will run. 
-ZOOKEEPER_NAMESPACE: zookeeper
+ZOOKEEPER_NAMESPACE: "{{ lookup('env', 'ZOOKEEPER_NAMESPACE') | default('zookeeper', true) }}"
 # The default hostname for the Zookeeper cluster manager. 
-ZOOKEEPER_HOST_NAME: "zookeeper.{{ OPENSHIFT_APPS_DOMAIN }}"
+ZOOKEEPER_HOST_NAME: "{{ lookup('env', 'ZOOKEEPER_HOST_NAME') | default('zookeeper.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The default port that Zookeeper runs to manage the cluster. 
-ZOOKEEPER_PORT: 30081
+ZOOKEEPER_PORT: "{{ lookup('env', 'ZOOKEEPER_PORT') | default('30081', true) }}"
 ZOOKEEPER_MAX_RETRIES: 0
 ZOOKEEPER_BASE_SLEEP_TIME_MILLIS: 5000
 ZOOKEEPER_MAX_SLEEP_MILLIS: 5000
@@ -273,6 +284,8 @@ SOLR_COLLECTION: "{{ lookup('env', 'SOLR_COLLECTION') | default(SITE_SHORT_NAME,
 SOLR_URL: "{{ ('https://' if SOLR_SSL == True else 'http://') + SOLR_HOST_NAME + ('' if SOLR_PORT == 443 else (':' + SOLR_PORT)) }}/solr/{{ SOLR_COLLECTION }}"
 # The solr pod name to connect and create Solr configsets and collections. 
 SOLR_POD_NAME: "solr-0"
+# The time before committing Solr data in milliseconds. 
+SOLR_WORKER_COMMIT_WITHIN_MILLIS: 10000
 # The solr configset to use for the site. 
 SOLR_CONFIGSET: "computate"
 # The Solr admin username
@@ -302,28 +315,32 @@ DATABASE_NAMESPACE: postgres
 # The database secret containing the user password to connect to the database. 
 DATABASE_SECRET: "postgres-pguser-{{ SITE_SHORT_NAME }}"
 # The PostgreSQL database host name. 
-DATABASE_HOST: "postgres.{{ OPENSHIFT_APPS_DOMAIN }}"
+DATABASE_HOST: "{{ lookup('env', 'DATABASE_HOST') | default('postgres.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The PostgreSQL database port. 
-DATABASE_PORT: 30432
+DATABASE_PORT: "{{ lookup('env', 'DATABASE_PORT') | default('30432', true) }}"
 # The PostgreSQL database user name of the site. 
-DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}"
+DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
 # The PostgreSQL database password of the site. 
-DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + DATABASE_USERNAME), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
+DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(DATABASE_SECRET), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
-DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}"
+DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
 # The PostgreSQL database max pool size. 
 DATABASE_MAX_POOL_SIZE: 10
 # The PostgreSQL database max wait queue size. 
 DATABASE_MAX_WAIT_QUEUE_SIZE: 1000
+# The PostgreSQL database max idle time in seconds. 
+DATABASE_MAX_IDLE_TIME: 10
+# The PostgreSQL database connect timeout in milliseconds. 
+DATABASE_CONNECT_TIMEOUT: 3000
 
 #####################################
 # Authentication/authorization vars #
 #####################################
 
 # The namespace in OpenShift where Keycloak will run. 
-AUTH_NAMESPACE: keycloak
+AUTH_NAMESPACE: "{{ lookup('env', 'AUTH_NAMESPACE') | default('keycloak', true) }}"
 # The Auth host name. 
-AUTH_HOST_NAME: "keycloak.apps.obs.nerc.mghpcc.org"
+AUTH_HOST_NAME: "{{ lookup('env', 'AUTH_HOST_NAME') | default('keycloak.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The Auth port. 
 AUTH_PORT: 443
 # Whether the Auth server uses SSL. 
@@ -331,15 +348,19 @@ AUTH_SSL: true
 # Whether the Auth server requires SSL. 
 AUTH_SSL_REQUIRED: all
 # The Auth realm. 
-AUTH_REALM: "NERC"
+AUTH_REALM: "{{ lookup('env', 'AUTH_REALM') | default( SITE_SHORT_NAME | upper ) }}"
 # The Auth client. 
-AUTH_CLIENT: "ai-telemetry"
+AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT') | default( SITE_SHORT_NAME ) }}"
+# The Auth openshift secret with the client secret credentials. 
+AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET') | default('keycloak-client-' + AUTH_CLIENT) }}"
 # The Auth secret. 
-AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('keycloak-client-' + AUTH_CLIENT), namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
+AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_OPENSHIFT_SECRET, namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
+# The Auth openshift secret with the admin credentials. 
+AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET') | default('keycloak-initial-admin') }}"
 # The Auth admin username. 
 AUTH_ADMIN_USERNAME: admin
 # The Auth admin password. 
-AUTH_ADMIN_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='keycloak-initial-admin', namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+AUTH_ADMIN_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_ADMIN_OPENSHIFT_SECRET, namespace='keycloak')[0].data['admin-password'] | b64decode }}"
 # The Auth URL. 
 AUTH_URL: "https://{{ AUTH_HOST_NAME }}"
 # The Auth URL to retrieve tokens. 
@@ -370,22 +391,43 @@ DEFAULT_MAP_LOCATION: '{ "coordinates": [ -72.60793222470976, 42.202551398567465
 # Map default zoom level. 
 DEFAULT_MAP_ZOOM: "17"
 
+# Whether to use SSL when connecting to Solr. 
+SOLR_SSL_FIWARE: "{{ lookup('env', 'SOLR_SSL_FIWARE') | default(SOLR_SSL, true) | bool }}"
+# The host name to connect to Solr in OpenShift. 
+SOLR_HOST_NAME_FIWARE: "{{ lookup('env', 'SOLR_HOST_NAME_FIWARE') | default(SOLR_HOST_NAME, true) }}"
+# The default port that Solr runs. 
+SOLR_PORT_FIWARE: "{{ lookup('env', 'SOLR_PORT_FIWARE') | default(SOLR_PORT, true) }}"
+# The solr collection to use for the site. 
+SOLR_COLLECTION_FIWARE: "{{ lookup('env', 'SOLR_COLLECTION_FIWARE') | default(SOLR_COLLECTION_COMPUTATE, true) }}"
+# The URL to the Solr collection. 
+SOLR_URL_FIWARE: "{{ ('https://' if SOLR_SSL_FIWARE == True else 'http://') + SOLR_HOST_NAME_FIWARE + ('' if SOLR_PORT_FIWARE == 443 else (':' + SOLR_PORT_FIWARE)) }}/solr/{{ SOLR_COLLECTION_FIWARE }}"
+
 ##################
 # Context Broker #
 ##################
 
+# Enable context broker integration in the Fiware enabled Smart Data Model APIs. 
+ENABLE_CONTEXT_BROKER: true
 # The Context Broker namespace. 
 CONTEXT_BROKER_NAMESPACE: "scorpiobroker"
 # Whether to use SSL when connecting to the Context Broker. 
-CONTEXT_BROKER_SSL: true
+CONTEXT_BROKER_SSL: "{{ (lookup('env', 'CONTEXT_BROKER_SSL') | lower) != 'false' }}"
 # The host name to connect to the Context Broker in OpenShift. 
-CONTEXT_BROKER_HOST_NAME: "scorpiobroker.apps-crc.testing"
+CONTEXT_BROKER_HOST_NAME: "{{ lookup('env', 'CONTEXT_BROKER_HOST_NAME') | default('scorpiobroker.' + CONTEXT_BROKER_NAMESPACE + '.svc') }}"
 # The default port that the Context Broker runs. 
-CONTEXT_BROKER_PORT: 443
+CONTEXT_BROKER_PORT: "{{ lookup('env', 'CONTEXT_BROKER_PORT') | default('9090') }}"
 # The delay between messages and requerying entity @context. 
 CONTEXT_BROKER_DELAY_MILLIS: 0
 # The Context Broker namespace. 
-CONTEXT_BROKER_CONTEXT: "https://raw.githubusercontent.com/{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}/main/fiware/context.jsonld"
+CONTEXT_BROKER_CONTEXT: "{{ STATIC_BASE_URL }}/fiware/context.jsonld"
+# The default NGSI-LD tenant environment variable
+NGSILD_TENANT_ENV: "{{ lookup('env', 'NGSILD_TENANT_ENV') | default('NGSILD_TENANT') }}"
+# The default NGSI-LD path
+NGSILD_PATH_ENV: "{{ lookup('env', 'NGSILD_PATH_ENV') | default('NGSILD_PATH') }}"
+# The default NGSI-LD tenant
+NGSILD_TENANT: "{{ lookup('env', NGSILD_TENANT_ENV) | default('') }}"
+# The default NGSI-LD path
+NGSILD_PATH: "{{ lookup('env', NGSILD_PATH_ENV) | default('') }}"
 
 #################
 # iotagent-json #

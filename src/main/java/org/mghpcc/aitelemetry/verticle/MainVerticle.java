@@ -248,13 +248,13 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			try {
 				Future<Void> originalFuture = Future.future(a -> a.complete());
 				Future<Void> future = originalFuture;
-				Boolean sslVerify = config.getBoolean(ConfigKeys.SSL_VERIFY);
+				Boolean sslVerify = Boolean.valueOf(config.getString(ConfigKeys.SSL_VERIFY));
 				WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
-				Boolean runOpenApi3Generator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_OPENAPI3_GENERATOR)).orElse(false);
-				Boolean runSqlGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_SQL_GENERATOR)).orElse(false);
-				Boolean runAuthorizationGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_AUTHORIZATION_GENERATOR)).orElse(false);
-				Boolean runFiwareGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_FIWARE_GENERATOR)).orElse(false);
-				Boolean runProjectGenerator = Optional.ofNullable(config.getBoolean(ConfigKeys.RUN_PROJECT_GENERATOR)).orElse(false);
+				Boolean runOpenApi3Generator = Optional.ofNullable(Boolean.valueOf(config.getString(ConfigKeys.RUN_OPENAPI3_GENERATOR))).orElse(false);
+				Boolean runSqlGenerator = Optional.ofNullable(Boolean.valueOf(config.getString(ConfigKeys.RUN_SQL_GENERATOR))).orElse(false);
+				Boolean runAuthorizationGenerator = Optional.ofNullable(Boolean.valueOf(config.getString(ConfigKeys.RUN_AUTHORIZATION_GENERATOR))).orElse(false);
+				Boolean runFiwareGenerator = Optional.ofNullable(Boolean.valueOf(config.getString(ConfigKeys.RUN_FIWARE_GENERATOR))).orElse(false);
+				Boolean runProjectGenerator = Optional.ofNullable(Boolean.valueOf(config.getString(ConfigKeys.RUN_PROJECT_GENERATOR))).orElse(false);
 
 				if(runOpenApi3Generator || runSqlGenerator || runFiwareGenerator || runProjectGenerator) {
 					SiteRequest siteRequest = new SiteRequest();
@@ -385,20 +385,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	public static Future<Void> configureDatabaseSchema(Vertx vertx, JsonObject config) {
 		Promise<Void> promise = Promise.promise();
 		try {
-			if(config.getBoolean(ConfigKeys.ENABLE_DATABASE, true)) {
+			if(Boolean.valueOf(config.getString(ConfigKeys.ENABLE_DATABASE))) {
 				PgConnectOptions pgOptions = new PgConnectOptions();
-				pgOptions.setPort(config.getInteger(ConfigKeys.DATABASE_PORT));
+				pgOptions.setPort(Integer.parseInt(config.getString(ConfigKeys.DATABASE_PORT)));
 				pgOptions.setHost(config.getString(ConfigKeys.DATABASE_HOST));
 				pgOptions.setDatabase(config.getString(ConfigKeys.DATABASE_DATABASE));
 				pgOptions.setUser(config.getString(ConfigKeys.DATABASE_USERNAME));
 				pgOptions.setPassword(config.getString(ConfigKeys.DATABASE_PASSWORD));
-				pgOptions.setIdleTimeout(config.getInteger(ConfigKeys.DATABASE_MAX_IDLE_TIME, 10));
+				pgOptions.setIdleTimeout(Integer.parseInt(config.getString(ConfigKeys.DATABASE_MAX_IDLE_TIME)));
 				pgOptions.setIdleTimeoutUnit(TimeUnit.SECONDS);
-				pgOptions.setConnectTimeout(config.getInteger(ConfigKeys.DATABASE_CONNECT_TIMEOUT, 1000));
+				pgOptions.setConnectTimeout(Integer.parseInt(config.getString(ConfigKeys.DATABASE_CONNECT_TIMEOUT)));
 
 				PoolOptions poolOptions = new PoolOptions();
-				poolOptions.setMaxSize(config.getInteger(ConfigKeys.DATABASE_MAX_POOL_SIZE, 1));
-				poolOptions.setMaxWaitQueueSize(config.getInteger(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE, 10));
+				poolOptions.setMaxSize(Integer.parseInt(config.getString(ConfigKeys.DATABASE_MAX_POOL_SIZE)));
+				poolOptions.setMaxWaitQueueSize(Integer.parseInt(config.getString(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE)));
 
 				Pool pgPool = PgBuilder.pool().connectingTo(pgOptions).with(poolOptions).using(vertx).build();
 				Promise<Void> promise1 = Promise.promise();
@@ -461,7 +461,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 	public static void  runOpenApi3Generator(String[] args, Vertx vertx, JsonObject config) {
 		OpenApi3Generator api = new OpenApi3Generator();
-		Boolean sslVerify = config.getBoolean(ConfigKeys.SSL_VERIFY);
+		Boolean sslVerify = Boolean.valueOf(config.getString(ConfigKeys.SSL_VERIFY));
 		WebClient webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 		SiteRequest siteRequest = new SiteRequest();
 		siteRequest.setConfig(config);
@@ -485,7 +485,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			Long vertxWarningExceptionSeconds = config.getLong(ConfigKeys.VERTX_WARNING_EXCEPTION_SECONDS);
 			Long vertxMaxEventLoopExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME);
 			Long vertxMaxWorkerExecuteTime = config.getLong(ConfigKeys.VERTX_MAX_WORKER_EXECUTE_TIME);
-			Integer siteInstances = config.getInteger(ConfigKeys.SITE_INSTANCES);
+			Integer siteInstances = Integer.parseInt(config.getString(ConfigKeys.SITE_INSTANCES));
 
 			DeploymentOptions deploymentOptions = new DeploymentOptions();
 			deploymentOptions.setInstances(siteInstances);
@@ -516,7 +516,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					}, deploymentOptions).onSuccess(a -> {
 				LOG.info("Started main verticle. ");
 				List<Future<String>> futures = new ArrayList<>();
-				if(config.getBoolean(ConfigKeys.ENABLE_WORKER_VERTICLE, true)) {
+				if(Boolean.valueOf(config.getString(ConfigKeys.ENABLE_WORKER_VERTICLE))) {
 					futures.add(vertx.deployVerticle(new Supplier<Verticle>() {
 								@Override
 								public Verticle get() {
@@ -527,7 +527,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 								}
 							}, deploymentOptions));
 				}
-				if(config.getBoolean(ConfigKeys.ENABLE_EMAIL, false)) {
+				if(Boolean.valueOf(config.getString(ConfigKeys.ENABLE_EMAIL))) {
 					futures.add(vertx.deployVerticle(EmailVerticle.class, emailVerticleDeploymentOptions));
 				}
 				Future.all(futures).onSuccess(b -> {
@@ -552,7 +552,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	public static Future<Void> run(JsonObject config) {
 		Promise<Void> promise = Promise.promise();
 		try {
-			Boolean enableZookeeperCluster = config.getBoolean(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER, false);
+			Boolean enableZookeeperCluster = Boolean.valueOf(config.getString(ConfigKeys.ENABLE_ZOOKEEPER_CLUSTER));
 			VertxOptions vertxOptions = new VertxOptions();
 			EventBusOptions eventBusOptions = new EventBusOptions();
 	
@@ -562,18 +562,18 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				String hostname = config.getString(ConfigKeys.HOSTNAME);
 				String openshiftService = config.getString(ConfigKeys.OPENSHIFT_SERVICE);
 				String zookeeperHostName = config.getString(ConfigKeys.ZOOKEEPER_HOST_NAME);
-				Integer zookeeperPort = config.getInteger(ConfigKeys.ZOOKEEPER_PORT);
+				Integer zookeeperPort = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_PORT));
 				String zookeeperHosts = Optional.ofNullable(config.getString(ConfigKeys.ZOOKEEPER_HOSTS)).orElse(zookeeperHostName + ":" + zookeeperPort);
 				String clusterHostName = config.getString(ConfigKeys.CLUSTER_HOST_NAME);
-				Integer clusterPort = config.getInteger(ConfigKeys.CLUSTER_PORT);
+				Integer clusterPort = Integer.parseInt(config.getString(ConfigKeys.CLUSTER_PORT));
 				String clusterPublicHostName = config.getString(ConfigKeys.CLUSTER_PUBLIC_HOST_NAME);
-				Integer clusterPublicPort = config.getInteger(ConfigKeys.CLUSTER_PUBLIC_PORT);
+				Integer clusterPublicPort = Integer.parseInt(config.getString(ConfigKeys.CLUSTER_PUBLIC_PORT));
 				String zookeeperRetryPolicy = config.getString(ConfigKeys.ZOOKEEPER_RETRY_POLICY);
-				Integer zookeeperBaseSleepTimeMillis = config.getInteger(ConfigKeys.ZOOKEEPER_BASE_SLEEP_TIME_MILLIS);
-				Integer zookeeperMaxSleepMillis = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_SLEEP_MILLIS);
-				Integer zookeeperMaxRetries = config.getInteger(ConfigKeys.ZOOKEEPER_MAX_RETRIES);
-				Integer zookeeperConnectionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS);
-				Integer zookeeperSessionTimeoutMillis = config.getInteger(ConfigKeys.ZOOKEEPER_SESSION_TIMEOUT_MILLIS);
+				Integer zookeeperBaseSleepTimeMillis = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_BASE_SLEEP_TIME_MILLIS));
+				Integer zookeeperMaxSleepMillis = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_MAX_SLEEP_MILLIS));
+				Integer zookeeperMaxRetries = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_MAX_RETRIES));
+				Integer zookeeperConnectionTimeoutMillis = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_CONNECTION_TIMEOUT_MILLIS));
+				Integer zookeeperSessionTimeoutMillis = Integer.parseInt(config.getString(ConfigKeys.ZOOKEEPER_SESSION_TIMEOUT_MILLIS));
 				zkConfig.put("zookeeperHosts", zookeeperHosts);
 				zkConfig.put("sessionTimeout", zookeeperSessionTimeoutMillis);
 				zkConfig.put("connectTimeout", zookeeperConnectionTimeoutMillis);
@@ -621,16 +621,16 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			vertxOptions.setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
 			vertxOptions.setMaxWorkerExecuteTime(vertxMaxWorkerExecuteTime);
 			vertxOptions.setMaxWorkerExecuteTimeUnit(TimeUnit.SECONDS);
-			vertxOptions.setWorkerPoolSize(config.getInteger(ConfigKeys.WORKER_POOL_SIZE));
+			vertxOptions.setWorkerPoolSize(Integer.parseInt(config.getString(ConfigKeys.WORKER_POOL_SIZE)));
 
 			Resource resource = Resource.builder()
 					.put("service.name", SITE_NAME)
 					.build();
-			SdkTracerProvider sdkTracerProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
+			SdkTracerProvider sdkTracerProvider = Boolean.valueOf(config.getString(ConfigKeys.ENABLE_OPEN_TELEMETRY)) ? 
 					SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(OtlpHttpSpanExporter.builder().build())).build() : null;
-			SdkMeterProvider sdkMeterProvider = config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false) ? 
+			SdkMeterProvider sdkMeterProvider = Boolean.valueOf(config.getString(ConfigKeys.ENABLE_OPEN_TELEMETRY)) ? 
 					SdkMeterProvider.builder().build() : null;
-			if(config.getBoolean(ConfigKeys.ENABLE_OPEN_TELEMETRY, false)) {
+			if(Boolean.valueOf(config.getString(ConfigKeys.ENABLE_OPEN_TELEMETRY))) {
 				// Switch oc config current-context to your other cluster to port forward the opentelemetry-collector
 				// oc -n opentelemetry port-forward $(oc -n opentelemetry get pod -l app.kubernetes.io/name=opentelemetry-collector -o name) 4318:4318
 				// Switch oc config current-context back to OpenShift Local
@@ -765,7 +765,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 
 		try {
-			Boolean sslVerify = config().getBoolean(ConfigKeys.SSL_VERIFY);
+			Boolean sslVerify = Boolean.valueOf(config().getString(ConfigKeys.SSL_VERIFY));
 			webClient = WebClient.create(vertx, new WebClientOptions().setVerifyHost(sslVerify).setTrustAll(!sslVerify));
 			promise.complete();
 		} catch(Exception ex) {
@@ -782,7 +782,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<KafkaProducer<String, String>> promise = Promise.promise();
 
 		try {
-			if(config().getBoolean(ConfigKeys.ENABLE_KAFKA, false)) {
+			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_KAFKA))) {
 				Map<String, String> kafkaConfig = new HashMap<>();
 				kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
 				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
@@ -820,10 +820,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<MqttClient> promise = Promise.promise();
 
 		try {
-			if(config().getBoolean(ConfigKeys.ENABLE_MQTT, false)) {
+			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_MQTT))) {
 				try {
 					mqttClient = MqttClient.create(vertx);
-					mqttClient.connect(config().getInteger(ConfigKeys.MQTT_PORT), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
+					mqttClient.connect(Integer.parseInt(config().getString(ConfigKeys.MQTT_PORT)), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
 						try {
 							LOG.info("The MQTT client was initialized successfully.");
 							promise.complete(mqttClient);
@@ -856,11 +856,11 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<AmqpClient> promise = Promise.promise();
 
 		try {
-			if(config().getBoolean(ConfigKeys.ENABLE_AMQP, false)) {
+			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_AMQP))) {
 				try {
 					AmqpClientOptions options = new AmqpClientOptions()
 							.setHost(config().getString(ConfigKeys.AMQP_HOST))
-							.setPort(config().getInteger(ConfigKeys.AMQP_PORT))
+							.setPort(Integer.parseInt(config().getString(ConfigKeys.AMQP_PORT)))
 							.setUsername(config().getString(ConfigKeys.AMQP_USER))
 							.setPassword(config().getString(ConfigKeys.AMQP_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.AMQP_VIRTUAL_HOST))
@@ -908,11 +908,11 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<RabbitMQClient> promise = Promise.promise();
 
 		try {
-			if(config().getBoolean(ConfigKeys.ENABLE_RABBITMQ, false)) {
+			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_RABBITMQ))) {
 				try {
 					RabbitMQOptions options = new RabbitMQOptions()
 							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST_NAME))
-							.setPort(config().getInteger(ConfigKeys.RABBITMQ_PORT))
+							.setPort(Integer.parseInt(config().getString(ConfigKeys.RABBITMQ_PORT)))
 							.setUser(config().getString(ConfigKeys.RABBITMQ_USER))
 							.setPassword(config().getString(ConfigKeys.RABBITMQ_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.RABBITMQ_VIRTUAL_HOST))
@@ -982,20 +982,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	public Future<Void> configureData() {
 		Promise<Void> promise = Promise.promise();
 		try {
-			if(config().getBoolean(ConfigKeys.ENABLE_DATABASE, true)) {
+			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_DATABASE))) {
 				PgConnectOptions pgOptions = new PgConnectOptions();
-				pgOptions.setPort(config().getInteger(ConfigKeys.DATABASE_PORT));
+				pgOptions.setPort(Integer.parseInt(config().getString(ConfigKeys.DATABASE_PORT)));
 				pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST));
 				pgOptions.setDatabase(config().getString(ConfigKeys.DATABASE_DATABASE));
 				pgOptions.setUser(config().getString(ConfigKeys.DATABASE_USERNAME));
 				pgOptions.setPassword(config().getString(ConfigKeys.DATABASE_PASSWORD));
-				pgOptions.setIdleTimeout(config().getInteger(ConfigKeys.DATABASE_MAX_IDLE_TIME, 10));
+				pgOptions.setIdleTimeout(Integer.parseInt(config().getString(ConfigKeys.DATABASE_MAX_IDLE_TIME)));
 				pgOptions.setIdleTimeoutUnit(TimeUnit.SECONDS);
-				pgOptions.setConnectTimeout(config().getInteger(ConfigKeys.DATABASE_CONNECT_TIMEOUT, 1000));
+				pgOptions.setConnectTimeout(Integer.parseInt(config().getString(ConfigKeys.DATABASE_CONNECT_TIMEOUT)));
 
 				PoolOptions poolOptions = new PoolOptions();
-				jdbcMaxPoolSize = config().getInteger(ConfigKeys.DATABASE_MAX_POOL_SIZE, 1);
-				jdbcMaxWaitQueueSize = config().getInteger(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE, 10);
+				jdbcMaxPoolSize = Integer.parseInt(config().getString(ConfigKeys.DATABASE_MAX_POOL_SIZE));
+				jdbcMaxWaitQueueSize = Integer.parseInt(config().getString(ConfigKeys.DATABASE_MAX_WAIT_QUEUE_SIZE));
 				poolOptions.setMaxSize(jdbcMaxPoolSize);
 				poolOptions.setMaxWaitQueueSize(jdbcMaxWaitQueueSize);
 
@@ -1041,9 +1041,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
 
 			OAuth2Options oauth2ClientOptions = new OAuth2Options();
-			Boolean authSsl = clientConfig.getBoolean(ConfigKeys.AUTH_SSL);
+			Boolean authSsl = Boolean.valueOf(clientConfig.getString(ConfigKeys.AUTH_SSL));
 			String authHostName = clientConfig.getString(ConfigKeys.AUTH_HOST_NAME);
-			Integer authPort = clientConfig.getInteger(ConfigKeys.AUTH_PORT);
+			Integer authPort = Integer.valueOf(clientConfig.getString(ConfigKeys.AUTH_PORT));
 			String authUrl = String.format("%s", clientConfig.getString(ConfigKeys.AUTH_URL));
 			oauth2ClientOptions.setSite(authUrl + "/realms/" + clientConfig.getString(ConfigKeys.AUTH_REALM));
 			oauth2ClientOptions.setTenant(clientConfig.getString(ConfigKeys.AUTH_REALM));
@@ -1457,11 +1457,11 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 						String uri = handler.pathParam("uri");
 						String url = String.format("%s%s", config().getString(ComputateConfigKeys.SITE_BASE_URL), uri);
 						webClient.post(
-								config().getInteger(ComputateConfigKeys.AUTH_PORT)
+								Integer.parseInt(config().getString(ComputateConfigKeys.AUTH_PORT))
 								, config().getString(ComputateConfigKeys.AUTH_HOST_NAME)
 								, config().getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 								)
-								.ssl(config().getBoolean(ComputateConfigKeys.AUTH_SSL))
+								.ssl(Boolean.valueOf(config().getString(ComputateConfigKeys.AUTH_SSL)))
 								.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
 								.expect(ResponsePredicate.status(200))
 								.sendForm(MultiMap.caseInsensitiveMultiMap()
@@ -1586,9 +1586,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 
 		try {
-			Boolean sslPassthrough = config().getBoolean(ConfigKeys.SSL_PASSTHROUGH, false);
+			Boolean sslPassthrough = Boolean.valueOf(config().getString(ConfigKeys.SSL_PASSTHROUGH));
 			String siteBaseUrl = config().getString(ConfigKeys.SITE_BASE_URL);
-			Integer sitePort = config().getInteger(ConfigKeys.SITE_PORT);
+			Integer sitePort = Integer.parseInt(config().getString(ConfigKeys.SITE_PORT));
 			String sslJksPath = config().getString(ConfigKeys.SSL_JKS_PATH);
 			String sslPrivateKeyPath = config().getString(ConfigKeys.SSL_KEY_PATH);
 			String sslCertPath = config().getString(ConfigKeys.SSL_CERT_PATH);
