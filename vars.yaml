@@ -53,9 +53,9 @@ SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/
 # The port of the site. 
 SITE_PORT: 10210
 # The host name of the site. 
-SITE_HOST_NAME: "localhost"
+SITE_HOST_NAME: "{{ lookup('env', 'SITE_HOST_NAME') | default('localhost') }}"
 # The base URL of the site. 
-SITE_BASE_URL: "http://{{ SITE_HOST_NAME }}:{{ SITE_PORT }}"
+SITE_BASE_URL: "{{ lookup('env', 'SITE_BASE_URL') | default('http://' + SITE_HOST_NAME + ':' + (SITE_PORT | string)) }}"
 # The public facing URL for the site. 
 SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
@@ -319,7 +319,7 @@ DATABASE_HOST: "{{ lookup('env', 'DATABASE_HOST') | default('postgres.' + OPENSH
 # The PostgreSQL database port. 
 DATABASE_PORT: "{{ lookup('env', 'DATABASE_PORT') | default('30432', true) }}"
 # The PostgreSQL database user name of the site. 
-DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
+DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME') | default(SITE_SHORT_NAME, true) }}"
 # The PostgreSQL database password of the site. 
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(DATABASE_SECRET), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
