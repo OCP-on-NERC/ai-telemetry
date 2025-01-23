@@ -360,7 +360,7 @@ AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET') | 
 # The Auth admin username. 
 AUTH_ADMIN_USERNAME: admin
 # The Auth admin password. 
-AUTH_ADMIN_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_ADMIN_OPENSHIFT_SECRET, namespace='keycloak')[0].data['admin-password'] | b64decode }}"
+AUTH_ADMIN_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_ADMIN_OPENSHIFT_SECRET, namespace=AUTH_NAMESPACE)[0].data['admin-password'] | b64decode }}"
 # The Auth URL. 
 AUTH_URL: "https://{{ AUTH_HOST_NAME }}"
 # The Auth URL to retrieve tokens. 
