@@ -45,8 +45,8 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
 				String authTokenUri = config.getString(ConfigKeys.AUTH_TOKEN_URI);
 				Boolean authSsl = Boolean.parseBoolean(config.getString(ConfigKeys.AUTH_SSL));
-				String authClient = config.getString(ConfigKeys.AUTH_CLIENT);
-				String authSecret = config.getString(ConfigKeys.AUTH_SECRET);
+				String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
+				String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
 				MultiMap form = MultiMap.caseInsensitiveMultiMap();
 				form.add("grant_type", "client_credentials");
 				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);

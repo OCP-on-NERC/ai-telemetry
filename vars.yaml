@@ -53,9 +53,9 @@ SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/
 # The port of the site. 
 SITE_PORT: 10210
 # The host name of the site. 
-SITE_HOST_NAME: "{{ lookup('env', 'SITE_HOST_NAME') | default('localhost') }}"
+SITE_HOST_NAME: "{{ lookup('env', 'SITE_HOST_NAME') | default('localhost', true) }}"
 # The base URL of the site. 
-SITE_BASE_URL: "{{ lookup('env', 'SITE_BASE_URL') | default('http://' + SITE_HOST_NAME + ':' + (SITE_PORT | string)) }}"
+SITE_BASE_URL: "{{ lookup('env', 'SITE_BASE_URL') | default('http://' + SITE_HOST_NAME + ':' + (SITE_PORT | string), true) }}"
 # The public facing URL for the site. 
 SITE_PUBLIC_URL: "https://ai-telemetry.apps.obs.nerc.{{ DOMAIN_NAME }}"
 # The port of the Zookeeper cluster manager. 
@@ -323,7 +323,7 @@ DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME') | default(SITE_SHORT_N
 # The PostgreSQL database password of the site. 
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(DATABASE_SECRET), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
-DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
+DATABASE_DATABASE: "{{ lookup('env', 'DATABASE_DATABASE') | default(SITE_SHORT_NAME, true) }}"
 # The PostgreSQL database max pool size. 
 DATABASE_MAX_POOL_SIZE: 10
 # The PostgreSQL database max wait queue size. 
@@ -560,6 +560,12 @@ PROM_KEYCLOAK_PROXY_SSL: "{{ (lookup('env', 'PROM_KEYCLOAK_PROXY_SSL') | lower) 
 PROM_KEYCLOAK_PROXY_HOST_NAME: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_HOST_NAME') | default('prom-keycloak-proxy.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The default port that the Prometheus Keycloak Proxy runs. 
 PROM_KEYCLOAK_PROXY_PORT: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_PORT') | default('443', true) }}"
+# The Auth client. 
+AUTH_CLIENT_SA: "{{ lookup('env', 'AUTH_CLIENT_SA') | default(SITE_NAME + '-sa', true) }}"
+# The Auth openshift secret with the client secret credentials. 
+AUTH_OPENSHIFT_SECRET_SA: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET_SA') | default('keycloak-client-' + AUTH_CLIENT_SA, true) }}"
+# The Auth secret. 
+AUTH_SECRET_SA: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_OPENSHIFT_SECRET_SA, namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
 
 ###########
 # grafana #

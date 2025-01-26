@@ -10,7 +10,7 @@ WORKBENCH_SIZE: 20Gi
 SITE_SHORT_NAME: aitelemetry
 SITE_NAME: ai-telemetry
 SITE_PORT: 10210
-DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_NAME }}"
-DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_NAME }}"
 WORKBENCH_NAMES:
-  - schwesig
+  - computate
+  - dheeraj
+  - rh-csaggin

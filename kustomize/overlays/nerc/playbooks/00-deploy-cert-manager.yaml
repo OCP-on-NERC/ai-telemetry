@@ -1,7 +1,0 @@
----
-- name: Deploy cert-manager
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  roles:
-    - deploy-cert-manager

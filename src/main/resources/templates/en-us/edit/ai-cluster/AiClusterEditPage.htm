@@ -52,6 +52,12 @@
 #observability-dashboard {
   .pill {
     border-radius: var(--wa-border-radius-pill);
+    box-shadow: var(--wa-theme-glossy-inner-shine), var(--wa-theme-glossy-top-highlight), inset 0 .7rem 0 0 rgba(255, 255, 255, 0.1), var(--wa-theme-glossy-lower-shade), var(--wa-theme-glossy-bottom-shadow);
+    &:hover {
+     background-color: var(--background-color-hover, var(--background-color));
+      border-color: var(--border-color-hover, var(--border-color, var(--background-color-hover)));
+      color: var(--text-color-hover, var(--text-color));
+    }
   }
 }
 {%- endblock htmStyleAiClusterPage %}
@@ -233,7 +239,6 @@
           });
 
           var layout = {
-            title: {text: 'GPU utilization'}
           };
           Plotly.newPlot(panelId, traces, layout);
         });
@@ -271,7 +276,6 @@
           });
 
           var layout = {
-            title: {text: 'GPU temperature'}
           };
           Plotly.newPlot(panelId, traces, layout);
         });
