@@ -1,4 +1,11 @@
-        <div class="htmBodySidebarSitePagePage ">
+        <wa-details open>
+          <div slot="summary">Map of articles</div>
+
+{%- block htmBodyGraphSitePagePage %}
+        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphSitePagePage %}
+        </wa-details>
+          <div class="htmBodySidebarSitePagePage ">
 {%- block htmBodySidebarSitePagePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,7 +288,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarSitePagePage %}
         </div>
-
-{%- block htmBodyGraphSitePagePage %}
-        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphSitePagePage %}

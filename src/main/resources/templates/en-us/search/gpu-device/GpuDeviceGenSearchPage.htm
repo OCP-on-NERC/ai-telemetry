@@ -252,13 +252,17 @@
 {%- block htmBodyStartPageLayout %}
 {{ super() }}
 {%- block htmBodyStartGpuDevicePage %}
+{% if resultCount > 0 %}
+          <h1><a href="{{pageUri}}"><i class="fa-regular fa-memory"></i> <span>GPU devices</span></a></h1>
+{%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
+{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
+{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartGpuDevicePage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleGpuDevicePage %}
-{%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
-{%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
@@ -280,6 +284,7 @@
           </span>
         </h2>
 {% else %}
+{%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
           <form action="/en-us/api/gpu-device" id="GpuDeviceForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
             <input name="focusId" type="hidden"/>
             <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
@@ -298,9 +303,6 @@
             </wa-button>
           </div>
           {% endif %}
-          <h1><a href="{{pageUri}}"><i class="fa-regular fa-memory"></i> <span>GPU devices</span></a></h1>
-{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
-{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
 {% include en-us/search/gpu-device/GpuDevicePaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>

@@ -147,7 +147,7 @@ ENABLE_WORKER_VERTICLE: true
 ###################
 
 # The number of Vert.x instances to run per pod. 
-SITE_INSTANCES: 2
+SITE_INSTANCES: 1
 # The number of Vert.x worker instances to run per pod. 
 WORKER_POOL_SIZE: 2
 # The max event loop execute time in seconds. 
@@ -196,7 +196,7 @@ STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
 # The base URL to the static files. 
 STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
 # The site logo relative URI
-SITE_LOGO_URI: "/png/nerc-logo.png"
+SITE_LOGO_URI: "/png/moc-logo.png"
 # The path to the template files. 
 TEMPLATE_PATH: "{{ SITE_SRC }}/src/main/resources/templates"
 # The path to the site page templates. 
@@ -312,14 +312,14 @@ SOLR_URL_COMPUTATE: "{{ ('https://' if SOLR_SSL_COMPUTATE == True else 'http://'
 ENABLE_DATABASE: true
 # The namespace of the database in OpenShift. 
 DATABASE_NAMESPACE: postgres
+# The PostgreSQL database user name of the site. 
+DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME') | default(SITE_SHORT_NAME, true) }}"
 # The database secret containing the user password to connect to the database. 
-DATABASE_SECRET: "postgres-pguser-{{ SITE_SHORT_NAME }}"
+DATABASE_SECRET: "postgres-pguser-{{ DATABASE_USERNAME }}"
 # The PostgreSQL database host name. 
 DATABASE_HOST: "{{ lookup('env', 'DATABASE_HOST') | default('postgres.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The PostgreSQL database port. 
 DATABASE_PORT: "{{ lookup('env', 'DATABASE_PORT') | default('30432', true) }}"
-# The PostgreSQL database user name of the site. 
-DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME') | default(SITE_SHORT_NAME, true) }}"
 # The PostgreSQL database password of the site. 
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(DATABASE_SECRET), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 

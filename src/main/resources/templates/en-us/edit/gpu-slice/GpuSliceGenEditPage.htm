@@ -252,13 +252,25 @@
 {%- block htmBodyStartPageLayout %}
     {{ super() }}
 {%- block htmBodyStartGpuSlicePage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
+            <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all GPU slices
+            </wa-button>
+            <h1 class="Page_title"><i class="fa-regular fa-cake-slice"></i> {{ result.title | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
+{% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartGpuSlicePage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleGpuSlicePage %}
-{%- include en-us/search/gpu-slice/GpuSliceSidebar.htm %}
-{%- include en-us/search/gpu-slice/GpuSliceSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
@@ -281,38 +293,8 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount >= 1 %}
-          <div class="margin-block">
-            <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
-            <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all GPU slices
-            </wa-button>
-          </div>
-{% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
-{% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
-          <h1 class="Page_title"><i class="fa-regular fa-cake-slice"></i> {{ result.title | e }}</h1>
-  {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-GpuSlice">back to all GPU slices</wa-tooltip>
-          <wa-button id="return-to-GpuSlice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all GPU slices
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-cake-slice"></i> <span>GPU slices</span></h1>
-{% include en-us/search/gpu-slice/GpuSliceSearchButtons.htm %}
-{% include en-us/search/gpu-slice/GpuSliceSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no GPU slice found</span>
-          </span>
-        </h2>
-  {% endif %}
+{%- include en-us/search/gpu-slice/GpuSliceSidebar.htm %}
+{%- include en-us/search/gpu-slice/GpuSliceSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormGpuSlicePage %}
           <form action="/en-us/api/gpu-slice" id="GpuSliceForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">

@@ -1,4 +1,11 @@
-        <div class="htmBodySidebarAiProjectPage ">
+        <wa-details open>
+          <div slot="summary">Map of AI projects</div>
+
+{%- block htmBodyGraphAiProjectPage %}
+        <div id="htmBodyGraphAiProjectPage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphAiProjectPage %}
+        </wa-details>
+          <div class="htmBodySidebarAiProjectPage ">
 {%- block htmBodySidebarAiProjectPage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,7 +288,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarAiProjectPage %}
         </div>
-
-{%- block htmBodyGraphAiProjectPage %}
-        <div id="htmBodyGraphAiProjectPage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphAiProjectPage %}

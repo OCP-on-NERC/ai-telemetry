@@ -1,4 +1,17 @@
-        <div class="htmBodySidebarAiNodePage ">
+        <wa-details open>
+          <div slot="summary">Map of AI nodes</div>
+
+{%- block htmBodyGraphLocationAiNodePage %}
+{% if resultCount > 0 %}
+        <div id="htmBodyGraphLocationAiNodePage" class="htmBodyGraphLocation "></div>
+{% endif %}
+{%- endblock htmBodyGraphLocationAiNodePage %}
+
+{%- block htmBodyGraphAiNodePage %}
+        <div id="htmBodyGraphAiNodePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphAiNodePage %}
+        </wa-details>
+          <div class="htmBodySidebarAiNodePage ">
 {%- block htmBodySidebarAiNodePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,13 +294,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarAiNodePage %}
         </div>
-
-{%- block htmBodyGraphLocationAiNodePage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationAiNodePage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationAiNodePage %}
-
-{%- block htmBodyGraphAiNodePage %}
-        <div id="htmBodyGraphAiNodePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphAiNodePage %}

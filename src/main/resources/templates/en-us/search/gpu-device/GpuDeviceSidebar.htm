@@ -1,4 +1,17 @@
-        <div class="htmBodySidebarGpuDevicePage ">
+        <wa-details open>
+          <div slot="summary">Map of GPU devices</div>
+
+{%- block htmBodyGraphLocationGpuDevicePage %}
+{% if resultCount > 0 %}
+        <div id="htmBodyGraphLocationGpuDevicePage" class="htmBodyGraphLocation "></div>
+{% endif %}
+{%- endblock htmBodyGraphLocationGpuDevicePage %}
+
+{%- block htmBodyGraphGpuDevicePage %}
+        <div id="htmBodyGraphGpuDevicePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphGpuDevicePage %}
+        </wa-details>
+          <div class="htmBodySidebarGpuDevicePage ">
 {%- block htmBodySidebarGpuDevicePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,13 +294,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarGpuDevicePage %}
         </div>
-
-{%- block htmBodyGraphLocationGpuDevicePage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationGpuDevicePage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationGpuDevicePage %}
-
-{%- block htmBodyGraphGpuDevicePage %}
-        <div id="htmBodyGraphGpuDevicePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphGpuDevicePage %}

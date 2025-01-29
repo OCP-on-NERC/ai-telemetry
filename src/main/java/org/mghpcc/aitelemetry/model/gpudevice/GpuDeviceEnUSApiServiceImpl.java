@@ -103,8 +103,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 									body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber.toString());
 									body.put(GpuDevice.VAR_gpuDeviceUtilization, gpuDeviceUtilization);
 
-									webClient.put(sitePort, siteHostName, "/en-us/api/gpu-device-import?softCommit=true")
-											.ssl(siteSsl)
+									webClient.put(443, siteHostName, "/en-us/api/gpu-device-import?softCommit=true")
+											.ssl(true)
 											.putHeader("Content-Type", "application/json")
 											.putHeader("Authorization", String.format("Bearer %s", accessToken))
 											.sendJsonObject(new JsonObject().put("list", new JsonArray().add(body)))
@@ -182,8 +182,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 					JsonObject pageContext = new JsonObject().put("params", pageParams);
 					JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-					webClient.delete(sitePort, siteHostName, "/en-us/api/gpu-device")
-							.ssl(siteSsl)
+					webClient.delete(443, siteHostName, "/en-us/api/gpu-device")
+							.ssl(true)
 							.putHeader("Content-Type", "application/json")
 							.putHeader("Authorization", String.format("Bearer %s", accessToken))
 							.send()
@@ -268,8 +268,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 										body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber.toString());
 										body.put(GpuDevice.VAR_gpuDeviceUtilization, gpuDeviceUtilization);
 
-										webClient.put(sitePort, siteHostName, "/en-us/api/gpu-device-import?softCommit=true")
-												.ssl(siteSsl)
+										webClient.put(443, siteHostName, "/en-us/api/gpu-device-import?softCommit=true")
+												.ssl(true)
 												.putHeader("Content-Type", "application/json")
 												.putHeader("Authorization", String.format("Bearer %s", accessToken))
 												.sendJsonObject(new JsonObject().put("list", new JsonArray().add(body)))
@@ -303,8 +303,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 									JsonObject pageContext = new JsonObject().put("params", pageParams);
 									JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-									webClient.delete(sitePort, siteHostName, "/en-us/api/gpu-device")
-											.ssl(siteSsl)
+									webClient.delete(443, siteHostName, "/en-us/api/gpu-device")
+											.ssl(true)
 											.putHeader("Content-Type", "application/json")
 											.putHeader("Authorization", String.format("Bearer %s", accessToken))
 											.send()

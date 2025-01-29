@@ -1,4 +1,11 @@
-        <div class="htmBodySidebarSiteUserPage ">
+        <wa-details open>
+          <div slot="summary">Map of site users</div>
+
+{%- block htmBodyGraphSiteUserPage %}
+        <div id="htmBodyGraphSiteUserPage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphSiteUserPage %}
+        </wa-details>
+          <div class="htmBodySidebarSiteUserPage ">
 {%- block htmBodySidebarSiteUserPage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,7 +288,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarSiteUserPage %}
         </div>
-
-{%- block htmBodyGraphSiteUserPage %}
-        <div id="htmBodyGraphSiteUserPage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphSiteUserPage %}

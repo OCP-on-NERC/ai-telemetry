@@ -252,13 +252,25 @@
 {%- block htmBodyStartPageLayout %}
     {{ super() }}
 {%- block htmBodyStartAiNodePage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
+            <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all AI nodes
+            </wa-button>
+            <h1 class="Page_title"><i class="fa-regular fa-computer"></i> {{ result.title | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
+{% include en-us/search/ai-node/AiNodeSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartAiNodePage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleAiNodePage %}
-{%- include en-us/search/ai-node/AiNodeSidebar.htm %}
-{%- include en-us/search/ai-node/AiNodeSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
@@ -281,38 +293,8 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount >= 1 %}
-          <div class="margin-block">
-            <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
-            <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all AI nodes
-            </wa-button>
-          </div>
-{% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
-{% include en-us/search/ai-node/AiNodeSearchForm.htm %}
-          <h1 class="Page_title"><i class="fa-regular fa-computer"></i> {{ result.title | e }}</h1>
-  {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-AiNode">back to all AI nodes</wa-tooltip>
-          <wa-button id="return-to-AiNode" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all AI nodes
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-computer"></i> <span>AI nodes</span></h1>
-{% include en-us/search/ai-node/AiNodeSearchButtons.htm %}
-{% include en-us/search/ai-node/AiNodeSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no AI node found</span>
-          </span>
-        </h2>
-  {% endif %}
+{%- include en-us/search/ai-node/AiNodeSidebar.htm %}
+{%- include en-us/search/ai-node/AiNodeSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormAiNodePage %}
           <form action="/en-us/api/ai-node" id="AiNodeForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">

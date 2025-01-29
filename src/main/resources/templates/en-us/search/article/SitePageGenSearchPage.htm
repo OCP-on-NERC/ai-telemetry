@@ -160,13 +160,17 @@
 {%- block htmBodyStartPageLayout %}
 {{ super() }}
 {%- block htmBodyStartSitePagePage %}
+{% if resultCount > 0 %}
+          <h1><a href="{{pageUri}}"><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></a></h1>
+{%- include en-us/search/article/SitePageSuggestedSearch.htm %}
+{% include en-us/search/article/SitePageSearchButtons.htm %}
+{% include en-us/search/article/SitePageSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartSitePagePage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleSitePagePage %}
-{%- include en-us/search/article/SitePageSidebar.htm %}
-{%- include en-us/search/article/SitePageSuggestedSearch.htm %}
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-SitePage">back to all articles</wa-tooltip>
@@ -188,6 +192,7 @@
           </span>
         </h2>
 {% else %}
+{%- include en-us/search/article/SitePageSidebar.htm %}
           <form action="/en-us/api/article" id="SitePageForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
             <input name="focusId" type="hidden"/>
             <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
@@ -206,9 +211,6 @@
             </wa-button>
           </div>
           {% endif %}
-          <h1><a href="{{pageUri}}"><i class="fa-duotone fa-solid fa-newspaper"></i> <span>articles</span></a></h1>
-{% include en-us/search/article/SitePageSearchButtons.htm %}
-{% include en-us/search/article/SitePageSearchForm.htm %}
 {% include en-us/search/article/SitePagePaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
@@ -242,7 +244,7 @@
                   name="setEditPage"
                   href="{{ item.editPage | e }}"
                   >
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-duotone fa-regular fa-pen-to-square"></i>
                 edit
               </wa-button>
             </div>

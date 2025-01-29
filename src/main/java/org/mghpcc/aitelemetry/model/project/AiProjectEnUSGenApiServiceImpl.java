@@ -136,6 +136,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -1611,6 +1612,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -1913,6 +1915,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2089,6 +2092,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2265,6 +2269,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(

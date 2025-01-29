@@ -170,13 +170,25 @@
 {%- block htmBodyStartPageLayout %}
     {{ super() }}
 {%- block htmBodyStartAiProjectPage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
+            <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all AI projects
+            </wa-button>
+            <h1 class="Page_title"><i class="fa-regular fa-school"></i> {{ result.title | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
+{% include en-us/search/ai-project/AiProjectSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartAiProjectPage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleAiProjectPage %}
-{%- include en-us/search/ai-project/AiProjectSidebar.htm %}
-{%- include en-us/search/ai-project/AiProjectSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
@@ -199,38 +211,8 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount >= 1 %}
-          <div class="margin-block">
-            <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
-            <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all AI projects
-            </wa-button>
-          </div>
-{% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
-{% include en-us/search/ai-project/AiProjectSearchForm.htm %}
-          <h1 class="Page_title"><i class="fa-regular fa-school"></i> {{ result.title | e }}</h1>
-  {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
-          <wa-button id="return-to-AiProject" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all AI projects
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-school"></i> <span>AI projects</span></h1>
-{% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
-{% include en-us/search/ai-project/AiProjectSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no AI project found</span>
-          </span>
-        </h2>
-  {% endif %}
+{%- include en-us/search/ai-project/AiProjectSidebar.htm %}
+{%- include en-us/search/ai-project/AiProjectSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormAiProjectPage %}
           <form action="/en-us/api/ai-project" id="AiProjectForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">

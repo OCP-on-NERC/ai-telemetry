@@ -1,4 +1,17 @@
-        <div class="htmBodySidebarGpuSlicePage ">
+        <wa-details open>
+          <div slot="summary">Map of GPU slices</div>
+
+{%- block htmBodyGraphLocationGpuSlicePage %}
+{% if resultCount > 0 %}
+        <div id="htmBodyGraphLocationGpuSlicePage" class="htmBodyGraphLocation "></div>
+{% endif %}
+{%- endblock htmBodyGraphLocationGpuSlicePage %}
+
+{%- block htmBodyGraphGpuSlicePage %}
+        <div id="htmBodyGraphGpuSlicePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphGpuSlicePage %}
+        </wa-details>
+          <div class="htmBodySidebarGpuSlicePage ">
 {%- block htmBodySidebarGpuSlicePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -281,13 +294,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarGpuSlicePage %}
         </div>
-
-{%- block htmBodyGraphLocationGpuSlicePage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationGpuSlicePage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationGpuSlicePage %}
-
-{%- block htmBodyGraphGpuSlicePage %}
-        <div id="htmBodyGraphGpuSlicePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphGpuSlicePage %}

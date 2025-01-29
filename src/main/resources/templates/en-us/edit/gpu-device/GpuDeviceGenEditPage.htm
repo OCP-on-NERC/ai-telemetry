@@ -252,13 +252,25 @@
 {%- block htmBodyStartPageLayout %}
     {{ super() }}
 {%- block htmBodyStartGpuDevicePage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
+            <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all GPU devices
+            </wa-button>
+            <h1 class="Page_title"><i class="fa-regular fa-memory"></i> {{ result.title | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
+{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartGpuDevicePage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleGpuDevicePage %}
-{%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
-{%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
@@ -281,38 +293,8 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount >= 1 %}
-          <div class="margin-block">
-            <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
-            <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all GPU devices
-            </wa-button>
-          </div>
-{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
-{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
-          <h1 class="Page_title"><i class="fa-regular fa-memory"></i> {{ result.title | e }}</h1>
-  {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-GpuDevice">back to all GPU devices</wa-tooltip>
-          <wa-button id="return-to-GpuDevice" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all GPU devices
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-memory"></i> <span>GPU devices</span></h1>
-{% include en-us/search/gpu-device/GpuDeviceSearchButtons.htm %}
-{% include en-us/search/gpu-device/GpuDeviceSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no GPU device found</span>
-          </span>
-        </h2>
-  {% endif %}
+{%- include en-us/search/gpu-device/GpuDeviceSidebar.htm %}
+{%- include en-us/search/gpu-device/GpuDeviceSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormGpuDevicePage %}
           <form action="/en-us/api/gpu-device" id="GpuDeviceForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
