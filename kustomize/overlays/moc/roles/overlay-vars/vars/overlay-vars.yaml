@@ -9,8 +9,10 @@ OPENSHIFT_APPS_DOMAIN: apps.shift.nerc.mghpcc.org
 WORKBENCH_SIZE: 20Gi
 SITE_SHORT_NAME: aitelemetry
 SITE_NAME: ai-telemetry
+SITE_DISPLAY_NAME: AI Telemetry
+SITE_DESCRIPTION: "AI telemetry on OpenShift dashboards"
 SITE_PORT: 10210
 WORKBENCH_NAMES:
-  - computate
-  - dheeraj
-  - rh-csaggin
+#  - USER_NAME: computate
+#  - USER_NAME: dheeraj
+  - USER_NAME: rh-csaggin

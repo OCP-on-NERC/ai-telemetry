@@ -1,0 +1,14 @@
+---
+- name: "Deploy workbenches"
+  include_tasks: deploy-workbench.yaml
+  loop: "{{ WORKBENCH_NAMES }}"
+  vars:
+    WORKBENCH_NAMESPACE: "ai-telemetry-cbca60"
+    WORKBENCH_NAME: "vscode-{{ WORKBENCH_VARS.USER_NAME }}"
+    USER_NAME: "{{ WORKBENCH_VARS.USER_NAME }}"
+    WORKBENCH_ADMIN: "{{ WORKBENCH_VARS.WORKBENCH_ADMIN is defined and WORKBENCH_VARS.WORKBENCH_ADMIN }}"
+    DATABASE_USERNAME: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_VARS.USER_NAME | replace('-', '') }}"
+    DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}_{{ WORKBENCH_VARS.USER_NAME | replace('-', '') }}"
+  loop_control:
+    loop_var: WORKBENCH_VARS
+    index_var: WORKBENCH_INDEX

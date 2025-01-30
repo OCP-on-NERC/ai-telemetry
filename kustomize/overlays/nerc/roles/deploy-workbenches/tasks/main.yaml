@@ -1,9 +1,0 @@
----
-- name: "Deploy workbenches"
-  include_tasks: deploy-workbench.yaml
-  loop: "{{ WORKBENCH_NAMES }}"
-  vars:
-    WORKBENCH_NAMESPACE: "ai-telemetry-cbca60"
-  loop_control:
-    loop_var: WORKBENCH_NAME
-    index_var: WORKBENCH_INDEX
