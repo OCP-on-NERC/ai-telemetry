@@ -112,6 +112,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: UserPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
+ * <h2>ApiMethode: DELETEFilter</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
+ * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: GPU devices"</b>, which groups all of the OpenAPIs for GpuDevice objects under the tag "GPU devices". 
  * </p>
@@ -234,6 +237,9 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/gpu-device/{gpuDeviceId}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/gpu-device/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/gpu-device/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/gpu-device";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/gpu-device";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
 
 	public static final String Icon = "<i class=\"fa-regular fa-memory\"></i>";
 

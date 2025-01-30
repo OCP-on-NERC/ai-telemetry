@@ -406,6 +406,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -923,6 +943,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    delete:
+      operationId: deletefilterGpuDevice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU devices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterGpuDeviceResponse'
   /en-us/api/gpu-device-import:
     put:
       operationId: putimportGpuDevice
@@ -1064,6 +1154,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -1722,6 +1832,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -2380,6 +2510,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -3038,6 +3188,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -4460,6 +4630,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    DELETEFilterGpuDeviceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterGpuDeviceResponse'
     PUTImportGpuDeviceRequest:
       content:
         application/json:
@@ -5743,6 +5918,48 @@ components:
             ngsildData:
               type: object
     POSTGpuDeviceResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
+              type: string
+            gpuDeviceUtilization:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            id:
+              type: string
+            entityShortId:
+              type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
+    DELETEFilterGpuDeviceResponse:
       allOf:
         - type: object
           properties:

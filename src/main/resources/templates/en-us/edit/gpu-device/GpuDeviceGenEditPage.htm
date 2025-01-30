@@ -234,6 +234,16 @@
           searchpageGpuDevice();
           return false;
         });
+
+        var submitForm_deletefilterGpuDevice = document.querySelector('#htmForm_deletefilterGpuDevice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterGpuDevice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterGpuDevice(event.target);
+          return false;
+        });
       });
     </script>
 {%- endblock htmScriptGpuDevicePage %}
