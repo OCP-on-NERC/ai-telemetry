@@ -10,15 +10,15 @@
 The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_pk"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiProject inputAiProject{{entityId}}Pk "
+                      data-projectId={{ result.projectId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiProject inputAiProject{{projectId}}Pk "
                       name="setPk"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiProject inputAiProject{{entityId}}Pk "
+                      class="label-on-left {{classApiMethodMethod}}_pk setPk classAiProject inputAiProject{{projectId}}Pk "
                       name="setPk"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiProject inputAiProject{{entityId}}Pk "
+                      class="label-on-left {{classApiMethodMethod}}_pk valuePk classAiProject inputAiProject{{projectId}}Pk "
                       name="pk"
     {%- endif %}
   {%- endif %}
@@ -44,14 +44,14 @@ The primary key of this object in the database"
                       readonly
                       help-text="A created timestamp for this record in the database"
                       label="created"
-                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiProject inputAiProject{{entityId}}Created "
+                      class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classAiProject inputAiProject{{projectId}}Created "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_created"
                       value="{%- if result.created is defined %}{{ formatZonedDateTime(result.created, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-projectId={{ result.projectId | tojson }}
                       >
                   </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
@@ -71,14 +71,14 @@ The primary key of this object in the database"
                       readonly
                       help-text="A modified timestamp for this record in the database"
                       label="modified"
-                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiProject inputAiProject{{entityId}}Modified "
+                      class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classAiProject inputAiProject{{projectId}}Modified "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
                       data-timeformat="MM/dd/yyyy h:mm a '['VV']'"
                       id="{{classApiMethodMethod}}_modified"
                       value="{%- if result.modified is defined %}{{ formatZonedDateTime(result.modified, "MM/dd/yyyy h:mm a '['VV']'", defaultLocaleId, defaultZoneId) | e }}{%- endif %}"
   {%- if 'Page' == classApiMethodMethod %}
   {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-projectId={{ result.projectId | tojson }}
                       >
                   </wa-input>
   {%- if 'Page' == classApiMethodMethod %}
@@ -99,9 +99,9 @@ The primary key of this object in the database"
                       placeholder="archive"
                       label="archive"
                       help-text="For archiving this record"
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{projectId}}Archived "
                       name="setArchived"
-                      data-entityId={{ result.entityId | tojson }}
+                      data-projectId={{ result.projectId | tojson }}
                       data-val="{{ result.archived | e }}"
                       >archive</wa-button>
   {%- else %}
@@ -118,14 +118,14 @@ The primary key of this object in the database"
                       label="archive"
                       help-text="For archiving this record"
   {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{projectId}}Archived "
                       name="setArchived"
   {%- else %}
     {%- if 'Page' == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived classAiProject inputAiProject{{projectId}}Archived "
                       name="setArchived"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiProject inputAiProject{{entityId}}Archived "
+                      class="label-on-left {{classApiMethodMethod}}_archived setArchived valueArchived classAiProject inputAiProject{{projectId}}Archived "
                       name="setArchived"
     {%- endif %}
   {%- endif %}
@@ -133,7 +133,7 @@ The primary key of this object in the database"
     {%- if result.archived == true %}
                       checked
     {%- endif %}
-                      data-entityId={{ result.entityId | tojson }}
+                      data-projectId={{ result.projectId | tojson }}
                       >archive</wa-checkbox>
   {%- else %}
                       >
@@ -163,15 +163,15 @@ The primary key of this object in the database"
 The name of this AI project"
                       id="{{classApiMethodMethod}}_projectName"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_projectName setProjectName classAiProject inputAiProject{{entityId}}ProjectName "
+                      data-projectId={{ result.projectId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_projectName setProjectName classAiProject inputAiProject{{projectId}}ProjectName "
                       name="setProjectName"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_projectName setProjectName classAiProject inputAiProject{{entityId}}ProjectName "
+                      class="label-on-left {{classApiMethodMethod}}_projectName setProjectName classAiProject inputAiProject{{projectId}}ProjectName "
                       name="setProjectName"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_projectName valueProjectName classAiProject inputAiProject{{entityId}}ProjectName "
+                      class="label-on-left {{classApiMethodMethod}}_projectName valueProjectName classAiProject inputAiProject{{projectId}}ProjectName "
                       name="projectName"
     {%- endif %}
   {%- endif %}
@@ -188,6 +188,43 @@ The name of this AI project"
 {%- macro htmProjectNameAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputProjectNameAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
+{%- macro inputProjectIdAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_projectId">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] project Id"
+                      label="project Id"
+                      help-text="
+The unique ID of this AI project"
+                      id="{{classApiMethodMethod}}_projectId"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-projectId={{ result.projectId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_projectId setProjectId classAiProject inputAiProject{{projectId}}ProjectId "
+                      name="setProjectId"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_projectId setProjectId classAiProject inputAiProject{{projectId}}ProjectId "
+                      name="setProjectId"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_projectId valueProjectId classAiProject inputAiProject{{projectId}}ProjectId "
+                      name="projectId"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.projectId | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmProjectIdAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputProjectIdAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
 {%- macro inputDescriptionAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_description">
@@ -200,15 +237,15 @@ The name of this AI project"
 A description of this AI project"
                       id="{{classApiMethodMethod}}_description"
   {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiProject inputAiProject{{entityId}}Description "
+                      data-projectId={{ result.projectId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiProject inputAiProject{{projectId}}Description "
                       name="setDescription"
   {%- else %}
     {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiProject inputAiProject{{entityId}}Description "
+                      class="label-on-left {{classApiMethodMethod}}_description setDescription classAiProject inputAiProject{{projectId}}Description "
                       name="setDescription"
     {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiProject inputAiProject{{entityId}}Description "
+                      class="label-on-left {{classApiMethodMethod}}_description valueDescription classAiProject inputAiProject{{projectId}}Description "
                       name="description"
     {%- endif %}
   {%- endif %}
@@ -225,134 +262,8 @@ A description of this AI project"
 {%- macro htmDescriptionAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputDescriptionAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
-{%- macro inputEntityIdAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_entityId">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] entity ID"
-                      label="entity ID"
-                      help-text="
-A unique ID for this Smart Data Model"
-                      id="{{classApiMethodMethod}}_entityId"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiProject inputAiProject{{entityId}}EntityId "
-                      name="setEntityId"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId setEntityId classAiProject inputAiProject{{entityId}}EntityId "
-                      name="setEntityId"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_entityId valueEntityId classAiProject inputAiProject{{entityId}}EntityId "
-                      name="entityId"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.entityId | e }}"
-  {%- endif %}
-                      ></wa-input>
 
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmEntityIdAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputEntityIdAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputLocationAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_location">
-  {%- endif %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[Point] location"
-                      label="location"
-                      help-text="
-Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
-                      id="{{classApiMethodMethod}}_location"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiProject inputAiProject{{entityId}}Location "
-                      name="setLocation"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_location setLocation classAiProject inputAiProject{{entityId}}Location "
-                      name="setLocation"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_location valueLocation classAiProject inputAiProject{{entityId}}Location "
-                      name="location"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{ toJsonObjectString(result.location) | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmLocationAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputLocationAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-{%- macro inputDisplayPageAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
-  {%- if 'Page' == classApiMethodMethod %}
-                <form class="subgrid-2col " id="PageForm_displayPage">
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                  <wa-button variant="brand"
-                      id="{{classApiMethodMethod}}_displayPage"
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="Visit this product's landing page. "
-                      class="button-on-left {{classApiMethodMethod}}_displayPage classAiProject inputAiProject{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-                      href="{{ result.displayPage | e }}"
-                      >
-                    product page
-                  </wa-button>
-                  <div class="button-description-on-right ">Visit this product's landing page. </div>
-  {%- else %}
-                  <wa-input
-                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] product page"
-                      label="product page"
-                      help-text="
-Visit this product's landing page. "
-                      id="{{classApiMethodMethod}}_displayPage"
-  {%- if "Page" == classApiMethodMethod %}
-                      data-entityId={{ result.entityId | tojson }}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiProject inputAiProject{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-  {%- else %}
-    {%- if "PATCH" == classApiMethodMethod %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage setDisplayPage classAiProject inputAiProject{{entityId}}DisplayPage "
-                      name="setDisplayPage"
-    {%- else %}
-                      class="label-on-left {{classApiMethodMethod}}_displayPage valueDisplayPage classAiProject inputAiProject{{entityId}}DisplayPage "
-                      name="displayPage"
-    {%- endif %}
-  {%- endif %}
-  {%- if "Page" == classApiMethodMethod %}
-                      value="{{result.displayPage | e }}"
-  {%- endif %}
-                      ></wa-input>
-
-  {%- endif %}
-  {%- if 'Page' == classApiMethodMethod %}
-                </form>
-  {%- endif %}
-{%- endmacro %}
-
-{%- macro htmDisplayPageAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
-                            {{ inputDisplayPageAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
-{%- endmacro %}
-
-{%- macro htmButton_patchAiProject() %}<wa-button variant="brand" id="htmButton_patchAiProject" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
+{%- macro htmButton_patchAiProject() %}<wa-button variant="brand" id="htmButton_patchAiProject" data-projectId={{ result.projectId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-edit "></i>Modify</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_patchAiProject() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_patchAiProject">Modify AI project</wa-button>
@@ -427,46 +338,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmProjectIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmDescriptionAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-
-              {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmLocationAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -476,7 +363,7 @@ Visit this product's landing page. "
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_postAiProject() %}<wa-button variant="brand" id="htmButton_postAiProject" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
+{%- macro htmButton_postAiProject() %}<wa-button variant="brand" id="htmButton_postAiProject" data-projectId={{ result.projectId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-plus "></i>Create</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_postAiProject() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_postAiProject">Create an AI project</wa-button>
@@ -552,46 +439,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmProjectIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmDescriptionAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-
-              {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmLocationAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -601,7 +464,7 @@ Visit this product's landing page. "
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_deleteAiProject() %}<wa-button variant="brand" id="htmButton_deleteAiProject" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+{%- macro htmButton_deleteAiProject() %}<wa-button variant="brand" id="htmButton_deleteAiProject" data-projectId={{ result.projectId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_deleteAiProject() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deleteAiProject">Delete AI project</wa-button>
@@ -615,7 +478,7 @@ Visit this product's landing page. "
         </wa-dialog>
 {%- endmacro %}
 
-{%- macro htmButton_putimportAiProject() %}<wa-button variant="brand" id="htmButton_putimportAiProject" data-entityId={{ result.entityId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-import "></i>Import</wa-button>{%- endmacro %}
+{%- macro htmButton_putimportAiProject() %}<wa-button variant="brand" id="htmButton_putimportAiProject" data-projectId={{ result.projectId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-file-import "></i>Import</wa-button>{%- endmacro %}
 
 {%- macro htmFormButton_putimportAiProject() %}
           <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_putimportAiProject">Import AI projects</wa-button>
@@ -628,7 +491,7 @@ Visit this product's landing page. "
               <wa-textarea
                   class="PUTImport_searchList "
                   style="height: 300px; "
-                  placeholder="{ 'searchList': [ { 'entityId': ... , 'saves': [ ... ] }, ... ] }"
+                  placeholder="{ 'searchList': [ { 'projectId': ... , 'saves': [ ... ] }, ... ] }"
                   >
               </wa-textarea>
             </div>
@@ -712,46 +575,22 @@ Visit this product's landing page. "
               {%- endif %}
 
               {%- if "PATCH" in scopes %}
+                {{ htmProjectIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmProjectIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
+
+              {%- if "PATCH" in scopes %}
                 {{ htmDescriptionAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
               {%- else %}
                 {%- if "GET" in scopes %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
                 {%- else %}
                   {{ htmDescriptionAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-
-              {%- if "PATCH" in scopes %}
-                {{ htmEntityIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmEntityIdAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmLocationAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmLocationAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
-                {%- endif %}
-              {%- endif %}
-              </div>
-              <div class="grid-with-subgrid-2col ">
-
-              {%- if "PATCH" in scopes %}
-                {{ htmDisplayPageAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
-              {%- else %}
-                {%- if "GET" in scopes %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
-                {%- else %}
-                  {{ htmDisplayPageAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
                 {%- endif %}
               {%- endif %}
               </div>
@@ -764,16 +603,16 @@ Visit this product's landing page. "
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
 {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {% if "PATCH" in scopes %}
-    {% if resultCount == 1 %}
+    {% if resultCount >= 1 %}
               <wa-button variant="brand" id="refreshThisAiProjectGenPage"
-                   onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'entityId:{{entityId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiProjectGenPage')); }, function() { addError(document.querySelector('#refreshThisAiProjectGenPage')); }); return false; ">
+                   onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'projectId:{{projectId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisAiProjectGenPage')); }, function() { addError(document.querySelector('#refreshThisAiProjectGenPage')); }); return false; ">
                 <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-sync-alt "></i>
                 refresh
               </wa-button>
     {% endif %}
     {% if resultCount > 0 %}
-              <wa-button variant="brand" id="refreshAllAiProjectGenPage{{ result.entityId | e }}"
-                   onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiProjectGenPage{{ result.entityId | e }}')); }, function() { addError(document.querySelector('#refreshAllAiProjectGenPage{{ result.entityId | e }}')); }); "
+              <wa-button variant="brand" id="refreshAllAiProjectGenPage{{ result.projectId | e }}"
+                   onclick="patch{{classSimpleName}}Vals([], {}, this, function() { addGlow(document.querySelector('#refreshAllAiProjectGenPage{{ result.projectId | e }}')); }, function() { addError(document.querySelector('#refreshAllAiProjectGenPage{{ result.projectId | e }}')); }); "
                   >
                 <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-arrows-rotate"></i>
                 Refresh all 
@@ -787,22 +626,15 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmButton_postAiProject() }}
-    {%- else %}
-      {{ htmButton_postAiProject() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_postAiProject() }}
   {%- else %}
     {{ htmButton_postAiProject() }}
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmButton_deleteAiProject() }}
-    {%- else %}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_deleteAiProject() }}
   {%- else %}
   {%- endif %}
 {%- endif %}
@@ -818,25 +650,19 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmForm_postAiProject() }}
-    {%- else %}
-      {{ htmForm_postAiProject() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_postAiProject() }}
   {%- else %}
     {{ htmForm_postAiProject() }}
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if entityId is defined %}
-      {{ htmForm_deleteAiProject() }}
-    {%- else %}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deleteAiProject() }}
   {%- else %}
   {%- endif %}
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportAiProject() }}
 {%- endif %}
+          <wa-divider></wa-divider>

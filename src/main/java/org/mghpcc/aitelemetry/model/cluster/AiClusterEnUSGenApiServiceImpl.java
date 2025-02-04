@@ -136,6 +136,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -243,8 +244,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			json.put("list", l);
 			response200Search(listAiCluster.getRequest(), listAiCluster.getResponse(), json);
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -389,8 +390,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = listAiCluster.getSiteRequest_(SiteRequest.class);
 			JsonObject json = JsonObject.mapFrom(listAiCluster.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -462,7 +463,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiCluster.first());
-								apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getEntityId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketAiCluster", JsonObject.mapFrom(apiRequest).toString());
 
@@ -582,7 +583,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getEntityId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiCluster o2 = jsonObject.mapTo(AiCluster.class);
@@ -613,7 +614,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiCluster> patchAiClusterFuture(AiCluster o, Boolean entityId) {
+	public Future<AiCluster> patchAiClusterFuture(AiCluster o, Boolean clusterName) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<AiCluster> promise = Promise.promise();
 
@@ -623,7 +624,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiCluster(siteRequest).onSuccess(a -> {
-					sqlPATCHAiCluster(o, entityId).onSuccess(aiCluster -> {
+					sqlPATCHAiCluster(o, clusterName).onSuccess(aiCluster -> {
 						persistAiCluster(aiCluster, true).onSuccess(c -> {
 							relateAiCluster(aiCluster).onSuccess(d -> {
 								indexAiCluster(aiCluster).onSuccess(o2 -> {
@@ -677,7 +678,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiCluster> sqlPATCHAiCluster(AiCluster o, Boolean entityId) {
+	public Future<AiCluster> sqlPATCHAiCluster(AiCluster o, Boolean clusterName) {
 		Promise<AiCluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -738,13 +739,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlLocation());
 						break;
-					case "setEntityId":
-							o2.setEntityId(jsonObject.getString(entityVar));
+					case "setId":
+							o2.setId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_entityId + "=$" + num);
+							bSql.append(AiCluster.VAR_id + "=$" + num);
 							num++;
-							bParams.add(o2.sqlEntityId());
+							bParams.add(o2.sqlId());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -754,13 +755,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
-					case "setAiNodesTotal":
-							o2.setAiNodesTotal(jsonObject.getString(entityVar));
+					case "setNgsildTenant":
+							o2.setNgsildTenant(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
+							bSql.append(AiCluster.VAR_ngsildTenant + "=$" + num);
 							num++;
-							bParams.add(o2.sqlAiNodesTotal());
+							bParams.add(o2.sqlNgsildTenant());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
@@ -770,13 +771,29 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setGpuDevicesTotal":
-							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+					case "setNgsildPath":
+							o2.setNgsildPath(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+							bSql.append(AiCluster.VAR_ngsildPath + "=$" + num);
 							num++;
-							bParams.add(o2.sqlGpuDevicesTotal());
+							bParams.add(o2.sqlNgsildPath());
+						break;
+					case "setNgsildContext":
+							o2.setNgsildContext(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_ngsildContext + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildContext());
+						break;
+					case "setNgsildData":
+							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_ngsildData + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildData());
 						break;
 					case "setTitle":
 							o2.setTitle(jsonObject.getString(entityVar));
@@ -786,6 +803,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlTitle());
 						break;
+					case "setAiNodesTotal":
+							o2.setAiNodesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlAiNodesTotal());
+						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -793,6 +818,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(AiCluster.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
+						break;
+					case "setGpuDevicesTotal":
+							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 				}
 			}
@@ -838,8 +871,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1011,7 +1044,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiCluster> postAiClusterFuture(SiteRequest siteRequest, Boolean entityId) {
+	public Future<AiCluster> postAiClusterFuture(SiteRequest siteRequest, Boolean clusterName) {
 		Promise<AiCluster> promise = Promise.promise();
 
 		try {
@@ -1020,7 +1053,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiCluster(siteRequest).onSuccess(a -> {
 					createAiCluster(siteRequest).onSuccess(aiCluster -> {
-						sqlPOSTAiCluster(aiCluster, entityId).onSuccess(b -> {
+						sqlPOSTAiCluster(aiCluster, clusterName).onSuccess(b -> {
 							persistAiCluster(aiCluster, false).onSuccess(c -> {
 								relateAiCluster(aiCluster).onSuccess(d -> {
 									indexAiCluster(aiCluster).onSuccess(o2 -> {
@@ -1091,7 +1124,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiCluster> sqlPOSTAiCluster(AiCluster o, Boolean entityId) {
+	public Future<AiCluster> sqlPOSTAiCluster(AiCluster o, Boolean clusterName) {
 		Promise<AiCluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1175,14 +1208,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlLocation());
 						break;
-					case AiCluster.VAR_entityId:
-						o2.setEntityId(jsonObject.getString(entityVar));
+					case AiCluster.VAR_id:
+						o2.setId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_entityId + "=$" + num);
+						bSql.append(AiCluster.VAR_id + "=$" + num);
 						num++;
-						bParams.add(o2.sqlEntityId());
+						bParams.add(o2.sqlId());
 						break;
 					case AiCluster.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -1193,14 +1226,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case AiCluster.VAR_aiNodesTotal:
-						o2.setAiNodesTotal(jsonObject.getString(entityVar));
+					case AiCluster.VAR_ngsildTenant:
+						o2.setNgsildTenant(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
+						bSql.append(AiCluster.VAR_ngsildTenant + "=$" + num);
 						num++;
-						bParams.add(o2.sqlAiNodesTotal());
+						bParams.add(o2.sqlNgsildTenant());
 						break;
 					case AiCluster.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
@@ -1211,14 +1244,32 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiCluster.VAR_gpuDevicesTotal:
-						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+					case AiCluster.VAR_ngsildPath:
+						o2.setNgsildPath(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+						bSql.append(AiCluster.VAR_ngsildPath + "=$" + num);
 						num++;
-						bParams.add(o2.sqlGpuDevicesTotal());
+						bParams.add(o2.sqlNgsildPath());
+						break;
+					case AiCluster.VAR_ngsildContext:
+						o2.setNgsildContext(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_ngsildContext + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildContext());
+						break;
+					case AiCluster.VAR_ngsildData:
+						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_ngsildData + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildData());
 						break;
 					case AiCluster.VAR_title:
 						o2.setTitle(jsonObject.getString(entityVar));
@@ -1229,6 +1280,15 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlTitle());
 						break;
+					case AiCluster.VAR_aiNodesTotal:
+						o2.setAiNodesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_aiNodesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlAiNodesTotal());
+						break;
 					case AiCluster.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1237,6 +1297,15 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiCluster.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
+						break;
+					case AiCluster.VAR_gpuDevicesTotal:
+						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiCluster.VAR_gpuDevicesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 					}
 				}
@@ -1281,8 +1350,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1473,7 +1542,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getEntityId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteAiClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -1623,8 +1692,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1662,6 +1731,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -1805,7 +1875,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String entityId = Optional.ofNullable(body.getString(AiCluster.VAR_entityId)).orElse(body.getString(AiCluster.VAR_solrId));
+				String clusterName = Optional.ofNullable(body.getString(AiCluster.VAR_clusterName)).orElse(body.getString(AiCluster.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
@@ -1815,7 +1885,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				searchList.q("*:*");
 				searchList.setC(AiCluster.class);
 				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId));
+				searchList.fq("clusterName_docvalues_string:" + SearchTool.escapeQueryChars(clusterName));
 				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					try {
 						if(searchList.size() >= 1) {
@@ -1851,24 +1921,24 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								} else {
 									o2.persistForClass(f, bodyVal);
 									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "entityId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "clusterName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
 							}
 							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "entityId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "clusterName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.putNull("set" + StringUtils.capitalize(f));
 								}
 							}
 							if(searchList.size() == 1) {
 								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getEntityId());
+								apiRequest.setId(o.getClusterName());
 								apiRequest.setPk(o.getPk());
 							}
 							siteRequest.setJsonObject(body2);
 							patchAiClusterFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import AiCluster {} succeeded, modified AiCluster. ", body.getValue(AiCluster.VAR_entityId));
+								LOG.debug("Import AiCluster {} succeeded, modified AiCluster. ", body.getValue(AiCluster.VAR_clusterName));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportAiClusterFuture failed. "), ex);
@@ -1876,7 +1946,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							});
 						} else {
 							postAiClusterFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import AiCluster {} succeeded, created new AiCluster. ", body.getValue(AiCluster.VAR_entityId));
+								LOG.debug("Import AiCluster {} succeeded, created new AiCluster. ", body.getValue(AiCluster.VAR_clusterName));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
 								LOG.error(String.format("putimportAiClusterFuture failed. "), ex);
@@ -1926,8 +1996,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String entityId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityId");
-						String m = String.format("%s %s not found", "AI cluster", entityId);
+				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
+						String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1964,6 +2034,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2055,11 +2126,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiCluster.size() == 1)
+			if(listAiCluster.size() >= 1)
 				siteRequest.setRequestPk(listAiCluster.get(0).getPk());
 			page.setSearchListAiCluster_(listAiCluster);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
 			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
@@ -2138,6 +2211,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "POST"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2229,11 +2303,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiCluster.size() == 1)
+			if(listAiCluster.size() >= 1)
 				siteRequest.setRequestPk(listAiCluster.get(0).getPk());
 			page.setSearchListAiCluster_(listAiCluster);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
 			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
@@ -2284,6 +2360,183 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
 					responsePivotEditPageAiCluster(pivotFields2, pivotArray2);
+				}
+			}
+		}
+	}
+
+	// UserPage //
+
+	@Override
+	public void userpageAiCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.expect(ResponsePredicate.status(200))
+					.sendForm(MultiMap.caseInsensitiveMultiMap()
+							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
+							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
+							.add("response_mode", "permissions")
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "GET"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "POST"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "DELETE"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PATCH"))
+							.add("permission", String.format("%s#%s", AiCluster.CLASS_SIMPLE_NAME, "PUT"))
+			).onFailure(ex -> {
+				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(403, "FORBIDDEN",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "403")
+								.put("errorMessage", msg)
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+					)
+				));
+			}).onSuccess(authorizationDecision -> {
+				try {
+					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						searchAiClusterList(siteRequest, false, true, false).onSuccess(listAiCluster -> {
+							response200UserPageAiCluster(listAiCluster).onSuccess(response -> {
+								eventHandler.handle(Future.succeededFuture(response));
+								LOG.debug(String.format("userpageAiCluster succeeded. "));
+							}).onFailure(ex -> {
+								LOG.error(String.format("userpageAiCluster failed. "), ex);
+								error(siteRequest, eventHandler, ex);
+							});
+						}).onFailure(ex -> {
+							LOG.error(String.format("userpageAiCluster failed. "), ex);
+							error(siteRequest, eventHandler, ex);
+						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("userpageAiCluster failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("userpageAiCluster failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("userpageAiCluster failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
+	}
+
+	public void userpageAiClusterPageInit(AiClusterPage page, SearchList<AiCluster> listAiCluster) {
+	}
+
+	public String templateUserPageAiCluster(ServiceRequest serviceRequest) {
+		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
+	}
+	public Future<ServiceResponse> response200UserPageAiCluster(SearchList<AiCluster> listAiCluster) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = listAiCluster.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateUserPageAiCluster(siteRequest.getServiceRequest());
+			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
+			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
+			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
+			AiClusterPage page = new AiClusterPage();
+			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
+			siteRequest.setRequestHeaders(requestHeaders);
+
+			if(listAiCluster.size() >= 1)
+				siteRequest.setRequestPk(listAiCluster.get(0).getPk());
+			page.setSearchListAiCluster_(listAiCluster);
+			page.setSiteRequest_(siteRequest);
+			page.setServiceRequest(siteRequest.getServiceRequest());
+			page.setWebClient(webClient);
+			page.setVertx(vertx);
+			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
+				try {
+					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					ctx.mergeIn(JsonObject.mapFrom(page));
+					String renderedTemplate = jinjava.render(template, ctx.getMap());
+					Buffer buffer = Buffer.buffer(renderedTemplate);
+					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
+				} catch(Exception ex) {
+					LOG.error(String.format("response200UserPageAiCluster failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("response200UserPageAiCluster failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+	public void responsePivotUserPageAiCluster(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+		if(pivots != null) {
+			for(SolrResponse.Pivot pivotField : pivots) {
+				String entityIndexed = pivotField.getField();
+				String entityVar = StringUtils.substringBefore(entityIndexed, "_docvalues_");
+				JsonObject pivotJson = new JsonObject();
+				pivotArray.add(pivotJson);
+				pivotJson.put("field", entityVar);
+				pivotJson.put("value", pivotField.getValue());
+				pivotJson.put("count", pivotField.getCount());
+				Collection<SolrResponse.PivotRange> pivotRanges = pivotField.getRanges().values();
+				List<SolrResponse.Pivot> pivotFields2 = pivotField.getPivotList();
+				if(pivotRanges != null) {
+					JsonObject rangeJson = new JsonObject();
+					pivotJson.put("ranges", rangeJson);
+					for(SolrResponse.PivotRange rangeFacet : pivotRanges) {
+						JsonObject rangeFacetJson = new JsonObject();
+						String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
+						rangeJson.put(rangeFacetVar, rangeFacetJson);
+						JsonObject rangeFacetCountsObject = new JsonObject();
+						rangeFacetJson.put("counts", rangeFacetCountsObject);
+						rangeFacet.getCounts().forEach((value, count) -> {
+							rangeFacetCountsObject.put(value, count);
+						});
+					}
+				}
+				if(pivotFields2 != null) {
+					JsonArray pivotArray2 = new JsonArray();
+					pivotJson.put("pivot", pivotArray2);
+					responsePivotUserPageAiCluster(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2417,11 +2670,11 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 
-			String entityId = serviceRequest.getParams().getJsonObject("path").getString("entityId");
-			if(entityId != null && NumberUtils.isCreatable(entityId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(entityId) + " OR entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId) + ")");
-			} else if(entityId != null) {
-				searchList.fq("entityId_docvalues_string:" + SearchTool.escapeQueryChars(entityId));
+			String clusterName = serviceRequest.getParams().getJsonObject("path").getString("clusterName");
+			if(clusterName != null && NumberUtils.isCreatable(clusterName)) {
+				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(clusterName) + " OR clusterName_docvalues_string:" + SearchTool.escapeQueryChars(clusterName) + ")");
+			} else if(clusterName != null) {
+				searchList.fq("clusterName_docvalues_string:" + SearchTool.escapeQueryChars(clusterName));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -2692,9 +2945,9 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
-			Integer solrPort = siteRequest.getConfig().getInteger(ConfigKeys.SOLR_PORT);
+			Integer solrPort = Integer.parseInt(siteRequest.getConfig().getString(ConfigKeys.SOLR_PORT));
 			String solrCollection = siteRequest.getConfig().getString(ConfigKeys.SOLR_COLLECTION);
-			Boolean solrSsl = siteRequest.getConfig().getBoolean(ConfigKeys.SOLR_SSL);
+			Boolean solrSsl = Boolean.parseBoolean(siteRequest.getConfig().getString(ConfigKeys.SOLR_SSL));
 			Boolean softCommit = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getBoolean("softCommit")).orElse(null);
 			Integer commitWithin = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getInteger("commitWithin")).orElse(null);
 				if(softCommit == null && commitWithin == null)
@@ -2724,14 +2977,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(entityId_docvalues_string:%s)", o.obtainForClass("entityId"));
+				String query = String.format("filter(clusterName_docvalues_string:%s)", o.obtainForClass("clusterName"));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 				String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
-				Integer solrPort = siteRequest.getConfig().getInteger(ConfigKeys.SOLR_PORT);
+				Integer solrPort = Integer.parseInt(siteRequest.getConfig().getString(ConfigKeys.SOLR_PORT));
 				String solrCollection = siteRequest.getConfig().getString(ConfigKeys.SOLR_COLLECTION);
-				Boolean solrSsl = siteRequest.getConfig().getBoolean(ConfigKeys.SOLR_SSL);
+				Boolean solrSsl = Boolean.parseBoolean(siteRequest.getConfig().getString(ConfigKeys.SOLR_SSL));
 				Boolean softCommit = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getBoolean("softCommit")).orElse(null);
 				Integer commitWithin = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getInteger("commitWithin")).orElse(null);
 					if(softCommit == null && commitWithin == null)
@@ -2832,13 +3085,17 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(AiCluster.VAR_created, AiCluster.staticSetCreated(siteRequest2, (String)result.get(AiCluster.VAR_created)));
 			page.persistForClass(AiCluster.VAR_archived, AiCluster.staticSetArchived(siteRequest2, (String)result.get(AiCluster.VAR_archived)));
 			page.persistForClass(AiCluster.VAR_location, AiCluster.staticSetLocation(siteRequest2, (String)result.get(AiCluster.VAR_location)));
-			page.persistForClass(AiCluster.VAR_entityId, AiCluster.staticSetEntityId(siteRequest2, (String)result.get(AiCluster.VAR_entityId)));
+			page.persistForClass(AiCluster.VAR_id, AiCluster.staticSetId(siteRequest2, (String)result.get(AiCluster.VAR_id)));
 			page.persistForClass(AiCluster.VAR_sessionId, AiCluster.staticSetSessionId(siteRequest2, (String)result.get(AiCluster.VAR_sessionId)));
-			page.persistForClass(AiCluster.VAR_aiNodesTotal, AiCluster.staticSetAiNodesTotal(siteRequest2, (String)result.get(AiCluster.VAR_aiNodesTotal)));
+			page.persistForClass(AiCluster.VAR_ngsildTenant, AiCluster.staticSetNgsildTenant(siteRequest2, (String)result.get(AiCluster.VAR_ngsildTenant)));
 			page.persistForClass(AiCluster.VAR_userKey, AiCluster.staticSetUserKey(siteRequest2, (String)result.get(AiCluster.VAR_userKey)));
-			page.persistForClass(AiCluster.VAR_gpuDevicesTotal, AiCluster.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiCluster.VAR_gpuDevicesTotal)));
+			page.persistForClass(AiCluster.VAR_ngsildPath, AiCluster.staticSetNgsildPath(siteRequest2, (String)result.get(AiCluster.VAR_ngsildPath)));
+			page.persistForClass(AiCluster.VAR_ngsildContext, AiCluster.staticSetNgsildContext(siteRequest2, (String)result.get(AiCluster.VAR_ngsildContext)));
+			page.persistForClass(AiCluster.VAR_ngsildData, AiCluster.staticSetNgsildData(siteRequest2, (String)result.get(AiCluster.VAR_ngsildData)));
 			page.persistForClass(AiCluster.VAR_title, AiCluster.staticSetTitle(siteRequest2, (String)result.get(AiCluster.VAR_title)));
+			page.persistForClass(AiCluster.VAR_aiNodesTotal, AiCluster.staticSetAiNodesTotal(siteRequest2, (String)result.get(AiCluster.VAR_aiNodesTotal)));
 			page.persistForClass(AiCluster.VAR_displayPage, AiCluster.staticSetDisplayPage(siteRequest2, (String)result.get(AiCluster.VAR_displayPage)));
+			page.persistForClass(AiCluster.VAR_gpuDevicesTotal, AiCluster.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiCluster.VAR_gpuDevicesTotal)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

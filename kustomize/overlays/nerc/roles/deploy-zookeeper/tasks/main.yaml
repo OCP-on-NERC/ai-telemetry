@@ -1,9 +1,0 @@
----
-- name: "Deploy zookeeper cluster-scope bundle on OpenShift"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='../../bundles/zookeeper/') }}"
-- name: "Deploy zookeeper on OpenShift"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='feature/zookeeper/') }}"

@@ -1,4 +1,11 @@
-        <div class="htmBodySidebarSitePagePage ">
+        <wa-details open>
+          <div slot="summary">Map of articles</div>
+
+{%- block htmBodyGraphSitePagePage %}
+        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphSitePagePage %}
+        </wa-details>
+          <div class="htmBodySidebarSitePagePage ">
 {%- block htmBodySidebarSitePagePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -69,9 +76,10 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetSitePage_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldSitePage_{{ key }} " id="pageFacetFieldSitePage_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <wa-tooltip content="{{ facetFieldValue | e }} article total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <div>
+                        <wa-tooltip content="{{ facetFieldValue | e }} article total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;"></wa-tooltip>
                         <div class="cursor-pointer " data-class="SitePage" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('SitePage', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </wa-tooltip>
+                      </div>
                       {% endfor %}
                     </div>
                   </div>
@@ -280,7 +288,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarSitePagePage %}
         </div>
-
-{%- block htmBodyGraphSitePagePage %}
-        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphSitePagePage %}

@@ -323,7 +323,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiClusterResponse'
-  /en-us/api/ai-cluster/{entityId}:
+  /en-us/api/ai-cluster/{clusterName}:
     get:
       operationId: getAiCluster
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
@@ -344,7 +344,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: clusterName
           in: path
           description: >+
           required: true
@@ -377,7 +377,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: clusterName
           in: path
           description: >+
           required: true
@@ -406,6 +406,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -413,7 +433,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEAiClusterResponse'
-  /en-us/edit/ai-cluster/{pageId}:
+  /en-us/edit/ai-cluster/{clusterName}:
     get:
       operationId: editpageAiCluster
       x-vertx-event-bus: ai-telemetry-enUS-AiCluster
@@ -434,7 +454,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: clusterName
           in: path
           description: >+
           required: true
@@ -627,6 +647,40 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageAiClusterResponse'
+  /en-us/user/ai-cluster/{clusterName}:
+    get:
+      operationId: userpageAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: clusterName
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageAiClusterResponse'
   /en-us/api/gpu-device:
     get:
       operationId: searchGpuDevice
@@ -889,6 +943,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    delete:
+      operationId: deletefilterGpuDevice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU devices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterGpuDeviceResponse'
   /en-us/api/gpu-device-import:
     put:
       operationId: putimportGpuDevice
@@ -947,7 +1071,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportGpuDeviceResponse'
-  /en-us/api/gpu-device/{entityId}:
+  /en-us/api/gpu-device/{gpuDeviceId}:
     get:
       operationId: getGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -968,7 +1092,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: gpuDeviceId
           in: path
           description: >+
           required: true
@@ -1001,7 +1125,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: gpuDeviceId
           in: path
           description: >+
           required: true
@@ -1030,6 +1154,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -1037,7 +1181,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEGpuDeviceResponse'
-  /en-us/edit/gpu-device/{pageId}:
+  /en-us/edit/gpu-device/{gpuDeviceId}:
     get:
       operationId: editpageGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -1058,7 +1202,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: gpuDeviceId
           in: path
           description: >+
           required: true
@@ -1251,6 +1395,40 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageGpuDeviceResponse'
+  /en-us/user/gpu-device/{gpuDeviceId}:
+    get:
+      operationId: userpageGpuDevice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU devices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: gpuDeviceId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageGpuDeviceResponse'
   /en-us/api/gpu-slice:
     get:
       operationId: searchGpuSlice
@@ -1571,7 +1749,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportGpuSliceResponse'
-  /en-us/api/gpu-slice/{entityId}:
+  /en-us/api/gpu-slice/{sliceName}:
     get:
       operationId: getGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -1592,7 +1770,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: sliceName
           in: path
           description: >+
           required: true
@@ -1625,7 +1803,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: sliceName
           in: path
           description: >+
           required: true
@@ -1654,6 +1832,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -1661,7 +1859,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEGpuSliceResponse'
-  /en-us/edit/gpu-slice/{pageId}:
+  /en-us/edit/gpu-slice/{sliceName}:
     get:
       operationId: editpageGpuSlice
       x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
@@ -1682,7 +1880,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: sliceName
           in: path
           description: >+
           required: true
@@ -1875,6 +2073,40 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageGpuSliceResponse'
+  /en-us/user/gpu-slice/{sliceName}:
+    get:
+      operationId: userpageGpuSlice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU slices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: sliceName
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageGpuSliceResponse'
   /en-us/api/ai-node:
     get:
       operationId: searchAiNode
@@ -2195,7 +2427,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiNodeResponse'
-  /en-us/api/ai-node/{entityId}:
+  /en-us/api/ai-node/{nodeId}:
     get:
       operationId: getAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -2216,7 +2448,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: nodeId
           in: path
           description: >+
           required: true
@@ -2249,7 +2481,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: nodeId
           in: path
           description: >+
           required: true
@@ -2278,6 +2510,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -2285,7 +2537,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEAiNodeResponse'
-  /en-us/edit/ai-node/{pageId}:
+  /en-us/edit/ai-node/{nodeId}:
     get:
       operationId: editpageAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -2306,7 +2558,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: nodeId
           in: path
           description: >+
           required: true
@@ -2499,6 +2751,40 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageAiNodeResponse'
+  /en-us/user/ai-node/{nodeId}:
+    get:
+      operationId: userpageAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageAiNodeResponse'
   /en-us/api/ai-project:
     get:
       operationId: searchAiProject
@@ -2819,7 +3105,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiProjectResponse'
-  /en-us/api/ai-project/{entityId}:
+  /en-us/api/ai-project/{projectId}:
     get:
       operationId: getAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -2840,7 +3126,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: projectId
           in: path
           description: >+
           required: true
@@ -2873,7 +3159,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: entityId
+        - name: projectId
           in: path
           description: >+
           required: true
@@ -2902,6 +3188,26 @@ paths:
             type: array
             items:
                 type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
       responses:
         '200':
           description: >+
@@ -3123,6 +3429,40 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageAiProjectResponse'
+  /en-us/user/ai-project/{pageId}:
+    get:
+      operationId: userpageAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pageId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageAiProjectResponse'
   /en-us/api/article:
     get:
       operationId: searchSitePage
@@ -3473,10 +3813,6 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -3967,6 +4303,10 @@ paths:
     get:
       operationId: editpageSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -4203,7 +4543,7 @@ components:
   securitySchemes:
     openIdConnect:
       type: openIdConnect
-      openIdConnectUrl: https://keycloak.apps-crc.testing/realms/NERC/.well-known/openid-configuration
+      openIdConnectUrl: https://keycloak.apps.obs.nerc.mghpcc.org/realms/NERC/.well-known/openid-configuration
   requestBodies:
     SearchAiClusterResponse:
       content:
@@ -4260,6 +4600,11 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageAiClusterResponse'
+    UserPageAiClusterResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageAiClusterResponse'
     SearchGpuDeviceResponse:
       content:
         application/json; charset=utf-8:
@@ -4285,6 +4630,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuDeviceResponse'
+    DELETEFilterGpuDeviceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterGpuDeviceResponse'
     PUTImportGpuDeviceRequest:
       content:
         application/json:
@@ -4315,6 +4665,11 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageGpuDeviceResponse'
+    UserPageGpuDeviceResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageGpuDeviceResponse'
     SearchGpuSliceResponse:
       content:
         application/json; charset=utf-8:
@@ -4370,6 +4725,11 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageGpuSliceResponse'
+    UserPageGpuSliceResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageGpuSliceResponse'
     SearchAiNodeResponse:
       content:
         application/json; charset=utf-8:
@@ -4425,6 +4785,11 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageAiNodeResponse'
+    UserPageAiNodeResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageAiNodeResponse'
     SearchAiProjectResponse:
       content:
         application/json; charset=utf-8:
@@ -4480,6 +4845,11 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageAiProjectResponse'
+    UserPageAiProjectResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageAiProjectResponse'
     SearchSitePageResponse:
       content:
         application/json; charset=utf-8:
@@ -4607,10 +4977,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
                   aiNodesTotal:
                     type: string
                   gpuDevicesTotal:
@@ -4693,12 +5071,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -4707,6 +5085,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
             setAiNodesTotal:
               type: string
               nullable: true
@@ -4804,12 +5210,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -4818,6 +5224,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
             setAiNodesTotal:
               type: string
               nullable: true
@@ -4861,10 +5295,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
@@ -4893,10 +5335,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
@@ -4930,10 +5380,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
                   aiNodesTotal:
                     type: string
                   gpuDevicesTotal:
@@ -4962,10 +5420,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
                   aiNodesTotal:
                     type: string
                   gpuDevicesTotal:
@@ -4994,10 +5460,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
@@ -5026,10 +5500,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
@@ -5040,6 +5522,9 @@ components:
       allOf:
         - type: string
     SearchPageAiClusterResponse:
+      allOf:
+        - type: string
+    UserPageAiClusterResponse:
       allOf:
         - type: string
     SearchGpuDeviceResponse:
@@ -5060,13 +5545,13 @@ components:
               items:
                 type: object
                 properties:
-                  gpuDeviceId:
-                    type: string
                   clusterName:
                     type: string
                   nodeName:
                     type: string
                   gpuDeviceNumber:
+                    type: string
+                  gpuDeviceId:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -5086,21 +5571,22 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PATCHGpuDeviceRequest:
       allOf:
         - type: object
           properties:
-            setGpuDeviceId:
-              type: string
-              nullable: true
-            removeGpuDeviceId:
-              type: string
-            removeAllGpuDeviceId:
-              type: string
             setClusterName:
               type: string
               nullable: true
@@ -5121,6 +5607,13 @@ components:
             removeGpuDeviceNumber:
               type: string
             removeAllGpuDeviceNumber:
+              type: string
+            setGpuDeviceId:
+              type: string
+              nullable: true
+            removeGpuDeviceId:
+              type: string
+            removeAllGpuDeviceId:
               type: string
             setGpuDeviceUtilization:
               type: string
@@ -5194,12 +5687,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -5208,17 +5701,38 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     PATCHGpuDeviceResponse:
       allOf:
         - type: object
           properties:
-            setGpuDeviceId:
-              type: string
-              nullable: true
-            removeGpuDeviceId:
-              type: string
-            removeAllGpuDeviceId:
-              type: string
             setClusterName:
               type: string
               nullable: true
@@ -5239,6 +5753,13 @@ components:
             removeGpuDeviceNumber:
               type: string
             removeAllGpuDeviceNumber:
+              type: string
+            setGpuDeviceId:
+              type: string
+              nullable: true
+            removeGpuDeviceId:
+              type: string
+            removeAllGpuDeviceId:
               type: string
             setGpuDeviceUtilization:
               type: string
@@ -5312,12 +5833,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -5326,17 +5847,45 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     POSTGpuDeviceRequest:
       allOf:
         - type: object
           properties:
-            gpuDeviceId:
-              type: string
             clusterName:
               type: string
             nodeName:
               type: string
             gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -5356,21 +5905,29 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     POSTGpuDeviceResponse:
       allOf:
         - type: object
           properties:
-            gpuDeviceId:
-              type: string
             clusterName:
               type: string
             nodeName:
               type: string
             gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -5390,10 +5947,60 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
+    DELETEFilterGpuDeviceResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
+              type: string
+            gpuDeviceUtilization:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            id:
+              type: string
+            entityShortId:
+              type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     PUTImportGpuDeviceRequest:
       allOf:
         - type: object
@@ -5403,13 +6010,13 @@ components:
               items:
                 type: object
                 properties:
-                  gpuDeviceId:
-                    type: string
                   clusterName:
                     type: string
                   nodeName:
                     type: string
                   gpuDeviceNumber:
+                    type: string
+                  gpuDeviceId:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -5429,21 +6036,29 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PUTImportGpuDeviceResponse:
       allOf:
         - type: object
           properties:
-                  gpuDeviceId:
-                    type: string
                   clusterName:
                     type: string
                   nodeName:
                     type: string
                   gpuDeviceNumber:
+                    type: string
+                  gpuDeviceId:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -5463,21 +6078,29 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     GETGpuDeviceResponse:
       allOf:
         - type: object
           properties:
-            gpuDeviceId:
-              type: string
             clusterName:
               type: string
             nodeName:
               type: string
             gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -5497,21 +6120,29 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     DELETEGpuDeviceResponse:
       allOf:
         - type: object
           properties:
-            gpuDeviceId:
-              type: string
             clusterName:
               type: string
             nodeName:
               type: string
             gpuDeviceNumber:
+              type: string
+            gpuDeviceId:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -5531,14 +6162,25 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     EditPageGpuDeviceResponse:
       allOf:
         - type: string
     SearchPageGpuDeviceResponse:
+      allOf:
+        - type: string
+    UserPageGpuDeviceResponse:
       allOf:
         - type: string
     SearchGpuSliceResponse:
@@ -5577,10 +6219,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PATCHGpuSliceRequest:
       allOf:
         - type: object
@@ -5657,12 +6307,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -5671,6 +6321,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     PATCHGpuSliceResponse:
       allOf:
         - type: object
@@ -5747,12 +6425,12 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -5761,6 +6439,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     POSTGpuSliceRequest:
       allOf:
         - type: object
@@ -5783,10 +6489,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     POSTGpuSliceResponse:
       allOf:
         - type: object
@@ -5809,10 +6523,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     PUTImportGpuSliceRequest:
       allOf:
         - type: object
@@ -5840,10 +6562,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PUTImportGpuSliceResponse:
       allOf:
         - type: object
@@ -5866,10 +6596,18 @@ components:
                       type: string
                   location:
                     type: object
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     GETGpuSliceResponse:
       allOf:
         - type: object
@@ -5892,10 +6630,18 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     DELETEGpuSliceResponse:
       allOf:
         - type: object
@@ -5918,14 +6664,25 @@ components:
                 type: string
             location:
               type: object
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     EditPageGpuSliceResponse:
       allOf:
         - type: string
     SearchPageGpuSliceResponse:
+      allOf:
+        - type: string
+    UserPageGpuSliceResponse:
       allOf:
         - type: string
     SearchAiNodeResponse:
@@ -5950,6 +6707,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -5968,10 +6727,18 @@ components:
                     type: object
                   gpuDevicesTotal:
                     type: string
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PATCHAiNodeRequest:
       allOf:
         - type: object
@@ -5990,6 +6757,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -6062,12 +6836,12 @@ components:
               type: string
             removeAllGpuDevicesTotal:
               type: string
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -6076,6 +6850,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     PATCHAiNodeResponse:
       allOf:
         - type: object
@@ -6094,6 +6896,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -6166,12 +6975,12 @@ components:
               type: string
             removeAllGpuDevicesTotal:
               type: string
-            setEntityId:
+            setId:
               type: string
               nullable: true
-            removeEntityId:
+            removeId:
               type: string
-            removeAllEntityId:
+            removeAllId:
               type: string
             setEntityShortId:
               type: string
@@ -6180,6 +6989,34 @@ components:
               type: string
             removeAllEntityShortId:
               type: string
+            setNgsildTenant:
+              type: string
+              nullable: true
+            removeNgsildTenant:
+              type: string
+            removeAllNgsildTenant:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
+            setNgsildContext:
+              type: string
+              nullable: true
+            removeNgsildContext:
+              type: string
+            removeAllNgsildContext:
+              type: string
+            setNgsildData:
+              type: object
+              nullable: true
+            removeNgsildData:
+              type: object
+            removeAllNgsildData:
+              type: object
     POSTAiNodeRequest:
       allOf:
         - type: object
@@ -6188,6 +7025,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -6206,10 +7045,18 @@ components:
               type: object
             gpuDevicesTotal:
               type: string
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     POSTAiNodeResponse:
       allOf:
         - type: object
@@ -6218,6 +7065,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -6236,10 +7085,18 @@ components:
               type: object
             gpuDevicesTotal:
               type: string
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -6253,6 +7110,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -6271,10 +7130,18 @@ components:
                     type: object
                   gpuDevicesTotal:
                     type: string
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     PUTImportAiNodeResponse:
       allOf:
         - type: object
@@ -6283,6 +7150,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -6301,10 +7170,18 @@ components:
                     type: object
                   gpuDevicesTotal:
                     type: string
-                  entityId:
+                  id:
                     type: string
                   entityShortId:
                     type: string
+                  ngsildTenant:
+                    type: string
+                  ngsildPath:
+                    type: string
+                  ngsildContext:
+                    type: string
+                  ngsildData:
+                    type: object
     GETAiNodeResponse:
       allOf:
         - type: object
@@ -6313,6 +7190,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -6331,10 +7210,18 @@ components:
               type: object
             gpuDevicesTotal:
               type: string
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     DELETEAiNodeResponse:
       allOf:
         - type: object
@@ -6343,6 +7230,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -6361,14 +7250,25 @@ components:
               type: object
             gpuDevicesTotal:
               type: string
-            entityId:
+            id:
               type: string
             entityShortId:
               type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     EditPageAiNodeResponse:
       allOf:
         - type: string
     SearchPageAiNodeResponse:
+      allOf:
+        - type: string
+    UserPageAiNodeResponse:
       allOf:
         - type: string
     SearchAiProjectResponse:
@@ -6391,25 +7291,9 @@ components:
                 properties:
                   projectName:
                     type: string
+                  projectId:
+                    type: string
                   description:
-                    type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
-                  locationTitles:
-                    type: array
-                    items:
-                      type: string
-                  locationLinks:
-                    type: array
-                    items:
-                      type: string
-                  location:
-                    type: object
-                  entityId:
-                    type: string
-                  entityShortId:
                     type: string
     PATCHAiProjectRequest:
       allOf:
@@ -6422,84 +7306,19 @@ components:
               type: string
             removeAllProjectName:
               type: string
+            setProjectId:
+              type: string
+              nullable: true
+            removeProjectId:
+              type: string
+            removeAllProjectId:
+              type: string
             setDescription:
               type: string
               nullable: true
             removeDescription:
               type: string
             removeAllDescription:
-              type: string
-            setLocationColors:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationColors:
-              type: string
-            removeAllLocationColors:
-              type: array
-              items:
-                type: string
-            addLocationColors:
-              type: string
-            addAllLocationColors:
-              type: array
-              items:
-                type: string
-            setLocationTitles:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationTitles:
-              type: string
-            removeAllLocationTitles:
-              type: array
-              items:
-                type: string
-            addLocationTitles:
-              type: string
-            addAllLocationTitles:
-              type: array
-              items:
-                type: string
-            setLocationLinks:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationLinks:
-              type: string
-            removeAllLocationLinks:
-              type: array
-              items:
-                type: string
-            addLocationLinks:
-              type: string
-            addAllLocationLinks:
-              type: array
-              items:
-                type: string
-            setLocation:
-              type: object
-              nullable: true
-            removeLocation:
-              type: object
-            removeAllLocation:
-              type: object
-            setEntityId:
-              type: string
-              nullable: true
-            removeEntityId:
-              type: string
-            removeAllEntityId:
-              type: string
-            setEntityShortId:
-              type: string
-              nullable: true
-            removeEntityShortId:
-              type: string
-            removeAllEntityShortId:
               type: string
     PATCHAiProjectResponse:
       allOf:
@@ -6512,6 +7331,13 @@ components:
               type: string
             removeAllProjectName:
               type: string
+            setProjectId:
+              type: string
+              nullable: true
+            removeProjectId:
+              type: string
+            removeAllProjectId:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -6519,103 +7345,15 @@ components:
               type: string
             removeAllDescription:
               type: string
-            setLocationColors:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationColors:
-              type: string
-            removeAllLocationColors:
-              type: array
-              items:
-                type: string
-            addLocationColors:
-              type: string
-            addAllLocationColors:
-              type: array
-              items:
-                type: string
-            setLocationTitles:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationTitles:
-              type: string
-            removeAllLocationTitles:
-              type: array
-              items:
-                type: string
-            addLocationTitles:
-              type: string
-            addAllLocationTitles:
-              type: array
-              items:
-                type: string
-            setLocationLinks:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationLinks:
-              type: string
-            removeAllLocationLinks:
-              type: array
-              items:
-                type: string
-            addLocationLinks:
-              type: string
-            addAllLocationLinks:
-              type: array
-              items:
-                type: string
-            setLocation:
-              type: object
-              nullable: true
-            removeLocation:
-              type: object
-            removeAllLocation:
-              type: object
-            setEntityId:
-              type: string
-              nullable: true
-            removeEntityId:
-              type: string
-            removeAllEntityId:
-              type: string
-            setEntityShortId:
-              type: string
-              nullable: true
-            removeEntityShortId:
-              type: string
-            removeAllEntityShortId:
-              type: string
     POSTAiProjectRequest:
       allOf:
         - type: object
           properties:
             projectName:
               type: string
+            projectId:
+              type: string
             description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
               type: string
     POSTAiProjectResponse:
       allOf:
@@ -6623,25 +7361,9 @@ components:
           properties:
             projectName:
               type: string
+            projectId:
+              type: string
             description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
               type: string
     PUTImportAiProjectRequest:
       allOf:
@@ -6654,25 +7376,9 @@ components:
                 properties:
                   projectName:
                     type: string
+                  projectId:
+                    type: string
                   description:
-                    type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
-                  locationTitles:
-                    type: array
-                    items:
-                      type: string
-                  locationLinks:
-                    type: array
-                    items:
-                      type: string
-                  location:
-                    type: object
-                  entityId:
-                    type: string
-                  entityShortId:
                     type: string
     PUTImportAiProjectResponse:
       allOf:
@@ -6680,25 +7386,9 @@ components:
           properties:
                   projectName:
                     type: string
+                  projectId:
+                    type: string
                   description:
-                    type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
-                  locationTitles:
-                    type: array
-                    items:
-                      type: string
-                  locationLinks:
-                    type: array
-                    items:
-                      type: string
-                  location:
-                    type: object
-                  entityId:
-                    type: string
-                  entityShortId:
                     type: string
     GETAiProjectResponse:
       allOf:
@@ -6706,25 +7396,9 @@ components:
           properties:
             projectName:
               type: string
+            projectId:
+              type: string
             description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
               type: string
     DELETEAiProjectResponse:
       allOf:
@@ -6732,30 +7406,17 @@ components:
           properties:
             projectName:
               type: string
+            projectId:
+              type: string
             description:
-              type: string
-            locationColors:
-              type: array
-              items:
-                type: string
-            locationTitles:
-              type: array
-              items:
-                type: string
-            locationLinks:
-              type: array
-              items:
-                type: string
-            location:
-              type: object
-            entityId:
-              type: string
-            entityShortId:
               type: string
     EditPageAiProjectResponse:
       allOf:
         - type: string
     SearchPageAiProjectResponse:
+      allOf:
+        - type: string
+    UserPageAiProjectResponse:
       allOf:
         - type: string
     SearchSitePageResponse:

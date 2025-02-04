@@ -17,7 +17,7 @@ OPENSHIFT_AI_WORKBENCH: "\{\{ lookup('env', 'OPENSHIFT_AI_WORKBENCH') | default(
 #############
 
 # The name of this application. 
-SITE_NAME: smart-aquaculture
+SITE_NAME: {{ SITE_NAME }}
 # The source code directory for the project. 
 SITE_SRC: "\{\{ lookup('env', 'HOME') + ('/' if USING_OPENSHIFT_AI else '/.local/src/') + SITE_NAME \}\}"
 # The parent source directory. 
@@ -27,11 +27,11 @@ VARS_FILENAME: vars.yaml
 # The vars.yaml path to load when running in development. 
 VARS_PATH: "\{\{ SITE_SRC \}\}/\{\{ VARS_FILENAME \}\}"
 # A shorter name for the application used for database names, collections, and artifact IDs. 
-SITE_SHORT_NAME: "smartaquaculture"
+SITE_SHORT_NAME: "{{ SITE_SHORT_NAME }}"
 # A pretty version of the site name. 
-SITE_DISPLAY_NAME: Smart Aquaculture
+SITE_DISPLAY_NAME: "{{ SITE_DISPLAY_NAME }}"
 # A short description of the site. 
-SITE_DESCRIPTION: "Caring for fish populations, fisheries, and feeding of fish and people"
+SITE_DESCRIPTION: "{{ SITE_DESCRIPTION }}"
 # The namespace in OpenShift where the site will run. 
 SITE_NAMESPACE: "\{\{ lookup('env', 'SITE_NAMESPACE') | default(SITE_SHORT_NAME, true) \}\}"
 # The main locale of this application. 
@@ -74,7 +74,7 @@ USER_SEARCH_URI: "/en-us/user-search"
 # The URL to sign up for the mailing list. 
 MAILING_LIST_URL: https://computate.topicbox.com/groups/computate
 # The email address of the mailing list. 
-MAILING_LIST_EMAIL: smart-aquaculture@computate.topicbox.com
+MAILING_LIST_EMAIL: "{{ SITE_NAME }}@computate.topicbox.com"
 
 ################
 # API defaults #

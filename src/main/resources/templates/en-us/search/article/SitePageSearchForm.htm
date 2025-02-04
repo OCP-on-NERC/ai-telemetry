@@ -616,7 +616,7 @@ Visit this product's landing page. "
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
 {% if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {% if "PATCH" in scopes %}
-    {% if resultCount == 1 %}
+    {% if resultCount >= 1 %}
               <wa-button variant="brand" id="refreshThisSitePageGenPage"
                    onclick="patch{{classSimpleName}}Vals( [ {name: 'fq', value: 'pageId:{{pageId}}' } ], {}, this, function() { addGlow(document.querySelector('#refreshThisSitePageGenPage')); }, function() { addError(document.querySelector('#refreshThisSitePageGenPage')); }); return false; ">
                 <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-sync-alt "></i>
@@ -639,12 +639,8 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if pageId is defined %}
-      {{ htmButton_postSitePage() }}
-    {%- else %}
-      {{ htmButton_postSitePage() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmButton_postSitePage() }}
   {%- else %}
     {{ htmButton_postSitePage() }}
   {%- endif %}
@@ -661,12 +657,8 @@ Visit this product's landing page. "
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount == 1 %}
-    {%- if pageId is defined %}
-      {{ htmForm_postSitePage() }}
-    {%- else %}
-      {{ htmForm_postSitePage() }}
-    {%- endif %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_postSitePage() }}
   {%- else %}
     {{ htmForm_postSitePage() }}
   {%- endif %}
@@ -674,3 +666,4 @@ Visit this product's landing page. "
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportSitePage() }}
 {%- endif %}
+          <wa-divider></wa-divider>

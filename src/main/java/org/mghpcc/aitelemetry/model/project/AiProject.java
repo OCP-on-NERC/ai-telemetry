@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
+import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
@@ -25,6 +26,7 @@ import io.vertx.pgclient.data.Polygon;
  * 
  * SearchPageUri: /en-us/search/ai-project
  * EditPageUri: /en-us/edit/ai-project/{pageId}
+ * UserPageUri: /en-us/user/ai-project/{pageId}
  * ApiUri: /en-us/api/ai-project
  * ApiMethod:
  *   Search:
@@ -69,6 +71,21 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * {@inheritDoc}
    * DocValues: true
    * Persist: true
+   * DisplayName: project Id
+   * Description: The unique ID of this AI project
+   * HtmRow: 3
+   * HtmCell: 2
+   * Facet: true
+   * VarId: true
+   **/
+  protected void _projectId(Wrap<String> w) {
+    w.o(toId(projectName));
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
    * DisplayName: description
    * Description: A description of this AI project
    * HtmRow: 3
@@ -78,81 +95,4 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * VarDescription: true
    **/
   protected void _description(Wrap<String> w) {}
-
-  /**
-   * {@inheritDoc}
-  
-   * LocationColor: true
-   * Indexed: true
-   * Stored: true
-   * DisplayName: location colors
-   * Description: The colors of each location Paths. 
-   */
-  protected void _locationColors(List<String> l) {
-  }
-
-  /**
-   * {@inheritDoc}
-   * LocationTitle: true
-   * Indexed: true
-   * Stored: true
-   * DisplayName: location titles
-   * Description: The titles of each location Paths. 
-   */
-  protected void _locationTitles(List<String> l) {
-  }
-
-  /**
-   * {@inheritDoc}
-   * LocationUrl: true
-   * Indexed: true
-   * Stored: true
-   * DisplayName: location links
-   * Description: The links of each location Paths. 
-   */
-  protected void _locationLinks(List<String> l) {
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * FiwareType: geo:point
-   * Location: true
-   * DocValues: true
-   * Persist: true
-   * DisplayName: location
-   * Description: Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon
-   * HtmRow: 10
-   * HtmCell: 1
-   * Facet: true
-   **/
-  protected void _location(Wrap<Point> w) {}
-
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: entity ID
-   * Description: A unique ID for this Smart Data Model
-   * HtmRow: 3
-   * HtmCell: 4
-   * Facet: true
-   * VarId: true
-   */
-  protected void _entityId(Wrap<String> w) {
-    w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(projectName)));
-  }
-
-  /**
-   * {@inheritDoc}
-   * DisplayName: short entity ID
-   * Description: A short ID for this Smart Data Model
-   * Facet: true
-   */
-  protected void _entityShortId(Wrap<String> w) {
-    if(entityId != null) {
-      w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
-    }
-  }
 }

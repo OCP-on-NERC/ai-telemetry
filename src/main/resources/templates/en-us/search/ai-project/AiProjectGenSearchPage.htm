@@ -31,7 +31,7 @@
 {%- block htmScriptAiProjectPage %}
     <script>
 
-      function jsWebsocketAiProject(entityId, vars, $response) {
+      function jsWebsocketAiProject(projectId, vars, $response) {
 {%- block jsWebsocketAiProjectPage %}{%- endblock %}
       }
 
@@ -44,92 +44,10 @@
 <h3><i class="{{ classIconCssClasses }}  "></i><a href="${quoteattr(feature.properties.editPage)}">${feature.properties.title}</a></h3>
 {%- endblock htmTooltipAiProjectPage %}`;
       }
-
-      function jsLegendAiProject(map) {
-{%- block jsLegendAiProjectPage %}
-        var div = L.DomUtil.create('div', 'info legend');
-        var htm = '';
-        window.listAiProject.forEach((result, index) => {
-          if(result.location) {
-            var shapes = [];
-            if(Array.isArray(result.location))
-              shapes = shapes.concat(result.location);
-            else
-              shapes.push(result.location);
-            shapes.forEach(function(shape, index) {
-              htm += htmLegendAiProject(map, shape, result, index, shapes.length);
-            });
-          }
-        });
-        div.innerHTML = htm;
-        return div;
-{%- endblock jsLegendAiProjectPage %}
-      }
-
-      function htmLegendAiProject(map, shape, result, index, count) {
-        var color = result.locationColors[index];
-        var title = result.locationTitles[index];
-        var url = result.locationLinks[index];
-        var htm = '';
-        htm += `<div class="cursor-pointer " style="max-width: 400px; ">
-`;
-        htm += `{%- block htmLegendAiProjectPage %}
-    <div title="${quoteattr(title)}">
-    <div style="width: 20px; ">
-      <i class="{{ FONTAWESOME_STYLE }} fa-circle" style="color: ${color}; "></i>
-    </div>
-    <div class="text-overflow-ellipsis ">
-      <span class="" data-solrId="${result.solrId}" onclick="window.mapLayers[this.getAttribute('data-solrId')].openPopup(); return false;" href="">${title}</span>
-    </div>
-    </div>
-{%- endblock htmLegendAiProjectPage %}`;
-        htm += `
-</div>
-`;
-        return htm;
-      }
-
-      function jsStyleAiProject(feature) {
-{%- block jsStyleAiProjectPage %}
-        if(feature.geometry.type == 'Point') {
-          return {
-            radius: 8
-            , fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
-            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
-            , weight: 1
-            , opacity: 0.7
-            , fillOpacity: 0.7
-            , contextmenu: true
-            , contextmenuItems: [
-              {
-                text: 'Show coordinates'
-                , callback: function(event) {
-                  alert(event2.target.getLatLngs());
-                }
-              }
-            ]
-          };
-        } else if(feature.geometry.type == 'LineString') {
-          return {
-            color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
-            , weight: 5
-            , opacity: 0.7
-          };
-        } else {
-          return {
-             fillColor: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
-            , color: (feature.properties.areaServedColors && feature.properties.areaServedColors[feature.index] ? feature.properties.areaServedColors[feature.index] : (feature.properties.color ? feature.properties.color : '#000'))
-            , weight: 3
-            , opacity: 0.7
-            , fillOpacity: 0.7
-          };
-        }
-{%- endblock jsStyleAiProjectPage %}
-      }
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +58,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var projectId = {% if result.projectId is defined %}{{ result.projectId | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(projectId == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +77,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if projectId is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listAiProject')?.value;
@@ -191,7 +109,7 @@
         });
         document.querySelector('#htmFormButton_patchAiProject')?.addEventListener('click', event => {
           event.preventDefault();
-          patchAiProject(null, document.querySelector('#htmForm_patchAiProject'), document.querySelector('#htmFormButton_patchAiProject'), event.target.getAttribute('data-entityId'));
+          patchAiProject(null, document.querySelector('#htmForm_patchAiProject'), document.querySelector('#htmFormButton_patchAiProject'), event.target.getAttribute('data-projectId'));
           return false;
         });
 
@@ -211,7 +129,7 @@
         });
         document.querySelector('#htmFormButton_deleteAiProject')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteAiProject(event.target, event.target.getAttribute('data-entityId'));
+          deleteAiProject(event.target, event.target.getAttribute('data-projectId'));
           return false;
         });
 
@@ -252,13 +170,17 @@
 {%- block htmBodyStartPageLayout %}
 {{ super() }}
 {%- block htmBodyStartAiProjectPage %}
+{% if resultCount > 0 %}
+          <h1><a href="{{pageUri}}"><i class="fa-regular fa-school"></i> <span>AI projects</span></a></h1>
+{%- include en-us/search/ai-project/AiProjectSuggestedSearch.htm %}
+{% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
+{% include en-us/search/ai-project/AiProjectSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartAiProjectPage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleAiProjectPage %}
-{%- include en-us/search/ai-project/AiProjectSidebar.htm %}
-{%- include en-us/search/ai-project/AiProjectSuggestedSearch.htm %}
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
         <wa-tooltip for="return-to-AiProject">back to all AI projects</wa-tooltip>
@@ -280,6 +202,7 @@
           </span>
         </h2>
 {% else %}
+{%- include en-us/search/ai-project/AiProjectSidebar.htm %}
           <form action="/en-us/api/ai-project" id="AiProjectForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
             <input name="focusId" type="hidden"/>
             <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>
@@ -298,9 +221,6 @@
             </wa-button>
           </div>
           {% endif %}
-          <h1><a href="{{pageUri}}"><i class="fa-regular fa-school"></i> <span>AI projects</span></a></h1>
-{% include en-us/search/ai-project/AiProjectSearchButtons.htm %}
-{% include en-us/search/ai-project/AiProjectSearchForm.htm %}
 {% include en-us/search/ai-project/AiProjectPaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
@@ -346,11 +266,11 @@
                   placeholder="[String] edit"
                   label="edit"
                   title="Edit this"
-                  class="button-on-left {{classApiMethodMethod}}_editPage classAiProject inputAiProject{{entityId}}EditPage "
+                  class="button-on-left {{classApiMethodMethod}}_editPage classAiProject inputAiProject{{projectId}}EditPage "
                   name="setEditPage"
                   href="{{ item.editPage | e }}"
                   >
-                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-duotone fa-regular fa-pen-to-square"></i>
                 edit
               </wa-button>
             </div>

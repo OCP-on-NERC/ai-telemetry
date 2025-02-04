@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
 import org.computate.vertx.api.BaseApiServiceImpl;
+import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.model.BaseModel;
@@ -26,7 +27,8 @@ import io.vertx.pgclient.data.Polygon;
  * Icon: <i class="fa-regular fa-server"></i>
  *
  * SearchPageUri: /en-us/search/ai-cluster
- * EditPageUri: /en-us/edit/ai-cluster/{pageId}
+ * EditPageUri: /en-us/edit/ai-cluster/{clusterName}
+ * UserPageUri: /en-us/user/ai-cluster/{clusterName}
  * ApiUri: /en-us/api/ai-cluster
  * ApiMethod:
  *   Search:
@@ -64,6 +66,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
 	 * VarName: true
+	 * VarId: true
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 
@@ -131,7 +134,9 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmCell: 5
 	 * Facet: true
 	 **/
-	protected void _location(Wrap<Point> w) {}
+	protected void _location(Wrap<Point> w) {
+		w.o(staticSetLocation(siteRequest_, siteRequest_.getConfig().getString(ComputateConfigKeys.DEFAULT_MAP_LOCATION)));
+	}
 
 
 	/**
@@ -143,9 +148,8 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * Facet: true
-	 * VarId: true
 	 */
-	protected void _entityId(Wrap<String> w) {
+	protected void _id(Wrap<String> w) {
 		w.o(String.format("urn:ngsi-ld:%s:%s", CLASS_SIMPLE_NAME, toId(clusterName)));
 	}
 
@@ -153,12 +157,69 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DisplayName: short entity ID
 	 * Description: A short ID for this Smart Data Model
+	 * DocValues: true
 	 * Facet: true
 	 */
 	protected void _entityShortId(Wrap<String> w) {
-		if(entityId != null) {
-			w.o(StringUtils.substringAfter(entityId, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
+		if(id != null) {
+			w.o(StringUtils.substringAfter(id, String.format("urn:ngsi-ld:%s:", CLASS_SIMPLE_NAME)));
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD-Tenant
+	 * Description: The NGSILD-Tenant or Fiware-Service
+	 * HtmRow: 5
+	 * HtmCell: 1
+	 * Facet: true
+	 */
+	protected void _ngsildTenant(Wrap<String> w) {
+		w.o(System.getenv("NGSILD_TENANT"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD-Path
+	 * Description: The NGSILD-Path or Fiware-ServicePath
+	 * HtmRow: 5
+	 * HtmCell: 2
+	 * Facet: true
+	 */
+	protected void _ngsildPath(Wrap<String> w) {
+		w.o(System.getenv("NGSILD_PATH"));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD context
+	 * Description: The NGSILD context URL for @context data
+	 * HtmRow: 5
+	 * HtmCell: 3
+	 * Facet: true
+	 */
+	protected void _ngsildContext(Wrap<String> w) {
+		w.o(siteRequest_.getConfig().getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: NGSILD data
+	 * Description: The NGSILD data with @context from the context broker
+	 * HtmRow: 5
+	 * HtmCell: 4
+	 * Facet: true
+	 * Multiline: true
+	 */
+	protected void _ngsildData(Wrap<JsonObject> w) {
 	}
 
 	/**

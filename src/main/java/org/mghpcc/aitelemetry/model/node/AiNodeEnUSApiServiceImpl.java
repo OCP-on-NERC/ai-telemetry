@@ -42,11 +42,11 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
-				Integer authPort = config.getInteger(ConfigKeys.AUTH_PORT);
+				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
 				String authTokenUri = config.getString(ConfigKeys.AUTH_TOKEN_URI);
-				Boolean authSsl = config.getBoolean(ConfigKeys.AUTH_SSL);
-				String authClient = config.getString(ConfigKeys.AUTH_CLIENT);
-				String authSecret = config.getString(ConfigKeys.AUTH_SECRET);
+				Boolean authSsl = Boolean.parseBoolean(config.getString(ConfigKeys.AUTH_SSL));
+				String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
+				String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
 				MultiMap form = MultiMap.caseInsensitiveMultiMap();
 				form.add("grant_type", "client_credentials");
 				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);
@@ -69,6 +69,7 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 										body.put(AiNode.VAR_pk, nodeName);
 										body.put(AiNode.VAR_clusterName, clusterName);
 										body.put(AiNode.VAR_nodeName, nodeName);
+										body.put(AiNode.VAR_nodeId, AiNode.toId(String.format("%s-%s", clusterName, nodeName)));
 										body.put(AiNode.VAR_gpuDevicesTotal, gpuDeviceResult.getJsonArray("value").getString(1));
 
 										JsonObject pageParams = new JsonObject();
@@ -127,9 +128,9 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 	protected Future<JsonArray> queryGpuDevicesTotal(String classSimpleName, String accessToken) {
 		Promise<JsonArray> promise = Promise.promise();
 		try {
-			Integer promKeycloakProxyPort = config.getInteger(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT);
+			Integer promKeycloakProxyPort = Integer.parseInt(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT));
 			String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
-			Boolean promKeycloakProxySsl = config.getBoolean(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL);
+			Boolean promKeycloakProxySsl = Boolean.parseBoolean(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL));
 			String promKeycloakProxyUri = String.format("/api/v1/query?query=%s", urlEncode("sum by (cluster, node) (gpu_operator_nvidia_pci_devices_total)"));
 
 			webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)

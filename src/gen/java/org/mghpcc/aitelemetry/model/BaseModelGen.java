@@ -2128,7 +2128,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_userKey = "";
 	public static final String DISPLAY_NAME_saves = "";
 	public static final String DISPLAY_NAME_title = "title";
-	public static final String DISPLAY_NAME_displayPage = "product page";
+	public static final String DISPLAY_NAME_displayPage = "display page";
 	public static final String DISPLAY_NAME_editPage = "edit";
 	public static final String DISPLAY_NAME_userPage = "user";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
@@ -2240,7 +2240,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		case VAR_title:
 			return "The title of this page. ";
 		case VAR_displayPage:
-			return "Visit this product's landing page. ";
+			return "Visit this landing page. ";
 		case VAR_editPage:
 			return "Edit this";
 		case VAR_userPage:
@@ -2318,8 +2318,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return 1;
 		case VAR_archived:
 			return 2;
-		case VAR_displayPage:
-			return 99;
 			default:
 				return null;
 		}
@@ -2335,8 +2333,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return 4;
 		case VAR_archived:
 			return 1;
-		case VAR_displayPage:
-			return 2;
 			default:
 				return null;
 		}

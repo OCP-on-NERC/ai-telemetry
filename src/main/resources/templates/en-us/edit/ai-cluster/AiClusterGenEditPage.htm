@@ -31,7 +31,7 @@
 {%- block htmScriptAiClusterPage %}
     <script>
 
-      function jsWebsocketAiCluster(entityId, vars, $response) {
+      function jsWebsocketAiCluster(clusterName, vars, $response) {
 {%- block jsWebsocketAiClusterPage %}{%- endblock %}
       }
 
@@ -129,7 +129,7 @@
     </script>
     <script type="module">
 {% if DEFAULT_MAP_LOCATION is defined %}
-      window.DEFAULT_MAP_LOCATION = { lat: {{ DEFAULT_MAP_LOCATION.lat }}, lon: {{ DEFAULT_MAP_LOCATION.lon }} };
+      window.DEFAULT_MAP_LOCATION = { type: 'Point', coordinates: [ {{ DEFAULT_MAP_LOCATION.coordinates[0] }}, {{ DEFAULT_MAP_LOCATION.coordinates[1] }} ]};
 {% endif %}
 {% if DEFAULT_MAP_ZOOM is defined %}
       window.DEFAULT_MAP_ZOOM = {{ DEFAULT_MAP_ZOOM }};
@@ -140,9 +140,9 @@
         , customElements.whenDefined('wa-input')
       ]).then(() => {
 
-        var entityId = {% if result.entityId is defined %}{{ result.entityId | tojson }}{% else %}null{% endif %};
+        var clusterName = {% if result.clusterName is defined %}{{ result.clusterName | tojson }}{% else %}null{% endif %};
 
-        if(entityId == null) {
+        if(clusterName == null) {
           document.querySelector('#grid-toggle-details')?.addEventListener('click', () => {
             document.querySelector('#site-results-grid').classList.remove('grid-mode-list', 'grid-mode-card');
             document.querySelector('#site-results-grid').classList.add('grid-mode-details');
@@ -159,7 +159,7 @@
           var o = document.querySelector('.pageForm .result')?.value;
           if(o)
             window.result = JSON.parse(o);
-        {% if entityId is defined %}
+        {% if clusterName is defined %}
         {% endif %}
         }
         var l = document.querySelector('.pageForm .listAiCluster')?.value;
@@ -191,7 +191,7 @@
         });
         document.querySelector('#htmFormButton_patchAiCluster')?.addEventListener('click', event => {
           event.preventDefault();
-          patchAiCluster(null, document.querySelector('#htmForm_patchAiCluster'), document.querySelector('#htmFormButton_patchAiCluster'), event.target.getAttribute('data-entityId'));
+          patchAiCluster(null, document.querySelector('#htmForm_patchAiCluster'), document.querySelector('#htmFormButton_patchAiCluster'), event.target.getAttribute('data-clusterName'));
           return false;
         });
 
@@ -211,7 +211,7 @@
         });
         document.querySelector('#htmFormButton_deleteAiCluster')?.addEventListener('click', event => {
           event.preventDefault();
-          deleteAiCluster(event.target, event.target.getAttribute('data-entityId'));
+          deleteAiCluster(event.target, event.target.getAttribute('data-clusterName'));
           return false;
         });
 
@@ -252,13 +252,25 @@
 {%- block htmBodyStartPageLayout %}
     {{ super() }}
 {%- block htmBodyStartAiClusterPage %}
+{% if resultCount > 0 %}
+          <div class="wa-flank ">
+            <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
+            <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
+              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
+              all AI clusters
+            </wa-button>
+            <h1 class="Page_title"><i class="fa-regular fa-server"></i> {{ result.title | e }}</h1>
+          </div>
+          <div class="margin-block">
+          </div>
+{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
+{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
+{% endif %}
 {%- endblock htmBodyStartAiClusterPage %}
 {%- endblock htmBodyStartPageLayout %}
 
 {%- block htmBodyMiddlePageLayout %}
 {%- block htmBodyMiddleAiClusterPage %}
-{%- include en-us/search/ai-cluster/AiClusterSidebar.htm %}
-{%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
         <div class="main-content">
 {% if resultCount == 0 %}
         {% if varsFqCount > 0 %}
@@ -281,65 +293,13 @@
           </span>
         </h2>
 {% else %}
-  {% if resultCount == 1 %}
-    {% if solrId is defined %}
-          <div class="margin-block">
-            <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
-            <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-              <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-              all AI clusters
-            </wa-button>
-          </div>
-{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
-{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
-          <h1 class="Page_title"><i class="fa-regular fa-server"></i> {{ result.title | e }}</h1>
-    {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
-          <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all AI clusters
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
-{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
-{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no AI cluster found</span>
-          </span>
-        </h2>
-    {% endif %}
-  {% else %}
-        {% if varsFqCount > 0 %}
-        <wa-tooltip for="return-to-AiCluster">back to all AI clusters</wa-tooltip>
-          <wa-button id="return-to-AiCluster" variant="brand" href="{{ SITE_BASE_URL }}{{ pageUri }}">
-            <i class="{{ FONTAWESOME_STYLE }} fa-angle-left"></i>
-            all AI clusters
-          </wa-button>
-        </wa-tooltip>
-        {% endif %}
-        <h1><i class="fa-regular fa-server"></i> <span>AI clusters</span></h1>
-{% include en-us/search/ai-cluster/AiClusterSearchButtons.htm %}
-{% include en-us/search/ai-cluster/AiClusterSearchForm.htm %}
-        <h2>
-          <span>
-  {% if classIconCssClasses is defined %}
-            <i class="{{ classIconCssClasses }}  site-menu-icon "></i>
-  {% endif %}
-            <span class="">no AI cluster found</span>
-          </span>
-        </h2>
-  {% endif %}
+{%- include en-us/search/ai-cluster/AiClusterSidebar.htm %}
+{%- include en-us/search/ai-cluster/AiClusterSuggestedSearch.htm %}
 {% endif %}
 {%- block htmFormAiClusterPage %}
           <form action="/en-us/api/ai-cluster" id="AiClusterForm" class="pageForm " onsubmit="event.preventDefault(); return false; ">
-{% if entityId is defined %}
-            <input name="entityId" class="valueEntityId" type="hidden" value="{{entityId}}"/>
+{% if clusterName is defined %}
+            <input name="clusterName" class="valueClusterName" type="hidden" value="{{clusterName}}"/>
             {% endif %}
             <input name="focusId" type="hidden"/>
             <input name="pageResponse" id="pageResponse" class="pageResponse"  value='{{ toJsonObjectStringInApostrophes(pageResponse) }}' type="hidden"/>

@@ -1,4 +1,17 @@
-        <div class="htmBodySidebarGpuDevicePage ">
+        <wa-details open>
+          <div slot="summary">Map of GPU devices</div>
+
+{%- block htmBodyGraphLocationGpuDevicePage %}
+{% if resultCount > 0 %}
+        <div id="htmBodyGraphLocationGpuDevicePage" class="htmBodyGraphLocation "></div>
+{% endif %}
+{%- endblock htmBodyGraphLocationGpuDevicePage %}
+
+{%- block htmBodyGraphGpuDevicePage %}
+        <div id="htmBodyGraphGpuDevicePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphGpuDevicePage %}
+        </wa-details>
+          <div class="htmBodySidebarGpuDevicePage ">
 {%- block htmBodySidebarGpuDevicePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -69,9 +82,10 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetGpuDevice_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldGpuDevice_{{ key }} " id="pageFacetFieldGpuDevice_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <wa-tooltip content="{{ facetFieldValue | e }} GPU device total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <div>
+                        <wa-tooltip content="{{ facetFieldValue | e }} GPU device total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;"></wa-tooltip>
                         <div class="cursor-pointer " data-class="GpuDevice" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('GpuDevice', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </wa-tooltip>
+                      </div>
                       {% endfor %}
                     </div>
                   </div>
@@ -280,13 +294,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarGpuDevicePage %}
         </div>
-
-{%- block htmBodyGraphLocationGpuDevicePage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationGpuDevicePage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationGpuDevicePage %}
-
-{%- block htmBodyGraphGpuDevicePage %}
-        <div id="htmBodyGraphGpuDevicePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphGpuDevicePage %}

@@ -27,7 +27,7 @@
               <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-chart-candlestick hover-box-shadow "></i> 
               Stats
             </wa-button>
-            <wa-button variant="brand" href="{{ apiUri }}{% if result.entityId is defined %}/{{ result.entityId }}{% else %}{{ queryStr }}{% endif %}">
+            <wa-button variant="brand" href="{{ apiUri }}{% if result.clusterName is defined %}/{{ result.clusterName }}{% else %}{{ queryStr }}{% endif %}">
               <i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-brackets-curly hover-box-shadow "></i> 
               Api
             </wa-button>

@@ -1,4 +1,17 @@
-        <div class="htmBodySidebarAiNodePage ">
+        <wa-details open>
+          <div slot="summary">Map of AI nodes</div>
+
+{%- block htmBodyGraphLocationAiNodePage %}
+{% if resultCount > 0 %}
+        <div id="htmBodyGraphLocationAiNodePage" class="htmBodyGraphLocation "></div>
+{% endif %}
+{%- endblock htmBodyGraphLocationAiNodePage %}
+
+{%- block htmBodyGraphAiNodePage %}
+        <div id="htmBodyGraphAiNodePage" class="htmBodyGraph "></div>
+{%- endblock htmBodyGraphAiNodePage %}
+        </wa-details>
+          <div class="htmBodySidebarAiNodePage ">
 {%- block htmBodySidebarAiNodePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
             <div slot="label">
@@ -69,9 +82,10 @@
                     <div class="pageSearchVal " id="pageSearchVal-buttonFacetAiNode_{{ key }}">{% if value.facetField.var is defined %}facet.field={{ value.facetField.var }}{% endif %}</div>
                     <div class="pageFacetField pageFacetFieldAiNode_{{ key }} " id="pageFacetFieldAiNode_{{ key }}">
                       {% for facetFieldKey, facetFieldValue in value.facetField.counts.items() %}
-                      <wa-tooltip content="{{ facetFieldValue | e }} AI node total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;">
+                      <div>
+                        <wa-tooltip content="{{ facetFieldValue | e }} AI node total with {{ value.facetField.var | e }} &quot;{{ facetFieldKey | e }}&quot;"></wa-tooltip>
                         <div class="cursor-pointer " data-class="AiNode" data-var="{{ value.facetField.var }}" data-val="{{ facetFieldKey }}" onclick="fqReplace('AiNode', this); ">{{ facetFieldValue }}: {{ facetFieldKey }}</div>
-                      </wa-tooltip>
+                      </div>
                       {% endfor %}
                     </div>
                   </div>
@@ -280,13 +294,3 @@
           </wa-drawer>
 {%- endblock htmBodySidebarAiNodePage %}
         </div>
-
-{%- block htmBodyGraphLocationAiNodePage %}
-{% if resultCount > 0 %}
-        <div id="htmBodyGraphLocationAiNodePage" class="htmBodyGraphLocation "></div>
-{% endif %}
-{%- endblock htmBodyGraphLocationAiNodePage %}
-
-{%- block htmBodyGraphAiNodePage %}
-        <div id="htmBodyGraphAiNodePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphAiNodePage %}
