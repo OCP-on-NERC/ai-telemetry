@@ -9,11 +9,11 @@
 #    state: present
 #    definition: "{{ lookup('template', 'persistentvolumeclaim.yaml') }}"
 #    validate_certs: false
-#- name: "Create a ConfigMap for Notebook for {{ WORKBENCH_NAME }}"
-#  kubernetes.core.k8s:
-#    state: present
-#    definition: "{{ lookup('template', 'configmap.yaml') }}"
-#    validate_certs: false
+- name: "Create a ConfigMap for Notebook for {{ WORKBENCH_NAME }}"
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('template', 'configmap.yaml') }}"
+    validate_certs: false
 #- name: "Create a Notebook for {{ WORKBENCH_NAME }}"
 #  kubernetes.core.k8s:
 #    state: present
@@ -208,42 +208,72 @@
 #          SITE_LANG=enUS \
 #          $COMPUTATE_SRC/bin/enUS/index.sh
 #        '
-- name: "Create a postgres secret in namespace {{ WORKBENCH_NAMESPACE }}"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'postgres-secret.yaml') }}"
-    validate_certs: false
-  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + SITE_SHORT_NAME), namespace=WORKBENCH_NAMESPACE)[0].data['password'] | default('')) == ''
-- name: "Create database user and password"
-  kubernetes.core.k8s_exec:
+#- name: "Create a postgres secret in namespace {{ WORKBENCH_NAMESPACE }}"
+#  kubernetes.core.k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'postgres-secret.yaml') }}"
+#    validate_certs: false
+#  when: (query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + SITE_SHORT_NAME), namespace=WORKBENCH_NAMESPACE)[0].data['password'] | default('')) == ''
+#- name: "Create database user and password"
+#  kubernetes.core.k8s_exec:
+#    namespace: "{{ WORKBENCH_NAMESPACE }}"
+#    pod: "postgresql-0"
+#    command: >-
+#      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace=WORKBENCH_NAMESPACE)[0].data['postgres-password'] | b64decode }}"
+#      psql -U postgres postgres -c
+#      "create user {{ DATABASE_USERNAME }} password '{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + SITE_SHORT_NAME), namespace=WORKBENCH_NAMESPACE)[0].data['password'] | b64decode }}'"
+#  ignore_errors: true
+#- name: "Create database"
+#  kubernetes.core.k8s_exec:
+#    namespace: "{{ WORKBENCH_NAMESPACE }}"
+#    pod: "postgresql-0"
+#    command: >-
+#      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace=WORKBENCH_NAMESPACE)[0].data['postgres-password'] | b64decode }}"
+#      psql -U postgres postgres -c
+#      "create database {{ DATABASE_DATABASE }} owner {{ DATABASE_USERNAME }}"
+#  ignore_errors: true
+#- name: "Create service in namespace {{ WORKBENCH_NAMESPACE }}"
+#  kubernetes.core.k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'service.yaml') }}"
+#    validate_certs: false
+#- name: "Create network policy in namespace {{ WORKBENCH_NAMESPACE }}"
+#  kubernetes.core.k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'networkpolicy.yaml') }}"
+#    validate_certs: false
+#- name: "Create route in namespace {{ WORKBENCH_NAMESPACE }}"
+#  kubernetes.core.k8s:
+#    state: present
+#    definition: "{{ lookup('template', 'route.yaml') }}"
+#    validate_certs: false
+- name: "Configure vscode settings.json for workbench {{ WORKBENCH_NAME }}"
+  kubernetes.core.k8s_cp:
+    state: to_pod
     namespace: "{{ WORKBENCH_NAMESPACE }}"
-    pod: "postgresql-0"
-    command: >-
-      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace=WORKBENCH_NAMESPACE)[0].data['postgres-password'] | b64decode }}"
-      psql -U postgres postgres -c
-      "create user {{ DATABASE_USERNAME }} password '{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgres-pguser-' + SITE_SHORT_NAME), namespace=WORKBENCH_NAMESPACE)[0].data['password'] | b64decode }}'"
-  ignore_errors: true
-- name: "Create database"
-  kubernetes.core.k8s_exec:
+    pod: "{{ WORKBENCH_NAME }}-0"
+    container: "{{ WORKBENCH_NAME }}"
+    remote_path: /opt/app-root/src/.vscode/settings.json
+    content: |
+      {{ lookup('template', 'vscodeSettings.json', convert_data=false) | from_json | to_nice_json }}
+    validate_certs: false
+- name: "Configure user settings.json for workbench {{ WORKBENCH_NAME }}"
+  kubernetes.core.k8s_cp:
+    state: to_pod
     namespace: "{{ WORKBENCH_NAMESPACE }}"
-    pod: "postgresql-0"
-    command: >-
-      env PGPASSWORD="{{ query('kubernetes.core.k8s', kind='Secret', resource_name=('postgresql'), namespace=WORKBENCH_NAMESPACE)[0].data['postgres-password'] | b64decode }}"
-      psql -U postgres postgres -c
-      "create database {{ DATABASE_DATABASE }} owner {{ DATABASE_USERNAME }}"
-  ignore_errors: true
-- name: "Create service in namespace {{ WORKBENCH_NAMESPACE }}"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'service.yaml') }}"
+    pod: "{{ WORKBENCH_NAME }}-0"
+    container: "{{ WORKBENCH_NAME }}"
+    remote_path: /opt/app-root/src/.local/share/code-server/User/settings.json
+    content: |
+      {{ lookup('template', 'userSettings.json', convert_data=false) | from_json | to_nice_json }}
     validate_certs: false
-- name: "Create network policy in namespace {{ WORKBENCH_NAMESPACE }}"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'networkpolicy.yaml') }}"
-    validate_certs: false
-- name: "Create route in namespace {{ WORKBENCH_NAMESPACE }}"
-  kubernetes.core.k8s:
-    state: present
-    definition: "{{ lookup('template', 'route.yaml') }}"
+- name: "Configure launch.json for workbench {{ WORKBENCH_NAME }}"
+  kubernetes.core.k8s_cp:
+    state: to_pod
+    namespace: "{{ WORKBENCH_NAMESPACE }}"
+    pod: "{{ WORKBENCH_NAME }}-0"
+    container: "{{ WORKBENCH_NAME }}"
+    remote_path: /opt/app-root/src/.vscode/launch.json
+    content: |
+      {{ lookup('template', 'launch.json', convert_data=false) | from_json | to_nice_json }}
     validate_certs: false

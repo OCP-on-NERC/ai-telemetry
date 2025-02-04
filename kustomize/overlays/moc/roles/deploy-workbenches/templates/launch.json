@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java"
+      , "name": "{{ SITE_NAME }}"
+      , "request": "launch"
+      , "mainClass": "{{ SITE_MAIN_VERTICLE_PACKAGE }}.MainVerticle"
+      , "projectName": "{{ SITE_POM_ARTIFACT_ID }}"
+      , "vmArgs": "-Dorg.slf4j.simpleLogger.defaultLogLevel=info"
+      , "env": {
+        "VARS_PATH": "{{ SITE_SRC }}/vars.yaml"
+      }
+    }
+    , {
+      "type": "java"
+      , "name": "rebuild API"
+      , "request": "launch"
+      , "mainClass": "{{ SITE_MAIN_VERTICLE_PACKAGE }}.MainVerticle"
+      , "projectName": "{{ SITE_POM_ARTIFACT_ID }}"
+      , "env": {
+        "VARS_PATH": "{{ SITE_SRC }}/vars.yaml"
+        , "RUN_OPENAPI3_GENERATOR": "true"
+        , "RUN_PROJECT_GENERATOR": "true"
+        , "RUN_SQL_GENERATOR": "true"
+        , "RUN_AUTHORIZATION_GENERATOR": "true"
+      }
+    }
+  ]
+}
