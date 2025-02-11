@@ -352,11 +352,11 @@ AUTH_REALM: "{{ lookup('env', 'AUTH_REALM_' + SITE_SHORT_NAME) | default(SITE_NA
 # The Auth client. 
 AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT_' + SITE_SHORT_NAME) | default(SITE_NAME, true) }}"
 # The Auth openshift secret with the client secret credentials. 
-AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET') | default('keycloak-client-' + AUTH_CLIENT, true) }}"
+AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET_' + SITE_SHORT_NAME) | default('keycloak-client-' + AUTH_CLIENT, true) }}"
 # The Auth secret. 
 AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_OPENSHIFT_SECRET, namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
 # The Auth openshift secret with the admin credentials. 
-AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET') | default('keycloak-initial-admin-' + SITE_NAME, true) }}"
+AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET_' + SITE_SHORT_NAME) | default('keycloak-initial-admin', true) }}"
 # The Auth admin username. 
 AUTH_ADMIN_USERNAME: admin
 # The Auth admin password. 

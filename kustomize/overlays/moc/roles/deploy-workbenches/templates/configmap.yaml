@@ -7,24 +7,32 @@ data:
   USING_OPENSHIFT_AI: 'true'
   OPENSHIFT_APPS_DOMAIN: '{{ OPENSHIFT_APPS_DOMAIN }}'
   OPENSHIFT_AI_WORKBENCH: {{ WORKBENCH_NAME }}
-  SITE_SRC: /opt/app-root/src/smart-aquaculture
+  SITE_SRC: /opt/app-root/src/ai-telemetry
   SITE_NAMESPACE: {{ WORKBENCH_NAMESPACE }}
   SITE_HOST_NAME: '{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}'
   SITE_BASE_URL: 'https://{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}.{{ OPENSHIFT_APPS_DOMAIN }}'
-  AUTH_NAMESPACE: {{ WORKBENCH_NAME }}
-  AUTH_HOST_NAME: "keycloak.apps.obs.nerc.mghpcc.org"
   ZOOKEEPER_ROOT_PATH: '{{ WORKBENCH_NAMESPACE }}'
   SSL_VERIFY: 'true'
-  ZOOKEEPER_NAMESPACE: {{ WORKBENCH_NAME }}
+  ZOOKEEPER_NAMESPACE: {{ WORKBENCH_NAMESPACE }}
   ZOOKEEPER_HOST_NAME: zookeeper
   ZOOKEEPER_PORT: '2181'
-  SOLR_NAMESPACE: {{ WORKBENCH_NAME }}
+  SOLR_NAMESPACE: {{ WORKBENCH_NAMESPACE }}
   SOLR_HOST_NAME: solr
   SOLR_PORT: '8983'
   SOLR_SSL: 'false'
-  SOLR_COLLECTION: '{{ SITE_SHORT_NAME }}-{{ WORKBENCH_NAME }}'
-  SOLR_COLLECTION_COMPUTATE: 'computate-{{ WORKBENCH_NAME }}'
+  SOLR_COLLECTION_{{ SITE_SHORT_NAME }}: '{{ SITE_SHORT_NAME }}-{{ USER_NAME }}'
+  SOLR_COLLECTION_COMPUTATE: 'computate-{{ USER_NAME }}'
   SOLR_COLLECTION_FIWARE: 'fiware'
   COMPUTATE_SEARCH_SRC: '/opt/app-root/src/computate-search'
   COMPUTATE_VERTX_SRC: '/opt/app-root/src/computate-vertx'
   COMPUTATE_SRC: '/opt/app-root/src/computate'
+
+  DATABASE_USERNAME_{{ SITE_SHORT_NAME }}: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
+  DATABASE_DATABASE_{{ SITE_SHORT_NAME }}: "{{ SITE_SHORT_NAME }}{{ USER_NAME | replace('-', '') | replace('_', '') }}"
+  AUTH_NAMESPACE_{{ SITE_SHORT_NAME }}: {{ WORKBENCH_NAMESPACE }}
+  AUTH_HOST_NAME_{{ SITE_SHORT_NAME }}: "keycloak.apps.obs.nerc.mghpcc.org"
+  AUTH_REALM_{{ SITE_SHORT_NAME }}: "NERC"
+  AUTH_CLIENT_{{ SITE_SHORT_NAME }}: "ai-telemetry"
+  AUTH_OPENSHIFT_SECRET_{{ SITE_SHORT_NAME }}: "{{ 'keycloak-client-' + AUTH_CLIENT }}"
+  AUTH_ADMIN_OPENSHIFT_SECRET_{{ SITE_SHORT_NAME }}: "{{ 'keycloak-initial-admin' }}"
+  AUTH_ADMIN_USERNAME_{{ SITE_SHORT_NAME }}: "{{ 'admin' }}"
