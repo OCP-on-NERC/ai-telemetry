@@ -176,11 +176,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qAiNode_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiNode_rows')?.addEventListener('change', event => {
           paramChange('AiNode', event.target, document.querySelector('#qAiNodeDiv_rows'));
         });
 
-        document.querySelector('#qAiNode_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiNode_start')?.addEventListener('change', event => {
           paramChange('AiNode', event.target, document.querySelector('#qAiNodeDiv_start'));
         });
 
@@ -232,6 +232,16 @@
         document.querySelector('#htmFormButton_searchpageAiNode')?.addEventListener('click', event => {
           event.preventDefault();
           searchpageAiNode();
+          return false;
+        });
+
+        var submitForm_deletefilterAiNode = document.querySelector('#htmForm_deletefilterAiNode')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterAiNode')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterAiNode(event.target);
           return false;
         });
       });

@@ -1176,6 +1176,20 @@ The NGSILD data with @context from the context broker"
           </div>
         </div>
 {%- endmacro %}
+
+{%- macro htmButton_deletefilterAiCluster() %}<wa-button variant="brand" id="htmButton_deletefilterAiCluster" data-clusterName={{ result.clusterName | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_deletefilterAiCluster() %}
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deletefilterAiCluster">Delete AI cluster</wa-button>
+{%- endmacro %}
+
+{%- macro htmForm_deletefilterAiCluster() %}
+        <wa-dialog with-footer id="deletefilterAiClusterDialog" label="Delete AI cluster">
+          <form id="htmForm_deletefilterAiCluster" class="round-row primary-smart-border-radius ">
+          </form>
+          {{ htmFormButton_deletefilterAiCluster() }}
+        </wa-dialog>
+{%- endmacro %}
           <wa-divider></wa-divider>
           <div id="htmButtonGroup">
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
@@ -1211,13 +1225,17 @@ The NGSILD data with @context from the context broker"
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount >= 1 %}
+  {%- if resultCount == 1 %}
     {{ htmButton_deleteAiCluster() }}
-  {%- else %}
   {%- endif %}
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmButton_putimportAiCluster() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount > 1 %}
+    {{ htmButton_deletefilterAiCluster() }}
+  {%- endif %}
 {%- endif %}
 
             </div>
@@ -1242,5 +1260,11 @@ The NGSILD data with @context from the context broker"
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportAiCluster() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deletefilterAiCluster() }}
+  {%- else %}
+  {%- endif %}
 {%- endif %}
           <wa-divider></wa-divider>

@@ -1146,6 +1146,20 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
           </div>
         </div>
 {%- endmacro %}
+
+{%- macro htmButton_deletefilterAiNode() %}<wa-button variant="brand" id="htmButton_deletefilterAiNode" data-nodeId={{ result.nodeId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_deletefilterAiNode() %}
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deletefilterAiNode">Delete AI node</wa-button>
+{%- endmacro %}
+
+{%- macro htmForm_deletefilterAiNode() %}
+        <wa-dialog with-footer id="deletefilterAiNodeDialog" label="Delete AI node">
+          <form id="htmForm_deletefilterAiNode" class="round-row primary-smart-border-radius ">
+          </form>
+          {{ htmFormButton_deletefilterAiNode() }}
+        </wa-dialog>
+{%- endmacro %}
           <wa-divider></wa-divider>
           <div id="htmButtonGroup">
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
@@ -1181,13 +1195,17 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount >= 1 %}
+  {%- if resultCount == 1 %}
     {{ htmButton_deleteAiNode() }}
-  {%- else %}
   {%- endif %}
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmButton_putimportAiNode() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount > 1 %}
+    {{ htmButton_deletefilterAiNode() }}
+  {%- endif %}
 {%- endif %}
 
             </div>
@@ -1212,5 +1230,11 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportAiNode() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deletefilterAiNode() }}
+  {%- else %}
+  {%- endif %}
 {%- endif %}
           <wa-divider></wa-divider>

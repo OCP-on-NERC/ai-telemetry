@@ -94,11 +94,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qAiProject_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiProject_rows')?.addEventListener('change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_rows'));
         });
 
-        document.querySelector('#qAiProject_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiProject_start')?.addEventListener('change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_start'));
         });
 
@@ -150,6 +150,16 @@
         document.querySelector('#htmFormButton_searchpageAiProject')?.addEventListener('click', event => {
           event.preventDefault();
           searchpageAiProject();
+          return false;
+        });
+
+        var submitForm_deletefilterAiProject = document.querySelector('#htmForm_deletefilterAiProject')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterAiProject')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterAiProject(event.target);
           return false;
         });
       });
@@ -224,16 +234,29 @@
 {% include en-us/search/ai-project/AiProjectPaginationButtons.htm %}
           <div class="card-like-thing background-color-surface-border" id="site-results-grid">
             <div>
+              <wa-dropdown id="htmDropdown-clusterName">
+                <wa-button variant="brand" slot="trigger" caret>cluster name</wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-clusterName-asc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by cluster name ascending
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-clusterName-desc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by cluster name descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
               <wa-dropdown id="htmDropdown-projectName">
-                <wa-button variant="brand" slot="trigger" caret>name</wa-button>
+                <wa-button variant="brand" slot="trigger" caret>project name</wa-button>
                 <wa-menu>
                   <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-projectName-asc">
                     <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
-                    sort by name ascending
+                    sort by project name ascending
                   </wa-menu-item>
                   <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-projectName-desc">
                     <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
-                    sort by name descending
+                    sort by project name descending
                   </wa-menu-item>
                 </wa-menu>
               </wa-dropdown>
@@ -256,6 +279,9 @@
             <div>
               <a href="{{ item.displayPage }}">
                 <i class="fa-regular fa-school"></i>
+              {{ item.clusterName }}
+              </a>
+              <a href="{{ item.displayPage }}">
               {{ item.projectName }}
               </a>
               <a href="{{ item.displayPage }}">
@@ -275,6 +301,10 @@
               </wa-button>
             </div>
             {% endfor %}
+              {% if getColumnClusterName is defined %}
+                <div>
+                </div>
+              {% endif %}
               {% if getColumnProjectName is defined %}
                 <div>
                 </div>

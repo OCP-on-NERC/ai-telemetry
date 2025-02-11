@@ -263,7 +263,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 				, siteRequest_.getConfig().getString(ConfigKeys.GRAFANA_BASE_URL, ConfigKeys.GRAFANA_BASE_URL)
 				, BaseApiServiceImpl.urlEncode(
 						String.format("[\"now-1h\",\"now\",\"observability-metrics\",{\"exemplar\":true,\"expr\":\"DCGM_FI_DEV_GPU_UTIL{cluster=\\\"%s\\\"}\"}]"
-								, BaseApiServiceImpl.urlEncode(clusterName)
+								, Optional.ofNullable(clusterName).map(n -> BaseApiServiceImpl.urlEncode(n)).orElse("-----")
 						)
 				)
 		));

@@ -265,6 +265,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiClusterResponse'
+    delete:
+      operationId: deletefilterAiCluster
+      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterAiClusterResponse'
   /en-us/api/ai-cluster-import:
     put:
       operationId: putimportAiCluster
@@ -1691,6 +1761,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTGpuSliceResponse'
+    delete:
+      operationId: deletefilterGpuSlice
+      x-vertx-event-bus: ai-telemetry-enUS-GpuSlice
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - GPU slices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterGpuSliceResponse'
   /en-us/api/gpu-slice-import:
     put:
       operationId: putimportGpuSlice
@@ -2369,6 +2509,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiNodeResponse'
+    delete:
+      operationId: deletefilterAiNode
+      x-vertx-event-bus: ai-telemetry-enUS-AiNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterAiNodeResponse'
   /en-us/api/ai-node-import:
     put:
       operationId: putimportAiNode
@@ -3047,6 +3257,76 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTAiProjectResponse'
+    delete:
+      operationId: deletefilterAiProject
+      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterAiProjectResponse'
   /en-us/api/ai-project-import:
     put:
       operationId: putimportAiProject
@@ -3215,7 +3495,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEAiProjectResponse'
-  /en-us/edit/ai-project/{pageId}:
+  /en-us/edit/ai-project/{projectId}:
     get:
       operationId: editpageAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -3236,7 +3516,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: projectId
           in: path
           description: >+
           required: true
@@ -3429,7 +3709,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageAiProjectResponse'
-  /en-us/user/ai-project/{pageId}:
+  /en-us/user/ai-project/{projectId}:
     get:
       operationId: userpageAiProject
       x-vertx-event-bus: ai-telemetry-enUS-AiProject
@@ -3450,7 +3730,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: projectId
           in: path
           description: >+
           required: true
@@ -4570,6 +4850,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiClusterResponse'
+    DELETEFilterAiClusterResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterAiClusterResponse'
     PUTImportAiClusterRequest:
       content:
         application/json:
@@ -4695,6 +4980,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTGpuSliceResponse'
+    DELETEFilterGpuSliceResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterGpuSliceResponse'
     PUTImportGpuSliceRequest:
       content:
         application/json:
@@ -4755,6 +5045,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiNodeResponse'
+    DELETEFilterAiNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterAiNodeResponse'
     PUTImportAiNodeRequest:
       content:
         application/json:
@@ -4815,6 +5110,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/POSTAiProjectResponse'
+    DELETEFilterAiProjectResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterAiProjectResponse'
     PUTImportAiProjectRequest:
       content:
         application/json:
@@ -5353,6 +5653,46 @@ components:
               type: string
             grafanaUrl:
               type: string
+    DELETEFilterAiClusterResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            id:
+              type: string
+            entityShortId:
+              type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
+            aiNodesTotal:
+              type: string
+            gpuDevicesTotal:
+              type: string
+            grafanaUrl:
+              type: string
     PUTImportAiClusterRequest:
       allOf:
         - type: object
@@ -6535,6 +6875,40 @@ components:
               type: string
             ngsildData:
               type: object
+    DELETEFilterGpuSliceResponse:
+      allOf:
+        - type: object
+          properties:
+            sliceName:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            id:
+              type: string
+            entityShortId:
+              type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     PUTImportGpuSliceRequest:
       allOf:
         - type: object
@@ -7097,6 +7471,46 @@ components:
               type: string
             ngsildData:
               type: object
+    DELETEFilterAiNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
+            nodeName:
+              type: string
+            nodeId:
+              type: string
+            description:
+              type: string
+            locationColors:
+              type: array
+              items:
+                type: string
+            locationTitles:
+              type: array
+              items:
+                type: string
+            locationLinks:
+              type: array
+              items:
+                type: string
+            location:
+              type: object
+            gpuDevicesTotal:
+              type: string
+            id:
+              type: string
+            entityShortId:
+              type: string
+            ngsildTenant:
+              type: string
+            ngsildPath:
+              type: string
+            ngsildContext:
+              type: string
+            ngsildData:
+              type: object
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -7289,6 +7703,8 @@ components:
               items:
                 type: object
                 properties:
+                  clusterName:
+                    type: string
                   projectName:
                     type: string
                   projectId:
@@ -7299,6 +7715,13 @@ components:
       allOf:
         - type: object
           properties:
+            setClusterName:
+              type: string
+              nullable: true
+            removeClusterName:
+              type: string
+            removeAllClusterName:
+              type: string
             setProjectName:
               type: string
               nullable: true
@@ -7324,6 +7747,13 @@ components:
       allOf:
         - type: object
           properties:
+            setClusterName:
+              type: string
+              nullable: true
+            removeClusterName:
+              type: string
+            removeAllClusterName:
+              type: string
             setProjectName:
               type: string
               nullable: true
@@ -7349,6 +7779,8 @@ components:
       allOf:
         - type: object
           properties:
+            clusterName:
+              type: string
             projectName:
               type: string
             projectId:
@@ -7359,6 +7791,20 @@ components:
       allOf:
         - type: object
           properties:
+            clusterName:
+              type: string
+            projectName:
+              type: string
+            projectId:
+              type: string
+            description:
+              type: string
+    DELETEFilterAiProjectResponse:
+      allOf:
+        - type: object
+          properties:
+            clusterName:
+              type: string
             projectName:
               type: string
             projectId:
@@ -7374,6 +7820,8 @@ components:
               items:
                 type: object
                 properties:
+                  clusterName:
+                    type: string
                   projectName:
                     type: string
                   projectId:
@@ -7384,6 +7832,8 @@ components:
       allOf:
         - type: object
           properties:
+                  clusterName:
+                    type: string
                   projectName:
                     type: string
                   projectId:
@@ -7394,6 +7844,8 @@ components:
       allOf:
         - type: object
           properties:
+            clusterName:
+              type: string
             projectName:
               type: string
             projectId:
@@ -7404,6 +7856,8 @@ components:
       allOf:
         - type: object
           properties:
+            clusterName:
+              type: string
             projectName:
               type: string
             projectId:

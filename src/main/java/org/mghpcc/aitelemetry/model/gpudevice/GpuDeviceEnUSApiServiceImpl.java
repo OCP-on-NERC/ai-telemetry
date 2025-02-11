@@ -44,6 +44,7 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 			String classSimpleName, String classApiAddress) {
 		Promise<Void> promise = Promise.promise();
 		// importDataRest(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onComplete(a -> promise.complete());
+		importDataVertx(pagePath, vertx, siteRequest, classSimpleName, classApiAddress);
 		promise.complete();
 		return promise.future();
 	}
@@ -291,18 +292,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 					.onSuccess(requestAuthResponse -> {
 				try {
 					String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-					JsonObject pageParams = new JsonObject();
-					pageParams.put("path", new JsonObject());
-					pageParams.put("cookie", new JsonObject());
-					pageParams.put("query", new JsonObject()
-							.put("softCommit", true)
-							.put("q", "*:*")
-							.put("rows", "1000")
-							.put("var", new JsonArray().add("refresh:false")));
-					JsonObject pageContext = new JsonObject().put("params", pageParams);
-					JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-					webClient.delete(443, siteHostName, "/en-us/api/gpu-device")
+					webClient.delete(443, siteHostName, "/en-us/api/gpu-device?rows=1000")
 							.ssl(true)
 							.putHeader("Content-Type", "application/json")
 							.putHeader("Authorization", String.format("Bearer %s", accessToken))

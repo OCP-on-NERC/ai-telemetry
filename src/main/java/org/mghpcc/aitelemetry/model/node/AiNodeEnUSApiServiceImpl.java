@@ -66,7 +66,7 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 										String clusterName = gpuDeviceResult.getJsonObject("metric").getString("cluster");
 										String nodeName = gpuDeviceResult.getJsonObject("metric").getString("node");
 										JsonObject body = new JsonObject();
-										body.put(AiNode.VAR_pk, nodeName);
+										body.put(AiNode.VAR_pk, String.format("%s-%s", clusterName, nodeName));
 										body.put(AiNode.VAR_clusterName, clusterName);
 										body.put(AiNode.VAR_nodeName, nodeName);
 										body.put(AiNode.VAR_nodeId, AiNode.toId(String.format("%s-%s", clusterName, nodeName)));
