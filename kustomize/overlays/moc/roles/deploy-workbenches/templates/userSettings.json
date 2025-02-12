@@ -1,0 +1,10 @@
+{
+  "window.autoDetectColorScheme": true
+  , "workbench.colorTheme": "Default Dark Modern"
+  , "redhat.telemetry.enabled": true
+  , "java.inlayHints.parameterNames.enabled": "none"
+  , "terminal.integrated.sendKeybindingsToShell": true
+  , "editor.inlayHints.enabled": "off"
+  , "editor.renderWhitespace": "all"
+  , "terminal.integrated.scrollback": 10000
+}

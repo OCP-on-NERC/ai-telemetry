@@ -137,6 +137,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "GET"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -1766,6 +1767,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "PUT"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2069,6 +2071,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "GET"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2246,6 +2249,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "GET"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2423,6 +2427,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "GET"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -2601,6 +2606,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"))
 							.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"))
+							.add("permission", String.format("%s#%s", serviceRequest.getExtra().getString("uri"), "DELETE"))
 			).onFailure(ex -> {
 				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 				eventHandler.handle(Future.succeededFuture(
@@ -3359,7 +3365,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(gpuDeviceId_docvalues_string:%s)", o.obtainForClass("gpuDeviceId"));
+				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

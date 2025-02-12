@@ -11,7 +11,10 @@ SITE_SHORT_NAME: aitelemetry
 SITE_NAME: ai-telemetry
 SITE_DISPLAY_NAME: AI Telemetry
 SITE_DESCRIPTION: "AI telemetry on OpenShift dashboards"
+SITE_MAIN_VERTICLE_PACKAGE: org.mghpcc.aitelemetry.verticle
+SITE_POM_ARTIFACT_ID: aitelemetry
 SITE_PORT: 10210
+SITE_SRC: "/opt/app-root/src/{{ SITE_NAME }}"
 WORKBENCH_NAMES:
 #  - USER_NAME: computate
 #  - USER_NAME: dheeraj

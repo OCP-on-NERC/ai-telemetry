@@ -244,7 +244,7 @@ SITE_SYSTEMD: "{{ '/usr/lib/systemd/system' if ansible_distribution_file_variety
 #######################
 
 # The name of the cloud provider where the public site is deployed. 
-SITE_POWERED_BY_NAME: New England Research Cloud
+SITE_POWERED_BY_NAME: Mass Open Cloud
 # The URL of the cloud provider where the public site is deployed. 
 SITE_POWERED_BY_URL: https://nerc.mghpcc.org/
 # The static path to the logo of the cloud provider where the public site is deployed. 
@@ -279,7 +279,7 @@ SOLR_HOST_NAME: "{{ lookup('env', 'SOLR_HOST_NAME') | default('solr.' + OPENSHIF
 # The default port that Solr runs. 
 SOLR_PORT: "{{ lookup('env', 'SOLR_PORT') | default('443', true) }}"
 # The solr collection to use for the site. 
-SOLR_COLLECTION: "{{ lookup('env', 'SOLR_COLLECTION') | default(SITE_SHORT_NAME, true) }}"
+SOLR_COLLECTION: "{{ lookup('env', 'SOLR_COLLECTION_' + SITE_SHORT_NAME) | default(SITE_SHORT_NAME, true) }}"
 # The URL to the Solr collection. 
 SOLR_URL: "{{ ('https://' if SOLR_SSL == True else 'http://') + SOLR_HOST_NAME + ('' if SOLR_PORT == 443 else (':' + SOLR_PORT)) }}/solr/{{ SOLR_COLLECTION }}"
 # The solr pod name to connect and create Solr configsets and collections. 
@@ -313,7 +313,7 @@ ENABLE_DATABASE: true
 # The namespace of the database in OpenShift. 
 DATABASE_NAMESPACE: postgres
 # The PostgreSQL database user name of the site. 
-DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME') | default(SITE_SHORT_NAME, true) }}"
+DATABASE_USERNAME: "{{ lookup('env', 'DATABASE_USERNAME_' + SITE_SHORT_NAME) | default(SITE_SHORT_NAME, true) }}"
 # The database secret containing the user password to connect to the database. 
 DATABASE_SECRET: "postgres-pguser-{{ DATABASE_USERNAME }}"
 # The PostgreSQL database host name. 
@@ -323,7 +323,7 @@ DATABASE_PORT: "{{ lookup('env', 'DATABASE_PORT') | default('30432', true) }}"
 # The PostgreSQL database password of the site. 
 DATABASE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=(DATABASE_SECRET), namespace=SITE_NAMESPACE)[0].data.password | b64decode }}"
 # The PostgreSQL database name of the site. 
-DATABASE_DATABASE: "{{ lookup('env', 'DATABASE_DATABASE') | default(SITE_SHORT_NAME, true) }}"
+DATABASE_DATABASE: "{{ lookup('env', 'DATABASE_DATABASE_' + SITE_SHORT_NAME) | default(SITE_SHORT_NAME, true) }}"
 # The PostgreSQL database max pool size. 
 DATABASE_MAX_POOL_SIZE: 10
 # The PostgreSQL database max wait queue size. 
@@ -338,9 +338,9 @@ DATABASE_CONNECT_TIMEOUT: 3000
 #####################################
 
 # The namespace in OpenShift where Keycloak will run. 
-AUTH_NAMESPACE: "{{ lookup('env', 'AUTH_NAMESPACE') | default('keycloak', true) }}"
+AUTH_NAMESPACE: "{{ lookup('env', 'AUTH_NAMESPACE_' + SITE_SHORT_NAME) | default('keycloak', true) }}"
 # The Auth host name. 
-AUTH_HOST_NAME: "{{ lookup('env', 'AUTH_HOST_NAME') | default('keycloak.' + OPENSHIFT_APPS_DOMAIN, true) }}"
+AUTH_HOST_NAME: "{{ lookup('env', 'AUTH_HOST_NAME_' + SITE_SHORT_NAME) | default('keycloak.' + OPENSHIFT_APPS_DOMAIN, true) }}"
 # The Auth port. 
 AUTH_PORT: 443
 # Whether the Auth server uses SSL. 
@@ -348,15 +348,15 @@ AUTH_SSL: true
 # Whether the Auth server requires SSL. 
 AUTH_SSL_REQUIRED: all
 # The Auth realm. 
-AUTH_REALM: "{{ lookup('env', 'AUTH_REALM') | default(SITE_NAME | upper, true) }}"
+AUTH_REALM: "{{ lookup('env', 'AUTH_REALM_' + SITE_SHORT_NAME) | default(SITE_NAME | upper, true) }}"
 # The Auth client. 
-AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT') | default(SITE_NAME, true) }}"
+AUTH_CLIENT: "{{ lookup('env', 'AUTH_CLIENT_' + SITE_SHORT_NAME) | default(SITE_NAME, true) }}"
 # The Auth openshift secret with the client secret credentials. 
-AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET') | default('keycloak-client-' + AUTH_CLIENT, true) }}"
+AUTH_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET_' + SITE_SHORT_NAME) | default('keycloak-client-' + AUTH_CLIENT, true) }}"
 # The Auth secret. 
 AUTH_SECRET: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_OPENSHIFT_SECRET, namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"
 # The Auth openshift secret with the admin credentials. 
-AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET') | default('keycloak-initial-admin', true) }}"
+AUTH_ADMIN_OPENSHIFT_SECRET: "{{ lookup('env', 'AUTH_ADMIN_OPENSHIFT_SECRET_' + SITE_SHORT_NAME) | default('keycloak-initial-admin', true) }}"
 # The Auth admin username. 
 AUTH_ADMIN_USERNAME: admin
 # The Auth admin password. 
@@ -387,7 +387,7 @@ ENABLE_FIWARE: false
 # FIWARE Smart Data Model source code directory. 
 SMART_DATA_MODELS_SRC: "{{ (PARENT_SRC + '/smart-data-models') | realpath }}"
 # Map default latitude,longitude. 
-DEFAULT_MAP_LOCATION: '{ "coordinates": [ -72.60793222470976, 42.202551398567465 ], "type": "Point" }'
+DEFAULT_MAP_LOCATION: '{ "coordinates": [ 42.202551398567465, -72.60793222470976 ], "type": "Point" }'
 # Map default zoom level. 
 DEFAULT_MAP_ZOOM: "17"
 

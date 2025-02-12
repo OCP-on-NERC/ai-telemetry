@@ -945,6 +945,20 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
           </div>
         </div>
 {%- endmacro %}
+
+{%- macro htmButton_deletefilterGpuSlice() %}<wa-button variant="brand" id="htmButton_deletefilterGpuSlice" data-sliceName={{ result.sliceName | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_deletefilterGpuSlice() %}
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deletefilterGpuSlice">Delete GPU slice</wa-button>
+{%- endmacro %}
+
+{%- macro htmForm_deletefilterGpuSlice() %}
+        <wa-dialog with-footer id="deletefilterGpuSliceDialog" label="Delete GPU slice">
+          <form id="htmForm_deletefilterGpuSlice" class="round-row primary-smart-border-radius ">
+          </form>
+          {{ htmFormButton_deletefilterGpuSlice() }}
+        </wa-dialog>
+{%- endmacro %}
           <wa-divider></wa-divider>
           <div id="htmButtonGroup">
             <div class="flex flex-wrap round-column pill-smart-border-radius ">
@@ -980,13 +994,17 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount >= 1 %}
+  {%- if resultCount == 1 %}
     {{ htmButton_deleteGpuSlice() }}
-  {%- else %}
   {%- endif %}
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmButton_putimportGpuSlice() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount > 1 %}
+    {{ htmButton_deletefilterGpuSlice() }}
+  {%- endif %}
 {%- endif %}
 
             </div>
@@ -1011,5 +1029,11 @@ Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint,
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportGpuSlice() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deletefilterGpuSlice() }}
+  {%- else %}
+  {%- endif %}
 {%- endif %}
           <wa-divider></wa-divider>

@@ -176,11 +176,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qGpuSlice_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qGpuSlice_rows')?.addEventListener('change', event => {
           paramChange('GpuSlice', event.target, document.querySelector('#qGpuSliceDiv_rows'));
         });
 
-        document.querySelector('#qGpuSlice_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qGpuSlice_start')?.addEventListener('change', event => {
           paramChange('GpuSlice', event.target, document.querySelector('#qGpuSliceDiv_start'));
         });
 
@@ -232,6 +232,16 @@
         document.querySelector('#htmFormButton_searchpageGpuSlice')?.addEventListener('click', event => {
           event.preventDefault();
           searchpageGpuSlice();
+          return false;
+        });
+
+        var submitForm_deletefilterGpuSlice = document.querySelector('#htmForm_deletefilterGpuSlice')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterGpuSlice')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterGpuSlice(event.target);
           return false;
         });
       });

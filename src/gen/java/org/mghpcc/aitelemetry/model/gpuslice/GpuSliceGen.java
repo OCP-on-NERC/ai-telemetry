@@ -111,6 +111,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: UserPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
+ * <h2>ApiMethode: DELETEFilter</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
+ * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: GPU slices"</b>, which groups all of the OpenAPIs for GpuSlice objects under the tag "GPU slices". 
  * </p>
@@ -233,6 +236,9 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/gpu-slice/{sliceName}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/gpu-slice/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/gpu-slice/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/gpu-slice";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/gpu-slice";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice";
 
 	public static final String Icon = "<i class=\"fa-regular fa-cake-slice\"></i>";
 
@@ -1513,7 +1519,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			}
 		}
 		if(location != null) {
-			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
+			doc.put("location_docvalues_location", String.format("%s,%s", location.getY(), location.getX()));
 		}
 		if(id != null) {
 			doc.put("id_docvalues_string", id);

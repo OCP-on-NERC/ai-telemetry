@@ -245,11 +245,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 										configureAmqp().onSuccess(h -> 
 											configureRabbitmq().onSuccess(i -> 
 												configureOpenApi().onSuccess(j -> 
-													workerExecutor.executeBlocking(() -> configureCamel()).onSuccess(k -> 
+													// workerExecutor.executeBlocking(() -> configureCamel()).onSuccess(k -> 
 														importData().onSuccess(l -> 
 															startPromise.complete()
 														).onFailure(ex -> startPromise.fail(ex))
-													).onFailure(ex -> startPromise.fail(ex))
+													// ).onFailure(ex -> startPromise.fail(ex))
 												).onFailure(ex -> startPromise.fail(ex))
 											).onFailure(ex -> startPromise.fail(ex))
 										).onFailure(ex -> startPromise.fail(ex))

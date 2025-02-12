@@ -176,11 +176,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qGpuDevice_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qGpuDevice_rows')?.addEventListener('change', event => {
           paramChange('GpuDevice', event.target, document.querySelector('#qGpuDeviceDiv_rows'));
         });
 
-        document.querySelector('#qGpuDevice_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qGpuDevice_start')?.addEventListener('change', event => {
           paramChange('GpuDevice', event.target, document.querySelector('#qGpuDeviceDiv_start'));
         });
 

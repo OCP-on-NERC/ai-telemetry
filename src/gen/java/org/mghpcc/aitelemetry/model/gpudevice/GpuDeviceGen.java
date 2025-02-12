@@ -1868,7 +1868,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			}
 		}
 		if(location != null) {
-			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
+			doc.put("location_docvalues_location", String.format("%s,%s", location.getY(), location.getX()));
 		}
 		if(id != null) {
 			doc.put("id_docvalues_string", id);

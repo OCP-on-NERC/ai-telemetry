@@ -33,7 +33,6 @@ import io.vertx.pgclient.data.Polygon;
  *   PATCH:
  *   POST:
  *   DELETE:
- *   DELETE:
  *   PUTImport:
  * 
  * AuthGroup:

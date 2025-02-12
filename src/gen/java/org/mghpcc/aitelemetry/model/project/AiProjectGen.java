@@ -99,6 +99,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: UserPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
+ * <h2>ApiMethode: DELETEFilter</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
+ * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: AI projects"</b>, which groups all of the OpenAPIs for AiProject objects under the tag "AI projects". 
  * </p>
@@ -189,7 +192,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no AI project found";
 	public static final String ApiUri_enUS = "/en-us/api/ai-project";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-project";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-project/{pageId}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-project/{projectId}";
 	public static final String OfName_enUS = "of AI project";
 	public static final String ANameAdjective_enUS = "an AI project";
 	public static final String NameAdjectiveSingular_enUS = "AI project";
@@ -215,14 +218,73 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-project";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-project";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-project";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-project/{pageId}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-project/{projectId}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-project/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-project/%s";
-	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-project/{pageId}";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-project/{projectId}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/ai-project/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/ai-project/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/ai-project";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/ai-project";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/ai-project";
 
 	public static final String Icon = "<i class=\"fa-regular fa-school\"></i>";
+
+	/////////////////
+	// clusterName //
+	/////////////////
+
+
+	/**	 The entity clusterName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String clusterName;
+
+	/**	<br> The entity clusterName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:clusterName">Find the entity clusterName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _clusterName(Wrap<String> w);
+
+	public String getClusterName() {
+		return clusterName;
+	}
+	public void setClusterName(String o) {
+		this.clusterName = AiProject.staticSetClusterName(siteRequest_, o);
+	}
+	public static String staticSetClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiProject clusterNameInit() {
+		Wrap<String> clusterNameWrap = new Wrap<String>().var("clusterName");
+		if(clusterName == null) {
+			_clusterName(clusterNameWrap);
+			Optional.ofNullable(clusterNameWrap.getO()).ifPresent(o -> {
+				setClusterName(o);
+			});
+		}
+		return (AiProject)this;
+	}
+
+	public static String staticSearchClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrClusterName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqClusterName(SiteRequest siteRequest_, String o) {
+		return AiProject.staticSearchClusterName(siteRequest_, AiProject.staticSetClusterName(siteRequest_, o)).toString();
+	}
+
+	public String sqlClusterName() {
+		return clusterName;
+	}
 
 	/////////////////
 	// projectName //
@@ -278,6 +340,58 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public String sqlProjectName() {
 		return projectName;
+	}
+
+	////////////////////////
+	// projectDisplayName //
+	////////////////////////
+
+
+	/**	 The entity projectDisplayName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String projectDisplayName;
+
+	/**	<br> The entity projectDisplayName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProject&fq=entiteVar_enUS_indexed_string:projectDisplayName">Find the entity projectDisplayName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _projectDisplayName(Wrap<String> w);
+
+	public String getProjectDisplayName() {
+		return projectDisplayName;
+	}
+	public void setProjectDisplayName(String o) {
+		this.projectDisplayName = AiProject.staticSetProjectDisplayName(siteRequest_, o);
+	}
+	public static String staticSetProjectDisplayName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected AiProject projectDisplayNameInit() {
+		Wrap<String> projectDisplayNameWrap = new Wrap<String>().var("projectDisplayName");
+		if(projectDisplayName == null) {
+			_projectDisplayName(projectDisplayNameWrap);
+			Optional.ofNullable(projectDisplayNameWrap.getO()).ifPresent(o -> {
+				setProjectDisplayName(o);
+			});
+		}
+		return (AiProject)this;
+	}
+
+	public static String staticSearchProjectDisplayName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrProjectDisplayName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqProjectDisplayName(SiteRequest siteRequest_, String o) {
+		return AiProject.staticSearchProjectDisplayName(siteRequest_, AiProject.staticSetProjectDisplayName(siteRequest_, o)).toString();
 	}
 
 	///////////////
@@ -421,7 +535,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
+				clusterNameInit();
 				projectNameInit();
+				projectDisplayNameInit();
 				projectIdInit();
 				descriptionInit();
 				promise2.complete();
@@ -477,8 +593,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public Object obtainAiProject(String var) {
 		AiProject oAiProject = (AiProject)this;
 		switch(var) {
+			case "clusterName":
+				return oAiProject.clusterName;
 			case "projectName":
 				return oAiProject.projectName;
+			case "projectDisplayName":
+				return oAiProject.projectDisplayName;
 			case "projectId":
 				return oAiProject.projectId;
 			case "description":
@@ -522,8 +642,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static Object staticSetAiProject(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
+		case "clusterName":
+			return AiProject.staticSetClusterName(siteRequest_, o);
 		case "projectName":
 			return AiProject.staticSetProjectName(siteRequest_, o);
+		case "projectDisplayName":
+			return AiProject.staticSetProjectDisplayName(siteRequest_, o);
 		case "projectId":
 			return AiProject.staticSetProjectId(siteRequest_, o);
 		case "description":
@@ -542,8 +666,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static Object staticSearchAiProject(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "clusterName":
+			return AiProject.staticSearchClusterName(siteRequest_, (String)o);
 		case "projectName":
 			return AiProject.staticSearchProjectName(siteRequest_, (String)o);
+		case "projectDisplayName":
+			return AiProject.staticSearchProjectDisplayName(siteRequest_, (String)o);
 		case "projectId":
 			return AiProject.staticSearchProjectId(siteRequest_, (String)o);
 		case "description":
@@ -562,8 +690,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchStrAiProject(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "clusterName":
+			return AiProject.staticSearchStrClusterName(siteRequest_, (String)o);
 		case "projectName":
 			return AiProject.staticSearchStrProjectName(siteRequest_, (String)o);
+		case "projectDisplayName":
+			return AiProject.staticSearchStrProjectDisplayName(siteRequest_, (String)o);
 		case "projectId":
 			return AiProject.staticSearchStrProjectId(siteRequest_, (String)o);
 		case "description":
@@ -582,8 +714,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static String staticSearchFqAiProject(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
+		case "clusterName":
+			return AiProject.staticSearchFqClusterName(siteRequest_, o);
 		case "projectName":
 			return AiProject.staticSearchFqProjectName(siteRequest_, o);
+		case "projectDisplayName":
+			return AiProject.staticSearchFqProjectDisplayName(siteRequest_, o);
 		case "projectId":
 			return AiProject.staticSearchFqProjectId(siteRequest_, o);
 		case "description":
@@ -614,7 +750,13 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public Object persistAiProject(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("projectname".equals(varLower)) {
+			if("clustername".equals(varLower)) {
+				if(val instanceof String) {
+					setClusterName((String)val);
+				}
+				saves.add("clusterName");
+				return val;
+			} else if("projectname".equals(varLower)) {
 				if(val instanceof String) {
 					setProjectName((String)val);
 				}
@@ -649,10 +791,22 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
 
+			if(saves.contains("clusterName")) {
+				String clusterName = (String)doc.get("clusterName_docvalues_string");
+				if(clusterName != null)
+					oAiProject.setClusterName(clusterName);
+			}
+
 			if(saves.contains("projectName")) {
 				String projectName = (String)doc.get("projectName_docvalues_string");
 				if(projectName != null)
 					oAiProject.setProjectName(projectName);
+			}
+
+			if(saves.contains("projectDisplayName")) {
+				String projectDisplayName = (String)doc.get("projectDisplayName_docvalues_string");
+				if(projectDisplayName != null)
+					oAiProject.setProjectDisplayName(projectDisplayName);
 			}
 
 			if(saves.contains("projectId")) {
@@ -672,8 +826,14 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 
 	public void indexAiProject(JsonObject doc) {
+		if(clusterName != null) {
+			doc.put("clusterName_docvalues_string", clusterName);
+		}
 		if(projectName != null) {
 			doc.put("projectName_docvalues_string", projectName);
+		}
+		if(projectDisplayName != null) {
+			doc.put("projectDisplayName_docvalues_string", projectDisplayName);
 		}
 		if(projectId != null) {
 			doc.put("projectId_docvalues_string", projectId);
@@ -687,8 +847,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String varStoredAiProject(String entityVar) {
 		switch(entityVar) {
+			case "clusterName":
+				return "clusterName_docvalues_string";
 			case "projectName":
 				return "projectName_docvalues_string";
+			case "projectDisplayName":
+				return "projectDisplayName_docvalues_string";
 			case "projectId":
 				return "projectId_docvalues_string";
 			case "description":
@@ -700,8 +864,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String varIndexedAiProject(String entityVar) {
 		switch(entityVar) {
+			case "clusterName":
+				return "clusterName_docvalues_string";
 			case "projectName":
 				return "projectName_docvalues_string";
+			case "projectDisplayName":
+				return "projectDisplayName_docvalues_string";
 			case "projectId":
 				return "projectId_docvalues_string";
 			case "description":
@@ -713,8 +881,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String searchVarAiProject(String searchVar) {
 		switch(searchVar) {
+			case "clusterName_docvalues_string":
+				return "clusterName";
 			case "projectName_docvalues_string":
 				return "projectName";
+			case "projectDisplayName_docvalues_string":
+				return "projectDisplayName";
 			case "projectId_docvalues_string":
 				return "projectId";
 			case "description_docvalues_string":
@@ -749,7 +921,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		AiProject oAiProject = (AiProject)this;
 		SiteRequest siteRequest = oAiProject.getSiteRequest_();
 
+		oAiProject.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiProject.setProjectName(Optional.ofNullable(doc.get("projectName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oAiProject.setProjectDisplayName(Optional.ofNullable(doc.get("projectDisplayName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiProject.setProjectId(Optional.ofNullable(doc.get("projectId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oAiProject.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 
@@ -765,8 +939,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
 		if(o != null && o instanceof AiProject) {
 			AiProject original = (AiProject)o;
+			if(!Objects.equals(clusterName, original.getClusterName()))
+				apiRequest.addVars("clusterName");
 			if(!Objects.equals(projectName, original.getProjectName()))
 				apiRequest.addVars("projectName");
+			if(!Objects.equals(projectDisplayName, original.getProjectDisplayName()))
+				apiRequest.addVars("projectDisplayName");
 			if(!Objects.equals(projectId, original.getProjectId()))
 				apiRequest.addVars("projectId");
 			if(!Objects.equals(description, original.getDescription()))
@@ -782,7 +960,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
+		sb.append(Optional.ofNullable(clusterName).map(v -> "clusterName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(projectName).map(v -> "projectName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(projectDisplayName).map(v -> "projectDisplayName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(projectId).map(v -> "projectId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
@@ -793,7 +973,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiProject;
 	}
+	public static final String VAR_clusterName = "clusterName";
 	public static final String VAR_projectName = "projectName";
+	public static final String VAR_projectDisplayName = "projectDisplayName";
 	public static final String VAR_projectId = "projectId";
 	public static final String VAR_description = "description";
 
@@ -809,7 +991,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		return AiProject.varsFqAiProject(new ArrayList<String>());
 	}
 	public static List<String> varsFqAiProject(List<String> vars) {
+		vars.add(VAR_clusterName);
 		vars.add(VAR_projectName);
+		vars.add(VAR_projectDisplayName);
 		vars.add(VAR_projectId);
 		vars.add(VAR_description);
 		BaseModel.varsFqBaseModel(vars);
@@ -824,7 +1008,9 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 		return vars;
 	}
 
-	public static final String DISPLAY_NAME_projectName = "name";
+	public static final String DISPLAY_NAME_clusterName = "cluster name";
+	public static final String DISPLAY_NAME_projectName = "project name";
+	public static final String DISPLAY_NAME_projectDisplayName = "project display name";
 	public static final String DISPLAY_NAME_projectId = "project Id";
 	public static final String DISPLAY_NAME_description = "description";
 
@@ -840,7 +1026,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	@Override
 	public String nameForClass() {
-		return projectName;
+		return projectDisplayName;
 	}
 
 	@Override
@@ -873,8 +1059,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 	public static String displayNameAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return DISPLAY_NAME_clusterName;
 		case VAR_projectName:
 			return DISPLAY_NAME_projectName;
+		case VAR_projectDisplayName:
+			return DISPLAY_NAME_projectDisplayName;
 		case VAR_projectId:
 			return DISPLAY_NAME_projectId;
 		case VAR_description:
@@ -886,8 +1076,12 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String descriptionAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return "The name of this cluster";
 		case VAR_projectName:
 			return "The name of this AI project";
+		case VAR_projectDisplayName:
+			return "The display name of this AI project";
 		case VAR_projectId:
 			return "The unique ID of this AI project";
 		case VAR_description:
@@ -899,7 +1093,11 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static String classSimpleNameAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return "String";
 		case VAR_projectName:
+			return "String";
+		case VAR_projectDisplayName:
 			return "String";
 		case VAR_projectId:
 			return "String";
@@ -912,6 +1110,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return 1;
 		case VAR_projectName:
 			return 1;
 		case VAR_description:
@@ -923,6 +1123,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmRowAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return 3;
 		case VAR_projectName:
 			return 3;
 		case VAR_projectId:
@@ -936,6 +1138,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 
 	public static Integer htmCellAiProject(String var) {
 		switch(var) {
+		case VAR_clusterName:
+			return 1;
 		case VAR_projectName:
 			return 1;
 		case VAR_projectId:

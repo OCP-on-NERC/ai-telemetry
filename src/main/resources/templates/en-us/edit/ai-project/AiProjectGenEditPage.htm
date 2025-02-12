@@ -94,11 +94,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qAiProject_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiProject_rows')?.addEventListener('change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_rows'));
         });
 
-        document.querySelector('#qAiProject_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiProject_start')?.addEventListener('change', event => {
           paramChange('AiProject', event.target, document.querySelector('#qAiProjectDiv_start'));
         });
 
@@ -150,6 +150,16 @@
         document.querySelector('#htmFormButton_searchpageAiProject')?.addEventListener('click', event => {
           event.preventDefault();
           searchpageAiProject();
+          return false;
+        });
+
+        var submitForm_deletefilterAiProject = document.querySelector('#htmForm_deletefilterAiProject')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterAiProject')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterAiProject(event.target);
           return false;
         });
       });

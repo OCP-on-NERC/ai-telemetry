@@ -5,4 +5,6 @@ bin/generate.sh
 bin/generatenow.sh
 bin/index.sh
 bin/indexnow.sh
+bin/watch.sh
+bin/watchnow.sh
 doc/getting-started/openshift-local/tls*

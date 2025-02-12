@@ -108,23 +108,21 @@
               </div>
               <div>{{ userFullName }}</div>
               <div>{{ userEmail }}</div>
-              <div>
-                <wa-tooltip content="see or change your user profile">
-                  <wa-button variant="brand" href="/user" label="see or change your user profile">
-                    <i slot="prefix" class="fa-duotone fa-regular fa-house-user"></i>
-                    <span>my user page</span>
-                  </wa-button>
-                </wa-tooltip>
-                <wa-tooltip placement="right" content="sign out">
-                  <wa-button variant="brand" href="{{ logoutUrl }}" label="sign out">
-                    <i slot="prefix" class="fa-duotone fa-regular fa-person-from-portal"></i>
-                    <span>sign out</span>
-                  </wa-button>
-                </wa-tooltip>
+              <wa-tooltip for="site-button-user-page">see or change your user profile</wa-tooltip>
+              <wa-tooltip for="site-button-logout" placement="right">sign out</wa-tooltip>
+              <div class="flex flex-column round-row primary-smart-border-radius margin-block">
+                <wa-button id="site-button-user-page" variant="brand" href="{{ SITE_BASE_URL }}/en-us/edit/user/{{ userId }}" label="see or change your user profile">
+                  <i slot="prefix" class="fa-duotone fa-regular fa-house-user"></i>
+                  <span>my user page</span>
+                </wa-button>
+                <wa-button id="site-button-logout" variant="brand" href="{{ logoutUrl }}" label="sign out">
+                  <i slot="prefix" class="fa-duotone fa-regular fa-person-from-portal"></i>
+                  <span>sign out</span>
+                </wa-button>
               </div>
             </wa-details>
 {%- else %}
-            <wa-button variant="brand" href="{{ SITE_BASE_URL }}/user">
+            <wa-button variant="brand" href="{{ SITE_BASE_URL }}/en-us/search/user">
               <i class="fa-duotone fa-regular fa-person-to-portal"></i> login
             </wa-button>
 {%- endif %}

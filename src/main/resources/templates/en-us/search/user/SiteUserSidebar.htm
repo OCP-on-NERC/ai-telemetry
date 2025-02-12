@@ -68,7 +68,7 @@
                     <wa-tooltip for="buttonFacetSiteUser_{{ key }}">see values</wa-tooltip>
                     <div class="flex round-column pill-smart-border-radius ">
                       <wa-button variant="brand" id="buttonFacetSiteUser_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="{{ FONTAWESOME_STYLE }} fa-list "></i></wa-button>
-                      <wa-input id="fqSiteUser_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('SiteUser', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
+                      <wa-input id="fqSiteUser_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('SiteUser', this); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
                     </div>
                   </div>
                   <div>

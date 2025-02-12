@@ -5,30 +5,36 @@
   <div slot="summary">
     Observability dashboard for all OpenShift clusters
   </div>
-  <div class="wa-grid ">
-    <div class="wa-stack ">
-      <div class="wa-grid ">
+  <div class="wa-stack ">
+    <div class="wa-grid ">
+      <div class="wa-stack ">
+        <div class="wa-grid ">
+          <wa-card with-header>
+            <header slot="header" class="wa-heading-m ">Number of GPU nodes for all clusters</header>
+            <div id="visualization-cluster-gpu-nodes" class=""></div>
+          </wa-card>
+          <wa-card with-header>
+            <header slot="header" class="wa-heading-m ">Number of GPU devices for all clusters</header>
+            <div id="visualization-cluster-gpu-devices" class=""></div>
+          </wa-card>
+        </div>
         <wa-card with-header>
-          <header slot="header" class="wa-heading-m ">Number of GPU nodes for all clusters</header>
-          <div id="visualization-cluster-gpu-nodes" class=""></div>
+          <header slot="header" class="wa-heading-m ">Number of GPU devices per cluster</header>
+          <div id="visualization-cluster-gpu-devices-by-cluster" class="wa-grid "></div>
         </wa-card>
         <wa-card with-header>
-          <header slot="header" class="wa-heading-m ">Number of GPU devices for all clusters</header>
-          <div id="visualization-cluster-gpu-devices" class=""></div>
+          <header slot="header" class="wa-heading-m ">GPU Nodes in not ready state</header>
+          <div id="visualization-gpu-nodes-not-ready" class="wa-grid "></div>
         </wa-card>
       </div>
       <wa-card with-header>
-        <header slot="header" class="wa-heading-m ">Number of GPU devices per cluster</header>
-        <div id="visualization-cluster-gpu-devices-by-cluster" class="wa-grid "></div>
-      </wa-card>
-      <wa-card with-header>
-        <header slot="header" class="wa-heading-m ">GPU Nodes in not ready state</header>
-        <div id="visualization-gpu-nodes-not-ready" class="wa-grid "></div>
+        <header slot="header" class="wa-heading-m ">Number of GPU devices per node</header>
+        <div id="visualization-cluster-gpu-devices-by-node" class="wa-grid "></div>
       </wa-card>
     </div>
     <wa-card with-header>
-      <header slot="header" class="wa-heading-m ">Number of GPU devices per node</header>
-      <div id="visualization-cluster-gpu-devices-by-node" class="wa-grid "></div>
+      <header slot="header" class="wa-heading-l ">GPU utilization per cluster {{ result.clusterName }}</header>
+      <div id="visualization-cluster-gpu-utilization" class="wa-grid "></div>
     </wa-card>
   </div>
 </wa-details>
@@ -72,6 +78,7 @@
           , queryGpuDevicesByCluster()
           , queryGpuDevicesByNode()
           , queryGpuNodesNotReady()
+          , queryGpuUtilization()
           ]);
     });
 
@@ -234,6 +241,43 @@
         });
       } else {
         throw new Error(`Failed to query nodes not ready: ${response.status}`);
+      }
+    }
+
+    async function queryGpuUtilization() {
+      var end = new Date();
+      var start = new Date(new Date().setHours(end.getHours() - 24));
+      var timeQuery = {
+        start: start.toISOString()
+        , end: end.toISOString()
+        , step: '60'
+      };
+      var query = Object.assign(Object.assign({ query: 'sum(DCGM_FI_DEV_GPU_UTIL) by (cluster)' }, timeQuery));
+      var response = await fetch( '/prom-keycloak-proxy/api/v1/query_range?' + new URLSearchParams(query).toString(), { method: 'GET' });
+      if(response.ok) {
+        response.json().then(function(responseJson) {
+          var end = new Date();
+          var start = new Date(new Date().setHours(end.getHours() - 1));
+
+          var panelId = 'visualization-cluster-gpu-utilization';
+          var traces = [];
+          var results = responseJson.data.result;
+          results.forEach((result, i) => {
+            traces.push({
+              x: result.values.map(values => new Date(values[0]))
+              , y: result.values.map(values => parseFloat(values[1]))
+              , mode: 'lines+markers'
+              , name: result.metric.cluster
+              , text: result.values.map(values => '<a href="/en-us/edit/ai-cluster/' + result.metric.cluster + '">' + result.metric.cluster + ' ' + result.metric.Hostname + ' ' + result.metric.modelName + '</a>')
+            });
+          });
+
+          var layout = {
+          };
+          Plotly.newPlot(panelId, traces, layout);
+        });
+      } else {
+        throw new Error(`Failed to query clusters not ready: ${response.status}`);
       }
     }
   </script>

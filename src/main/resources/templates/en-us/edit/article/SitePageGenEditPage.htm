@@ -94,11 +94,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qSitePage_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qSitePage_rows')?.addEventListener('change', event => {
           paramChange('SitePage', event.target, document.querySelector('#qSitePageDiv_rows'));
         });
 
-        document.querySelector('#qSitePage_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qSitePage_start')?.addEventListener('change', event => {
           paramChange('SitePage', event.target, document.querySelector('#qSitePageDiv_start'));
         });
 

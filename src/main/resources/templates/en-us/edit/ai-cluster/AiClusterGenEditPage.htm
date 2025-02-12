@@ -176,11 +176,11 @@
         });
         {% endfor %}
 
-        document.querySelector('#qAiCluster_rows')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiCluster_rows')?.addEventListener('change', event => {
           paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_rows'));
         });
 
-        document.querySelector('#qAiCluster_start')?.addEventListener('wa-change', event => {
+        document.querySelector('#qAiCluster_start')?.addEventListener('change', event => {
           paramChange('AiCluster', event.target, document.querySelector('#qAiClusterDiv_start'));
         });
 
@@ -232,6 +232,16 @@
         document.querySelector('#htmFormButton_searchpageAiCluster')?.addEventListener('click', event => {
           event.preventDefault();
           searchpageAiCluster();
+          return false;
+        });
+
+        var submitForm_deletefilterAiCluster = document.querySelector('#htmForm_deletefilterAiCluster')?.addEventListener('submit', event => {
+          event.preventDefault();
+          return false;
+        });
+        document.querySelector('#htmFormButton_deletefilterAiCluster')?.addEventListener('click', event => {
+          event.preventDefault();
+          deletefilterAiCluster(event.target);
           return false;
         });
       });

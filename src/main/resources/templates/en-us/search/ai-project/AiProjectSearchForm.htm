@@ -151,14 +151,51 @@ The primary key of this object in the database"
 {%- macro htmArchivedAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
                             {{ inputArchivedAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
 {%- endmacro %}
+{%- macro inputClusterNameAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
+  {%- if 'Page' == classApiMethodMethod %}
+                <form class="subgrid-2col " id="PageForm_clusterName">
+  {%- endif %}
+                  <wa-input
+                      {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
+                      placeholder="[String] cluster name"
+                      label="cluster name"
+                      help-text="
+The name of this cluster"
+                      id="{{classApiMethodMethod}}_clusterName"
+  {%- if "Page" == classApiMethodMethod %}
+                      data-projectId={{ result.projectId | tojson }}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiProject inputAiProject{{projectId}}ClusterName "
+                      name="setClusterName"
+  {%- else %}
+    {%- if "PATCH" == classApiMethodMethod %}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName setClusterName classAiProject inputAiProject{{projectId}}ClusterName "
+                      name="setClusterName"
+    {%- else %}
+                      class="label-on-left {{classApiMethodMethod}}_clusterName valueClusterName classAiProject inputAiProject{{projectId}}ClusterName "
+                      name="clusterName"
+    {%- endif %}
+  {%- endif %}
+  {%- if "Page" == classApiMethodMethod %}
+                      value="{{result.clusterName | e }}"
+  {%- endif %}
+                      ></wa-input>
+
+  {%- if 'Page' == classApiMethodMethod %}
+                </form>
+  {%- endif %}
+{%- endmacro %}
+
+{%- macro htmClusterNameAiProjectPage(classApiMethodMethod, authForWriteBool=false, authForReadBool=false) %}
+                            {{ inputClusterNameAiProjectPage(classApiMethodMethod=classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) }}
+{%- endmacro %}
 {%- macro inputProjectNameAiProjectPage(classApiMethodMethod, authForWrite=authForWrite, authForRead=authForRead) %}
   {%- if 'Page' == classApiMethodMethod %}
                 <form class="subgrid-2col " id="PageForm_projectName">
   {%- endif %}
                   <wa-input
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
-                      placeholder="[String] name"
-                      label="name"
+                      placeholder="[String] project name"
+                      label="project name"
                       help-text="
 The name of this AI project"
                       id="{{classApiMethodMethod}}_projectName"
@@ -321,11 +358,21 @@ A description of this AI project"
               {%- endif %}
               </div>
             </wa-details>
-            <wa-details class="HtmRow" id="ai-project-details">
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI project details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmClusterNameAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
 
               {%- if "PATCH" in scopes %}
                 {{ htmProjectNameAiProjectPage(classApiMethodMethod='PATCH', authForWriteBool=true, authForReadBool=true) }}
@@ -422,11 +469,21 @@ A description of this AI project"
               {%- endif %}
               </div>
             </wa-details>
-            <wa-details class="HtmRow" id="ai-project-details">
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI project details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmClusterNameAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='POST', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
 
               {%- if "PATCH" in scopes %}
                 {{ htmProjectNameAiProjectPage(classApiMethodMethod='POST', authForWriteBool=true, authForReadBool=true) }}
@@ -558,11 +615,21 @@ A description of this AI project"
               {%- endif %}
               </div>
             </wa-details>
-            <wa-details class="HtmRow" id="ai-project-details">
+            <wa-details open class="HtmRow" id="cluster-details">
               <div slot="summary">
-                <span>AI project details</span>
+                <span>cluster details</span>
               </div>
               <div class="grid-with-subgrid-2col ">
+
+              {%- if "PATCH" in scopes %}
+                {{ htmClusterNameAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
+              {%- else %}
+                {%- if "GET" in scopes %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=true) }}
+                {%- else %}
+                  {{ htmClusterNameAiProjectPage(classApiMethodMethod='Page', authForWriteBool=false, authForReadBool=false) }}
+                {%- endif %}
+              {%- endif %}
 
               {%- if "PATCH" in scopes %}
                 {{ htmProjectNameAiProjectPage(classApiMethodMethod='Page', authForWriteBool=true, authForReadBool=true) }}
@@ -597,6 +664,20 @@ A description of this AI project"
             </wa-details>
           </div>
         </div>
+{%- endmacro %}
+
+{%- macro htmButton_deletefilterAiProject() %}<wa-button variant="brand" id="htmButton_deletefilterAiProject" data-projectId={{ result.projectId | tojson }}><i slot="prefix" class="{{ FONTAWESOME_STYLE }} fa-trash "></i>Delete</wa-button>{%- endmacro %}
+
+{%- macro htmFormButton_deletefilterAiProject() %}
+          <wa-button variant="brand" slot="footer" type="submit" id="htmFormButton_deletefilterAiProject">Delete AI project</wa-button>
+{%- endmacro %}
+
+{%- macro htmForm_deletefilterAiProject() %}
+        <wa-dialog with-footer id="deletefilterAiProjectDialog" label="Delete AI project">
+          <form id="htmForm_deletefilterAiProject" class="round-row primary-smart-border-radius ">
+          </form>
+          {{ htmFormButton_deletefilterAiProject() }}
+        </wa-dialog>
 {%- endmacro %}
           <wa-divider></wa-divider>
           <div id="htmButtonGroup">
@@ -633,13 +714,17 @@ A description of this AI project"
   {%- endif %}
 {%- endif %}
 {% if AUTH_SCOPE_ADMIN in scopes %}
-  {%- if resultCount >= 1 %}
+  {%- if resultCount == 1 %}
     {{ htmButton_deleteAiProject() }}
-  {%- else %}
   {%- endif %}
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmButton_putimportAiProject() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount > 1 %}
+    {{ htmButton_deletefilterAiProject() }}
+  {%- endif %}
 {%- endif %}
 
             </div>
@@ -664,5 +749,11 @@ A description of this AI project"
 {%- endif %}
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportAiProject() }}
+{%- endif %}
+{% if AUTH_SCOPE_ADMIN in scopes %}
+  {%- if resultCount >= 1 %}
+    {{ htmForm_deletefilterAiProject() }}
+  {%- else %}
+  {%- endif %}
 {%- endif %}
           <wa-divider></wa-divider>

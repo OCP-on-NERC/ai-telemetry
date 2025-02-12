@@ -74,7 +74,7 @@
                     <wa-tooltip for="buttonFacetAiCluster_{{ key }}">see values</wa-tooltip>
                     <div class="flex round-column pill-smart-border-radius ">
                       <wa-button variant="brand" id="buttonFacetAiCluster_{{ key }}" data-var="{{ value.var }}" data-clear="{% if value.facetField is defined %}true{% else %}false{% endif %}"><i class="{{ FONTAWESOME_STYLE }} fa-list "></i></wa-button>
-                      <wa-input id="fqAiCluster_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('AiCluster', value); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
+                      <wa-input id="fqAiCluster_{{ key }}" placeholder="{{ value.displayName }}" class="" onchange="fqChange('AiCluster', this); " data-var="{{ value.var }}" autocomplete="off=" value="{{ value.val }}"></wa-input>
                     </div>
                   </div>
                   <div>
