@@ -2,6 +2,7 @@ package org.mghpcc.aitelemetry.model.cluster;
 
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
@@ -267,6 +268,14 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 						)
 				)
 		));
+	}
+
+	/**
+	 * HtmColumn: 3
+	 */
+	@Override
+	protected void _modified(Wrap<ZonedDateTime> w) {
+		super._modified(w);
 	}
 }
 

@@ -739,20 +739,27 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
 			initializeApiService(apiGpuDevice);
 			registerApiService(GpuDeviceEnUSGenApiService.class, apiGpuDevice, GpuDevice.getClassApiAddress());
-			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel", message -> {
-				apiGpuDevice.importDataCamel().onSuccess(a -> {
-					message.reply(new JsonObject());
-				}).onFailure(ex -> {
-					message.fail(500, ex.getMessage());
-				});
-			});
-			vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel-compensation", message -> {
-				apiGpuDevice.importDataCamelCompensation().onSuccess(a -> {
-					message.reply(new JsonObject());
-				}).onFailure(ex -> {
-					message.fail(500, ex.getMessage());
-				});
-			});
+			// vertx.eventBus().consumer("ai-telemetry-enUS-ClusterRequest-requestHostedControlPlane", message -> {
+			// 	apiGpuDevice.importDataCamel().onSuccess(a -> {
+			// 		message.reply(new JsonObject());
+			// 	}).onFailure(ex -> {
+			// 		message.fail(500, ex.getMessage());
+			// 	});
+			// });
+			// vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel", message -> {
+			// 	apiGpuDevice.importDataCamel().onSuccess(a -> {
+			// 		message.reply(new JsonObject());
+			// 	}).onFailure(ex -> {
+			// 		message.fail(500, ex.getMessage());
+			// 	});
+			// });
+			// vertx.eventBus().consumer("ai-telemetry-enUS-GpuDevice-importDataCamel-compensation", message -> {
+			// 	apiGpuDevice.importDataCamelCompensation().onSuccess(a -> {
+			// 		message.reply(new JsonObject());
+			// 	}).onFailure(ex -> {
+			// 		message.fail(500, ex.getMessage());
+			// 	});
+			// });
 			camelContext = new DefaultCamelContext();
 			VertxComponent vertxComponent = new VertxComponent();
 			vertxComponent.setVertx(vertx);

@@ -195,8 +195,6 @@ SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
 STATIC_PATH: "{{ (PARENT_SRC + '/' + SITE_STATIC_NAME) | realpath }}"
 # The base URL to the static files. 
 STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
-# The site logo relative URI
-SITE_LOGO_URI: "/png/moc-logo.png"
 # The path to the template files. 
 TEMPLATE_PATH: "{{ SITE_SRC }}/src/main/resources/templates"
 # The path to the site page templates. 
@@ -216,6 +214,8 @@ WEB_COMPONENTS_JS: |-
 WEB_COMPONENTS_PREFIX: "wa-"
 # Site default theme, light or dark. 
 SITE_THEME: dark
+# The site logo relative URI
+SITE_LOGO_URI: "/svg/logo-{{ SITE_THEME }}.svg"
 
 ######################
 # Developer defaults #
@@ -387,7 +387,7 @@ ENABLE_FIWARE: false
 # FIWARE Smart Data Model source code directory. 
 SMART_DATA_MODELS_SRC: "{{ (PARENT_SRC + '/smart-data-models') | realpath }}"
 # Map default latitude,longitude. 
-DEFAULT_MAP_LOCATION: '{ "coordinates": [ 42.202551398567465, -72.60793222470976 ], "type": "Point" }'
+DEFAULT_MAP_LOCATION: '{ "coordinates": [ -72.60793222470976, 42.202551398567465 ], "type": "Point" }'
 # Map default zoom level. 
 DEFAULT_MAP_ZOOM: "17"
 
