@@ -1,10 +1,3 @@
-        <wa-details open>
-          <div slot="summary">Map of articles</div>
-
-{%- block htmBodyGraphSitePagePage %}
-        <div id="htmBodyGraphSitePagePage" class="htmBodyGraph "></div>
-{%- endblock htmBodyGraphSitePagePage %}
-        </wa-details>
           <div class="htmBodySidebarSitePagePage ">
 {%- block htmBodySidebarSitePagePage %}
           <wa-drawer with-header light-dismiss placement="end" id="siteSidebarToggleSearch">
@@ -135,7 +128,7 @@
                     <span>Range Gap</span>
                   </td>
                   <td class="">
-                    <wa-select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
+                    <select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
                       <wa-option value="+1YEAR"{% if defaultRangeGap == '+1YEAR' %} selected="selected"{% else %}{% endif %}>Year</wa-option>
                       <wa-option value="+1MONTH"{% if defaultRangeGap == '+1MONTH' %} selected="selected"{% else %}{% endif %}>Month</wa-option>
                       <wa-option value="+1WEEK"{% if defaultRangeGap == '+1WEEK' %} selected="selected"{% else %}{% endif %}>Week</wa-option>
@@ -143,7 +136,7 @@
                       <wa-option value="+1HOUR"{% if defaultRangeGap == '+1HOUR' %} selected="selected"{% else %}{% endif %}>Hour</wa-option>
                       <wa-option value="+1MINUTE"{% if defaultRangeGap == '+1MINUTE' %} selected="selected"{% else %}{% endif %}>Minute</wa-option>
                       <wa-option value="+1SECOND"{% if defaultRangeGap == '+1SECOND' %} selected="selected"{% else %}{% endif %}>Second</wa-option>
-                    </wa-select>
+                    </select>
                   </td>
                 </tr>
                 <tr class="">

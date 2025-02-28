@@ -17,13 +17,17 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.pgclient.PgPool;
 
 import java.nio.file.Path;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
+import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
+import org.mghpcc.aitelemetry.request.SiteRequest;
 
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.mqtt.MqttClient;
@@ -40,6 +44,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
 			String classSimpleName, String classApiAddress) {
 		Promise<Void> promise = Promise.promise();
+		ZonedDateTime dateTimeStarted = ZonedDateTime.now();
 		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
@@ -60,9 +65,10 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 						String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
 						queryAiNodesTotal(classSimpleName, accessToken).onSuccess(aiNodesTotal -> {
 							queryGpuDevicesTotal(classSimpleName, accessToken).onSuccess(gpuDevicesTotal -> {
+								List<JsonObject> clustersWithAiNodesTotal = aiNodesTotal.stream().filter(aiNodeResult -> !((JsonObject)aiNodeResult).getJsonArray("value").getString(1).equals("0")).map(aiNodeResult -> (JsonObject)aiNodeResult).collect(Collectors.toList());
 								List<Future<?>> futures = new ArrayList<>();
-								for(Integer i = 0; i < aiNodesTotal.size(); i++) {
-									JsonObject aiNodeResult = aiNodesTotal.getJsonObject(i);
+								for(Integer i = 0; i < clustersWithAiNodesTotal.size(); i++) {
+									JsonObject aiNodeResult = clustersWithAiNodesTotal.get(i);
 									JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
 									futures.add(Future.future(promise1 -> {
 										try {
@@ -98,7 +104,12 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 									}));
 								}
 								Future.all(futures).onSuccess(b -> {
-									promise.complete();
+									cleanupNonAiNodesTotal(siteRequest, dateTimeStarted, classSimpleName, accessToken).onSuccess(oldAiNodes -> {
+										promise.complete();
+									}).onFailure(ex -> {
+										LOG.error(String.format(importDataFail, classSimpleName), ex);
+										promise.fail(ex);
+									});
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
 									promise.fail(ex);
@@ -127,6 +138,72 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 			LOG.error(String.format(importDataFail, classSimpleName), ex);
 			promise.fail(ex);
 		});
+		return promise.future();
+	}
+
+	protected Future<SearchList<AiCluster>> cleanupNonAiNodesTotal(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName, String accessToken) {
+		Promise<SearchList<AiCluster>> promise = Promise.promise();
+		try {
+			SearchList<AiCluster> searchList = new SearchList<AiCluster>();
+			searchList.setStore(true);
+			searchList.q("*:*");
+			searchList.setC(AiCluster.class);
+			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", AiCluster.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.promiseDeepForClass(siteRequest).onSuccess(oldAiClusters -> {
+				try {
+					List<Future<?>> futures = new ArrayList<>();
+					for(Integer i = 0; i < oldAiClusters.getList().size(); i++) {
+						AiCluster oldAiCluster = oldAiClusters.getList().get(i);
+						futures.add(Future.future(promise1 -> {
+							try {
+								String clusterName = oldAiCluster.getClusterName();
+								JsonObject body = new JsonObject();
+								body.put(AiCluster.VAR_clusterName, clusterName);
+								body.put(AiCluster.VAR_aiNodesTotal, 0);
+								body.put(AiCluster.VAR_gpuDevicesTotal, 0);
+
+								JsonObject pageParams = new JsonObject();
+								pageParams.put("body", body);
+								pageParams.put("path", new JsonObject());
+								pageParams.put("cookie", new JsonObject());
+								pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+								JsonObject pageContext = new JsonObject().put("params", pageParams);
+								JsonObject pageRequest = new JsonObject().put("context", pageContext);
+
+								vertx.eventBus().request(AiCluster.CLASS_API_ADDRESS_AiCluster, pageRequest, new DeliveryOptions()
+										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
+										.addHeader("action", String.format("putimport%sFuture", classSimpleName))
+										).onSuccess(message -> {
+									LOG.info(String.format("Imported %s AI cluster", clusterName));
+									promise1.complete(oldAiClusters);
+								}).onFailure(ex -> {
+									LOG.error(String.format(importDataFail, classSimpleName), ex);
+									promise.fail(ex);
+								});
+							} catch(Exception ex) {
+								LOG.error(String.format(importDataFail, classSimpleName), ex);
+								promise1.fail(ex);
+							}
+						}));
+					}
+					Future.all(futures).onSuccess(b -> {
+						promise.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format(importDataFail, classSimpleName), ex);
+						promise.fail(ex);
+					});
+				} catch(Throwable ex) {
+					LOG.error(String.format(importDataFail, classSimpleName), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format(importDataFail, classSimpleName), ex);
+				promise.fail(ex);
+			});
+		} catch(Throwable ex) {
+			LOG.error(String.format(importDataFail, classSimpleName), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 

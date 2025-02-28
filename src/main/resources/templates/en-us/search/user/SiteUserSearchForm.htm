@@ -110,7 +110,7 @@ The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_archived"
                       value="true"
   {%- else %}
-                  <wa-select
+                  <select
                       id="{{classApiMethodMethod}}_archived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -140,7 +140,7 @@ The primary key of this object in the database"
                     <wa-option value="" selected="selected"></wa-option>
                     <wa-option value="true">true</wa-option>
                     <wa-option value="false">false</wa-option>
-                  </wa-select>
+                  </select>
   {%- endif %}
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -160,7 +160,7 @@ The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_seeArchived"
                       value="true"
   {%- else %}
-                  <wa-select
+                  <select
                       id="{{classApiMethodMethod}}_seeArchived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -190,7 +190,7 @@ The primary key of this object in the database"
                     <wa-option value="" selected="selected"></wa-option>
                     <wa-option value="true">true</wa-option>
                     <wa-option value="false">false</wa-option>
-                  </wa-select>
+                  </select>
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -209,7 +209,7 @@ The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_seeDeleted"
                       value="true"
   {%- else %}
-                  <wa-select
+                  <select
                       id="{{classApiMethodMethod}}_seeDeleted"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -239,7 +239,7 @@ The primary key of this object in the database"
                     <wa-option value="" selected="selected"></wa-option>
                     <wa-option value="true">true</wa-option>
                     <wa-option value="false">false</wa-option>
-                  </wa-select>
+                  </select>
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
                 </form>
@@ -568,4 +568,3 @@ The primary key of this object in the database"
     {{ htmForm_postSiteUser() }}
   {%- endif %}
 {%- endif %}
-          <wa-divider></wa-divider>

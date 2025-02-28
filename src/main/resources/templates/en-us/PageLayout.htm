@@ -61,13 +61,12 @@
         customElements.whenDefined('wa-button')
         , customElements.whenDefined('wa-input')
       ]).then(() => {
-        document.querySelector('#siteSearchInput')?.addEventListener('wa-input', siteSearchInput);
-        document.querySelector('#siteSearchInput')?.addEventListener('wa-focus', siteSearchInput);
+        document.querySelector('#siteSearchInput')?.addEventListener('input', siteSearchInput);
+        document.querySelector('#siteSearchInput')?.addEventListener('focus', siteSearchInput);
       });
     </script>
     {{ WEB_COMPONENTS_JS }}
     <script src="{{ STATIC_BASE_URL }}/js/site.js"></script>
-    <script type="module" src="{{ STATIC_BASE_URL }}/js/siteModule.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/sockjs.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/vertx-eventbus.js"></script>
     <script src="{{ STATIC_BASE_URL }}/js/plotly-2.9.0.min.js"></script>
@@ -83,12 +82,13 @@
     </script>
    </head>
   <body>
+    <wa-fade-in>
     <wa-page disable-sticky="header">
 {%- block htmBodyPageLayout %}
 {%- block htmBodyStartPageLayout %}
       <aside class="main-sidebar" slot="navigation">
         <nav>
-          <div>
+          <div class="display-flex-center ">
             <a href="/">
               <img id="site-aside-left-img-logo" src="{{ STATIC_BASE_URL }}{{ SITE_LOGO_URI }}"/>
             </a>
@@ -196,6 +196,7 @@
         {% endif %}
       </footer>
     </wa-page>
+    </wa-fade-in>
 {%- endblock htmBodyEndPageLayout %}
 {%- endblock htmBodyPageLayout %}
   </body>

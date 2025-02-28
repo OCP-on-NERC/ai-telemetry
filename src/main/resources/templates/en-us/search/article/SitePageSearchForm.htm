@@ -73,7 +73,7 @@
                       id="{{classApiMethodMethod}}_archived"
                       value="true"
   {%- else %}
-                  <wa-select
+                  <select
                       id="{{classApiMethodMethod}}_archived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
@@ -103,7 +103,7 @@
                     <wa-option value="" selected="selected"></wa-option>
                     <wa-option value="true">true</wa-option>
                     <wa-option value="false">false</wa-option>
-                  </wa-select>
+                  </select>
   {%- endif %}
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -666,4 +666,3 @@ Visit this product's landing page. "
 {%- if AUTH_SCOPE_SUPER_ADMIN in scopes %}
   {{ htmForm_putimportSitePage() }}
 {%- endif %}
-          <wa-divider></wa-divider>

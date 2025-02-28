@@ -1373,32 +1373,26 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
 			initializeApiService(apiSitePage);
 			registerApiService(SitePageEnUSGenApiService.class, apiSitePage, SitePage.getClassApiAddress());
-			// apiSitePage.configureUiResult(router, SitePage.class, SiteRequest.class, "/en-us/view/article/{pageId}");
 
 			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
 			initializeApiService(apiAiCluster);
 			registerApiService(AiClusterEnUSGenApiService.class, apiAiCluster, AiCluster.getClassApiAddress());
-			// apiAiCluster.configureUserUiModel(router, AiCluster.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-cluster/{clusterName}");
 
 			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
 			initializeApiService(apiAiNode);
 			registerApiService(AiNodeEnUSGenApiService.class, apiAiNode, AiNode.getClassApiAddress());
-			// apiAiNode.configureUserUiModel(router, AiNode.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-node/{nodeId}");
 
 			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
 			initializeApiService(apiGpuDevice);
 			registerApiService(GpuDeviceEnUSGenApiService.class, apiGpuDevice, GpuDevice.getClassApiAddress());
-			// apiGpuDevice.configureUserUiModel(router, GpuDevice.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/gpu-device/{gpuDeviceId}");
 
 			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
 			initializeApiService(apiGpuSlice);
 			registerApiService(GpuSliceEnUSGenApiService.class, apiGpuSlice, GpuSlice.getClassApiAddress());
-			// apiGpuSlice.configureUserUiModel(router, GpuSlice.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/gpu-slice/{sliceName}");
 
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			initializeApiService(apiAiProject);
 			registerApiService(AiProjectEnUSGenApiService.class, apiAiProject, AiProject.getClassApiAddress());
-			// apiAiProject.configureUserUiModel(router, AiProject.class, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, null, "/en-us/user/ai-project/{pageId}");
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");

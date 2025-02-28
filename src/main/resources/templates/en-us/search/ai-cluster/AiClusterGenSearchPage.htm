@@ -342,6 +342,19 @@
                   </wa-menu-item>
                 </wa-menu>
               </wa-dropdown>
+              <wa-dropdown id="htmDropdown-modified">
+                <wa-button variant="brand" slot="trigger" caret>modified</wa-button>
+                <wa-menu>
+                  <wa-menu-item data-action="sort" data-order="asc" id="htmDropdown-modified-asc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-a-z"></i>
+                    sort by modified ascending
+                  </wa-menu-item>
+                  <wa-menu-item data-action="sort" data-order="desc" id="htmDropdown-modified-desc">
+                    <i class="{{ FONTAWESOME_STYLE }} fa-arrow-down-z-a"></i>
+                    sort by modified descending
+                  </wa-menu-item>
+                </wa-menu>
+              </wa-dropdown>
               <div></div>
             </div>
             {% for item in listAiCluster%}
@@ -352,6 +365,9 @@
               </a>
               <a href="{{ item.displayPage }}">
               {{ item.description }}
+              </a>
+              <a href="{{ item.displayPage }}">
+              <wa-format-date weekday="short" month="short" day="numeric" year="numeric" hour="numeric" minute="numeric" second="numeric" time-zone-name="short" date="{{ formatZonedDateTime(item.modified, "yyyy-MM-dd'T'HH:mm:ss.SSSX", defaultLocaleId, "UTC") }}"></wa-format-date>
               </a>
               <wa-button variant="brand"
                   id="{{classApiMethodMethod}}_editPage"
@@ -372,6 +388,10 @@
                 </div>
               {% endif %}
               {% if getColumnDescription is defined %}
+                <div>
+                </div>
+              {% endif %}
+              {% if getColumnModified is defined %}
                 <div>
                 </div>
               {% endif %}
