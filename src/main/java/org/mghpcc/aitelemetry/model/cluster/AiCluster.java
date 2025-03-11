@@ -75,6 +75,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Facet: true
 	 * VarName: true
 	 * VarId: true
+	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 

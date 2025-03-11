@@ -68,6 +68,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmColumn: 1
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
+	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 
