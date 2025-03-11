@@ -247,6 +247,7 @@ public abstract class MainVerticleGen<DEV> extends AbstractVerticle {
 	public static final String[] MainVerticleVals = new String[] { authorizeDataFail1, configureI18nFileError1, configureI18nError1, configureI18nComplete1, configureI18nLoaded1 };
 
 	public static final String CLASS_SIMPLE_NAME = "MainVerticle";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.verticle.MainVerticle";
 
 
 	public String idForClass() {
@@ -278,6 +279,10 @@ public abstract class MainVerticleGen<DEV> extends AbstractVerticle {
 	}
 
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

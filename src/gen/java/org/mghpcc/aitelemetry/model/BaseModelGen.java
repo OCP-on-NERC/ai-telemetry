@@ -1047,6 +1047,58 @@ public abstract class BaseModelGen<DEV> extends Object {
 		return BaseModel.staticSearchUserPage(siteRequest_, BaseModel.staticSetUserPage(siteRequest_, o)).toString();
 	}
 
+	//////////////
+	// download //
+	//////////////
+
+
+	/**	 The entity download
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String download;
+
+	/**	<br> The entity download
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.BaseModel&fq=entiteVar_enUS_indexed_string:download">Find the entity download in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _download(Wrap<String> w);
+
+	public String getDownload() {
+		return download;
+	}
+	public void setDownload(String o) {
+		this.download = BaseModel.staticSetDownload(siteRequest_, o);
+	}
+	public static String staticSetDownload(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BaseModel downloadInit() {
+		Wrap<String> downloadWrap = new Wrap<String>().var("download");
+		if(download == null) {
+			_download(downloadWrap);
+			Optional.ofNullable(downloadWrap.getO()).ifPresent(o -> {
+				setDownload(o);
+			});
+		}
+		return (BaseModel)this;
+	}
+
+	public static String staticSearchDownload(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrDownload(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDownload(SiteRequest siteRequest_, String o) {
+		return BaseModel.staticSearchDownload(siteRequest_, BaseModel.staticSetDownload(siteRequest_, o)).toString();
+	}
+
 	///////////////////
 	// objectSuggest //
 	///////////////////
@@ -1266,6 +1318,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 				displayPageInit();
 				editPageInit();
 				userPageInit();
+				downloadInit();
 				objectSuggestInit();
 				objectTextInit();
 				solrIdInit();
@@ -1351,6 +1404,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return oBaseModel.editPage;
 			case "userPage":
 				return oBaseModel.userPage;
+			case "download":
+				return oBaseModel.download;
 			case "objectSuggest":
 				return oBaseModel.objectSuggest;
 			case "objectText":
@@ -1424,6 +1479,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSetEditPage(siteRequest_, o);
 		case "userPage":
 			return BaseModel.staticSetUserPage(siteRequest_, o);
+		case "download":
+			return BaseModel.staticSetDownload(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSetObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1472,6 +1529,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchEditPage(siteRequest_, (String)o);
 		case "userPage":
 			return BaseModel.staticSearchUserPage(siteRequest_, (String)o);
+		case "download":
+			return BaseModel.staticSearchDownload(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1520,6 +1579,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchStrEditPage(siteRequest_, (String)o);
 		case "userPage":
 			return BaseModel.staticSearchStrUserPage(siteRequest_, (String)o);
+		case "download":
+			return BaseModel.staticSearchStrDownload(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseModel.staticSearchStrObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1568,6 +1629,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return BaseModel.staticSearchFqEditPage(siteRequest_, o);
 		case "userPage":
 			return BaseModel.staticSearchFqUserPage(siteRequest_, o);
+		case "download":
+			return BaseModel.staticSearchFqDownload(siteRequest_, o);
 		case "objectSuggest":
 			return BaseModel.staticSearchFqObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1740,6 +1803,12 @@ public abstract class BaseModelGen<DEV> extends Object {
 					oBaseModel.setUserPage(userPage);
 			}
 
+			if(saves.contains("download")) {
+				String download = (String)doc.get("download_docvalues_string");
+				if(download != null)
+					oBaseModel.setDownload(download);
+			}
+
 			if(saves.contains("objectSuggest")) {
 				String objectSuggest = (String)doc.get("objectSuggest_suggested");
 				oBaseModel.setObjectSuggest(objectSuggest);
@@ -1801,6 +1870,9 @@ public abstract class BaseModelGen<DEV> extends Object {
 		if(userPage != null) {
 			doc.put("userPage_docvalues_string", userPage);
 		}
+		if(download != null) {
+			doc.put("download_docvalues_string", download);
+		}
 		if(objectSuggest != null) {
 			doc.put("objectSuggest_suggested", objectSuggest);
 		}
@@ -1846,6 +1918,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "editPage_docvalues_string";
 			case "userPage":
 				return "userPage_docvalues_string";
+			case "download":
+				return "download_docvalues_string";
 			default:
 				return null;
 		}
@@ -1881,6 +1955,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "editPage_docvalues_string";
 			case "userPage":
 				return "userPage_docvalues_string";
+			case "download":
+				return "download_docvalues_string";
 			case "objectSuggest":
 				return "objectSuggest_suggested";
 			case "objectText":
@@ -1922,6 +1998,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				return "editPage";
 			case "userPage_docvalues_string":
 				return "userPage";
+			case "download_docvalues_string":
+				return "download";
 			case "objectSuggest_suggested":
 				return "objectSuggest";
 			case "objectText_text_enUS":
@@ -1982,6 +2060,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		oBaseModel.setDisplayPage(Optional.ofNullable(doc.get("displayPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setEditPage(Optional.ofNullable(doc.get("editPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setUserPage(Optional.ofNullable(doc.get("userPage_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseModel.setDownload(Optional.ofNullable(doc.get("download_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseModel.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("objectText_text_enUS")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oBaseModel.addObjectText(BaseModel.staticSetObjectText(siteRequest, v.toString()));
@@ -2027,6 +2106,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 				apiRequest.addVars("editPage");
 			if(!Objects.equals(userPage, original.getUserPage()))
 				apiRequest.addVars("userPage");
+			if(!Objects.equals(download, original.getDownload()))
+				apiRequest.addVars("download");
 			if(!Objects.equals(objectSuggest, original.getObjectSuggest()))
 				apiRequest.addVars("objectSuggest");
 			if(!Objects.equals(objectText, original.getObjectText()))
@@ -2056,6 +2137,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		sb.append(Optional.ofNullable(displayPage).map(v -> "displayPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(editPage).map(v -> "editPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(userPage).map(v -> "userPage: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(download).map(v -> "download: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectSuggest).map(v -> "objectSuggest: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectText).map(v -> "objectText: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(solrId).map(v -> "solrId: \"" + v + "\"\n" ).orElse(""));
@@ -2063,6 +2145,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "BaseModel";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.BaseModel";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_pk = "pk";
 	public static final String VAR_created = "created";
@@ -2078,6 +2161,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String VAR_displayPage = "displayPage";
 	public static final String VAR_editPage = "editPage";
 	public static final String VAR_userPage = "userPage";
+	public static final String VAR_download = "download";
 	public static final String VAR_objectSuggest = "objectSuggest";
 	public static final String VAR_objectText = "objectText";
 	public static final String VAR_solrId = "solrId";
@@ -2103,6 +2187,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		vars.add(VAR_displayPage);
 		vars.add(VAR_editPage);
 		vars.add(VAR_userPage);
+		vars.add(VAR_download);
 		return vars;
 	}
 
@@ -2131,6 +2216,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_displayPage = "display page";
 	public static final String DISPLAY_NAME_editPage = "edit";
 	public static final String DISPLAY_NAME_userPage = "user";
+	public static final String DISPLAY_NAME_download = "download";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
 	public static final String DISPLAY_NAME_objectText = "text";
 	public static final String DISPLAY_NAME_solrId = "";
@@ -2164,6 +2250,10 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 
@@ -2202,6 +2292,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return DISPLAY_NAME_editPage;
 		case VAR_userPage:
 			return DISPLAY_NAME_userPage;
+		case VAR_download:
+			return DISPLAY_NAME_download;
 		case VAR_objectSuggest:
 			return DISPLAY_NAME_objectSuggest;
 		case VAR_objectText:
@@ -2245,6 +2337,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return "Edit this";
 		case VAR_userPage:
 			return "User page";
+		case VAR_download:
+			return "the download URL";
 		case VAR_objectSuggest:
 			return "The indexed field in the search engine for this record while using autosuggest";
 		case VAR_objectText:
@@ -2287,6 +2381,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 		case VAR_editPage:
 			return "String";
 		case VAR_userPage:
+			return "String";
+		case VAR_download:
 			return "String";
 		case VAR_objectSuggest:
 			return "String";

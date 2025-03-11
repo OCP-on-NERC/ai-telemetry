@@ -292,6 +292,7 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuSlicePage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpuslice.GpuSlicePage";
 
 
 	@Override
@@ -331,6 +332,11 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

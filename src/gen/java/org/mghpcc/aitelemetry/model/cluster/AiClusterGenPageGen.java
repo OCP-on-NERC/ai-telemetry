@@ -737,6 +737,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiClusterGenPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage";
 	public static final String VAR_searchListAiCluster_ = "searchListAiCluster_";
 	public static final String VAR_listAiCluster = "listAiCluster";
 	public static final String VAR_resultCount = "resultCount";
@@ -790,6 +791,11 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

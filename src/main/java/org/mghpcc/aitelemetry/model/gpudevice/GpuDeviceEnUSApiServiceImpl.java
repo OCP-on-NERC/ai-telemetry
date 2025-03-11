@@ -41,19 +41,19 @@ import com.hubspot.jinjava.Jinjava;
 public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl {
 
 	@Override
-	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
 		// importDataRest(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onComplete(a -> promise.complete());
-		importDataVertx(pagePath, vertx, siteRequest, classSimpleName, classApiAddress);
+		importDataVertx(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload);
 		promise.complete();
 		return promise.future();
 	}
 
-	protected Future<Void> importDataRest(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importDataRest(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
@@ -222,10 +222,10 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 		return promise.future();
 	}
 
-	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));

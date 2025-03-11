@@ -1,6 +1,7 @@
 {% extends "en-us/edit/ai-project/AiProjectGenEditPage.htm" %}
 {%- block htmBodyStartAiProjectPage %}
 {{ super() }}
+{% if result is defined %}
 <wa-details open class="HtmRow" id="observability-dashboard">
   <div slot="summary">
     Observability dashboard for cluster {{ result.clusterName }} project {{ result.projectName }}
@@ -20,6 +21,7 @@
     </div>
   </div>
 </wa-details>
+{% endif %}
 {%- endblock htmBodyStartAiProjectPage %}
 {%- block htmStyleAiProjectPage %}
 #visualization-cluster-gpu-nodes, #visualization-cluster-gpu-devices {

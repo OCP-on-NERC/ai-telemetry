@@ -155,8 +155,6 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 * HtmRow: 99
 	 * HtmCell: 2
 	 * Facet: true
-	 * DisplayName: product page
-	 * Description: Visit this product's landing page. 
 	 * Link: true
 	 * VarUrlDisplayPage: true
 	 */
@@ -200,6 +198,21 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 */
 	protected void _userPage(Wrap<String> w) {
 		String f = classStringFormatUrlUserPageForClass();
+		if(f != null)
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Facet: true
+	 * DisplayName: download
+	 * Description: the download URL
+	 * Link: true
+	 * VarUrlDownload: true
+	 */
+	protected void _download(Wrap<String> w) {
+		String f = classStringFormatUrlDownloadForClass();
 		if(f != null)
 			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
 	}

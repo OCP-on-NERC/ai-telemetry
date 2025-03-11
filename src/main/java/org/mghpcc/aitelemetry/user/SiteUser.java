@@ -22,7 +22,7 @@ import org.mghpcc.aitelemetry.request.SiteRequest;
  *   PATCH:
  * 
  * SearchPageUri: /en-us/search/user
- * EditPageUri: /en-us/edit/user/{pageId}
+ * EditPageUri: /en-us/edit/user/{userId}
  * ApiUri: /en-us/api/user
  * ApiMethod:
  *   Search:
@@ -103,24 +103,11 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * Persist: true
 	 * HtmRow: 4
 	 * HtmCell: 1
-	 * HtmRowTitle: user options
+	 * HtmRowTitleOpen: user options
 	 * DisplayName: see archived
 	 * Description: A user field allowing a user to see archived records
 	 */
 	protected void _seeArchived(Wrap<Boolean> c) {
-		c.o(false);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * HtmRow: 4
-	 * HtmCell: 2
-	 * DisplayName: see deleted
-	 * Description: A user field allowing a user to see deleted records
-	 */
-	protected void _seeDeleted(Wrap<Boolean> c) {
 		c.o(false);
 	}
 

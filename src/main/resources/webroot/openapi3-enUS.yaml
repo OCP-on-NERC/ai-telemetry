@@ -4093,6 +4093,10 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -4508,6 +4512,10 @@ paths:
     patch:
       operationId: patchSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -4561,6 +4569,10 @@ paths:
     post:
       operationId: postSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -4579,7 +4591,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/POSTSiteUserResponse'
-  /en-us/edit/user/{pageId}:
+  /en-us/edit/user/{userId}:
     get:
       operationId: editpageSiteUser
       x-vertx-event-bus: ai-telemetry-enUS-SiteUser
@@ -4600,7 +4612,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: pageId
+        - name: userId
           in: path
           description: >+
           required: true
@@ -5295,6 +5307,8 @@ components:
                     type: string
                   grafanaUrl:
                     type: string
+                  modified:
+                    type: string
     PATCHAiClusterRequest:
       allOf:
         - type: object
@@ -5433,6 +5447,13 @@ components:
             removeGrafanaUrl:
               type: string
             removeAllGrafanaUrl:
+              type: string
+            setModified:
+              type: string
+              nullable: true
+            removeModified:
+              type: string
+            removeAllModified:
               type: string
     PATCHAiClusterResponse:
       allOf:
@@ -5573,6 +5594,13 @@ components:
               type: string
             removeAllGrafanaUrl:
               type: string
+            setModified:
+              type: string
+              nullable: true
+            removeModified:
+              type: string
+            removeAllModified:
+              type: string
     POSTAiClusterRequest:
       allOf:
         - type: object
@@ -5612,6 +5640,8 @@ components:
             gpuDevicesTotal:
               type: string
             grafanaUrl:
+              type: string
+            modified:
               type: string
     POSTAiClusterResponse:
       allOf:
@@ -5653,6 +5683,8 @@ components:
               type: string
             grafanaUrl:
               type: string
+            modified:
+              type: string
     DELETEFilterAiClusterResponse:
       allOf:
         - type: object
@@ -5692,6 +5724,8 @@ components:
             gpuDevicesTotal:
               type: string
             grafanaUrl:
+              type: string
+            modified:
               type: string
     PUTImportAiClusterRequest:
       allOf:
@@ -5738,6 +5772,8 @@ components:
                     type: string
                   grafanaUrl:
                     type: string
+                  modified:
+                    type: string
     PUTImportAiClusterResponse:
       allOf:
         - type: object
@@ -5777,6 +5813,8 @@ components:
                   gpuDevicesTotal:
                     type: string
                   grafanaUrl:
+                    type: string
+                  modified:
                     type: string
     GETAiClusterResponse:
       allOf:
@@ -5818,6 +5856,8 @@ components:
               type: string
             grafanaUrl:
               type: string
+            modified:
+              type: string
     DELETEAiClusterResponse:
       allOf:
         - type: object
@@ -5857,6 +5897,8 @@ components:
             gpuDevicesTotal:
               type: string
             grafanaUrl:
+              type: string
+            modified:
               type: string
     EditPageAiClusterResponse:
       allOf:
@@ -7707,6 +7749,8 @@ components:
                     type: string
                   projectName:
                     type: string
+                  projectDisplayName:
+                    type: string
                   projectId:
                     type: string
                   description:
@@ -7728,6 +7772,13 @@ components:
             removeProjectName:
               type: string
             removeAllProjectName:
+              type: string
+            setProjectDisplayName:
+              type: string
+              nullable: true
+            removeProjectDisplayName:
+              type: string
+            removeAllProjectDisplayName:
               type: string
             setProjectId:
               type: string
@@ -7761,6 +7812,13 @@ components:
               type: string
             removeAllProjectName:
               type: string
+            setProjectDisplayName:
+              type: string
+              nullable: true
+            removeProjectDisplayName:
+              type: string
+            removeAllProjectDisplayName:
+              type: string
             setProjectId:
               type: string
               nullable: true
@@ -7783,6 +7841,8 @@ components:
               type: string
             projectName:
               type: string
+            projectDisplayName:
+              type: string
             projectId:
               type: string
             description:
@@ -7795,6 +7855,8 @@ components:
               type: string
             projectName:
               type: string
+            projectDisplayName:
+              type: string
             projectId:
               type: string
             description:
@@ -7806,6 +7868,8 @@ components:
             clusterName:
               type: string
             projectName:
+              type: string
+            projectDisplayName:
               type: string
             projectId:
               type: string
@@ -7824,6 +7888,8 @@ components:
                     type: string
                   projectName:
                     type: string
+                  projectDisplayName:
+                    type: string
                   projectId:
                     type: string
                   description:
@@ -7835,6 +7901,8 @@ components:
                   clusterName:
                     type: string
                   projectName:
+                    type: string
+                  projectDisplayName:
                     type: string
                   projectId:
                     type: string
@@ -7848,6 +7916,8 @@ components:
               type: string
             projectName:
               type: string
+            projectDisplayName:
+              type: string
             projectId:
               type: string
             description:
@@ -7859,6 +7929,8 @@ components:
             clusterName:
               type: string
             projectName:
+              type: string
+            projectDisplayName:
               type: string
             projectId:
               type: string
@@ -8541,8 +8613,6 @@ components:
                     type: string
                   seeArchived:
                     type: boolean
-                  seeDeleted:
-                    type: boolean
                   displayName:
                     type: string
     PATCHSiteUserRequest:
@@ -8614,13 +8684,6 @@ components:
             removeSeeArchived:
               type: boolean
             removeAllSeeArchived:
-              type: boolean
-            setSeeDeleted:
-              type: boolean
-              nullable: true
-            removeSeeDeleted:
-              type: boolean
-            removeAllSeeDeleted:
               type: boolean
             setDisplayName:
               type: string
@@ -8699,13 +8762,6 @@ components:
               type: boolean
             removeAllSeeArchived:
               type: boolean
-            setSeeDeleted:
-              type: boolean
-              nullable: true
-            removeSeeDeleted:
-              type: boolean
-            removeAllSeeDeleted:
-              type: boolean
             setDisplayName:
               type: string
               nullable: true
@@ -8735,8 +8791,6 @@ components:
               type: string
             seeArchived:
               type: boolean
-            seeDeleted:
-              type: boolean
             displayName:
               type: string
     POSTSiteUserResponse:
@@ -8760,8 +8814,6 @@ components:
             userFullName:
               type: string
             seeArchived:
-              type: boolean
-            seeDeleted:
               type: boolean
             displayName:
               type: string

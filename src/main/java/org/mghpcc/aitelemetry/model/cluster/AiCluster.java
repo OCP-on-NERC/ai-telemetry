@@ -40,6 +40,12 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
+ *   AiClusterAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
  *   Admin:
  *     POST:
  *     PATCH:
@@ -51,6 +57,7 @@ import io.vertx.pgclient.data.Polygon;
  *     PATCH:
  *     GET:
  *     DELETE:
+ *     Admin:
  *     SuperAdmin:
  **/
 public class AiCluster extends AiClusterGen<BaseModel> {

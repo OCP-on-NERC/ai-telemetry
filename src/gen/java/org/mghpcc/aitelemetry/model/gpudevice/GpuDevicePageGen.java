@@ -292,6 +292,7 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuDevicePage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpudevice.GpuDevicePage";
 
 
 	@Override
@@ -331,6 +332,11 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

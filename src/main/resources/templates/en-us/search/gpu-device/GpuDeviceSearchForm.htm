@@ -6,7 +6,7 @@
                       readonly
                       placeholder="[Long] primary key"
                       label="primary key"
-                      help-text="
+                      hint="
 The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_pk"
   {%- if "Page" == classApiMethodMethod %}
@@ -42,7 +42,7 @@ The primary key of this object in the database"
                   <wa-input
                       type="text"
                       readonly
-                      help-text="A created timestamp for this record in the database"
+                      hint="A created timestamp for this record in the database"
                       label="created"
                       class="label-on-left {{classApiMethodMethod}}_created datetimepicker setCreated classGpuDevice inputGpuDevice{{gpuDeviceId}}Created "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
@@ -69,7 +69,7 @@ The primary key of this object in the database"
                   <wa-input
                       type="text"
                       readonly
-                      help-text="A modified timestamp for this record in the database"
+                      hint="A modified timestamp for this record in the database"
                       label="modified"
                       class="label-on-left {{classApiMethodMethod}}_modified datetimepicker setModified classGpuDevice inputGpuDevice{{gpuDeviceId}}Modified "
                       placeholder="MM/dd/yyyy h:mm a '['VV']'"
@@ -98,7 +98,7 @@ The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_archived"
                       placeholder="archive"
                       label="archive"
-                      help-text="For archiving this record"
+                      hint="For archiving this record"
                       class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{gpuDeviceId}}Archived "
                       name="setArchived"
                       data-gpuDeviceId={{ result.gpuDeviceId | tojson }}
@@ -110,13 +110,13 @@ The primary key of this object in the database"
                       id="{{classApiMethodMethod}}_archived"
                       value="true"
   {%- else %}
-                  <select
+                  <wa-select
                       id="{{classApiMethodMethod}}_archived"
   {%- endif %}
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="archive"
                       label="archive"
-                      help-text="For archiving this record"
+                      hint="For archiving this record"
   {%- if 'Page' == classApiMethodMethod %}
                       class="label-on-left {{classApiMethodMethod}}_archived classGpuDevice inputGpuDevice{{gpuDeviceId}}Archived "
                       name="setArchived"
@@ -140,7 +140,7 @@ The primary key of this object in the database"
                     <wa-option value="" selected="selected"></wa-option>
                     <wa-option value="true">true</wa-option>
                     <wa-option value="false">false</wa-option>
-                  </select>
+                  </wa-select>
   {%- endif %}
   {%- endif %}
   {%- if 'Page' == classApiMethodMethod %}
@@ -159,7 +159,7 @@ The primary key of this object in the database"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] cluster name"
                       label="cluster name"
-                      help-text="
+                      hint="
 The cluster name of this GPU device"
                       id="{{classApiMethodMethod}}_clusterName"
   {%- if "Page" == classApiMethodMethod %}
@@ -196,7 +196,7 @@ The cluster name of this GPU device"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] node name"
                       label="node name"
-                      help-text="
+                      hint="
 The node name of this GPU device"
                       id="{{classApiMethodMethod}}_nodeName"
   {%- if "Page" == classApiMethodMethod %}
@@ -233,7 +233,7 @@ The node name of this GPU device"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] description"
                       label="description"
-                      help-text="
+                      hint="
 A description of this GPU device"
                       id="{{classApiMethodMethod}}_description"
   {%- if "Page" == classApiMethodMethod %}
@@ -270,7 +270,7 @@ A description of this GPU device"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[Integer] GPU device number"
                       label="GPU device number"
-                      help-text="
+                      hint="
 The number of this GPU device"
                       id="{{classApiMethodMethod}}_gpuDeviceNumber"
   {%- if "Page" == classApiMethodMethod %}
@@ -307,7 +307,7 @@ The number of this GPU device"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] entity ID"
                       label="entity ID"
-                      help-text="
+                      hint="
 A unique ID for this Smart Data Model"
                       id="{{classApiMethodMethod}}_id"
   {%- if "Page" == classApiMethodMethod %}
@@ -344,7 +344,7 @@ A unique ID for this Smart Data Model"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[Integer] GPU device utilization"
                       label="GPU device utilization"
-                      help-text="
+                      hint="
 Current utilization of the GPU device. "
                       id="{{classApiMethodMethod}}_gpuDeviceUtilization"
   {%- if "Page" == classApiMethodMethod %}
@@ -381,7 +381,7 @@ Current utilization of the GPU device. "
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] NGSILD-Tenant"
                       label="NGSILD-Tenant"
-                      help-text="
+                      hint="
 The NGSILD-Tenant or Fiware-Service"
                       id="{{classApiMethodMethod}}_ngsildTenant"
   {%- if "Page" == classApiMethodMethod %}
@@ -418,7 +418,7 @@ The NGSILD-Tenant or Fiware-Service"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] NGSILD-Path"
                       label="NGSILD-Path"
-                      help-text="
+                      hint="
 The NGSILD-Path or Fiware-ServicePath"
                       id="{{classApiMethodMethod}}_ngsildPath"
   {%- if "Page" == classApiMethodMethod %}
@@ -455,7 +455,7 @@ The NGSILD-Path or Fiware-ServicePath"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[String] NGSILD context"
                       label="NGSILD context"
-                      help-text="
+                      hint="
 The NGSILD context URL for @context data"
                       id="{{classApiMethodMethod}}_ngsildContext"
   {%- if "Page" == classApiMethodMethod %}
@@ -492,7 +492,7 @@ The NGSILD context URL for @context data"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[JsonObject] NGSILD data"
                       label="NGSILD data"
-                      help-text="
+                      hint="
 The NGSILD data with @context from the context broker"
                       id="{{classApiMethodMethod}}_ngsildData"
   {%- if "Page" == classApiMethodMethod %}
@@ -529,7 +529,7 @@ The NGSILD data with @context from the context broker"
                       {% if authForWriteBool == true %}clearable{% else %}readonly{% endif %}
                       placeholder="[Point] location"
                       label="location"
-                      help-text="
+                      hint="
 Geojson reference to the item. It can be Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon"
                       id="{{classApiMethodMethod}}_location"
   {%- if "Page" == classApiMethodMethod %}

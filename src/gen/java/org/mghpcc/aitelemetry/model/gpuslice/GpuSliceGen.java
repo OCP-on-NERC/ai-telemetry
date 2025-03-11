@@ -1743,6 +1743,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuSlice";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpuslice.GpuSlice";
 	public static final String CLASS_API_ADDRESS_GpuSlice = "ai-telemetry-enUS-GpuSlice";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_GpuSlice;
@@ -1846,6 +1847,11 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/gpu-slice/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

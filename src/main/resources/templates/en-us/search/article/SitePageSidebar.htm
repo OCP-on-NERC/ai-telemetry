@@ -128,7 +128,7 @@
                     <span>Range Gap</span>
                   </td>
                   <td class="">
-                    <select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
+                    <wa-select name="facet.range.gap" id="pageFacetRangeGap-SitePage" onchange="facetRangeGapChange('SitePage', this); ">
                       <wa-option value="+1YEAR"{% if defaultRangeGap == '+1YEAR' %} selected="selected"{% else %}{% endif %}>Year</wa-option>
                       <wa-option value="+1MONTH"{% if defaultRangeGap == '+1MONTH' %} selected="selected"{% else %}{% endif %}>Month</wa-option>
                       <wa-option value="+1WEEK"{% if defaultRangeGap == '+1WEEK' %} selected="selected"{% else %}{% endif %}>Week</wa-option>
@@ -136,7 +136,7 @@
                       <wa-option value="+1HOUR"{% if defaultRangeGap == '+1HOUR' %} selected="selected"{% else %}{% endif %}>Hour</wa-option>
                       <wa-option value="+1MINUTE"{% if defaultRangeGap == '+1MINUTE' %} selected="selected"{% else %}{% endif %}>Minute</wa-option>
                       <wa-option value="+1SECOND"{% if defaultRangeGap == '+1SECOND' %} selected="selected"{% else %}{% endif %}>Second</wa-option>
-                    </select>
+                    </wa-select>
                   </td>
                 </tr>
                 <tr class="">

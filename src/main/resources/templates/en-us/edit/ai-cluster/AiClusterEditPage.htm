@@ -1,6 +1,7 @@
 {% extends "en-us/edit/ai-cluster/AiClusterGenEditPage.htm" %}
 {%- block htmBodyStartAiClusterPage %}
 {{ super() }}
+{% if result is defined %}
 <wa-details open class="HtmRow" id="observability-dashboard">
   <div slot="summary">
     Observability dashboard for cluster {{ result.clusterName }}
@@ -46,6 +47,7 @@
     </wa-card>
   </div>
 </wa-details>
+{% endif %}
 {%- endblock htmBodyStartAiClusterPage %}
 {%- block htmStyleAiClusterPage %}
 #visualization-cluster-gpu-nodes, #visualization-cluster-gpu-devices {

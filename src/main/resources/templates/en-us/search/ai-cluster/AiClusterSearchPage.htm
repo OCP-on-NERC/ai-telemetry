@@ -1,6 +1,7 @@
 {% extends "en-us/search/ai-cluster/AiClusterGenSearchPage.htm" %}
 {%- block htmBodyStartAiClusterPage %}
 {{ super() }}
+{% if resultCount > 0 %}
 <wa-details open class="HtmRow" id="observability-dashboard">
   <div slot="summary">
     Observability dashboard for all OpenShift clusters
@@ -38,6 +39,7 @@
     </wa-card>
   </div>
 </wa-details>
+{% endif %}
 {%- endblock htmBodyStartAiClusterPage %}
 {%- block htmStyleAiClusterPage %}
 #visualization-cluster-gpu-nodes, #visualization-cluster-gpu-devices {
@@ -48,11 +50,13 @@
 #observability-dashboard {
   .pill {
     border-radius: var(--wa-border-radius-pill);
-    box-shadow: var(--wa-theme-glossy-inner-shine), var(--wa-theme-glossy-top-highlight), inset 0 .7rem 0 0 rgba(255, 255, 255, 0.1), var(--wa-theme-glossy-lower-shade), var(--wa-theme-glossy-bottom-shadow);
-    &:hover {
-     background-color: var(--background-color-hover, var(--background-color));
-      border-color: var(--border-color-hover, var(--border-color, var(--background-color-hover)));
-      color: var(--text-color-hover, var(--text-color));
+    &:not(:active) {
+      box-shadow: var(--wa-theme-glossy-inner-shine), var(--wa-theme-glossy-top-highlight), inset 0 -.4rem 0 0 rgba(255, 255, 255, 0.1), var(--wa-theme-glossy-lower-shade), var(--wa-theme-glossy-bottom-shadow);
+      &:hover {
+      background-color: var(--background-color-hover, var(--background-color));
+        border-color: var(--border-color-hover, var(--border-color, var(--background-color-hover)));
+        color: var(--text-color-hover, var(--text-color));
+      }
     }
   }
 }

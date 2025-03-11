@@ -969,6 +969,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiProject";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.project.AiProject";
 	public static final String CLASS_API_ADDRESS_AiProject = "ai-telemetry-enUS-AiProject";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiProject;
@@ -1052,6 +1053,11 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/ai-project/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

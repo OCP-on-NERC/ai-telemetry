@@ -737,6 +737,7 @@ public abstract class AiProjectGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiProjectGenPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.project.AiProjectGenPage";
 	public static final String VAR_searchListAiProject_ = "searchListAiProject_";
 	public static final String VAR_listAiProject = "listAiProject";
 	public static final String VAR_resultCount = "resultCount";
@@ -790,6 +791,11 @@ public abstract class AiProjectGenPageGen<DEV> extends PageLayout {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

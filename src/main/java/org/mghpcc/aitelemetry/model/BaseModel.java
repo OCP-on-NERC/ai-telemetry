@@ -236,6 +236,21 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 
 	/**
 	 * {@inheritDoc}
+	 * DocValues: true
+	 * Facet: true
+	 * DisplayName: download
+	 * Description: the download URL
+	 * Link: true
+	 * VarUrlDownload: true
+	 */
+	protected void _download(Wrap<String> w) {
+		String f = classStringFormatUrlDownloadForClass();
+		if(f != null)
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * Suggested: true
 	 * Description: The indexed field in the search engine for this record while using autosuggest
 	 * DisplayName: autosuggest
