@@ -4,6 +4,7 @@ package org.mghpcc.aitelemetry.verticle;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
@@ -35,15 +36,15 @@ import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.page.SitePage;
-import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
+import org.mghpcc.aitelemetry.page.SitePage;
+import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
@@ -91,6 +92,7 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.kafka.client.producer.KafkaProducer;
+import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.amqp.AmqpClient;
 import io.vertx.amqp.AmqpClientOptions;
@@ -312,7 +314,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			Integer jdbcMaxPoolSize = Integer.parseInt(config().getString(ConfigKeys.DATABASE_MAX_POOL_SIZE));
 
 			pgOptions.setPort(Integer.parseInt(config().getString(ConfigKeys.DATABASE_PORT)));
-			pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST));
+			pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST_NAME));
 			pgOptions.setDatabase(config().getString(ConfigKeys.DATABASE_DATABASE));
 			pgOptions.setUser(config().getString(ConfigKeys.DATABASE_USERNAME));
 			pgOptions.setPassword(config().getString(ConfigKeys.DATABASE_PASSWORD));
@@ -326,8 +328,13 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 
 			pgPool = PgBuilder.pool().connectingTo(pgOptions).with(poolOptions).using(vertx).build();
 
-			LOG.info(configureDataInitSuccess);
-			promise.complete();
+			MainVerticle.configureDatabaseSchema(vertx, config()).onComplete(a -> {
+				LOG.info(configureDataInitSuccess);
+				promise.complete();
+			}).onFailure(ex -> {
+				LOG.error(configureDataInitError, ex);
+				promise.fail(ex);
+			});
 		} catch (Exception ex) {
 			LOG.error(configureDataInitError, ex);
 			promise.fail(ex);
@@ -404,8 +411,11 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			if(BooleanUtils.isTrue(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_MQTT)))) {
 				try {
 					mqttClient = MqttClient.create(vertx);
-					mqttClient.connect(Integer.parseInt(config().getString(ConfigKeys.MQTT_PORT)), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
+					mqttClient.connect(Integer.parseInt(config().getString(ConfigKeys.MQTT_PORT)), config().getString(ConfigKeys.MQTT_HOST_NAME)).onSuccess(mqttConnection -> {
 						try {
+							mqttClient.publishHandler(message -> {
+								LOG.info(String.format("MQTT: %s", message.payload().toString(Charset.defaultCharset())));
+							}).subscribe("workbench-user1", MqttQoS.EXACTLY_ONCE.value());
 							LOG.info("The MQTT client was initialized successfully.");
 							promise.complete(mqttClient);
 						} catch(Exception ex) {
@@ -440,9 +450,9 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			if(BooleanUtils.isTrue(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_AMQP)))) {
 				try {
 					AmqpClientOptions options = new AmqpClientOptions()
-							.setHost(config().getString(ConfigKeys.AMQP_HOST))
+							.setHost(config().getString(ConfigKeys.AMQP_HOST_NAME))
 							.setPort(Integer.parseInt(config().getString(ConfigKeys.AMQP_PORT)))
-							.setUsername(config().getString(ConfigKeys.AMQP_USER))
+							.setUsername(config().getString(ConfigKeys.AMQP_USERNAME))
 							.setPassword(config().getString(ConfigKeys.AMQP_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.AMQP_VIRTUAL_HOST))
 							;
@@ -494,7 +504,7 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 					RabbitMQOptions options = new RabbitMQOptions()
 							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST_NAME))
 							.setPort(Integer.parseInt(config().getString(ConfigKeys.RABBITMQ_PORT)))
-							.setUser(config().getString(ConfigKeys.RABBITMQ_USER))
+							.setUser(config().getString(ConfigKeys.RABBITMQ_USERNAME))
 							.setPassword(config().getString(ConfigKeys.RABBITMQ_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.RABBITMQ_VIRTUAL_HOST))
 							.setAutomaticRecoveryEnabled(true)
@@ -552,12 +562,12 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			siteRequest.addScopes("GET");
 			String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
 
-			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
-			initializeApiService(apiSitePage);
 			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
 			initializeApiService(apiAiCluster);
 			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
 			initializeApiService(apiAiNode);
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
+			initializeApiService(apiSitePage);
 			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
 			initializeApiService(apiGpuDevice);
 			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
@@ -565,12 +575,12 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			initializeApiService(apiAiProject);
 
-			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "editPage", null).onSuccess(q1 -> {
-				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "editPage", null).onSuccess(q2 -> {
-					apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, "nodeId", "editPage", null).onSuccess(q3 -> {
-						apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_CANONICAL_NAME, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice, "gpuDeviceId", "editPage", null).onSuccess(q4 -> {
-							apiGpuSlice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-slice"), vertx, siteRequest, GpuSlice.CLASS_CANONICAL_NAME, GpuSlice.CLASS_SIMPLE_NAME, GpuSlice.CLASS_API_ADDRESS_GpuSlice, "sliceName", "editPage", null).onSuccess(q5 -> {
-								apiAiProject.importTimer(Paths.get(templatePath, "/en-us/user/ai-project"), vertx, siteRequest, AiProject.CLASS_CANONICAL_NAME, AiProject.CLASS_SIMPLE_NAME, AiProject.CLASS_API_ADDRESS_AiProject, "projectId", "editPage", null).onSuccess(q6 -> {
+			apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "userPage", "download").onSuccess(q1 -> {
+				apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, "nodeId", "userPage", "download").onSuccess(q2 -> {
+					apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "userPage", "download").onSuccess(q3 -> {
+						apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_CANONICAL_NAME, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice, "gpuDeviceId", "userPage", "download").onSuccess(q4 -> {
+							apiGpuSlice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-slice"), vertx, siteRequest, GpuSlice.CLASS_CANONICAL_NAME, GpuSlice.CLASS_SIMPLE_NAME, GpuSlice.CLASS_API_ADDRESS_GpuSlice, "sliceName", "userPage", "download").onSuccess(q5 -> {
+								apiAiProject.importTimer(Paths.get(templatePath, "/en-us/user/ai-project"), vertx, siteRequest, AiProject.CLASS_CANONICAL_NAME, AiProject.CLASS_SIMPLE_NAME, AiProject.CLASS_API_ADDRESS_AiProject, "projectId", "userPage", "download").onSuccess(q6 -> {
 									LOG.info("data import complete");
 									promise.complete();
 								}).onFailure(ex -> promise.fail(ex));

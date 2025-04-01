@@ -118,7 +118,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void searchSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 						searchSiteUserList(siteRequest, false, true, false).onSuccess(listSiteUser -> {
 							response200SearchSiteUser(listSiteUser).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -245,7 +245,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	@Override
 	public void patchSiteUser(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchSiteUser started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 						searchSiteUserList(siteRequest, false, true, true).onSuccess(listSiteUser -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -351,7 +351,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void patchSiteUserFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -663,7 +663,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	@Override
 	public void postSiteUser(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postSiteUser started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
@@ -727,7 +727,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void postSiteUserFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
@@ -1089,7 +1089,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void searchpageSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 						searchSiteUserList(siteRequest, false, true, false).onSuccess(listSiteUser -> {
 							response200SearchPageSiteUser(listSiteUser).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -1212,7 +1212,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void editpageSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", true).onSuccess(siteRequest -> {
 						searchSiteUserList(siteRequest, false, true, false).onSuccess(listSiteUser -> {
 							response200EditPageSiteUser(listSiteUser).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -1468,7 +1468,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 			if(!Optional.ofNullable(config.getString(ComputateConfigKeys.AUTH_ROLE_REQUIRED + "_SiteUser")).map(v -> RoleBasedAuthorization.create(v).match(siteRequest.getUser())).orElse(false)) {
 				searchList.fq("sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionId()).orElse("-----")) + " OR " + "sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionIdBefore()).orElse("-----"))
-						+ " OR userKeys_docvalues_longs:" + Optional.ofNullable(siteRequest.getUserKey()).orElse(0L));
+						+ " OR userId_docvalues_string:" + Optional.ofNullable(siteRequest.getUserId()).orElse("-----"));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {

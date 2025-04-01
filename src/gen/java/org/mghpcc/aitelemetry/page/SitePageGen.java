@@ -112,8 +112,8 @@ import io.vertx.core.json.JsonObject;
  * <p>By adding a class comment "{@inheritDoc}", the SitePage class will inherit the helpful inherited class comments from the super class SitePageGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 4</h2>
- * <p>This class contains a comment <b>"Order: 4"</b>, which means this class will be sorted by the given number 4 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 2</h2>
+ * <p>This class contains a comment <b>"Order: 2"</b>, which means this class will be sorted by the given number 2 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <h2>Page: true</h2>
