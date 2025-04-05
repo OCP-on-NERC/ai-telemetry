@@ -292,6 +292,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "SiteUserPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.user.SiteUserPage";
 
 
 	@Override
@@ -331,6 +332,11 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

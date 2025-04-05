@@ -39,6 +39,13 @@ public class SiteRequest extends SiteRequestGen<Object> implements ComputateSite
 
 	/**
 	 * {@inheritDoc}
+	 * Description: The internationalization data for the site. 
+	 **/
+	protected void _i18n(Wrap<JsonObject> c) {
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * Description: A reference to this site request itself
 	 **/
 	protected void _siteRequest_(Wrap<SiteRequest> c) { 
@@ -176,6 +183,21 @@ public class SiteRequest extends SiteRequestGen<Object> implements ComputateSite
 	 * Description: The user auth scopes for the current request within the SSO realm
 	 **/
 	protected void _scopes(List<String> o) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Description: The user groups for the current request within the SSO realm
+	 **/
+	protected void _groups(List<String> o) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * Description: Whether the search results are public read. 
+	 **/
+	protected void _publicRead(Wrap<Boolean> w) {
+		w.o(false);
 	}
 
 	/**

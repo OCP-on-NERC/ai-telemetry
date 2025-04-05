@@ -18,7 +18,7 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Order: 8
+ * Order: 7
  * Description: A research project using AI and GPUs
  * AName: an AI project
  * PluralName: AI projects
@@ -39,6 +39,12 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
+ *   AiProjectAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
  *   Admin:
  *     POST:
  *     PATCH:
@@ -50,6 +56,7 @@ import io.vertx.pgclient.data.Polygon;
  *     PATCH:
  *     GET:
  *     DELETE:
+ *     Admin:
  *     SuperAdmin:
  */
 public class AiProject extends AiProjectGen<BaseModel> {
@@ -65,6 +72,7 @@ public class AiProject extends AiProjectGen<BaseModel> {
 	 * HtmColumn: 1
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
+	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 

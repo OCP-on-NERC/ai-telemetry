@@ -860,6 +860,58 @@ public abstract class BaseResultGen<DEV> extends Object {
 		return BaseResult.staticSearchUserPage(siteRequest_, BaseResult.staticSetUserPage(siteRequest_, o)).toString();
 	}
 
+	//////////////
+	// download //
+	//////////////
+
+
+	/**	 The entity download
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String download;
+
+	/**	<br> The entity download
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.result.BaseResult&fq=entiteVar_enUS_indexed_string:download">Find the entity download in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _download(Wrap<String> w);
+
+	public String getDownload() {
+		return download;
+	}
+	public void setDownload(String o) {
+		this.download = BaseResult.staticSetDownload(siteRequest_, o);
+	}
+	public static String staticSetDownload(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BaseResult downloadInit() {
+		Wrap<String> downloadWrap = new Wrap<String>().var("download");
+		if(download == null) {
+			_download(downloadWrap);
+			Optional.ofNullable(downloadWrap.getO()).ifPresent(o -> {
+				setDownload(o);
+			});
+		}
+		return (BaseResult)this;
+	}
+
+	public static String staticSearchDownload(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrDownload(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqDownload(SiteRequest siteRequest_, String o) {
+		return BaseResult.staticSearchDownload(siteRequest_, BaseResult.staticSetDownload(siteRequest_, o)).toString();
+	}
+
 	///////////////////
 	// objectSuggest //
 	///////////////////
@@ -1080,6 +1132,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 				displayPageInit();
 				editPageInit();
 				userPageInit();
+				downloadInit();
 				objectSuggestInit();
 				objectTextInit();
 				solrIdInit();
@@ -1159,6 +1212,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return oBaseResult.editPage;
 			case "userPage":
 				return oBaseResult.userPage;
+			case "download":
+				return oBaseResult.download;
 			case "objectSuggest":
 				return oBaseResult.objectSuggest;
 			case "objectText":
@@ -1226,6 +1281,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSetEditPage(siteRequest_, o);
 		case "userPage":
 			return BaseResult.staticSetUserPage(siteRequest_, o);
+		case "download":
+			return BaseResult.staticSetDownload(siteRequest_, o);
 		case "objectSuggest":
 			return BaseResult.staticSetObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1268,6 +1325,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchEditPage(siteRequest_, (String)o);
 		case "userPage":
 			return BaseResult.staticSearchUserPage(siteRequest_, (String)o);
+		case "download":
+			return BaseResult.staticSearchDownload(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseResult.staticSearchObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1310,6 +1369,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchStrEditPage(siteRequest_, (String)o);
 		case "userPage":
 			return BaseResult.staticSearchStrUserPage(siteRequest_, (String)o);
+		case "download":
+			return BaseResult.staticSearchStrDownload(siteRequest_, (String)o);
 		case "objectSuggest":
 			return BaseResult.staticSearchStrObjectSuggest(siteRequest_, (String)o);
 		case "objectText":
@@ -1352,6 +1413,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchFqEditPage(siteRequest_, o);
 		case "userPage":
 			return BaseResult.staticSearchFqUserPage(siteRequest_, o);
+		case "download":
+			return BaseResult.staticSearchFqDownload(siteRequest_, o);
 		case "objectSuggest":
 			return BaseResult.staticSearchFqObjectSuggest(siteRequest_, o);
 		case "objectText":
@@ -1501,6 +1564,12 @@ public abstract class BaseResultGen<DEV> extends Object {
 					oBaseResult.setUserPage(userPage);
 			}
 
+			if(saves.contains("download")) {
+				String download = (String)doc.get("download_docvalues_string");
+				if(download != null)
+					oBaseResult.setDownload(download);
+			}
+
 			if(saves.contains("objectSuggest")) {
 				String objectSuggest = (String)doc.get("objectSuggest_suggested");
 				oBaseResult.setObjectSuggest(objectSuggest);
@@ -1553,6 +1622,9 @@ public abstract class BaseResultGen<DEV> extends Object {
 		if(userPage != null) {
 			doc.put("userPage_docvalues_string", userPage);
 		}
+		if(download != null) {
+			doc.put("download_docvalues_string", download);
+		}
 		if(objectSuggest != null) {
 			doc.put("objectSuggest_suggested", objectSuggest);
 		}
@@ -1592,6 +1664,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "editPage_docvalues_string";
 			case "userPage":
 				return "userPage_docvalues_string";
+			case "download":
+				return "download_docvalues_string";
 			default:
 				return null;
 		}
@@ -1621,6 +1695,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "editPage_docvalues_string";
 			case "userPage":
 				return "userPage_docvalues_string";
+			case "download":
+				return "download_docvalues_string";
 			case "objectSuggest":
 				return "objectSuggest_suggested";
 			case "objectText":
@@ -1656,6 +1732,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "editPage";
 			case "userPage_docvalues_string":
 				return "userPage";
+			case "download_docvalues_string":
+				return "download";
 			case "objectSuggest_suggested":
 				return "objectSuggest";
 			case "objectText_text_enUS":
@@ -1713,6 +1791,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 		oBaseResult.setDisplayPage(Optional.ofNullable(doc.get("displayPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setEditPage(Optional.ofNullable(doc.get("editPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setUserPage(Optional.ofNullable(doc.get("userPage_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseResult.setDownload(Optional.ofNullable(doc.get("download_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setObjectSuggest(Optional.ofNullable(doc.get("objectSuggest_suggested")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("objectText_text_enUS")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oBaseResult.addObjectText(BaseResult.staticSetObjectText(siteRequest, v.toString()));
@@ -1752,6 +1831,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				apiRequest.addVars("editPage");
 			if(!Objects.equals(userPage, original.getUserPage()))
 				apiRequest.addVars("userPage");
+			if(!Objects.equals(download, original.getDownload()))
+				apiRequest.addVars("download");
 			if(!Objects.equals(objectSuggest, original.getObjectSuggest()))
 				apiRequest.addVars("objectSuggest");
 			if(!Objects.equals(objectText, original.getObjectText()))
@@ -1778,6 +1859,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 		sb.append(Optional.ofNullable(displayPage).map(v -> "displayPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(editPage).map(v -> "editPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(userPage).map(v -> "userPage: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(download).map(v -> "download: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectSuggest).map(v -> "objectSuggest: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(objectText).map(v -> "objectText: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(solrId).map(v -> "solrId: \"" + v + "\"\n" ).orElse(""));
@@ -1785,6 +1867,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "BaseResult";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.result.BaseResult";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_created = "created";
 	public static final String VAR_modified = "modified";
@@ -1797,6 +1880,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public static final String VAR_displayPage = "displayPage";
 	public static final String VAR_editPage = "editPage";
 	public static final String VAR_userPage = "userPage";
+	public static final String VAR_download = "download";
 	public static final String VAR_objectSuggest = "objectSuggest";
 	public static final String VAR_objectText = "objectText";
 	public static final String VAR_solrId = "solrId";
@@ -1820,6 +1904,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 		vars.add(VAR_displayPage);
 		vars.add(VAR_editPage);
 		vars.add(VAR_userPage);
+		vars.add(VAR_download);
 		return vars;
 	}
 
@@ -1841,9 +1926,10 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_classCanonicalNames = "";
 	public static final String DISPLAY_NAME_saves = "";
 	public static final String DISPLAY_NAME_title = "title";
-	public static final String DISPLAY_NAME_displayPage = "product page";
+	public static final String DISPLAY_NAME_displayPage = "";
 	public static final String DISPLAY_NAME_editPage = "edit";
 	public static final String DISPLAY_NAME_userPage = "user";
+	public static final String DISPLAY_NAME_download = "download";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
 	public static final String DISPLAY_NAME_objectText = "text";
 	public static final String DISPLAY_NAME_solrId = "";
@@ -1880,6 +1966,10 @@ public abstract class BaseResultGen<DEV> extends Object {
 		return null;
 	}
 
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
+	}
+
 	public static String displayNameForClass(String var) {
 		return BaseResult.displayNameBaseResult(var);
 	}
@@ -1909,6 +1999,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return DISPLAY_NAME_editPage;
 		case VAR_userPage:
 			return DISPLAY_NAME_userPage;
+		case VAR_download:
+			return DISPLAY_NAME_download;
 		case VAR_objectSuggest:
 			return DISPLAY_NAME_objectSuggest;
 		case VAR_objectText:
@@ -1940,12 +2032,12 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return "A list of fields that are saved for this record in the database";
 		case VAR_title:
 			return "The title of this page. ";
-		case VAR_displayPage:
-			return "Visit this product's landing page. ";
 		case VAR_editPage:
 			return "Edit this";
 		case VAR_userPage:
 			return "User page";
+		case VAR_download:
+			return "the download URL";
 		case VAR_objectSuggest:
 			return "The indexed field in the search engine for this record while using autosuggest";
 		case VAR_objectText:
@@ -1982,6 +2074,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 		case VAR_editPage:
 			return "String";
 		case VAR_userPage:
+			return "String";
+		case VAR_download:
 			return "String";
 		case VAR_objectSuggest:
 			return "String";

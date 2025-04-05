@@ -737,6 +737,7 @@ public abstract class AiNodeGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiNodeGenPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.node.AiNodeGenPage";
 	public static final String VAR_searchListAiNode_ = "searchListAiNode_";
 	public static final String VAR_listAiNode = "listAiNode";
 	public static final String VAR_resultCount = "resultCount";
@@ -790,6 +791,11 @@ public abstract class AiNodeGenPageGen<DEV> extends PageLayout {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

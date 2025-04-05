@@ -2132,6 +2132,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuDevice";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpudevice.GpuDevice";
 	public static final String CLASS_API_ADDRESS_GpuDevice = "ai-telemetry-enUS-GpuDevice";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_GpuDevice;
@@ -2218,7 +2219,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -2249,6 +2250,11 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/gpu-device/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

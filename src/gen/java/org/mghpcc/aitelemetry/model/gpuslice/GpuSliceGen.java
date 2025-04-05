@@ -129,8 +129,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the GpuSlice class will inherit the helpful inherited class comments from the super class GpuSliceGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 7</h2>
- * <p>This class contains a comment <b>"Order: 7"</b>, which means this class will be sorted by the given number 7 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 6</h2>
+ * <p>This class contains a comment <b>"Order: 6"</b>, which means this class will be sorted by the given number 6 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -1743,6 +1743,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuSlice";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpuslice.GpuSlice";
 	public static final String CLASS_API_ADDRESS_GpuSlice = "ai-telemetry-enUS-GpuSlice";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_GpuSlice;
@@ -1815,7 +1816,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -1846,6 +1847,11 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/gpu-slice/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

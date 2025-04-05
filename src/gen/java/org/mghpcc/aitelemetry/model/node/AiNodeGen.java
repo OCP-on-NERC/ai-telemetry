@@ -2030,6 +2030,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiNode";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.node.AiNode";
 	public static final String CLASS_API_ADDRESS_AiNode = "ai-telemetry-enUS-AiNode";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiNode;
@@ -2111,7 +2112,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -2142,6 +2143,11 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/ai-node/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

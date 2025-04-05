@@ -180,6 +180,12 @@ import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProject;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest;
 
 
 /**
@@ -312,14 +318,14 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			siteRequest.setConfig(config);
 			siteRequest.setWebClient(webClient);
 			siteRequest.initDeepSiteRequest(siteRequest);
-			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
-			apiSitePage.setVertx(vertx);
-			apiSitePage.setConfig(config);
-			apiSitePage.setWebClient(webClient);
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			apiSiteUser.setVertx(vertx);
 			apiSiteUser.setConfig(config);
 			apiSiteUser.setWebClient(webClient);
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
+			apiSitePage.setVertx(vertx);
+			apiSitePage.setConfig(config);
+			apiSitePage.setWebClient(webClient);
 			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
 			apiAiCluster.setVertx(vertx);
 			apiAiCluster.setConfig(config);
@@ -340,15 +346,25 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			apiAiProject.setVertx(vertx);
 			apiAiProject.setConfig(config);
 			apiAiProject.setWebClient(webClient);
+			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
+			apiClusterTemplate.setVertx(vertx);
+			apiClusterTemplate.setConfig(config);
+			apiClusterTemplate.setWebClient(webClient);
+			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
+			apiClusterRequest.setVertx(vertx);
+			apiClusterRequest.setConfig(config);
+			apiClusterRequest.setWebClient(webClient);
 			apiSiteUser.createAuthorizationScopes().onSuccess(authToken -> {
-				apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-						.compose(q1 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-						.onSuccess(q1 -> {
-					apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q2 -> {
-						apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-								.compose(q3 -> apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+				apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q1 -> {
+					apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+							.compose(q2 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+							.onSuccess(q2 -> {
+						apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "AiClusterAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+								.compose(q3 -> apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+								.compose(q3 -> apiAiCluster.authorizeGroupData(authToken, AiCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin", "SuperAdmin" }))
 								.onSuccess(q3 -> {
-							apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+							apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "AiClusterAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+									.compose(q4 -> apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
 									.compose(q4 -> apiAiNode.authorizeGroupData(authToken, AiNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 									.onSuccess(q4 -> {
 								apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" })
@@ -357,11 +373,20 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 									apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
 											.compose(q6 -> apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 											.onSuccess(q6 -> {
-										apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+										apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "AiProjectAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin", "SuperAdmin" }))
 												.onSuccess(q7 -> {
-											LOG.info("authorize data complete");
-											promise.complete();
+											apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+													.compose(q8 -> apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+													.onSuccess(q8 -> {
+												apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "ClusterOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+														.compose(q9 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+														.onSuccess(q9 -> {
+													LOG.info("authorize data complete");
+													promise.complete();
+												}).onFailure(ex -> promise.fail(ex));
+											}).onFailure(ex -> promise.fail(ex));
 										}).onFailure(ex -> promise.fail(ex));
 									}).onFailure(ex -> promise.fail(ex));
 								}).onFailure(ex -> promise.fail(ex));
@@ -388,7 +413,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config.getString(ConfigKeys.ENABLE_DATABASE))) {
 				PgConnectOptions pgOptions = new PgConnectOptions();
 				pgOptions.setPort(Integer.parseInt(config.getString(ConfigKeys.DATABASE_PORT)));
-				pgOptions.setHost(config.getString(ConfigKeys.DATABASE_HOST));
+				pgOptions.setHost(config.getString(ConfigKeys.DATABASE_HOST_NAME));
 				pgOptions.setDatabase(config.getString(ConfigKeys.DATABASE_DATABASE));
 				pgOptions.setUser(config.getString(ConfigKeys.DATABASE_USERNAME));
 				pgOptions.setPassword(config.getString(ConfigKeys.DATABASE_PASSWORD));
@@ -823,7 +848,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_MQTT))) {
 				try {
 					mqttClient = MqttClient.create(vertx);
-					mqttClient.connect(Integer.parseInt(config().getString(ConfigKeys.MQTT_PORT)), config().getString(ConfigKeys.MQTT_HOST)).onSuccess(a -> {
+					mqttClient.connect(Integer.parseInt(config().getString(ConfigKeys.MQTT_PORT)), config().getString(ConfigKeys.MQTT_HOST_NAME)).onSuccess(a -> {
 						try {
 							LOG.info("The MQTT client was initialized successfully.");
 							promise.complete(mqttClient);
@@ -859,9 +884,9 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_AMQP))) {
 				try {
 					AmqpClientOptions options = new AmqpClientOptions()
-							.setHost(config().getString(ConfigKeys.AMQP_HOST))
+							.setHost(config().getString(ConfigKeys.AMQP_HOST_NAME))
 							.setPort(Integer.parseInt(config().getString(ConfigKeys.AMQP_PORT)))
-							.setUsername(config().getString(ConfigKeys.AMQP_USER))
+							.setUsername(config().getString(ConfigKeys.AMQP_USERNAME))
 							.setPassword(config().getString(ConfigKeys.AMQP_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.AMQP_VIRTUAL_HOST))
 							;
@@ -913,7 +938,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					RabbitMQOptions options = new RabbitMQOptions()
 							.setHost(config().getString(ConfigKeys.RABBITMQ_HOST_NAME))
 							.setPort(Integer.parseInt(config().getString(ConfigKeys.RABBITMQ_PORT)))
-							.setUser(config().getString(ConfigKeys.RABBITMQ_USER))
+							.setUser(config().getString(ConfigKeys.RABBITMQ_USERNAME))
 							.setPassword(config().getString(ConfigKeys.RABBITMQ_PASSWORD))
 							.setVirtualHost(config().getString(ConfigKeys.RABBITMQ_VIRTUAL_HOST))
 							.setAutomaticRecoveryEnabled(true)
@@ -985,7 +1010,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_DATABASE))) {
 				PgConnectOptions pgOptions = new PgConnectOptions();
 				pgOptions.setPort(Integer.parseInt(config().getString(ConfigKeys.DATABASE_PORT)));
-				pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST));
+				pgOptions.setHost(config().getString(ConfigKeys.DATABASE_HOST_NAME));
 				pgOptions.setDatabase(config().getString(ConfigKeys.DATABASE_DATABASE));
 				pgOptions.setUser(config().getString(ConfigKeys.DATABASE_USERNAME));
 				pgOptions.setPassword(config().getString(ConfigKeys.DATABASE_PASSWORD));
@@ -1362,7 +1387,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterRequest");
 			List<String> publicResources = Arrays.asList("SitePage");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
@@ -1393,6 +1418,14 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			initializeApiService(apiAiProject);
 			registerApiService(AiProjectEnUSGenApiService.class, apiAiProject, AiProject.getClassApiAddress());
+
+			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
+			initializeApiService(apiClusterTemplate);
+			registerApiService(ClusterTemplateEnUSGenApiService.class, apiClusterTemplate, ClusterTemplate.getClassApiAddress());
+
+			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
+			initializeApiService(apiClusterRequest);
+			registerApiService(ClusterRequestEnUSGenApiService.class, apiClusterRequest, ClusterRequest.getClassApiAddress());
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");
@@ -1440,12 +1473,12 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				}
 			});
 
-			router.getWithRegex("\\/download(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
+			router.getWithRegex("\\/en-us/download(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
 				String originalUri = handler.pathParam("uri");
 				SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 				initializeApiService(apiSiteUser);
 				ServiceRequest serviceRequest = apiSiteUser.generateServiceRequest(handler);
-				apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+				apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 					try {
 
 						String uri = handler.pathParam("uri");

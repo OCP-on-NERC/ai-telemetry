@@ -2040,6 +2040,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiCluster";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiCluster";
 	public static final String CLASS_API_ADDRESS_AiCluster = "ai-telemetry-enUS-AiCluster";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiCluster;
@@ -2122,7 +2123,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -2153,6 +2154,11 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/ai-cluster/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

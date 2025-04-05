@@ -18,7 +18,7 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Order: 7
+ * Order: 6
  * Description: A GPU slice inside a GPU
  * AName: a GPU slice
  * PluralName: GPU slices
