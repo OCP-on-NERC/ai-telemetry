@@ -2123,7 +2123,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override

@@ -36,15 +36,15 @@ import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
+import org.mghpcc.aitelemetry.page.SitePage;
+import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.cluster.AiCluster;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
-import org.mghpcc.aitelemetry.page.SitePage;
-import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
@@ -54,6 +54,12 @@ import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProject;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSGenApiService;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
@@ -562,27 +568,35 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			siteRequest.addScopes("GET");
 			String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
 
+			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
+			initializeApiService(apiSitePage);
 			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
 			initializeApiService(apiAiCluster);
 			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
 			initializeApiService(apiAiNode);
-			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
-			initializeApiService(apiSitePage);
 			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
 			initializeApiService(apiGpuDevice);
 			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
 			initializeApiService(apiGpuSlice);
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			initializeApiService(apiAiProject);
+			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
+			initializeApiService(apiClusterTemplate);
+			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
+			initializeApiService(apiClusterRequest);
 
-			apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "userPage", "download").onSuccess(q1 -> {
-				apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, "nodeId", "userPage", "download").onSuccess(q2 -> {
-					apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "userPage", "download").onSuccess(q3 -> {
+			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "userPage", "download").onSuccess(q1 -> {
+				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "userPage", "download").onSuccess(q2 -> {
+					apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, "nodeId", "userPage", "download").onSuccess(q3 -> {
 						apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_CANONICAL_NAME, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice, "gpuDeviceId", "userPage", "download").onSuccess(q4 -> {
 							apiGpuSlice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-slice"), vertx, siteRequest, GpuSlice.CLASS_CANONICAL_NAME, GpuSlice.CLASS_SIMPLE_NAME, GpuSlice.CLASS_API_ADDRESS_GpuSlice, "sliceName", "userPage", "download").onSuccess(q5 -> {
 								apiAiProject.importTimer(Paths.get(templatePath, "/en-us/user/ai-project"), vertx, siteRequest, AiProject.CLASS_CANONICAL_NAME, AiProject.CLASS_SIMPLE_NAME, AiProject.CLASS_API_ADDRESS_AiProject, "projectId", "userPage", "download").onSuccess(q6 -> {
-									LOG.info("data import complete");
-									promise.complete();
+									apiClusterTemplate.importTimer(Paths.get(templatePath, "/en-us/edit/cluster-request"), vertx, siteRequest, ClusterTemplate.CLASS_CANONICAL_NAME, ClusterTemplate.CLASS_SIMPLE_NAME, ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate, "title", "userPage", "download").onSuccess(q7 -> {
+										apiClusterRequest.importTimer(Paths.get(templatePath, "/en-us/user/cluster-request"), vertx, siteRequest, ClusterRequest.CLASS_CANONICAL_NAME, ClusterRequest.CLASS_SIMPLE_NAME, ClusterRequest.CLASS_API_ADDRESS_ClusterRequest, "name", "userPage", "download").onSuccess(q8 -> {
+											LOG.info("data import complete");
+											promise.complete();
+										}).onFailure(ex -> promise.fail(ex));
+									}).onFailure(ex -> promise.fail(ex));
 								}).onFailure(ex -> promise.fail(ex));
 							}).onFailure(ex -> promise.fail(ex));
 						}).onFailure(ex -> promise.fail(ex));

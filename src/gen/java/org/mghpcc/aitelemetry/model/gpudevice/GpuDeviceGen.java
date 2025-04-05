@@ -2219,7 +2219,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override

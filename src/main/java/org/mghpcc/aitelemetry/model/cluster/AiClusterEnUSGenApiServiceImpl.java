@@ -836,13 +836,13 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlNgsildData());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiCluster.VAR_title + "=$" + num);
+							bSql.append(AiCluster.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setAiNodesTotal":
 							o2.setAiNodesTotal(jsonObject.getString(entityVar));
@@ -1333,14 +1333,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlNgsildData());
 						break;
-					case AiCluster.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case AiCluster.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiCluster.VAR_title + "=$" + num);
+						bSql.append(AiCluster.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiCluster.VAR_aiNodesTotal:
 						o2.setAiNodesTotal(jsonObject.getString(entityVar));
@@ -3584,7 +3584,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(AiCluster.VAR_ngsildPath, AiCluster.staticSetNgsildPath(siteRequest2, (String)result.get(AiCluster.VAR_ngsildPath)));
 			page.persistForClass(AiCluster.VAR_ngsildContext, AiCluster.staticSetNgsildContext(siteRequest2, (String)result.get(AiCluster.VAR_ngsildContext)));
 			page.persistForClass(AiCluster.VAR_ngsildData, AiCluster.staticSetNgsildData(siteRequest2, (String)result.get(AiCluster.VAR_ngsildData)));
-			page.persistForClass(AiCluster.VAR_title, AiCluster.staticSetTitle(siteRequest2, (String)result.get(AiCluster.VAR_title)));
+			page.persistForClass(AiCluster.VAR_objectTitle, AiCluster.staticSetObjectTitle(siteRequest2, (String)result.get(AiCluster.VAR_objectTitle)));
 			page.persistForClass(AiCluster.VAR_aiNodesTotal, AiCluster.staticSetAiNodesTotal(siteRequest2, (String)result.get(AiCluster.VAR_aiNodesTotal)));
 			page.persistForClass(AiCluster.VAR_displayPage, AiCluster.staticSetDisplayPage(siteRequest2, (String)result.get(AiCluster.VAR_displayPage)));
 			page.persistForClass(AiCluster.VAR_gpuDevicesTotal, AiCluster.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiCluster.VAR_gpuDevicesTotal)));

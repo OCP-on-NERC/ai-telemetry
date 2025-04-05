@@ -176,7 +176,7 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * Description: The title of this page. 
 	 * VarTitle: true
 	 */
-	protected void _title(Wrap<String> w) {
+	protected void _objectTitle(Wrap<String> w) {
 		w.o(String.format("%s — %s", classNameAdjectiveSingularForClass(), nameForClass()));
 	}
 

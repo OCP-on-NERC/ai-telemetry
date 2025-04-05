@@ -1,4 +1,4 @@
-package org.mghpcc.aitelemetry.model.node;
+package org.mghpcc.aitelemetry.model.clustertemplate;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -103,36 +103,36 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.node.AiNodePage;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplatePage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AiNodeEnUSGenApiService {
+public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl implements ClusterTemplateEnUSGenApiService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AiNodeEnUSGenApiServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(ClusterTemplateEnUSGenApiServiceImpl.class);
 
 	// Search //
 
 	@Override
-	public void searchAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void searchClusterTemplate(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -146,51 +146,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200SearchAiNode(listAiNode).onSuccess(response -> {
+						searchClusterTemplateList(siteRequest, false, true, false).onSuccess(listClusterTemplate -> {
+							response200SearchClusterTemplate(listClusterTemplate).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchAiNode succeeded. "));
+								LOG.debug(String.format("searchClusterTemplate succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchAiNode failed. "), ex);
+								LOG.error(String.format("searchClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchAiNode failed. "), ex);
+							LOG.error(String.format("searchClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchAiNode failed. "), ex);
+					LOG.error(String.format("searchClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -199,7 +171,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchAiNode failed. ", ex2));
+					LOG.error(String.format("searchClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -214,27 +186,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("searchAiNode failed. "), ex);
+				LOG.error(String.format("searchClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200SearchAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200SearchClusterTemplate(SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			List<String> fls = listAiNode.getRequest().getFields();
+			SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+			List<String> fls = listClusterTemplate.getRequest().getFields();
 			JsonObject json = new JsonObject();
 			JsonArray l = new JsonArray();
-			listAiNode.getList().stream().forEach(o -> {
+			listClusterTemplate.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
 				if(fls.size() > 0) {
 					Set<String> fieldNames = new HashSet<String>();
 					for(String fieldName : json2.fieldNames()) {
-						String v = AiNode.varIndexedAiNode(fieldName);
+						String v = ClusterTemplate.varIndexedClusterTemplate(fieldName);
 						if(v != null)
-							fieldNames.add(AiNode.varIndexedAiNode(fieldName));
+							fieldNames.add(ClusterTemplate.varIndexedClusterTemplate(fieldName));
 					}
 					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
 						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -252,10 +224,10 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				l.add(json2);
 			});
 			json.put("list", l);
-			response200Search(listAiNode.getRequest(), listAiNode.getResponse(), json);
+			response200Search(listClusterTemplate.getRequest(), listClusterTemplate.getResponse(), json);
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -263,12 +235,12 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchAiNode failed. "), ex);
+			LOG.error(String.format("response200SearchClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchClusterTemplate(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -297,7 +269,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchAiNode(pivotFields2, pivotArray2);
+					responsePivotSearchClusterTemplate(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -306,22 +278,22 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// GET //
 
 	@Override
-	public void getAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void getClusterTemplate(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -335,51 +307,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200GETAiNode(listAiNode).onSuccess(response -> {
+						searchClusterTemplateList(siteRequest, false, true, false).onSuccess(listClusterTemplate -> {
+							response200GETClusterTemplate(listClusterTemplate).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("getAiNode succeeded. "));
+								LOG.debug(String.format("getClusterTemplate succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("getAiNode failed. "), ex);
+								LOG.error(String.format("getClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("getAiNode failed. "), ex);
+							LOG.error(String.format("getClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("getAiNode failed. "), ex);
+					LOG.error(String.format("getClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -388,7 +332,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("getAiNode failed. ", ex2));
+					LOG.error(String.format("getClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -403,20 +347,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("getAiNode failed. "), ex);
+				LOG.error(String.format("getClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200GETAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200GETClusterTemplate(SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			JsonObject json = JsonObject.mapFrom(listAiNode.getList().stream().findFirst().orElse(null));
+			SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+			JsonObject json = JsonObject.mapFrom(listClusterTemplate.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -424,7 +368,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200GETAiNode failed. "), ex);
+			LOG.error(String.format("response200GETClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -433,23 +377,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// PATCH //
 
 	@Override
-	public void patchAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("patchAiNode started. "));
+	public void patchClusterTemplate(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("patchClusterTemplate started. "));
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -463,73 +407,45 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("PATCH")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PATCH$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("PATCH");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listClusterTemplate.getRequest().getRows());
+								apiRequest.setNumFound(listClusterTemplate.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listClusterTemplate.first());
+								apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+								apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 
-								listPATCHAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200PATCHAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("patchAiNode succeeded. "));
+								listPATCHClusterTemplate(apiRequest, listClusterTemplate).onSuccess(e -> {
+									response200PATCHClusterTemplate(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("patchClusterTemplate succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("patchAiNode failed. "), ex);
+										LOG.error(String.format("patchClusterTemplate failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("patchAiNode failed. "), ex);
+									LOG.error(String.format("patchClusterTemplate failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("patchAiNode failed. "), ex);
+								LOG.error(String.format("patchClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("patchAiNode failed. "), ex);
+							LOG.error(String.format("patchClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("patchAiNode failed. "), ex);
+					LOG.error(String.format("patchClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -538,7 +454,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("patchAiNode failed. ", ex2));
+					LOG.error(String.format("patchClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -553,66 +469,67 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("patchAiNode failed. "), ex);
+				LOG.error(String.format("patchClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPATCHAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listPATCHClusterTemplate(ApiRequest apiRequest, SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+		listClusterTemplate.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				patchAiNodeFuture(o2, false).onSuccess(a -> {
+				patchClusterTemplateFuture(o2, false).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listPATCHAiNode failed. "), ex);
+					LOG.error(String.format("listPATCHClusterTemplate failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listClusterTemplate.next().onSuccess(next -> {
 				if(next) {
-					listPATCHAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listPATCHClusterTemplate(apiRequest, listClusterTemplate).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPATCHAiNode failed. "), ex);
+						LOG.error(String.format("listPATCHClusterTemplate failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPATCHAiNode failed. "), ex);
+				LOG.error(String.format("listPATCHClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listPATCHAiNode failed. "), ex);
+			LOG.error(String.format("listPATCHClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void patchAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void patchClusterTemplateFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						ClusterTemplate o = listClusterTemplate.first();
+						if(o != null && listClusterTemplate.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -624,12 +541,12 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
-							AiNode o2 = jsonObject.mapTo(AiNode.class);
+							ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
 							o2.setSiteRequest_(siteRequest);
-							patchAiNodeFuture(o2, false).onSuccess(o3 -> {
+							patchClusterTemplateFuture(o2, false).onSuccess(o3 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -638,46 +555,46 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("patchAiNode failed. "), ex);
+						LOG.error(String.format("patchClusterTemplate failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("patchAiNode failed. "), ex);
+					LOG.error(String.format("patchClusterTemplate failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("patchAiNode failed. "), ex);
+				LOG.error(String.format("patchClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("patchAiNode failed. "), ex);
+			LOG.error(String.format("patchClusterTemplate failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> patchAiNodeFuture(AiNode o, Boolean nodeId) {
+	public Future<ClusterTemplate> patchClusterTemplateFuture(ClusterTemplate o, Boolean title) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<ClusterTemplate> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<ClusterTemplate> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlPATCHAiNode(o, nodeId).onSuccess(aiNode -> {
-						persistAiNode(aiNode, true).onSuccess(c -> {
-							relateAiNode(aiNode).onSuccess(d -> {
-								indexAiNode(aiNode).onSuccess(o2 -> {
+				varsClusterTemplate(siteRequest).onSuccess(a -> {
+					sqlPATCHClusterTemplate(o, title).onSuccess(clusterTemplate -> {
+						persistClusterTemplate(clusterTemplate, true).onSuccess(c -> {
+							relateClusterTemplate(clusterTemplate).onSuccess(d -> {
+								indexClusterTemplate(clusterTemplate).onSuccess(o2 -> {
 									if(apiRequest != null) {
 										apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 										if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-											o2.apiRequestAiNode();
+											o2.apiRequestClusterTemplate();
 											if(apiRequest.getVars().size() > 0)
-												eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+												eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 										}
 									}
-									promise1.complete(aiNode);
+									promise1.complete(clusterTemplate);
 								}).onFailure(ex -> {
 									promise1.fail(ex);
 								});
@@ -699,28 +616,28 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(aiNode).onSuccess(a -> {
-					promise2.complete(aiNode);
+			}).compose(clusterTemplate -> {
+				Promise<ClusterTemplate> promise2 = Promise.promise();
+				refreshClusterTemplate(clusterTemplate).onSuccess(a -> {
+					promise2.complete(clusterTemplate);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(clusterTemplate -> {
+				promise.complete(clusterTemplate);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("patchAiNodeFuture failed. "), ex);
+			LOG.error(String.format("patchClusterTemplateFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPATCHAiNode(AiNode o, Boolean nodeId) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> sqlPATCHClusterTemplate(ClusterTemplate o, Boolean title) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -728,55 +645,47 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiNode SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE ClusterTemplate SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
 			Set<String> methodNames = jsonObject.fieldNames();
-			AiNode o2 = new AiNode();
+			ClusterTemplate o2 = new ClusterTemplate();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
-					case "setClusterName":
-							o2.setClusterName(jsonObject.getString(entityVar));
+					case "setId":
+							o2.setId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_clusterName + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_id + "=$" + num);
 							num++;
-							bParams.add(o2.sqlClusterName());
-						break;
-					case "setNodeName":
-							o2.setNodeName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_nodeName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNodeName());
+							bParams.add(o2.sqlId());
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_created + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
-					case "setNodeId":
-							o2.setNodeId(jsonObject.getString(entityVar));
+					case "setTitle":
+							o2.setTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_nodeId + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_title + "=$" + num);
 							num++;
-							bParams.add(o2.sqlNodeId());
+							bParams.add(o2.sqlTitle());
 						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_description + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_description + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDescription());
 						break;
@@ -784,97 +693,49 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_archived + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
 						break;
-					case "setLocation":
-							o2.setLocation(jsonObject.getJsonObject(entityVar));
+					case "setParameters":
+							o2.setParameters(jsonObject.getJsonArray(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_location + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_parameters + "=$" + num);
 							num++;
-							bParams.add(o2.sqlLocation());
+							bParams.add(o2.sqlParameters());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_sessionId + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
-						break;
-					case "setGpuDevicesTotal":
-							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_gpuDevicesTotal + "=$" + num);
-							num++;
-							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_userKey + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
-						break;
-					case "setId":
-							o2.setId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_id + "=$" + num);
-							num++;
-							bParams.add(o2.sqlId());
-						break;
-					case "setNgsildTenant":
-							o2.setNgsildTenant(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildTenant());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_objectTitle + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
-						break;
-					case "setNgsildPath":
-							o2.setNgsildPath(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildPath + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildPath());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_displayPage + "=$" + num);
+							bSql.append(ClusterTemplate.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
-						break;
-					case "setNgsildContext":
-							o2.setNgsildContext(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildContext());
-						break;
-					case "setNgsildData":
-							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildData + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildData());
 						break;
 				}
 			}
@@ -888,40 +749,40 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-						LOG.error(String.format("relateAiNode failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value ClusterTemplate failed", ex);
+						LOG.error(String.format("relateClusterTemplate failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					AiNode o3 = new AiNode();
+					ClusterTemplate o3 = new ClusterTemplate();
 					o3.setSiteRequest_(o.getSiteRequest_());
 					o3.setPk(pk);
 					promise.complete(o3);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+					LOG.error(String.format("sqlPATCHClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+				LOG.error(String.format("sqlPATCHClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+			LOG.error(String.format("sqlPATCHClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200PATCHAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PATCHClusterTemplate(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -929,7 +790,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PATCHAiNode failed. "), ex);
+			LOG.error(String.format("response200PATCHClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -938,23 +799,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// POST //
 
 	@Override
-	public void postAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("postAiNode started. "));
+	public void postClusterTemplate(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("postClusterTemplate started. "));
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -968,34 +829,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("POST")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-POST$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("POST");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
@@ -1004,7 +837,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+						eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
@@ -1023,19 +856,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						params.put("query", query);
 						JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 						JsonObject json = new JsonObject().put("context", context);
-						eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiNodeFuture")).onSuccess(a -> {
+						eventBus.request(ClusterTemplate.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postClusterTemplateFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
 							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-							LOG.debug(String.format("postAiNode succeeded. "));
+							LOG.debug(String.format("postClusterTemplate succeeded. "));
 						}).onFailure(ex -> {
-							LOG.error(String.format("postAiNode failed. "), ex);
+							LOG.error(String.format("postClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("postAiNode failed. "), ex);
+					LOG.error(String.format("postClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1044,7 +877,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiNode failed. ", ex2));
+					LOG.error(String.format("postClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1059,14 +892,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
 	@Override
-	public void postAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void postClusterTemplateFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1079,13 +912,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-				postAiNodeFuture(siteRequest, false).onSuccess(o -> {
+				postClusterTemplateFuture(siteRequest, false).onSuccess(o -> {
 					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
 				}).onFailure(ex -> {
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Throwable ex) {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
@@ -1093,7 +926,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiNode failed. ", ex2));
+					LOG.error(String.format("postClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1108,26 +941,26 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<AiNode> postAiNodeFuture(SiteRequest siteRequest, Boolean nodeId) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> postClusterTemplateFuture(SiteRequest siteRequest, Boolean title) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 
 		try {
 			pgPool.withTransaction(sqlConnection -> {
-				Promise<AiNode> promise1 = Promise.promise();
+				Promise<ClusterTemplate> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					createAiNode(siteRequest).onSuccess(aiNode -> {
-						sqlPOSTAiNode(aiNode, nodeId).onSuccess(b -> {
-							persistAiNode(aiNode, false).onSuccess(c -> {
-								relateAiNode(aiNode).onSuccess(d -> {
-									indexAiNode(aiNode).onSuccess(o2 -> {
-										promise1.complete(aiNode);
+				varsClusterTemplate(siteRequest).onSuccess(a -> {
+					createClusterTemplate(siteRequest).onSuccess(clusterTemplate -> {
+						sqlPOSTClusterTemplate(clusterTemplate, title).onSuccess(b -> {
+							persistClusterTemplate(clusterTemplate, false).onSuccess(c -> {
+								relateClusterTemplate(clusterTemplate).onSuccess(d -> {
+									indexClusterTemplate(clusterTemplate).onSuccess(o2 -> {
+										promise1.complete(clusterTemplate);
 									}).onFailure(ex -> {
 										promise1.fail(ex);
 									});
@@ -1152,50 +985,50 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(aiNode).onSuccess(a -> {
+			}).compose(clusterTemplate -> {
+				Promise<ClusterTemplate> promise2 = Promise.promise();
+				refreshClusterTemplate(clusterTemplate).onSuccess(a -> {
 					try {
 						ApiRequest apiRequest = siteRequest.getApiRequest_();
 						if(apiRequest != null) {
 							apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-							aiNode.apiRequestAiNode();
-							eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+							clusterTemplate.apiRequestClusterTemplate();
+							eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 						}
-						promise2.complete(aiNode);
+						promise2.complete(clusterTemplate);
 					} catch(Exception ex) {
-						LOG.error(String.format("postAiNodeFuture failed. "), ex);
+						LOG.error(String.format("postClusterTemplateFuture failed. "), ex);
 						promise.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
+			}).onSuccess(clusterTemplate -> {
 				try {
 					ApiRequest apiRequest = siteRequest.getApiRequest_();
 					if(apiRequest != null) {
 						apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-						aiNode.apiRequestAiNode();
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+						clusterTemplate.apiRequestClusterTemplate();
+						eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 					}
-					promise.complete(aiNode);
+					promise.complete(clusterTemplate);
 				} catch(Exception ex) {
-					LOG.error(String.format("postAiNodeFuture failed. "), ex);
+					LOG.error(String.format("postClusterTemplateFuture failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("postAiNodeFuture failed. "), ex);
+			LOG.error(String.format("postClusterTemplateFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPOSTAiNode(AiNode o, Boolean nodeId) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> sqlPOSTClusterTemplate(ClusterTemplate o, Boolean title) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1203,11 +1036,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiNode SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE ClusterTemplate SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			ClusterTemplate o2 = new ClusterTemplate();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1233,158 +1066,95 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case AiNode.VAR_clusterName:
-						o2.setClusterName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_clusterName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlClusterName());
-						break;
-					case AiNode.VAR_nodeName:
-						o2.setNodeName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_nodeName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeName());
-						break;
-					case AiNode.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
-						break;
-					case AiNode.VAR_nodeId:
-						o2.setNodeId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_nodeId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeId());
-						break;
-					case AiNode.VAR_description:
-						o2.setDescription(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_description + "=$" + num);
-						num++;
-						bParams.add(o2.sqlDescription());
-						break;
-					case AiNode.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_archived + "=$" + num);
-						num++;
-						bParams.add(o2.sqlArchived());
-						break;
-					case AiNode.VAR_location:
-						o2.setLocation(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_location + "=$" + num);
-						num++;
-						bParams.add(o2.sqlLocation());
-						break;
-					case AiNode.VAR_sessionId:
-						o2.setSessionId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_sessionId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSessionId());
-						break;
-					case AiNode.VAR_gpuDevicesTotal:
-						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_gpuDevicesTotal + "=$" + num);
-						num++;
-						bParams.add(o2.sqlGpuDevicesTotal());
-						break;
-					case AiNode.VAR_userKey:
-						o2.setUserKey(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_userKey + "=$" + num);
-						num++;
-						bParams.add(o2.sqlUserKey());
-						break;
-					case AiNode.VAR_id:
+					case ClusterTemplate.VAR_id:
 						o2.setId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_id + "=$" + num);
+						bSql.append(ClusterTemplate.VAR_id + "=$" + num);
 						num++;
 						bParams.add(o2.sqlId());
 						break;
-					case AiNode.VAR_ngsildTenant:
-						o2.setNgsildTenant(jsonObject.getString(entityVar));
+					case ClusterTemplate.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
+						bSql.append(ClusterTemplate.VAR_created + "=$" + num);
 						num++;
-						bParams.add(o2.sqlNgsildTenant());
+						bParams.add(o2.sqlCreated());
 						break;
-					case AiNode.VAR_objectTitle:
+					case ClusterTemplate.VAR_title:
+						o2.setTitle(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_title + "=$" + num);
+						num++;
+						bParams.add(o2.sqlTitle());
+						break;
+					case ClusterTemplate.VAR_description:
+						o2.setDescription(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_description + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDescription());
+						break;
+					case ClusterTemplate.VAR_archived:
+						o2.setArchived(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_archived + "=$" + num);
+						num++;
+						bParams.add(o2.sqlArchived());
+						break;
+					case ClusterTemplate.VAR_parameters:
+						o2.setParameters(jsonObject.getJsonArray(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_parameters + "=$" + num);
+						num++;
+						bParams.add(o2.sqlParameters());
+						break;
+					case ClusterTemplate.VAR_sessionId:
+						o2.setSessionId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_sessionId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlSessionId());
+						break;
+					case ClusterTemplate.VAR_userKey:
+						o2.setUserKey(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterTemplate.VAR_userKey + "=$" + num);
+						num++;
+						bParams.add(o2.sqlUserKey());
+						break;
+					case ClusterTemplate.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_objectTitle + "=$" + num);
+						bSql.append(ClusterTemplate.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case AiNode.VAR_ngsildPath:
-						o2.setNgsildPath(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildPath + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildPath());
-						break;
-					case AiNode.VAR_displayPage:
+					case ClusterTemplate.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_displayPage + "=$" + num);
+						bSql.append(ClusterTemplate.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
-						break;
-					case AiNode.VAR_ngsildContext:
-						o2.setNgsildContext(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildContext());
-						break;
-					case AiNode.VAR_ngsildData:
-						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildData + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildData());
 						break;
 					}
 				}
@@ -1399,8 +1169,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-						LOG.error(String.format("relateAiNode failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value ClusterTemplate failed", ex);
+						LOG.error(String.format("relateClusterTemplate failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
@@ -1409,28 +1179,28 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete(o2);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+					LOG.error(String.format("sqlPOSTClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+				LOG.error(String.format("sqlPOSTClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+			LOG.error(String.format("sqlPOSTClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200POSTAiNode(AiNode o) {
+	public Future<ServiceResponse> response200POSTClusterTemplate(ClusterTemplate o) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1438,7 +1208,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200POSTAiNode failed. "), ex);
+			LOG.error(String.format("response200POSTClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1447,23 +1217,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// DELETE //
 
 	@Override
-	public void deleteAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deleteAiNode started. "));
+	public void deleteClusterTemplate(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deleteClusterTemplate started. "));
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1477,72 +1247,44 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("DELETE")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("DELETE");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listClusterTemplate.getRequest().getRows());
+								apiRequest.setNumFound(listClusterTemplate.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listClusterTemplate.first());
+								apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200DELETEAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deleteAiNode succeeded. "));
+								listDELETEClusterTemplate(apiRequest, listClusterTemplate).onSuccess(e -> {
+									response200DELETEClusterTemplate(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deleteClusterTemplate succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deleteAiNode failed. "), ex);
+										LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deleteAiNode failed. "), ex);
+									LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deleteAiNode failed. "), ex);
+								LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deleteAiNode failed. "), ex);
+							LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deleteAiNode failed. "), ex);
+					LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1551,7 +1293,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deleteAiNode failed. ", ex2));
+					LOG.error(String.format("deleteClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1566,66 +1308,67 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("deleteAiNode failed. "), ex);
+				LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listDELETEClusterTemplate(ApiRequest apiRequest, SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+		listClusterTemplate.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deleteAiNodeFuture(o).onSuccess(a -> {
+				deleteClusterTemplateFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEAiNode failed. "), ex);
+					LOG.error(String.format("listDELETEClusterTemplate failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listClusterTemplate.next().onSuccess(next -> {
 				if(next) {
-					listDELETEAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listDELETEClusterTemplate(apiRequest, listClusterTemplate).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEAiNode failed. "), ex);
+						LOG.error(String.format("listDELETEClusterTemplate failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEAiNode failed. "), ex);
+				LOG.error(String.format("listDELETEClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEAiNode failed. "), ex);
+			LOG.error(String.format("listDELETEClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deleteAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deleteClusterTemplateFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						ClusterTemplate o = listClusterTemplate.first();
+						if(o != null && listClusterTemplate.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -1637,9 +1380,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-							deleteAiNodeFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
+							deleteClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -1648,42 +1391,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deleteAiNode failed. "), ex);
+						LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deleteAiNode failed. "), ex);
+					LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deleteAiNode failed. "), ex);
+				LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deleteAiNode failed. "), ex);
+			LOG.error(String.format("deleteClusterTemplate failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> deleteAiNodeFuture(AiNode o) {
+	public Future<ClusterTemplate> deleteClusterTemplateFuture(ClusterTemplate o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<ClusterTemplate> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<ClusterTemplate> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlDELETEAiNode(o).onSuccess(aiNode -> {
-						relateAiNode(o).onSuccess(d -> {
-							unindexAiNode(o).onSuccess(o2 -> {
+				varsClusterTemplate(siteRequest).onSuccess(a -> {
+					sqlDELETEClusterTemplate(o).onSuccess(clusterTemplate -> {
+						relateClusterTemplate(o).onSuccess(d -> {
+							unindexClusterTemplate(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiNode();
+										o2.apiRequestClusterTemplate();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -1705,27 +1448,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(o).onSuccess(a -> {
+			}).compose(clusterTemplate -> {
+				Promise<ClusterTemplate> promise2 = Promise.promise();
+				refreshClusterTemplate(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(clusterTemplate -> {
+				promise.complete(clusterTemplate);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deleteAiNodeFuture failed. "), ex);
+			LOG.error(String.format("deleteClusterTemplateFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEAiNode(AiNode o) {
+	public Future<Void> sqlDELETEClusterTemplate(ClusterTemplate o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1734,11 +1477,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiNode ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM ClusterTemplate ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			ClusterTemplate o2 = new ClusterTemplate();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1759,8 +1502,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-					LOG.error(String.format("unrelateAiNode failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value ClusterTemplate failed", ex);
+					LOG.error(String.format("unrelateClusterTemplate failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -1768,27 +1511,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+					LOG.error(String.format("sqlDELETEClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+				LOG.error(String.format("sqlDELETEClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+			LOG.error(String.format("sqlDELETEClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEClusterTemplate(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1796,7 +1539,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEAiNode failed. "), ex);
+			LOG.error(String.format("response200DELETEClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1805,23 +1548,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// PUTImport //
 
 	@Override
-	public void putimportAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("putimportAiNode started. "));
+	public void putimportClusterTemplate(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("putimportClusterTemplate started. "));
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1835,34 +1578,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("PUT")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PUT$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("PUT");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
@@ -1872,27 +1587,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
-						varsAiNode(siteRequest).onSuccess(d -> {
-							listPUTImportAiNode(apiRequest, siteRequest).onSuccess(e -> {
-								response200PUTImportAiNode(siteRequest).onSuccess(response -> {
-									LOG.debug(String.format("putimportAiNode succeeded. "));
+						eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
+						varsClusterTemplate(siteRequest).onSuccess(d -> {
+							listPUTImportClusterTemplate(apiRequest, siteRequest).onSuccess(e -> {
+								response200PUTImportClusterTemplate(siteRequest).onSuccess(response -> {
+									LOG.debug(String.format("putimportClusterTemplate succeeded. "));
 									eventHandler.handle(Future.succeededFuture(response));
 								}).onFailure(ex -> {
-									LOG.error(String.format("putimportAiNode failed. "), ex);
+									LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportAiNode failed. "), ex);
+								LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportAiNode failed. "), ex);
+							LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("putimportAiNode failed. "), ex);
+					LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1901,7 +1616,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiNode failed. ", ex2));
+					LOG.error(String.format("putimportClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1916,13 +1631,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiNode failed. "), ex);
+				LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPUTImportAiNode(ApiRequest apiRequest, SiteRequest siteRequest) {
+	public Future<Void> listPUTImportClusterTemplate(ApiRequest apiRequest, SiteRequest siteRequest) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
 		JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1947,10 +1662,10 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAiNodeFuture")).onSuccess(a -> {
+					eventBus.request(ClusterTemplate.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportClusterTemplateFuture")).onSuccess(a -> {
 						promise1.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+						LOG.error(String.format("listPUTImportClusterTemplate failed. "), ex);
 						promise1.fail(ex);
 					});
 				}));
@@ -1959,18 +1674,18 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 				promise.complete();
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+				LOG.error(String.format("listPUTImportClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+			LOG.error(String.format("listPUTImportClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
 	@Override
-	public void putimportAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void putimportClusterTemplateFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1980,22 +1695,22 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String nodeId = Optional.ofNullable(body.getString(AiNode.VAR_nodeId)).orElse(body.getString(AiNode.VAR_solrId));
+				String title = Optional.ofNullable(body.getString(ClusterTemplate.VAR_title)).orElse(body.getString(ClusterTemplate.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 
-				SearchList<AiNode> searchList = new SearchList<AiNode>();
+				SearchList<ClusterTemplate> searchList = new SearchList<ClusterTemplate>();
 				searchList.setStore(true);
 				searchList.q("*:*");
-				searchList.setC(AiNode.class);
+				searchList.setC(ClusterTemplate.class);
 				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId));
+				searchList.fq("title_docvalues_string:" + SearchTool.escapeQueryChars(title));
 				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					try {
 						if(searchList.size() >= 1) {
-							AiNode o = searchList.getList().stream().findFirst().orElse(null);
-							AiNode o2 = new AiNode();
+							ClusterTemplate o = searchList.getList().stream().findFirst().orElse(null);
+							ClusterTemplate o2 = new ClusterTemplate();
 							o2.setSiteRequest_(siteRequest);
 							JsonObject body2 = new JsonObject();
 							for(String f : body.fieldNames()) {
@@ -2026,48 +1741,48 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								} else {
 									o2.persistForClass(f, bodyVal);
 									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "nodeId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "title", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
 							}
 							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "nodeId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "title", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.putNull("set" + StringUtils.capitalize(f));
 								}
 							}
 							if(searchList.size() == 1) {
 								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getNodeId());
+								apiRequest.setId(o.getTitle());
 								apiRequest.setPk(o.getPk());
 							}
 							siteRequest.setJsonObject(body2);
-							patchAiNodeFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import AiNode {} succeeded, modified AiNode. ", body.getValue(AiNode.VAR_nodeId));
+							patchClusterTemplateFuture(o, true).onSuccess(b -> {
+								LOG.debug("Import ClusterTemplate {} succeeded, modified ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_title));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+								LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							});
 						} else {
-							postAiNodeFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import AiNode {} succeeded, created new AiNode. ", body.getValue(AiNode.VAR_nodeId));
+							postClusterTemplateFuture(siteRequest, true).onSuccess(b -> {
+								LOG.debug("Import ClusterTemplate {} succeeded, created new ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_title));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+								LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							});
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+						LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+					LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+				LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
 				eventHandler.handle(Future.failedFuture(ex));
 			}
 		}).onFailure(ex -> {
@@ -2075,7 +1790,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiNode failed. ", ex2));
+					LOG.error(String.format("putimportClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2090,19 +1805,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiNode failed. "), ex);
+				LOG.error(String.format("putimportClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200PUTImportAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PUTImportClusterTemplate(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2110,7 +1825,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PUTImportAiNode failed. "), ex);
+			LOG.error(String.format("response200PUTImportClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -2119,24 +1834,22 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// SearchPage //
 
 	@Override
-	public void searchpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
-			serviceRequest.setUser(user.principal());
+	public void searchpageClusterTemplate(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2150,51 +1863,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200SearchPageAiNode(listAiNode).onSuccess(response -> {
+						searchClusterTemplateList(siteRequest, false, true, false).onSuccess(listClusterTemplate -> {
+							response200SearchPageClusterTemplate(listClusterTemplate).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchpageAiNode succeeded. "));
+								LOG.debug(String.format("searchpageClusterTemplate succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchpageAiNode failed. "), ex);
+								LOG.error(String.format("searchpageClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchpageAiNode failed. "), ex);
+							LOG.error(String.format("searchpageClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchpageAiNode failed. "), ex);
+					LOG.error(String.format("searchpageClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2203,7 +1888,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiNode failed. ", ex2));
+					LOG.error(String.format("searchpageClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2218,62 +1903,38 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageAiNode failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiNode failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("searchpageAiNode failed. "), ex);
+				LOG.error(String.format("searchpageClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void searchpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
+	public void searchpageClusterTemplatePageInit(ClusterTemplatePage page, SearchList<ClusterTemplate> listClusterTemplate) {
 	}
 
-	public String templateSearchPageAiNode(ServiceRequest serviceRequest) {
-		return "en-us/search/ai-node/AiNodeSearchPage.htm";
+	public String templateSearchPageClusterTemplate(ServiceRequest serviceRequest) {
+		return "en-us/search/cluster-template/ClusterTemplateSearchPage.htm";
 	}
-	public Future<ServiceResponse> response200SearchPageAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200SearchPageClusterTemplate(SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateSearchPageAiNode(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateSearchPageClusterTemplate(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
+			ClusterTemplatePage page = new ClusterTemplatePage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
+			if(listClusterTemplate.size() >= 1)
+				siteRequest.setRequestPk(listClusterTemplate.get(0).getPk());
+			page.setSearchListClusterTemplate_(listClusterTemplate);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepClusterTemplatePage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2281,19 +1942,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200SearchPageAiNode failed. "), ex);
+					LOG.error(String.format("response200SearchPageClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchPageAiNode failed. "), ex);
+			LOG.error(String.format("response200SearchPageClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchPageClusterTemplate(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2322,7 +1983,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchPageAiNode(pivotFields2, pivotArray2);
+					responsePivotSearchPageClusterTemplate(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2331,22 +1992,22 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// EditPage //
 
 	@Override
-	public void editpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void editpageClusterTemplate(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2360,51 +2021,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200EditPageAiNode(listAiNode).onSuccess(response -> {
+						searchClusterTemplateList(siteRequest, false, true, false).onSuccess(listClusterTemplate -> {
+							response200EditPageClusterTemplate(listClusterTemplate).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("editpageAiNode succeeded. "));
+								LOG.debug(String.format("editpageClusterTemplate succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("editpageAiNode failed. "), ex);
+								LOG.error(String.format("editpageClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("editpageAiNode failed. "), ex);
+							LOG.error(String.format("editpageClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("editpageAiNode failed. "), ex);
+					LOG.error(String.format("editpageClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2413,7 +2046,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("editpageAiNode failed. ", ex2));
+					LOG.error(String.format("editpageClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2428,38 +2061,38 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("editpageAiNode failed. "), ex);
+				LOG.error(String.format("editpageClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void editpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
+	public void editpageClusterTemplatePageInit(ClusterTemplatePage page, SearchList<ClusterTemplate> listClusterTemplate) {
 	}
 
-	public String templateEditPageAiNode(ServiceRequest serviceRequest) {
-		return "en-us/edit/ai-node/AiNodeEditPage.htm";
+	public String templateEditPageClusterTemplate(ServiceRequest serviceRequest) {
+		return "en-us/edit/cluster-template/ClusterTemplateEditPage.htm";
 	}
-	public Future<ServiceResponse> response200EditPageAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200EditPageClusterTemplate(SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateEditPageAiNode(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateEditPageClusterTemplate(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
+			ClusterTemplatePage page = new ClusterTemplatePage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
+			if(listClusterTemplate.size() >= 1)
+				siteRequest.setRequestPk(listClusterTemplate.get(0).getPk());
+			page.setSearchListClusterTemplate_(listClusterTemplate);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepClusterTemplatePage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2467,19 +2100,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200EditPageAiNode failed. "), ex);
+					LOG.error(String.format("response200EditPageClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200EditPageAiNode failed. "), ex);
+			LOG.error(String.format("response200EditPageClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotEditPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotEditPageClusterTemplate(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2508,193 +2141,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotEditPageAiNode(pivotFields2, pivotArray2);
-				}
-			}
-		}
-	}
-
-	// UserPage //
-
-	@Override
-	public void userpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200UserPageAiNode(listAiNode).onSuccess(response -> {
-								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("userpageAiNode succeeded. "));
-							}).onFailure(ex -> {
-								LOG.error(String.format("userpageAiNode failed. "), ex);
-								error(siteRequest, eventHandler, ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(String.format("userpageAiNode failed. "), ex);
-							error(siteRequest, eventHandler, ex);
-						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("userpageAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("userpageAiNode failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("userpageAiNode failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-	}
-
-	public void userpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
-	}
-
-	public String templateUserPageAiNode(ServiceRequest serviceRequest) {
-		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
-	}
-	public Future<ServiceResponse> response200UserPageAiNode(SearchList<AiNode> listAiNode) {
-		Promise<ServiceResponse> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateUserPageAiNode(siteRequest.getServiceRequest());
-			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
-			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
-			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
-			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
-			siteRequest.setRequestHeaders(requestHeaders);
-
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
-			page.setSiteRequest_(siteRequest);
-			page.setServiceRequest(siteRequest.getServiceRequest());
-			page.setWebClient(webClient);
-			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
-				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
-					ctx.mergeIn(JsonObject.mapFrom(page));
-					String renderedTemplate = jinjava.render(template, ctx.getMap());
-					Buffer buffer = Buffer.buffer(renderedTemplate);
-					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
-				} catch(Exception ex) {
-					LOG.error(String.format("response200UserPageAiNode failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				promise.fail(ex);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("response200UserPageAiNode failed. "), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-	public void responsePivotUserPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
-		if(pivots != null) {
-			for(SolrResponse.Pivot pivotField : pivots) {
-				String entityIndexed = pivotField.getField();
-				String entityVar = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-				JsonObject pivotJson = new JsonObject();
-				pivotArray.add(pivotJson);
-				pivotJson.put("field", entityVar);
-				pivotJson.put("value", pivotField.getValue());
-				pivotJson.put("count", pivotField.getCount());
-				Collection<SolrResponse.PivotRange> pivotRanges = pivotField.getRanges().values();
-				List<SolrResponse.Pivot> pivotFields2 = pivotField.getPivotList();
-				if(pivotRanges != null) {
-					JsonObject rangeJson = new JsonObject();
-					pivotJson.put("ranges", rangeJson);
-					for(SolrResponse.PivotRange rangeFacet : pivotRanges) {
-						JsonObject rangeFacetJson = new JsonObject();
-						String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-						rangeJson.put(rangeFacetVar, rangeFacetJson);
-						JsonObject rangeFacetCountsObject = new JsonObject();
-						rangeFacetJson.put("counts", rangeFacetCountsObject);
-						rangeFacet.getCounts().forEach((value, count) -> {
-							rangeFacetCountsObject.put(value, count);
-						});
-					}
-				}
-				if(pivotFields2 != null) {
-					JsonArray pivotArray2 = new JsonArray();
-					pivotJson.put("pivot", pivotArray2);
-					responsePivotUserPageAiNode(pivotFields2, pivotArray2);
+					responsePivotEditPageClusterTemplate(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2703,23 +2150,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// DELETEFilter //
 
 	@Override
-	public void deletefilterAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deletefilterAiNode started. "));
+	public void deletefilterClusterTemplate(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterClusterTemplate started. "));
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
+			if(title != null)
+				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2733,72 +2180,44 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("DELETE")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("DELETE");
-						}
-					}
-
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listClusterTemplate.getRequest().getRows());
+								apiRequest.setNumFound(listClusterTemplate.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listClusterTemplate.first());
+								apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200DELETEFilterAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deletefilterAiNode succeeded. "));
+								listDELETEFilterClusterTemplate(apiRequest, listClusterTemplate).onSuccess(e -> {
+									response200DELETEFilterClusterTemplate(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterClusterTemplate succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deletefilterAiNode failed. "), ex);
+										LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deletefilterAiNode failed. "), ex);
+									LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deletefilterAiNode failed. "), ex);
+								LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deletefilterAiNode failed. "), ex);
+							LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deletefilterAiNode failed. "), ex);
+					LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2807,7 +2226,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deletefilterAiNode failed. ", ex2));
+					LOG.error(String.format("deletefilterClusterTemplate failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2822,66 +2241,67 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEFilterAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listDELETEFilterClusterTemplate(ApiRequest apiRequest, SearchList<ClusterTemplate> listClusterTemplate) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
+		listClusterTemplate.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deletefilterAiNodeFuture(o).onSuccess(a -> {
+				deletefilterClusterTemplateFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+					LOG.error(String.format("listDELETEFilterClusterTemplate failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listClusterTemplate.next().onSuccess(next -> {
 				if(next) {
-					listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listDELETEFilterClusterTemplate(apiRequest, listClusterTemplate).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+						LOG.error(String.format("listDELETEFilterClusterTemplate failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+				LOG.error(String.format("listDELETEFilterClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("listDELETEFilterClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deletefilterAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deletefilterClusterTemplateFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						ClusterTemplate o = listClusterTemplate.first();
+						if(o != null && listClusterTemplate.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -2893,9 +2313,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-							deletefilterAiNodeFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -2904,42 +2324,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deletefilterAiNode failed. "), ex);
+						LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deletefilterAiNode failed. "), ex);
+					LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deletefilterAiNode failed. "), ex);
+			LOG.error(String.format("deletefilterClusterTemplate failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> deletefilterAiNodeFuture(AiNode o) {
+	public Future<ClusterTemplate> deletefilterClusterTemplateFuture(ClusterTemplate o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<ClusterTemplate> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<ClusterTemplate> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlDELETEFilterAiNode(o).onSuccess(aiNode -> {
-						relateAiNode(o).onSuccess(d -> {
-							unindexAiNode(o).onSuccess(o2 -> {
+				varsClusterTemplate(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterClusterTemplate(o).onSuccess(clusterTemplate -> {
+						relateClusterTemplate(o).onSuccess(d -> {
+							unindexClusterTemplate(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiNode();
+										o2.apiRequestClusterTemplate();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -2961,27 +2381,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(o).onSuccess(a -> {
+			}).compose(clusterTemplate -> {
+				Promise<ClusterTemplate> promise2 = Promise.promise();
+				refreshClusterTemplate(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(clusterTemplate -> {
+				promise.complete(clusterTemplate);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deletefilterAiNodeFuture failed. "), ex);
+			LOG.error(String.format("deletefilterClusterTemplateFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEFilterAiNode(AiNode o) {
+	public Future<Void> sqlDELETEFilterClusterTemplate(ClusterTemplate o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -2990,11 +2410,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiNode ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM ClusterTemplate ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			ClusterTemplate o2 = new ClusterTemplate();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -3015,8 +2435,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-					LOG.error(String.format("unrelateAiNode failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value ClusterTemplate failed", ex);
+					LOG.error(String.format("unrelateClusterTemplate failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -3024,27 +2444,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+					LOG.error(String.format("sqlDELETEFilterClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+				LOG.error(String.format("sqlDELETEFilterClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("sqlDELETEFilterClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEFilterAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEFilterClusterTemplate(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
+						String m = String.format("%s %s not found", "cluster template", title);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3052,7 +2472,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("response200DELETEFilterClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3060,78 +2480,78 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	// General //
 
-	public Future<AiNode> createAiNode(SiteRequest siteRequest) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> createClusterTemplate(SiteRequest siteRequest) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
 			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-			sqlConnection.preparedQuery("INSERT INTO AiNode(created, userKey) VALUES($1, $2) RETURNING pk")
+			sqlConnection.preparedQuery("INSERT INTO ClusterTemplate(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
 				Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
 				Long pk = createLine.getLong(0);
-				AiNode o = new AiNode();
+				ClusterTemplate o = new ClusterTemplate();
 				o.setPk(pk);
 				o.setSiteRequest_(siteRequest);
 				promise.complete(o);
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error("createAiNode failed. ", ex2);
+				LOG.error("createClusterTemplate failed. ", ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("createAiNode failed. "), ex);
+			LOG.error(String.format("createClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public void searchAiNodeQ(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchClusterTemplateQ(SearchList<ClusterTemplate> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
 		if(!"*".equals(entityVar)) {
 		}
 	}
 
-	public String searchAiNodeFq(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public String searchClusterTemplateFq(SearchList<ClusterTemplate> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		if(StringUtils.startsWith(valueIndexed, "[")) {
 			String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
 			if(fqs.length != 2)
 				throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-			String fq1 = fqs[0].equals("*") ? fqs[0] : AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-			String fq2 = fqs[1].equals("*") ? fqs[1] : AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+			String fq1 = fqs[0].equals("*") ? fqs[0] : ClusterTemplate.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+			String fq2 = fqs[1].equals("*") ? fqs[1] : ClusterTemplate.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
 			 return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
 		} else {
-			return varIndexed + ":" + SearchTool.escapeQueryChars(AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+			return varIndexed + ":" + SearchTool.escapeQueryChars(ClusterTemplate.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
 		}
 	}
 
-	public void searchAiNodeSort(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchClusterTemplateSort(SearchList<ClusterTemplate> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		searchList.sort(varIndexed, valueIndexed);
 	}
 
-	public void searchAiNodeRows(SearchList<AiNode> searchList, Long valueRows) {
+	public void searchClusterTemplateRows(SearchList<ClusterTemplate> searchList, Long valueRows) {
 			searchList.rows(valueRows != null ? valueRows : 10L);
 	}
 
-	public void searchAiNodeStart(SearchList<AiNode> searchList, Long valueStart) {
+	public void searchClusterTemplateStart(SearchList<ClusterTemplate> searchList, Long valueStart) {
 		searchList.start(valueStart);
 	}
 
-	public void searchAiNodeVar(SearchList<AiNode> searchList, String var, String value) {
+	public void searchClusterTemplateVar(SearchList<ClusterTemplate> searchList, String var, String value) {
 		searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
 	}
 
-	public void searchAiNodeUri(SearchList<AiNode> searchList) {
+	public void searchClusterTemplateUri(SearchList<ClusterTemplate> searchList) {
 	}
 
-	public Future<ServiceResponse> varsAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> varsClusterTemplate(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -3149,25 +2569,25 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						siteRequest.getRequestVars().put(entityVar, valueIndexed);
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchAiNode failed. "), ex);
+					LOG.error(String.format("searchClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				}
 			});
 			promise.complete();
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiNode failed. "), ex);
+			LOG.error(String.format("searchClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<SearchList<AiNode>> searchAiNodeList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
-		Promise<SearchList<AiNode>> promise = Promise.promise();
+	public Future<SearchList<ClusterTemplate>> searchClusterTemplateList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
+		Promise<SearchList<ClusterTemplate>> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
 			String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
 			String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-			SearchList<AiNode> searchList = new SearchList<AiNode>();
+			SearchList<ClusterTemplate> searchList = new SearchList<ClusterTemplate>();
 			String facetRange = null;
 			Date facetRangeStart = null;
 			Date facetRangeEnd = null;
@@ -3177,20 +2597,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			searchList.setPopulate(populate);
 			searchList.setStore(store);
 			searchList.q("*:*");
-			searchList.setC(AiNode.class);
+			searchList.setC(ClusterTemplate.class);
 			searchList.setSiteRequest_(siteRequest);
 			searchList.facetMinCount(1);
 			if(entityList != null) {
 				for(String v : entityList) {
-					searchList.fl(AiNode.varIndexedAiNode(v));
+					searchList.fl(ClusterTemplate.varIndexedClusterTemplate(v));
 				}
 			}
 
-			String nodeId = serviceRequest.getParams().getJsonObject("path").getString("nodeId");
-			if(nodeId != null && NumberUtils.isCreatable(nodeId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + " OR nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + ")");
-			} else if(nodeId != null) {
-				searchList.fq("nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId));
+			String title = serviceRequest.getParams().getJsonObject("path").getString("title");
+			if(title != null && NumberUtils.isCreatable(title)) {
+				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(title) + " OR title_docvalues_string:" + SearchTool.escapeQueryChars(title) + ")");
+			} else if(title != null) {
+				searchList.fq("title_docvalues_string:" + SearchTool.escapeQueryChars(title));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -3213,7 +2633,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							String[] varsIndexed = new String[entityVars.length];
 							for(Integer i = 0; i < entityVars.length; i++) {
 								entityVar = entityVars[i];
-								varsIndexed[i] = AiNode.varIndexedAiNode(entityVar);
+								varsIndexed[i] = ClusterTemplate.varIndexedClusterTemplate(entityVar);
 							}
 							searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
 						}
@@ -3225,8 +2645,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								while(mQ.find()) {
 									entityVar = mQ.group(1).trim();
 									valueIndexed = mQ.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
-									String entityQ = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
+									String entityQ = searchClusterTemplateFq(searchList, entityVar, valueIndexed, varIndexed);
 									mQ.appendReplacement(sb, entityQ);
 								}
 								if(!sb.isEmpty()) {
@@ -3239,8 +2659,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								while(mFq.find()) {
 									entityVar = mFq.group(1).trim();
 									valueIndexed = mFq.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
-									String entityFq = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
+									String entityFq = searchClusterTemplateFq(searchList, entityVar, valueIndexed, varIndexed);
 									mFq.appendReplacement(sb, entityFq);
 								}
 								if(!sb.isEmpty()) {
@@ -3250,14 +2670,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							} else if(paramName.equals("sort")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
 								valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-								varIndexed = AiNode.varIndexedAiNode(entityVar);
-								searchAiNodeSort(searchList, entityVar, valueIndexed, varIndexed);
+								varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
+								searchClusterTemplateSort(searchList, entityVar, valueIndexed, varIndexed);
 							} else if(paramName.equals("start")) {
 								valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiNodeStart(searchList, valueStart);
+								searchClusterTemplateStart(searchList, valueStart);
 							} else if(paramName.equals("rows")) {
 								valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiNodeRows(searchList, valueRows);
+								searchClusterTemplateRows(searchList, valueRows);
 							} else if(paramName.equals("stats")) {
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
@@ -3265,7 +2685,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
 									searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									statsField = entityVar;
 									statsFieldIndexed = varIndexed;
@@ -3291,25 +2711,25 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
 									searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									facetRange = entityVar;
 								}
 							} else if(paramName.equals("facet.field")) {
 								entityVar = (String)paramObject;
-								varIndexed = AiNode.varIndexedAiNode(entityVar);
+								varIndexed = ClusterTemplate.varIndexedClusterTemplate(entityVar);
 								if(varIndexed != null)
 									searchList.facetField(varIndexed);
 							} else if(paramName.equals("var")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
 								valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-								searchAiNodeVar(searchList, entityVar, valueIndexed);
+								searchClusterTemplateVar(searchList, entityVar, valueIndexed);
 							} else if(paramName.equals("cursorMark")) {
 								valueCursorMark = (String)paramObject;
 								searchList.cursorMark((String)paramObject);
 							}
 						}
-						searchAiNodeUri(searchList);
+						searchClusterTemplateUri(searchList);
 					}
 				} catch(Exception e) {
 					ExceptionUtils.rethrow(e);
@@ -3324,7 +2744,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			String facetRangeGap2 = facetRangeGap;
 			String statsField2 = statsField;
 			String statsFieldIndexed2 = statsFieldIndexed;
-			searchAiNode2(siteRequest, populate, store, modify, searchList);
+			searchClusterTemplate2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
 				if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
 					StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3360,32 +2780,32 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					searchList.query().onSuccess(b -> {
 						promise.complete(searchList);
 					}).onFailure(ex -> {
-						LOG.error(String.format("searchAiNode failed. "), ex);
+						LOG.error(String.format("searchClusterTemplate failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete(searchList);
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("searchAiNode failed. "), ex);
+				LOG.error(String.format("searchClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiNode failed. "), ex);
+			LOG.error(String.format("searchClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void searchAiNode2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<AiNode> searchList) {
+	public void searchClusterTemplate2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<ClusterTemplate> searchList) {
 	}
 
-	public Future<Void> persistAiNode(AiNode o, Boolean patch) {
+	public Future<Void> persistClusterTemplate(ClusterTemplate o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT * FROM AiNode WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT * FROM ClusterTemplate WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3398,7 +2818,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								try {
 									o.persistForClass(columnName, columnValue);
 								} catch(Exception e) {
-									LOG.error(String.format("persistAiNode failed. "), e);
+									LOG.error(String.format("persistClusterTemplate failed. "), e);
 								}
 							}
 						}
@@ -3406,42 +2826,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					o.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("persistAiNode failed. "), ex);
+						LOG.error(String.format("persistClusterTemplate failed. "), ex);
 						promise.fail(ex);
 					});
 				} catch(Exception ex) {
-					LOG.error(String.format("persistAiNode failed. "), ex);
+					LOG.error(String.format("persistClusterTemplate failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("persistAiNode failed. "), ex2);
+				LOG.error(String.format("persistClusterTemplate failed. "), ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("persistAiNode failed. "), ex);
+			LOG.error(String.format("persistClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> relateAiNode(AiNode o) {
+	public Future<Void> relateClusterTemplate(ClusterTemplate o) {
 		Promise<Void> promise = Promise.promise();
 			promise.complete();
 		return promise.future();
 	}
 
 	public String searchVar(String varIndexed) {
-		return AiNode.searchVarAiNode(varIndexed);
+		return ClusterTemplate.searchVarClusterTemplate(varIndexed);
 	}
 
 	@Override
 	public String getClassApiAddress() {
-		return AiNode.CLASS_API_ADDRESS_AiNode;
+		return ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate;
 	}
 
-	public Future<AiNode> indexAiNode(AiNode o) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> indexClusterTemplate(ClusterTemplate o) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3450,7 +2870,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			json.put("add", add);
 			JsonObject doc = new JsonObject();
 			add.put("doc", doc);
-			o.indexAiNode(doc);
+			o.indexClusterTemplate(doc);
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3467,18 +2887,18 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
-				LOG.error(String.format("indexAiNode failed. "), new RuntimeException(ex));
+				LOG.error(String.format("indexClusterTemplate failed. "), new RuntimeException(ex));
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("indexAiNode failed. "), ex);
+			LOG.error(String.format("indexClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> unindexAiNode(AiNode o) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<ClusterTemplate> unindexClusterTemplate(ClusterTemplate o) {
+		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3504,21 +2924,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
-					LOG.error(String.format("unindexAiNode failed. "), new RuntimeException(ex));
+					LOG.error(String.format("unindexClusterTemplate failed. "), new RuntimeException(ex));
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("unindexAiNode failed. "), ex);
+				LOG.error(String.format("unindexClusterTemplate failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("unindexAiNode failed. "), ex);
+			LOG.error(String.format("unindexClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> refreshAiNode(AiNode o) {
+	public Future<Void> refreshClusterTemplate(ClusterTemplate o) {
 		Promise<Void> promise = Promise.promise();
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
@@ -3554,7 +2974,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAiNodeFuture")).onSuccess(c -> {
+					eventBus.request(ClusterTemplate.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchClusterTemplateFuture")).onSuccess(c -> {
 						JsonObject responseMessage = (JsonObject)c.body();
 						Integer statusCode = responseMessage.getInteger("statusCode");
 						if(statusCode.equals(200))
@@ -3573,7 +2993,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete();
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("refreshAiNode failed. "), ex);
+			LOG.error(String.format("refreshClusterTemplate failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3586,26 +3006,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
 			SiteRequest siteRequest2 = (SiteRequest)siteRequest;
 			String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-			AiNode page = new AiNode();
+			ClusterTemplate page = new ClusterTemplate();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(AiNode.VAR_clusterName, AiNode.staticSetClusterName(siteRequest2, (String)result.get(AiNode.VAR_clusterName)));
-			page.persistForClass(AiNode.VAR_nodeName, AiNode.staticSetNodeName(siteRequest2, (String)result.get(AiNode.VAR_nodeName)));
-			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created)));
-			page.persistForClass(AiNode.VAR_nodeId, AiNode.staticSetNodeId(siteRequest2, (String)result.get(AiNode.VAR_nodeId)));
-			page.persistForClass(AiNode.VAR_description, AiNode.staticSetDescription(siteRequest2, (String)result.get(AiNode.VAR_description)));
-			page.persistForClass(AiNode.VAR_archived, AiNode.staticSetArchived(siteRequest2, (String)result.get(AiNode.VAR_archived)));
-			page.persistForClass(AiNode.VAR_location, AiNode.staticSetLocation(siteRequest2, (String)result.get(AiNode.VAR_location)));
-			page.persistForClass(AiNode.VAR_sessionId, AiNode.staticSetSessionId(siteRequest2, (String)result.get(AiNode.VAR_sessionId)));
-			page.persistForClass(AiNode.VAR_gpuDevicesTotal, AiNode.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiNode.VAR_gpuDevicesTotal)));
-			page.persistForClass(AiNode.VAR_userKey, AiNode.staticSetUserKey(siteRequest2, (String)result.get(AiNode.VAR_userKey)));
-			page.persistForClass(AiNode.VAR_id, AiNode.staticSetId(siteRequest2, (String)result.get(AiNode.VAR_id)));
-			page.persistForClass(AiNode.VAR_ngsildTenant, AiNode.staticSetNgsildTenant(siteRequest2, (String)result.get(AiNode.VAR_ngsildTenant)));
-			page.persistForClass(AiNode.VAR_objectTitle, AiNode.staticSetObjectTitle(siteRequest2, (String)result.get(AiNode.VAR_objectTitle)));
-			page.persistForClass(AiNode.VAR_ngsildPath, AiNode.staticSetNgsildPath(siteRequest2, (String)result.get(AiNode.VAR_ngsildPath)));
-			page.persistForClass(AiNode.VAR_displayPage, AiNode.staticSetDisplayPage(siteRequest2, (String)result.get(AiNode.VAR_displayPage)));
-			page.persistForClass(AiNode.VAR_ngsildContext, AiNode.staticSetNgsildContext(siteRequest2, (String)result.get(AiNode.VAR_ngsildContext)));
-			page.persistForClass(AiNode.VAR_ngsildData, AiNode.staticSetNgsildData(siteRequest2, (String)result.get(AiNode.VAR_ngsildData)));
+			page.persistForClass(ClusterTemplate.VAR_id, ClusterTemplate.staticSetId(siteRequest2, (String)result.get(ClusterTemplate.VAR_id)));
+			page.persistForClass(ClusterTemplate.VAR_created, ClusterTemplate.staticSetCreated(siteRequest2, (String)result.get(ClusterTemplate.VAR_created)));
+			page.persistForClass(ClusterTemplate.VAR_title, ClusterTemplate.staticSetTitle(siteRequest2, (String)result.get(ClusterTemplate.VAR_title)));
+			page.persistForClass(ClusterTemplate.VAR_description, ClusterTemplate.staticSetDescription(siteRequest2, (String)result.get(ClusterTemplate.VAR_description)));
+			page.persistForClass(ClusterTemplate.VAR_archived, ClusterTemplate.staticSetArchived(siteRequest2, (String)result.get(ClusterTemplate.VAR_archived)));
+			page.persistForClass(ClusterTemplate.VAR_parameters, ClusterTemplate.staticSetParameters(siteRequest2, (String)result.get(ClusterTemplate.VAR_parameters)));
+			page.persistForClass(ClusterTemplate.VAR_sessionId, ClusterTemplate.staticSetSessionId(siteRequest2, (String)result.get(ClusterTemplate.VAR_sessionId)));
+			page.persistForClass(ClusterTemplate.VAR_userKey, ClusterTemplate.staticSetUserKey(siteRequest2, (String)result.get(ClusterTemplate.VAR_userKey)));
+			page.persistForClass(ClusterTemplate.VAR_objectTitle, ClusterTemplate.staticSetObjectTitle(siteRequest2, (String)result.get(ClusterTemplate.VAR_objectTitle)));
+			page.persistForClass(ClusterTemplate.VAR_displayPage, ClusterTemplate.staticSetDisplayPage(siteRequest2, (String)result.get(ClusterTemplate.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

@@ -583,13 +583,13 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(SiteUser.VAR_title + "=$" + num);
+							bSql.append(SiteUser.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1009,14 +1009,14 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case SiteUser.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case SiteUser.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(SiteUser.VAR_title + "=$" + num);
+						bSql.append(SiteUser.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case SiteUser.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1845,7 +1845,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			page.persistForClass(SiteUser.VAR_sessionId, SiteUser.staticSetSessionId(siteRequest2, (String)result.get(SiteUser.VAR_sessionId)));
 			page.persistForClass(SiteUser.VAR_displayName, SiteUser.staticSetDisplayName(siteRequest2, (String)result.get(SiteUser.VAR_displayName)));
 			page.persistForClass(SiteUser.VAR_userKey, SiteUser.staticSetUserKey(siteRequest2, (String)result.get(SiteUser.VAR_userKey)));
-			page.persistForClass(SiteUser.VAR_title, SiteUser.staticSetTitle(siteRequest2, (String)result.get(SiteUser.VAR_title)));
+			page.persistForClass(SiteUser.VAR_objectTitle, SiteUser.staticSetObjectTitle(siteRequest2, (String)result.get(SiteUser.VAR_objectTitle)));
 			page.persistForClass(SiteUser.VAR_displayPage, SiteUser.staticSetDisplayPage(siteRequest2, (String)result.get(SiteUser.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {

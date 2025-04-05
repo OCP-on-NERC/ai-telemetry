@@ -584,3 +584,18 @@ AUTH_SECRET_SA: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AU
 # grafana #
 ###########
 GRAFANA_BASE_URL: https://grafana.apps.obs.nerc.mghpcc.org
+
+###################
+# Fulfillment API #
+###################
+
+# The Auth openshift secret with the admin credentials. 
+FULFILLMENT_API_OPENSHIFT_SECRET: "{{ lookup('env', 'FULFILLMENT_API_OPENSHIFT_SECRET') | default('fulfillment-api', true) }}"
+# The Auth admin username. 
+FULFILLMENT_API_OPENSHIFT_TOKEN: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=FULFILLMENT_API_OPENSHIFT_SECRET, namespace=SITE_NAMESPACE)[0].data['token'] | b64decode }}"
+# Whether to use SSL when connecting to the fulfillment API. 
+FULFILLMENT_API_SSL: "{{ (lookup('env', 'FULFILLMENT_API_SSL') | lower) != 'false' }}"
+# The host name to connect to the fulfillment API in OpenShift. 
+FULFILLMENT_API_HOST_NAME: "{{ lookup('env', 'FULFILLMENT_API_HOST_NAME') | default('', true) }}"
+# The default port that the fulfillment API runs. 
+FULFILLMENT_API_PORT: "{{ lookup('env', 'FULFILLMENT_API_PORT') | default('443', true) }}"

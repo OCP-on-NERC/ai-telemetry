@@ -752,13 +752,13 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							num++;
 							bParams.add(o2.sqlNgsildData());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_title + "=$" + num);
+							bSql.append(GpuSlice.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1205,14 +1205,14 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						num++;
 						bParams.add(o2.sqlNgsildData());
 						break;
-					case GpuSlice.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case GpuSlice.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_title + "=$" + num);
+						bSql.append(GpuSlice.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case GpuSlice.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -3244,7 +3244,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			page.persistForClass(GpuSlice.VAR_ngsildPath, GpuSlice.staticSetNgsildPath(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildPath)));
 			page.persistForClass(GpuSlice.VAR_ngsildContext, GpuSlice.staticSetNgsildContext(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildContext)));
 			page.persistForClass(GpuSlice.VAR_ngsildData, GpuSlice.staticSetNgsildData(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildData)));
-			page.persistForClass(GpuSlice.VAR_title, GpuSlice.staticSetTitle(siteRequest2, (String)result.get(GpuSlice.VAR_title)));
+			page.persistForClass(GpuSlice.VAR_objectTitle, GpuSlice.staticSetObjectTitle(siteRequest2, (String)result.get(GpuSlice.VAR_objectTitle)));
 			page.persistForClass(GpuSlice.VAR_displayPage, GpuSlice.staticSetDisplayPage(siteRequest2, (String)result.get(GpuSlice.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {

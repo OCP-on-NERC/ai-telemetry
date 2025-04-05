@@ -1411,7 +1411,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override

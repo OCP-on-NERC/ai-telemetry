@@ -1,11 +1,8 @@
-package org.mghpcc.aitelemetry.model.node;
+package org.mghpcc.aitelemetry.model.clustertemplate;
 
-import org.mghpcc.aitelemetry.model.node.AiNode;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
 import java.lang.String;
-import java.util.List;
-import io.vertx.pgclient.data.Point;
-import java.lang.Integer;
-import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -23,12 +20,13 @@ import java.time.temporal.ChronoUnit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Locale;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
-import io.vertx.core.json.JsonArray;
 import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -50,37 +48,37 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
+public class ClusterTemplateGenPage extends ClusterTemplateGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
    * Ignore: true
    **/
-  protected void _searchListAiNode_(Wrap<SearchList<AiNode>> w) {
+  protected void _searchListClusterTemplate_(Wrap<SearchList<ClusterTemplate>> w) {
   }
 
   @Override
   protected void _pageResponse(Wrap<String> w) {
-    if(searchListAiNode_ != null)
-      w.o(JsonObject.mapFrom(searchListAiNode_.getResponse()).toString());
+    if(searchListClusterTemplate_ != null)
+      w.o(JsonObject.mapFrom(searchListClusterTemplate_.getResponse()).toString());
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListAiNode_.getResponse().getStats());
+    w.o(searchListClusterTemplate_.getResponse().getStats());
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListAiNode_.getResponse().getFacetCounts());
+    w.o(searchListClusterTemplate_.getResponse().getFacetCounts());
   }
 
   @Override
   protected void _pagination(JsonObject pagination) {
     JsonArray pages = new JsonArray();
-    Long start = searchListAiNode_.getStart().longValue();
-    Long rows = searchListAiNode_.getRows().longValue();
-    Long foundNum = searchListAiNode_.getResponse().getResponse().getNumFound().longValue();
+    Long start = searchListClusterTemplate_.getStart().longValue();
+    Long rows = searchListClusterTemplate_.getRows().longValue();
+    Long foundNum = searchListClusterTemplate_.getResponse().getResponse().getNumFound().longValue();
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -122,12 +120,12 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _varsQ(JsonObject vars) {
-    AiNode.varsQForClass().forEach(var -> {
+    ClusterTemplate.varsQForClass().forEach(var -> {
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiNode.displayNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiNode.classSimpleNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", Optional.ofNullable(searchListAiNode_.getRequest().getQuery()).filter(fq -> fq.startsWith(AiNode.varIndexedAiNode(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(ClusterTemplate.displayNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(ClusterTemplate.classSimpleNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", Optional.ofNullable(searchListClusterTemplate_.getRequest().getQuery()).filter(fq -> fq.startsWith(ClusterTemplate.varIndexedClusterTemplate(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -139,18 +137,18 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
   @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    Integer varsFqCount = 0;
-    for(String var : AiNode.varsFqForClass()) {
-      String varIndexed = AiNode.varIndexedAiNode(var);
-      String varStored = AiNode.varStoredAiNode(var);
+    varsFqCount = 0;
+    for(String var : ClusterTemplate.varsFqForClass()) {
+      String varIndexed = ClusterTemplate.varIndexedClusterTemplate(var);
+      String varStored = ClusterTemplate.varStoredClusterTemplate(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
       json.put("varStored", varStored);
       json.put("varIndexed", varIndexed);
       String type = StringUtils.substringAfterLast(varIndexed, "_");
-      json.put("displayName", Optional.ofNullable(AiNode.displayNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiNode.classSimpleNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      Object v = searchListAiNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiNode.varIndexedAiNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      json.put("displayName", Optional.ofNullable(ClusterTemplate.displayNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(ClusterTemplate.classSimpleNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      Object v = searchListClusterTemplate_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(ClusterTemplate.varIndexedClusterTemplate(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
       if(v != null) {
         json.put("val", v);
         varsFqCount++;
@@ -216,13 +214,13 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _varsRange(JsonObject vars) {
-    AiNode.varsRangeForClass().forEach(var -> {
-      String varIndexed = AiNode.varIndexedAiNode(var);
+    ClusterTemplate.varsRangeForClass().forEach(var -> {
+      String varIndexed = ClusterTemplate.varIndexedClusterTemplate(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiNode.displayNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiNode.classSimpleNameAiNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListAiNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiNode.varIndexedAiNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(ClusterTemplate.displayNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(ClusterTemplate.classSimpleNameClusterTemplate(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", searchListClusterTemplate_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(ClusterTemplate.varIndexedClusterTemplate(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -233,7 +231,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListAiNode_.getResponse().getResponse().getNumFound().longValue();
+    Long num = searchListClusterTemplate_.getResponse().getResponse().getNumFound().longValue();
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
@@ -261,28 +259,28 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
     }
     query.put("q", q);
 
-    Long rows1 = Optional.ofNullable(searchListAiNode_).map(l -> l.getRows()).orElse(10L);
-    Long start1 = Optional.ofNullable(searchListAiNode_).map(l -> l.getStart()).orElse(1L);
+    Long rows1 = Optional.ofNullable(searchListClusterTemplate_).map(l -> l.getRows()).orElse(10L);
+    Long start1 = Optional.ofNullable(searchListClusterTemplate_).map(l -> l.getStart()).orElse(1L);
     Long start2 = start1 - rows1;
     Long start3 = start1 + rows1;
     Long rows2 = rows1 / 2;
     Long rows3 = rows1 * 2;
     start2 = start2 < 0 ? 0 : start2;
     JsonObject fqs = new JsonObject();
-    for(String fq : Optional.ofNullable(searchListAiNode_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
+    for(String fq : Optional.ofNullable(searchListClusterTemplate_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
       if(!StringUtils.contains(fq, "(")) {
-        String fq1 = AiNode.searchVarAiNode(StringUtils.substringBefore(fq, ":"));
+        String fq1 = ClusterTemplate.searchVarClusterTemplate(StringUtils.substringBefore(fq, ":"));
         String fq2 = StringUtils.substringAfter(fq, ":");
         if(!StringUtils.startsWithAny(fq, "classCanonicalNames_", "archived_", "sessionId", "userKeys"))
-          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", AiNode.displayNameForClass(fq1)));
+          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", ClusterTemplate.displayNameForClass(fq1)));
         }
       }
     query.put("fq", fqs);
 
     JsonArray sorts = new JsonArray();
-    for(String sort : Optional.ofNullable(searchListAiNode_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
-      String sort1 = AiNode.searchVarAiNode(StringUtils.substringBefore(sort, " "));
-      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", AiNode.displayNameForClass(sort1)));
+    for(String sort : Optional.ofNullable(searchListClusterTemplate_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
+      String sort1 = ClusterTemplate.searchVarClusterTemplate(StringUtils.substringBefore(sort, " "));
+      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", ClusterTemplate.displayNameForClass(sort1)));
     }
     query.put("sort", sorts);
   }
@@ -316,31 +314,31 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
   @Override
   protected void _rows(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("rows", null) != null)
-      w.o(searchListAiNode_.getRows());
+      w.o(searchListClusterTemplate_.getRows());
   }
 
   @Override
   protected void _start(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("start", null) != null)
-      w.o(searchListAiNode_.getStart());
+      w.o(searchListClusterTemplate_.getStart());
   }
 
   @Override
   protected void _rangeGap(Wrap<String> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.gap", null) != null)
-      w.o(Optional.ofNullable(searchListAiNode_.getFacetRangeGap()).orElse(null));
+      w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetRangeGap()).orElse(null));
   }
 
   @Override
   protected void _rangeEnd(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.end", null) != null)
-      w.o(Optional.ofNullable(searchListAiNode_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
   protected void _rangeStart(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.start", null) != null)
-      w.o(Optional.ofNullable(searchListAiNode_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
@@ -360,33 +358,31 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeVar(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiNode_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return AiNode.searchVarAiNode(v); }).orElse("created"));
+    w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return ClusterTemplate.searchVarClusterTemplate(v); }).orElse("created"));
   }
 
   @Override
   protected void _defaultFacetSort(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiNode_.getFacetSort()).orElse("index"));
+    w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetSort()).orElse("index"));
   }
 
   @Override
   protected void _defaultFacetLimit(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiNode_.getFacetLimit()).orElse(1));
+    w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetLimit()).orElse(1));
   }
 
   @Override
   protected void _defaultFacetMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiNode_.getFacetMinCount()).orElse(1));
+    w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetMinCount()).orElse(1));
   }
 
   @Override
   protected void _defaultPivotMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiNode_.getFacetPivotMinCount()).orElse(0));
+    w.o(Optional.ofNullable(searchListClusterTemplate_.getFacetPivotMinCount()).orElse(0));
   }
 
   @Override
   protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
-    Point point = AiNode.staticSetLocation(siteRequest_, Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_LOCATION)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION)));
-    w.o(new JsonObject().put("type", "Point").put("coordinates", new JsonArray().add(Double.valueOf(point.getX())).add(Double.valueOf(point.getY()))));
   }
 
   @Override
@@ -398,10 +394,10 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultSortVars(List<String> l) {
-    if(!searchListAiNode_.getDefaultSort()) {
-      Optional.ofNullable(searchListAiNode_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+    if(!searchListClusterTemplate_.getDefaultSort()) {
+      Optional.ofNullable(searchListClusterTemplate_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
         String varSortParts[] = varSortStr.split(" ");
-        String varSort = AiNode.searchVarAiNode(varSortParts[0]);
+        String varSort = ClusterTemplate.searchVarClusterTemplate(varSortParts[0]);
         String varSortDirection = varSortParts[1];
         l.add(String.format("%s %s", varSort, varSortDirection));
       });
@@ -410,14 +406,14 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultFieldListVars(List<String> l) {
-    Optional.ofNullable(searchListAiNode_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
+    Optional.ofNullable(searchListClusterTemplate_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
       if(StringUtils.contains(varStored2, "}"))
         varStored2 = StringUtils.substringAfterLast(varStored2, "}");
       String[] parts = varStored2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiNode.searchVarAiNode(part);
+          String var = ClusterTemplate.searchVarClusterTemplate(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -427,14 +423,14 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultStatsVars(List<String> l) {
-    Optional.ofNullable(searchListAiNode_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
+    Optional.ofNullable(searchListClusterTemplate_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
       String varIndexed2 = varIndexed;
       if(StringUtils.contains(varIndexed2, "}"))
         varIndexed2 = StringUtils.substringAfterLast(varIndexed2, "}");
       String[] parts = varIndexed2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiNode.searchVarAiNode(part);
+          String var = ClusterTemplate.searchVarClusterTemplate(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -444,14 +440,14 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultPivotVars(List<String> l) {
-    Optional.ofNullable(searchListAiNode_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
+    Optional.ofNullable(searchListClusterTemplate_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
       String facetPivot2 = facetPivot;
       if(StringUtils.contains(facetPivot2, "}"))
         facetPivot2 = StringUtils.substringAfterLast(facetPivot2, "}");
       String[] parts = facetPivot2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiNode.searchVarAiNode(part);
+          String var = ClusterTemplate.searchVarClusterTemplate(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -462,20 +458,20 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
   /**
    * {@inheritDoc}
    **/
-  protected void _listAiNode(JsonArray l) {
-    Optional.ofNullable(searchListAiNode_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
+  protected void _listClusterTemplate(JsonArray l) {
+    Optional.ofNullable(searchListClusterTemplate_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
   protected void _resultCount(Wrap<Integer> w) {
-    w.o(searchListAiNode_ == null ? 0 : searchListAiNode_.size());
+    w.o(searchListClusterTemplate_ == null ? 0 : searchListClusterTemplate_.size());
   }
 
   /**
    * Initialized: false
   **/
-  protected void _result(Wrap<AiNode> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("nodeId")).orElse(null) != null)
-      w.o(searchListAiNode_.get(0));
+  protected void _result(Wrap<ClusterTemplate> w) {
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("title")).orElse(null) != null)
+      w.o(searchListClusterTemplate_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
@@ -495,7 +491,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _classSimpleName(Wrap<String> w) {
-    w.o("AiNode");
+    w.o("ClusterTemplate");
   }
 
   @Override
@@ -503,21 +499,21 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("AI nodes");
-    else if(searchListAiNode_ == null || resultCount == 0)
-      c.o("no AI node found");
+      c.o("cluster templates");
+    else if(searchListClusterTemplate_ == null || resultCount == 0)
+      c.o("no cluster template found");
     else
-      c.o("AI nodes");
+      c.o("cluster templates");
   }
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/en-us/search/ai-node");
+    c.o("/en-us/search/cluster-template");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/en-us/api/ai-node");
+    c.o("/en-us/api/cluster-template");
   }
 
   @Override
@@ -527,20 +523,20 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
 
   @Override
   protected void _pageDescription(Wrap<String> c) {
-      c.o("A Red Hat OpenShift node containing GPUs");
+      c.o("An OpenShift cluster template");
   }
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/en-us/search/ai-node-999.png");
+      c.o("/png/en-us/search/cluster-template-999.png");
   }
 
   @Override
   protected void _classIcon(Wrap<String> c) {
-      c.o("<i class=\"fa-regular fa-computer\"></i>");
+      c.o("<i class=\"fa-regular fa-server\"></i>");
   }
 
-  protected void _pageUriAiNode(Wrap<String> c) {
-      c.o("/en-us/search/ai-node");
+  protected void _pageUriClusterTemplate(Wrap<String> c) {
+      c.o("/en-us/search/cluster-template");
   }
 }

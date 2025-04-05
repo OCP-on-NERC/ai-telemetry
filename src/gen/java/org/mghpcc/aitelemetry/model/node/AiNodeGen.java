@@ -2112,7 +2112,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override

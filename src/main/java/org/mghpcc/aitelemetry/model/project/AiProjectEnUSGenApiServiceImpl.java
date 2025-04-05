@@ -804,13 +804,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_title + "=$" + num);
+							bSql.append(AiProject.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1249,14 +1249,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiProject.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case AiProject.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_title + "=$" + num);
+						bSql.append(AiProject.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiProject.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -3480,7 +3480,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
 			page.persistForClass(AiProject.VAR_sessionId, AiProject.staticSetSessionId(siteRequest2, (String)result.get(AiProject.VAR_sessionId)));
 			page.persistForClass(AiProject.VAR_userKey, AiProject.staticSetUserKey(siteRequest2, (String)result.get(AiProject.VAR_userKey)));
-			page.persistForClass(AiProject.VAR_title, AiProject.staticSetTitle(siteRequest2, (String)result.get(AiProject.VAR_title)));
+			page.persistForClass(AiProject.VAR_objectTitle, AiProject.staticSetObjectTitle(siteRequest2, (String)result.get(AiProject.VAR_objectTitle)));
 			page.persistForClass(AiProject.VAR_displayPage, AiProject.staticSetDisplayPage(siteRequest2, (String)result.get(AiProject.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {

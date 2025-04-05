@@ -752,13 +752,13 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlId());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_title + "=$" + num);
+							bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setNgsildTenant":
 							o2.setNgsildTenant(jsonObject.getString(entityVar));
@@ -1237,14 +1237,14 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlId());
 						break;
-					case GpuDevice.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_title + "=$" + num);
+						bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case GpuDevice.VAR_ngsildTenant:
 						o2.setNgsildTenant(jsonObject.getString(entityVar));
@@ -3312,7 +3312,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(GpuDevice.VAR_userKey, GpuDevice.staticSetUserKey(siteRequest2, (String)result.get(GpuDevice.VAR_userKey)));
 			page.persistForClass(GpuDevice.VAR_location, GpuDevice.staticSetLocation(siteRequest2, (String)result.get(GpuDevice.VAR_location)));
 			page.persistForClass(GpuDevice.VAR_id, GpuDevice.staticSetId(siteRequest2, (String)result.get(GpuDevice.VAR_id)));
-			page.persistForClass(GpuDevice.VAR_title, GpuDevice.staticSetTitle(siteRequest2, (String)result.get(GpuDevice.VAR_title)));
+			page.persistForClass(GpuDevice.VAR_objectTitle, GpuDevice.staticSetObjectTitle(siteRequest2, (String)result.get(GpuDevice.VAR_objectTitle)));
 			page.persistForClass(GpuDevice.VAR_ngsildTenant, GpuDevice.staticSetNgsildTenant(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildTenant)));
 			page.persistForClass(GpuDevice.VAR_displayPage, GpuDevice.staticSetDisplayPage(siteRequest2, (String)result.get(GpuDevice.VAR_displayPage)));
 			page.persistForClass(GpuDevice.VAR_ngsildPath, GpuDevice.staticSetNgsildPath(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildPath)));
