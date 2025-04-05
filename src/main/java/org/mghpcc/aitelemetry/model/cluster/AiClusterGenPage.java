@@ -6,6 +6,9 @@ import java.util.List;
 import io.vertx.pgclient.data.Point;
 import io.vertx.core.json.JsonObject;
 import java.lang.Integer;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -17,12 +20,9 @@ import org.computate.search.wrap.Wrap;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Locale;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonArray;
 import java.net.URLDecoder;
@@ -500,8 +500,8 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _pageTitle(Wrap<String> c) {
-    if(result != null && result.getTitle() != null)
-      c.o(result.getTitle());
+    if(result != null && result.getObjectTitle() != null)
+      c.o(result.getObjectTitle());
     else if(result != null)
       c.o("AI clusters");
     else if(searchListAiCluster_ == null || resultCount == 0)

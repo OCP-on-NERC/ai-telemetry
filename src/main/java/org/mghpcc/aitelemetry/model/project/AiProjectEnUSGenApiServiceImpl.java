@@ -85,6 +85,7 @@ import java.nio.charset.Charset;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.api.service.ServiceResponse;
+import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import java.util.HashMap;
 import io.vertx.ext.auth.User;
@@ -117,7 +118,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void searchAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -125,46 +140,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
 							response200SearchAiProject(listAiProject).onSuccess(response -> {
@@ -297,7 +307,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void getAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -305,40 +329,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
 							response200GETAiProject(listAiProject).onSuccess(response -> {
@@ -410,7 +435,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void patchAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchAiProject started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -418,40 +457,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("PATCH")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PATCH$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PATCH");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
 							try {
@@ -564,8 +604,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void patchAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
@@ -699,6 +740,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
+					case "setClusterName":
+							o2.setClusterName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiProject.VAR_clusterName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlClusterName());
+						break;
 					case "setProjectName":
 							o2.setProjectName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -706,14 +755,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(AiProject.VAR_projectName + "=$" + num);
 							num++;
 							bParams.add(o2.sqlProjectName());
-						break;
-					case "setProjectId":
-							o2.setProjectId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiProject.VAR_projectId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlProjectId());
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
@@ -723,13 +764,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
-					case "setDescription":
-							o2.setDescription(jsonObject.getString(entityVar));
+					case "setProjectId":
+							o2.setProjectId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_description + "=$" + num);
+							bSql.append(AiProject.VAR_projectId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlDescription());
+							bParams.add(o2.sqlProjectId());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -738,6 +779,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(AiProject.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
+						break;
+					case "setDescription":
+							o2.setDescription(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiProject.VAR_description + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDescription());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -755,13 +804,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_title + "=$" + num);
+							bSql.append(AiProject.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -835,7 +884,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void postAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postAiProject started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -843,40 +906,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("POST")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-POST$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("POST");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
@@ -947,21 +1011,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void postAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
-			ApiRequest apiRequest = new ApiRequest();
-			apiRequest.setRows(1L);
-			apiRequest.setNumFound(1L);
-			apiRequest.setNumPATCH(0L);
-			apiRequest.initDeepApiRequest(siteRequest);
-			siteRequest.setApiRequest_(apiRequest);
-			if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
-				siteRequest.getRequestVars().put( "refresh", "false" );
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			try {
+				siteRequest.addScopes("GET");
+				ApiRequest apiRequest = new ApiRequest();
+				apiRequest.setRows(1L);
+				apiRequest.setNumFound(1L);
+				apiRequest.setNumPATCH(0L);
+				apiRequest.initDeepApiRequest(siteRequest);
+				siteRequest.setApiRequest_(apiRequest);
+				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
+					siteRequest.getRequestVars().put( "refresh", "false" );
+				}
+				postAiProjectFuture(siteRequest, false).onSuccess(o -> {
+					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
+				}).onFailure(ex -> {
+					eventHandler.handle(Future.failedFuture(ex));
+				});
+			} catch(Throwable ex) {
+				LOG.error(String.format("postAiProject failed. "), ex);
+				error(null, eventHandler, ex);
 			}
-			postAiProjectFuture(siteRequest, false).onSuccess(o -> {
-				eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
-			}).onFailure(ex -> {
-				eventHandler.handle(Future.failedFuture(ex));
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -1107,6 +1177,15 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case AiProject.VAR_clusterName:
+						o2.setClusterName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiProject.VAR_clusterName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlClusterName());
+						break;
 					case AiProject.VAR_projectName:
 						o2.setProjectName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1115,15 +1194,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiProject.VAR_projectName + "=$" + num);
 						num++;
 						bParams.add(o2.sqlProjectName());
-						break;
-					case AiProject.VAR_projectId:
-						o2.setProjectId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiProject.VAR_projectId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlProjectId());
 						break;
 					case AiProject.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
@@ -1134,14 +1204,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case AiProject.VAR_description:
-						o2.setDescription(jsonObject.getString(entityVar));
+					case AiProject.VAR_projectId:
+						o2.setProjectId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_description + "=$" + num);
+						bSql.append(AiProject.VAR_projectId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlDescription());
+						bParams.add(o2.sqlProjectId());
 						break;
 					case AiProject.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -1151,6 +1221,15 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiProject.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
+						break;
+					case AiProject.VAR_description:
+						o2.setDescription(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiProject.VAR_description + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDescription());
 						break;
 					case AiProject.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -1170,14 +1249,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiProject.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case AiProject.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_title + "=$" + num);
+						bSql.append(AiProject.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiProject.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1251,7 +1330,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void deleteAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deleteAiProject started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1259,40 +1352,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("DELETE")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
 							try {
@@ -1404,8 +1498,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void deleteAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
@@ -1593,7 +1688,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void putimportAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("putimportAiProject started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1601,46 +1710,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("PUT")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PUT$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PUT");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1748,8 +1852,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void putimportAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1896,7 +2001,23 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void searchpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
+			serviceRequest.setUser(user.principal());
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1904,46 +2025,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
 							response200SearchPageAiProject(listAiProject).onSuccess(response -> {
@@ -1963,6 +2079,30 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					error(null, eventHandler, ex);
 				}
 			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("searchpageAiProject failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("searchpageAiProject failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -2073,7 +2213,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void editpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2081,46 +2235,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
 							response200EditPageAiProject(listAiProject).onSuccess(response -> {
@@ -2250,7 +2399,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void userpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2258,46 +2421,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
 							response200UserPageAiProject(listAiProject).onSuccess(response -> {
@@ -2421,6 +2579,364 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 		}
+	}
+
+	// DELETEFilter //
+
+	@Override
+	public void deletefilterAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterAiProject started. "));
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
+			if(projectId != null)
+				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "DELETE"));
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
+				try {
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
+					if(!scopes.contains("DELETE")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
+
+					{
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+							try {
+								ApiRequest apiRequest = new ApiRequest();
+								apiRequest.setRows(listAiProject.getRequest().getRows());
+								apiRequest.setNumFound(listAiProject.getResponse().getResponse().getNumFound());
+								apiRequest.setNumPATCH(0L);
+								apiRequest.initDeepApiRequest(siteRequest);
+								siteRequest.setApiRequest_(apiRequest);
+								if(apiRequest.getNumFound() == 1L)
+									apiRequest.setOriginal(listAiProject.first());
+								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+
+								listDELETEFilterAiProject(apiRequest, listAiProject).onSuccess(e -> {
+									response200DELETEFilterAiProject(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterAiProject succeeded. "));
+										eventHandler.handle(Future.succeededFuture(response));
+									}).onFailure(ex -> {
+										LOG.error(String.format("deletefilterAiProject failed. "), ex);
+										error(siteRequest, eventHandler, ex);
+									});
+								}).onFailure(ex -> {
+									LOG.error(String.format("deletefilterAiProject failed. "), ex);
+									error(siteRequest, eventHandler, ex);
+								});
+							} catch(Exception ex) {
+								LOG.error(String.format("deletefilterAiProject failed. "), ex);
+								error(siteRequest, eventHandler, ex);
+							}
+						}).onFailure(ex -> {
+							LOG.error(String.format("deletefilterAiProject failed. "), ex);
+							error(siteRequest, eventHandler, ex);
+						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("deletefilterAiProject failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("deletefilterAiProject failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("deletefilterAiProject failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
+	}
+
+	public Future<Void> listDELETEFilterAiProject(ApiRequest apiRequest, SearchList<AiProject> listAiProject) {
+		Promise<Void> promise = Promise.promise();
+		List<Future> futures = new ArrayList<>();
+		SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
+		listAiProject.getList().forEach(o -> {
+			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			o.setSiteRequest_(siteRequest2);
+			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
+			JsonObject jsonObject = JsonObject.mapFrom(o);
+			AiProject o2 = jsonObject.mapTo(AiProject.class);
+			o2.setSiteRequest_(siteRequest2);
+			futures.add(Future.future(promise1 -> {
+				deletefilterAiProjectFuture(o).onSuccess(a -> {
+					promise1.complete();
+				}).onFailure(ex -> {
+					LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+					promise1.fail(ex);
+				});
+			}));
+		});
+		CompositeFuture.all(futures).onSuccess( a -> {
+			listAiProject.next().onSuccess(next -> {
+				if(next) {
+					listDELETEFilterAiProject(apiRequest, listAiProject).onSuccess(b -> {
+						promise.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+						promise.fail(ex);
+					});
+				} else {
+					promise.complete();
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+				promise.fail(ex);
+			});
+		}).onFailure(ex -> {
+			LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+			promise.fail(ex);
+		});
+		return promise.future();
+	}
+
+	@Override
+	public void deletefilterAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			try {
+				siteRequest.addScopes("GET");
+				siteRequest.setJsonObject(body);
+				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+					try {
+						AiProject o = listAiProject.first();
+						if(o != null && listAiProject.getResponse().getResponse().getNumFound() == 1) {
+							ApiRequest apiRequest = new ApiRequest();
+							apiRequest.setRows(1L);
+							apiRequest.setNumFound(1L);
+							apiRequest.setNumPATCH(0L);
+							apiRequest.initDeepApiRequest(siteRequest);
+							siteRequest.setApiRequest_(apiRequest);
+							if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
+								siteRequest.getRequestVars().put( "refresh", "false" );
+							}
+							if(apiRequest.getNumFound() == 1L)
+								apiRequest.setOriginal(o);
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterAiProjectFuture(o).onSuccess(o2 -> {
+								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
+							}).onFailure(ex -> {
+								eventHandler.handle(Future.failedFuture(ex));
+							});
+						} else {
+							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
+						}
+					} catch(Exception ex) {
+						LOG.error(String.format("deletefilterAiProject failed. "), ex);
+						error(siteRequest, eventHandler, ex);
+					}
+				}).onFailure(ex -> {
+					LOG.error(String.format("deletefilterAiProject failed. "), ex);
+					error(siteRequest, eventHandler, ex);
+				});
+			} catch(Exception ex) {
+				LOG.error(String.format("deletefilterAiProject failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		}).onFailure(ex -> {
+			LOG.error(String.format("deletefilterAiProject failed. "), ex);
+			error(null, eventHandler, ex);
+		});
+	}
+
+	public Future<AiProject> deletefilterAiProjectFuture(AiProject o) {
+		SiteRequest siteRequest = o.getSiteRequest_();
+		Promise<AiProject> promise = Promise.promise();
+
+		try {
+			ApiRequest apiRequest = siteRequest.getApiRequest_();
+			Promise<AiProject> promise1 = Promise.promise();
+			pgPool.withTransaction(sqlConnection -> {
+				siteRequest.setSqlConnection(sqlConnection);
+				varsAiProject(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterAiProject(o).onSuccess(aiProject -> {
+						relateAiProject(o).onSuccess(d -> {
+							unindexAiProject(o).onSuccess(o2 -> {
+								if(apiRequest != null) {
+									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
+									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
+										o2.apiRequestAiProject();
+										if(apiRequest.getVars().size() > 0)
+											eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+									}
+								}
+								promise1.complete();
+							}).onFailure(ex -> {
+								promise1.fail(ex);
+							});
+						}).onFailure(ex -> {
+							promise1.fail(ex);
+						});
+					}).onFailure(ex -> {
+						promise1.fail(ex);
+					});
+				}).onFailure(ex -> {
+					promise1.fail(ex);
+				});
+				return promise1.future();
+			}).onSuccess(a -> {
+				siteRequest.setSqlConnection(null);
+			}).onFailure(ex -> {
+				siteRequest.setSqlConnection(null);
+				promise.fail(ex);
+			}).compose(aiProject -> {
+				Promise<AiProject> promise2 = Promise.promise();
+				refreshAiProject(o).onSuccess(a -> {
+					promise2.complete(o);
+				}).onFailure(ex -> {
+					promise2.fail(ex);
+				});
+				return promise2.future();
+			}).onSuccess(aiProject -> {
+				promise.complete(aiProject);
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("deletefilterAiProjectFuture failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	public Future<Void> sqlDELETEFilterAiProject(AiProject o) {
+		Promise<Void> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			ApiRequest apiRequest = siteRequest.getApiRequest_();
+			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			Integer num = 1;
+			StringBuilder bSql = new StringBuilder("DELETE FROM AiProject ");
+			List<Object> bParams = new ArrayList<Object>();
+			Long pk = o.getPk();
+			JsonObject jsonObject = siteRequest.getJsonObject();
+			AiProject o2 = new AiProject();
+			o2.setSiteRequest_(siteRequest);
+			List<Future> futures1 = new ArrayList<>();
+			List<Future> futures2 = new ArrayList<>();
+
+			if(jsonObject != null) {
+				Set<String> entityVars = jsonObject.fieldNames();
+				for(String entityVar : entityVars) {
+					switch(entityVar) {
+					}
+				}
+			}
+			bSql.append(" WHERE pk=$" + num);
+			bParams.add(pk);
+			num++;
+			futures2.add(0, Future.future(a -> {
+				sqlConnection.preparedQuery(bSql.toString())
+						.execute(Tuple.tuple(bParams)
+						).onSuccess(b -> {
+					a.handle(Future.succeededFuture());
+				}).onFailure(ex -> {
+					RuntimeException ex2 = new RuntimeException("value AiProject failed", ex);
+					LOG.error(String.format("unrelateAiProject failed. "), ex2);
+					a.handle(Future.failedFuture(ex2));
+				});
+			}));
+			CompositeFuture.all(futures1).onSuccess(a -> {
+				CompositeFuture.all(futures2).onSuccess(b -> {
+					promise.complete();
+				}).onFailure(ex -> {
+					LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+					promise.fail(ex);
+				});
+			}).onFailure(ex -> {
+				LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	public Future<ServiceResponse> response200DELETEFilterAiProject(SiteRequest siteRequest) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			JsonObject json = new JsonObject();
+			if(json == null) {
+				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+						String m = String.format("%s %s not found", "AI project", projectId);
+				promise.complete(new ServiceResponse(404
+						, m
+						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
+			} else {
+				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
+			}
+		} catch(Exception ex) {
+			LOG.error(String.format("response200DELETEFilterAiProject failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
 	}
 
 	// General //
@@ -2572,8 +3088,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					if(paramValuesObject != null && "facet.pivot".equals(paramName)) {
 						Matcher mFacetPivot = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher(StringUtils.join(paramObjects.getList().toArray(), ","));
-						boolean foundFacetPivot = mFacetPivot.find();
-						if(foundFacetPivot) {
+						if(mFacetPivot.find()) {
 							String solrLocalParams = mFacetPivot.group(1);
 							String[] entityVars = mFacetPivot.group(2).trim().split(",");
 							String[] varsIndexed = new String[entityVars.length];
@@ -2587,33 +3102,29 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						for(Object paramObject : paramObjects) {
 							if(paramName.equals("q")) {
 								Matcher mQ = Pattern.compile("(\\w+):(.+?(?=(\\)|\\s+OR\\s+|\\s+AND\\s+|\\^|$)))").matcher((String)paramObject);
-								boolean foundQ = mQ.find();
-								if(foundQ) {
-									StringBuffer sb = new StringBuffer();
-									while(foundQ) {
-										entityVar = mQ.group(1).trim();
-										valueIndexed = mQ.group(2).trim();
-										varIndexed = AiProject.varIndexedAiProject(entityVar);
-										String entityQ = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
-										mQ.appendReplacement(sb, entityQ);
-										foundQ = mQ.find();
-									}
+								StringBuffer sb = new StringBuffer();
+								while(mQ.find()) {
+									entityVar = mQ.group(1).trim();
+									valueIndexed = mQ.group(2).trim();
+									varIndexed = AiProject.varIndexedAiProject(entityVar);
+									String entityQ = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
+									mQ.appendReplacement(sb, entityQ);
+								}
+								if(!sb.isEmpty()) {
 									mQ.appendTail(sb);
 									searchList.q(sb.toString());
 								}
 							} else if(paramName.equals("fq")) {
 								Matcher mFq = Pattern.compile("(\\w+):(.+?(?=(\\)|\\s+OR\\s+|\\s+AND\\s+|$)))").matcher((String)paramObject);
-								boolean foundFq = mFq.find();
-								if(foundFq) {
 									StringBuffer sb = new StringBuffer();
-									while(foundFq) {
-										entityVar = mFq.group(1).trim();
-										valueIndexed = mFq.group(2).trim();
-										varIndexed = AiProject.varIndexedAiProject(entityVar);
-										String entityFq = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
-										mFq.appendReplacement(sb, entityFq);
-										foundFq = mFq.find();
-									}
+								while(mFq.find()) {
+									entityVar = mFq.group(1).trim();
+									valueIndexed = mFq.group(2).trim();
+									varIndexed = AiProject.varIndexedAiProject(entityVar);
+									String entityFq = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
+									mFq.appendReplacement(sb, entityFq);
+								}
+								if(!sb.isEmpty()) {
 									mFq.appendTail(sb);
 									searchList.fq(sb.toString());
 								}
@@ -2632,8 +3143,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
 								Matcher mStats = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher((String)paramObject);
-								boolean foundStats = mStats.find();
-								if(foundStats) {
+								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
 									varIndexed = AiProject.varIndexedAiProject(entityVar);
@@ -2659,8 +3169,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								facetRangeGap = gap;
 							} else if(paramName.equals("facet.range")) {
 								Matcher mFacetRange = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher((String)paramObject);
-								boolean foundFacetRange = mFacetRange.find();
-								if(foundFacetRange) {
+								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
 									varIndexed = AiProject.varIndexedAiProject(entityVar);
@@ -2688,7 +3197,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 			if("*:*".equals(searchList.getQuery()) && searchList.getSorts().size() == 0) {
-				searchList.sort("created_docvalues_date", "desc");
+				searchList.sort("clusterName_docvalues_string", "asc");
+				searchList.sort("projectName_docvalues_string", "asc");
+				searchList.setDefaultSort(true);
 			}
 			String facetRange2 = facetRange;
 			Date facetRangeStart2 = facetRangeStart;
@@ -2836,7 +3347,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				else if(softCommit == null)
 					softCommit = false;
 			String solrRequestUri = String.format("/solr/%s/update%s%s%s", solrCollection, "?overwrite=true&wt=json", softCommit ? "&softCommit=true" : "", commitWithin != null ? ("&commitWithin=" + commitWithin) : "");
-			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").expect(ResponsePredicate.SC_OK).sendBuffer(json.toBuffer()).onSuccess(b -> {
+			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
 				LOG.error(String.format("indexAiProject failed. "), new RuntimeException(ex));
@@ -2858,7 +3369,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(projectId_docvalues_string:%s)", o.obtainForClass("projectId"));
+				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -2873,7 +3384,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					else if(softCommit == null)
 						softCommit = false;
 				String solrRequestUri = String.format("/solr/%s/update%s%s%s", solrCollection, "?overwrite=true&wt=json", softCommit ? "&softCommit=true" : "", commitWithin != null ? ("&commitWithin=" + commitWithin) : "");
-				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").expect(ResponsePredicate.SC_OK).sendBuffer(json.toBuffer()).onSuccess(b -> {
+				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
 					LOG.error(String.format("unindexAiProject failed. "), new RuntimeException(ex));
@@ -2952,7 +3463,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	}
 
 	@Override
-	public Future<JsonObject> generatePageBody(ComputateSiteRequest siteRequest, Map<String, Object> ctx, String resourceUri, String templateUri, String classSimpleName) {
+	public Future<JsonObject> generatePageBody(ComputateSiteRequest siteRequest, Map<String, Object> ctx, String templatePath, String classSimpleName) {
 		Promise<JsonObject> promise = Promise.promise();
 		try {
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
@@ -2961,14 +3472,15 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			AiProject page = new AiProject();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
+			page.persistForClass(AiProject.VAR_clusterName, AiProject.staticSetClusterName(siteRequest2, (String)result.get(AiProject.VAR_clusterName)));
 			page.persistForClass(AiProject.VAR_projectName, AiProject.staticSetProjectName(siteRequest2, (String)result.get(AiProject.VAR_projectName)));
-			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
 			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created)));
-			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
+			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
 			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
+			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
 			page.persistForClass(AiProject.VAR_sessionId, AiProject.staticSetSessionId(siteRequest2, (String)result.get(AiProject.VAR_sessionId)));
 			page.persistForClass(AiProject.VAR_userKey, AiProject.staticSetUserKey(siteRequest2, (String)result.get(AiProject.VAR_userKey)));
-			page.persistForClass(AiProject.VAR_title, AiProject.staticSetTitle(siteRequest2, (String)result.get(AiProject.VAR_title)));
+			page.persistForClass(AiProject.VAR_objectTitle, AiProject.staticSetObjectTitle(siteRequest2, (String)result.get(AiProject.VAR_objectTitle)));
 			page.persistForClass(AiProject.VAR_displayPage, AiProject.staticSetDisplayPage(siteRequest2, (String)result.get(AiProject.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {

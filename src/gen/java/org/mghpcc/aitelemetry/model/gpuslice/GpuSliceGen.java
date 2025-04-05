@@ -111,6 +111,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: UserPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
  * </p>
+ * <h2>ApiMethode: DELETEFilter</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
+ * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: GPU slices"</b>, which groups all of the OpenAPIs for GpuSlice objects under the tag "GPU slices". 
  * </p>
@@ -126,8 +129,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the GpuSlice class will inherit the helpful inherited class comments from the super class GpuSliceGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 7</h2>
- * <p>This class contains a comment <b>"Order: 7"</b>, which means this class will be sorted by the given number 7 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 6</h2>
+ * <p>This class contains a comment <b>"Order: 6"</b>, which means this class will be sorted by the given number 6 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -233,6 +236,9 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/gpu-slice/{sliceName}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/gpu-slice/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/gpu-slice/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/gpu-slice";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/gpu-slice";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/gpu-slice";
 
 	public static final String Icon = "<i class=\"fa-regular fa-cake-slice\"></i>";
 
@@ -1513,7 +1519,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			}
 		}
 		if(location != null) {
-			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
+			doc.put("location_docvalues_location", String.format("%s,%s", location.getY(), location.getX()));
 		}
 		if(id != null) {
 			doc.put("id_docvalues_string", id);
@@ -1737,6 +1743,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "GpuSlice";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpuslice.GpuSlice";
 	public static final String CLASS_API_ADDRESS_GpuSlice = "ai-telemetry-enUS-GpuSlice";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_GpuSlice;
@@ -1809,7 +1816,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -1840,6 +1847,11 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/gpu-slice/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

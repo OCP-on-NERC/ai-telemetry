@@ -85,6 +85,7 @@ import java.nio.charset.Charset;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.ext.web.api.service.ServiceResponse;
+import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import java.util.HashMap;
 import io.vertx.ext.auth.User;
@@ -117,7 +118,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void searchAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -125,46 +140,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200SearchAiNode(listAiNode).onSuccess(response -> {
@@ -297,7 +307,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void getAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -305,40 +329,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200GETAiNode(listAiNode).onSuccess(response -> {
@@ -410,7 +435,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void patchAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -418,40 +457,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("PATCH")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PATCH$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PATCH");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
 							try {
@@ -564,8 +604,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void patchAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
@@ -795,13 +836,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlNgsildTenant());
 						break;
-					case "setTitle":
-							o2.setTitle(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_title + "=$" + num);
+							bSql.append(AiNode.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlTitle());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setNgsildPath":
 							o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -899,7 +940,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void postAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -907,40 +962,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("POST")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-POST$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("POST");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
@@ -1011,21 +1067,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void postAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
-			ApiRequest apiRequest = new ApiRequest();
-			apiRequest.setRows(1L);
-			apiRequest.setNumFound(1L);
-			apiRequest.setNumPATCH(0L);
-			apiRequest.initDeepApiRequest(siteRequest);
-			siteRequest.setApiRequest_(apiRequest);
-			if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
-				siteRequest.getRequestVars().put( "refresh", "false" );
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			try {
+				siteRequest.addScopes("GET");
+				ApiRequest apiRequest = new ApiRequest();
+				apiRequest.setRows(1L);
+				apiRequest.setNumFound(1L);
+				apiRequest.setNumPATCH(0L);
+				apiRequest.initDeepApiRequest(siteRequest);
+				siteRequest.setApiRequest_(apiRequest);
+				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
+					siteRequest.getRequestVars().put( "refresh", "false" );
+				}
+				postAiNodeFuture(siteRequest, false).onSuccess(o -> {
+					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
+				}).onFailure(ex -> {
+					eventHandler.handle(Future.failedFuture(ex));
+				});
+			} catch(Throwable ex) {
+				LOG.error(String.format("postAiNode failed. "), ex);
+				error(null, eventHandler, ex);
 			}
-			postAiNodeFuture(siteRequest, false).onSuccess(o -> {
-				eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
-			}).onFailure(ex -> {
-				eventHandler.handle(Future.failedFuture(ex));
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -1279,14 +1341,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlNgsildTenant());
 						break;
-					case AiNode.VAR_title:
-						o2.setTitle(jsonObject.getString(entityVar));
+					case AiNode.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_title + "=$" + num);
+						bSql.append(AiNode.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlTitle());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiNode.VAR_ngsildPath:
 						o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -1387,7 +1449,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void deleteAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deleteAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1395,40 +1471,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("DELETE")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
 							try {
@@ -1540,8 +1617,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void deleteAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
@@ -1729,7 +1807,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void putimportAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("putimportAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1737,46 +1829,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("PUT")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PUT$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PUT");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1884,8 +1971,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void putimportAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -2032,7 +2120,23 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void searchpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
+			serviceRequest.setUser(user.principal());
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2040,46 +2144,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200SearchPageAiNode(listAiNode).onSuccess(response -> {
@@ -2099,6 +2198,30 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					error(null, eventHandler, ex);
 				}
 			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("searchpageAiNode failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("searchpageAiNode failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -2209,7 +2332,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void editpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2217,46 +2354,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200EditPageAiNode(listAiNode).onSuccess(response -> {
@@ -2386,7 +2518,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void userpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2394,46 +2540,41 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
 					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
-					.expect(ResponsePredicate.status(200))
-					.sendForm(MultiMap.caseInsensitiveMultiMap()
-							.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket")
-							.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT))
-							.add("response_mode", "permissions")
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"))
-							.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"))
-			).onFailure(ex -> {
-				String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(403, "FORBIDDEN",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "403")
-								.put("errorMessage", msg)
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-					)
-				));
-			}).onSuccess(authorizationDecision -> {
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
 				try {
-					JsonArray scopes = authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
 					if(!scopes.contains("GET")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200UserPageAiNode(listAiNode).onSuccess(response -> {
@@ -2557,6 +2698,364 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				}
 			}
 		}
+	}
+
+	// DELETEFilter //
+
+	@Override
+	public void deletefilterAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterAiNode started. "));
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
+			if(nodeId != null)
+				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
+				try {
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+
+					if(!scopes.contains("DELETE")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject params = siteRequest.getServiceRequest().getParams();
+						JsonObject query = params.getJsonObject("query");
+						if(query == null) {
+							query = new JsonObject();
+							params.put("query", query);
+						}
+						JsonArray fq = query.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							query.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
+
+					{
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+							try {
+								ApiRequest apiRequest = new ApiRequest();
+								apiRequest.setRows(listAiNode.getRequest().getRows());
+								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setNumPATCH(0L);
+								apiRequest.initDeepApiRequest(siteRequest);
+								siteRequest.setApiRequest_(apiRequest);
+								if(apiRequest.getNumFound() == 1L)
+									apiRequest.setOriginal(listAiNode.first());
+								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+
+								listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(e -> {
+									response200DELETEFilterAiNode(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterAiNode succeeded. "));
+										eventHandler.handle(Future.succeededFuture(response));
+									}).onFailure(ex -> {
+										LOG.error(String.format("deletefilterAiNode failed. "), ex);
+										error(siteRequest, eventHandler, ex);
+									});
+								}).onFailure(ex -> {
+									LOG.error(String.format("deletefilterAiNode failed. "), ex);
+									error(siteRequest, eventHandler, ex);
+								});
+							} catch(Exception ex) {
+								LOG.error(String.format("deletefilterAiNode failed. "), ex);
+								error(siteRequest, eventHandler, ex);
+							}
+						}).onFailure(ex -> {
+							LOG.error(String.format("deletefilterAiNode failed. "), ex);
+							error(siteRequest, eventHandler, ex);
+						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("deletefilterAiNode failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("deletefilterAiNode failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
+	}
+
+	public Future<Void> listDELETEFilterAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+		Promise<Void> promise = Promise.promise();
+		List<Future> futures = new ArrayList<>();
+		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
+		listAiNode.getList().forEach(o -> {
+			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			o.setSiteRequest_(siteRequest2);
+			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
+			JsonObject jsonObject = JsonObject.mapFrom(o);
+			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			o2.setSiteRequest_(siteRequest2);
+			futures.add(Future.future(promise1 -> {
+				deletefilterAiNodeFuture(o).onSuccess(a -> {
+					promise1.complete();
+				}).onFailure(ex -> {
+					LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+					promise1.fail(ex);
+				});
+			}));
+		});
+		CompositeFuture.all(futures).onSuccess( a -> {
+			listAiNode.next().onSuccess(next -> {
+				if(next) {
+					listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(b -> {
+						promise.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+						promise.fail(ex);
+					});
+				} else {
+					promise.complete();
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+				promise.fail(ex);
+			});
+		}).onFailure(ex -> {
+			LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+			promise.fail(ex);
+		});
+		return promise.future();
+	}
+
+	@Override
+	public void deletefilterAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+			try {
+				siteRequest.addScopes("GET");
+				siteRequest.setJsonObject(body);
+				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+					try {
+						AiNode o = listAiNode.first();
+						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+							ApiRequest apiRequest = new ApiRequest();
+							apiRequest.setRows(1L);
+							apiRequest.setNumFound(1L);
+							apiRequest.setNumPATCH(0L);
+							apiRequest.initDeepApiRequest(siteRequest);
+							siteRequest.setApiRequest_(apiRequest);
+							if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
+								siteRequest.getRequestVars().put( "refresh", "false" );
+							}
+							if(apiRequest.getNumFound() == 1L)
+								apiRequest.setOriginal(o);
+							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterAiNodeFuture(o).onSuccess(o2 -> {
+								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
+							}).onFailure(ex -> {
+								eventHandler.handle(Future.failedFuture(ex));
+							});
+						} else {
+							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
+						}
+					} catch(Exception ex) {
+						LOG.error(String.format("deletefilterAiNode failed. "), ex);
+						error(siteRequest, eventHandler, ex);
+					}
+				}).onFailure(ex -> {
+					LOG.error(String.format("deletefilterAiNode failed. "), ex);
+					error(siteRequest, eventHandler, ex);
+				});
+			} catch(Exception ex) {
+				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		}).onFailure(ex -> {
+			LOG.error(String.format("deletefilterAiNode failed. "), ex);
+			error(null, eventHandler, ex);
+		});
+	}
+
+	public Future<AiNode> deletefilterAiNodeFuture(AiNode o) {
+		SiteRequest siteRequest = o.getSiteRequest_();
+		Promise<AiNode> promise = Promise.promise();
+
+		try {
+			ApiRequest apiRequest = siteRequest.getApiRequest_();
+			Promise<AiNode> promise1 = Promise.promise();
+			pgPool.withTransaction(sqlConnection -> {
+				siteRequest.setSqlConnection(sqlConnection);
+				varsAiNode(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterAiNode(o).onSuccess(aiNode -> {
+						relateAiNode(o).onSuccess(d -> {
+							unindexAiNode(o).onSuccess(o2 -> {
+								if(apiRequest != null) {
+									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
+									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
+										o2.apiRequestAiNode();
+										if(apiRequest.getVars().size() > 0)
+											eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									}
+								}
+								promise1.complete();
+							}).onFailure(ex -> {
+								promise1.fail(ex);
+							});
+						}).onFailure(ex -> {
+							promise1.fail(ex);
+						});
+					}).onFailure(ex -> {
+						promise1.fail(ex);
+					});
+				}).onFailure(ex -> {
+					promise1.fail(ex);
+				});
+				return promise1.future();
+			}).onSuccess(a -> {
+				siteRequest.setSqlConnection(null);
+			}).onFailure(ex -> {
+				siteRequest.setSqlConnection(null);
+				promise.fail(ex);
+			}).compose(aiNode -> {
+				Promise<AiNode> promise2 = Promise.promise();
+				refreshAiNode(o).onSuccess(a -> {
+					promise2.complete(o);
+				}).onFailure(ex -> {
+					promise2.fail(ex);
+				});
+				return promise2.future();
+			}).onSuccess(aiNode -> {
+				promise.complete(aiNode);
+			}).onFailure(ex -> {
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("deletefilterAiNodeFuture failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	public Future<Void> sqlDELETEFilterAiNode(AiNode o) {
+		Promise<Void> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			ApiRequest apiRequest = siteRequest.getApiRequest_();
+			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			Integer num = 1;
+			StringBuilder bSql = new StringBuilder("DELETE FROM AiNode ");
+			List<Object> bParams = new ArrayList<Object>();
+			Long pk = o.getPk();
+			JsonObject jsonObject = siteRequest.getJsonObject();
+			AiNode o2 = new AiNode();
+			o2.setSiteRequest_(siteRequest);
+			List<Future> futures1 = new ArrayList<>();
+			List<Future> futures2 = new ArrayList<>();
+
+			if(jsonObject != null) {
+				Set<String> entityVars = jsonObject.fieldNames();
+				for(String entityVar : entityVars) {
+					switch(entityVar) {
+					}
+				}
+			}
+			bSql.append(" WHERE pk=$" + num);
+			bParams.add(pk);
+			num++;
+			futures2.add(0, Future.future(a -> {
+				sqlConnection.preparedQuery(bSql.toString())
+						.execute(Tuple.tuple(bParams)
+						).onSuccess(b -> {
+					a.handle(Future.succeededFuture());
+				}).onFailure(ex -> {
+					RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
+					LOG.error(String.format("unrelateAiNode failed. "), ex2);
+					a.handle(Future.failedFuture(ex2));
+				});
+			}));
+			CompositeFuture.all(futures1).onSuccess(a -> {
+				CompositeFuture.all(futures2).onSuccess(b -> {
+					promise.complete();
+				}).onFailure(ex -> {
+					LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+					promise.fail(ex);
+				});
+			}).onFailure(ex -> {
+				LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+				promise.fail(ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	public Future<ServiceResponse> response200DELETEFilterAiNode(SiteRequest siteRequest) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			JsonObject json = new JsonObject();
+			if(json == null) {
+				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
+						String m = String.format("%s %s not found", "AI node", nodeId);
+				promise.complete(new ServiceResponse(404
+						, m
+						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
+			} else {
+				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
+			}
+		} catch(Exception ex) {
+			LOG.error(String.format("response200DELETEFilterAiNode failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
 	}
 
 	// General //
@@ -2708,8 +3207,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					if(paramValuesObject != null && "facet.pivot".equals(paramName)) {
 						Matcher mFacetPivot = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher(StringUtils.join(paramObjects.getList().toArray(), ","));
-						boolean foundFacetPivot = mFacetPivot.find();
-						if(foundFacetPivot) {
+						if(mFacetPivot.find()) {
 							String solrLocalParams = mFacetPivot.group(1);
 							String[] entityVars = mFacetPivot.group(2).trim().split(",");
 							String[] varsIndexed = new String[entityVars.length];
@@ -2723,33 +3221,29 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						for(Object paramObject : paramObjects) {
 							if(paramName.equals("q")) {
 								Matcher mQ = Pattern.compile("(\\w+):(.+?(?=(\\)|\\s+OR\\s+|\\s+AND\\s+|\\^|$)))").matcher((String)paramObject);
-								boolean foundQ = mQ.find();
-								if(foundQ) {
-									StringBuffer sb = new StringBuffer();
-									while(foundQ) {
-										entityVar = mQ.group(1).trim();
-										valueIndexed = mQ.group(2).trim();
-										varIndexed = AiNode.varIndexedAiNode(entityVar);
-										String entityQ = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
-										mQ.appendReplacement(sb, entityQ);
-										foundQ = mQ.find();
-									}
+								StringBuffer sb = new StringBuffer();
+								while(mQ.find()) {
+									entityVar = mQ.group(1).trim();
+									valueIndexed = mQ.group(2).trim();
+									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									String entityQ = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									mQ.appendReplacement(sb, entityQ);
+								}
+								if(!sb.isEmpty()) {
 									mQ.appendTail(sb);
 									searchList.q(sb.toString());
 								}
 							} else if(paramName.equals("fq")) {
 								Matcher mFq = Pattern.compile("(\\w+):(.+?(?=(\\)|\\s+OR\\s+|\\s+AND\\s+|$)))").matcher((String)paramObject);
-								boolean foundFq = mFq.find();
-								if(foundFq) {
 									StringBuffer sb = new StringBuffer();
-									while(foundFq) {
-										entityVar = mFq.group(1).trim();
-										valueIndexed = mFq.group(2).trim();
-										varIndexed = AiNode.varIndexedAiNode(entityVar);
-										String entityFq = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
-										mFq.appendReplacement(sb, entityFq);
-										foundFq = mFq.find();
-									}
+								while(mFq.find()) {
+									entityVar = mFq.group(1).trim();
+									valueIndexed = mFq.group(2).trim();
+									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									String entityFq = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									mFq.appendReplacement(sb, entityFq);
+								}
+								if(!sb.isEmpty()) {
 									mFq.appendTail(sb);
 									searchList.fq(sb.toString());
 								}
@@ -2768,8 +3262,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
 								Matcher mStats = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher((String)paramObject);
-								boolean foundStats = mStats.find();
-								if(foundStats) {
+								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
 									varIndexed = AiNode.varIndexedAiNode(entityVar);
@@ -2795,8 +3288,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								facetRangeGap = gap;
 							} else if(paramName.equals("facet.range")) {
 								Matcher mFacetRange = Pattern.compile("(?:(\\{![^\\}]+\\}))?(.*)").matcher((String)paramObject);
-								boolean foundFacetRange = mFacetRange.find();
-								if(foundFacetRange) {
+								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
 									varIndexed = AiNode.varIndexedAiNode(entityVar);
@@ -2972,7 +3464,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				else if(softCommit == null)
 					softCommit = false;
 			String solrRequestUri = String.format("/solr/%s/update%s%s%s", solrCollection, "?overwrite=true&wt=json", softCommit ? "&softCommit=true" : "", commitWithin != null ? ("&commitWithin=" + commitWithin) : "");
-			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").expect(ResponsePredicate.SC_OK).sendBuffer(json.toBuffer()).onSuccess(b -> {
+			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
 				LOG.error(String.format("indexAiNode failed. "), new RuntimeException(ex));
@@ -2994,7 +3486,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(nodeId_docvalues_string:%s)", o.obtainForClass("nodeId"));
+				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -3009,7 +3501,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					else if(softCommit == null)
 						softCommit = false;
 				String solrRequestUri = String.format("/solr/%s/update%s%s%s", solrCollection, "?overwrite=true&wt=json", softCommit ? "&softCommit=true" : "", commitWithin != null ? ("&commitWithin=" + commitWithin) : "");
-				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").expect(ResponsePredicate.SC_OK).sendBuffer(json.toBuffer()).onSuccess(b -> {
+				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
 					LOG.error(String.format("unindexAiNode failed. "), new RuntimeException(ex));
@@ -3088,7 +3580,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	}
 
 	@Override
-	public Future<JsonObject> generatePageBody(ComputateSiteRequest siteRequest, Map<String, Object> ctx, String resourceUri, String templateUri, String classSimpleName) {
+	public Future<JsonObject> generatePageBody(ComputateSiteRequest siteRequest, Map<String, Object> ctx, String templatePath, String classSimpleName) {
 		Promise<JsonObject> promise = Promise.promise();
 		try {
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
@@ -3109,7 +3601,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			page.persistForClass(AiNode.VAR_userKey, AiNode.staticSetUserKey(siteRequest2, (String)result.get(AiNode.VAR_userKey)));
 			page.persistForClass(AiNode.VAR_id, AiNode.staticSetId(siteRequest2, (String)result.get(AiNode.VAR_id)));
 			page.persistForClass(AiNode.VAR_ngsildTenant, AiNode.staticSetNgsildTenant(siteRequest2, (String)result.get(AiNode.VAR_ngsildTenant)));
-			page.persistForClass(AiNode.VAR_title, AiNode.staticSetTitle(siteRequest2, (String)result.get(AiNode.VAR_title)));
+			page.persistForClass(AiNode.VAR_objectTitle, AiNode.staticSetObjectTitle(siteRequest2, (String)result.get(AiNode.VAR_objectTitle)));
 			page.persistForClass(AiNode.VAR_ngsildPath, AiNode.staticSetNgsildPath(siteRequest2, (String)result.get(AiNode.VAR_ngsildPath)));
 			page.persistForClass(AiNode.VAR_displayPage, AiNode.staticSetDisplayPage(siteRequest2, (String)result.get(AiNode.VAR_displayPage)));
 			page.persistForClass(AiNode.VAR_ngsildContext, AiNode.staticSetNgsildContext(siteRequest2, (String)result.get(AiNode.VAR_ngsildContext)));

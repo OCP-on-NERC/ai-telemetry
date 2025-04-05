@@ -292,6 +292,7 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiClusterPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiClusterPage";
 
 
 	@Override
@@ -331,6 +332,11 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

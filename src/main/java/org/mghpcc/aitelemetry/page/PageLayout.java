@@ -71,7 +71,6 @@ public class PageLayout extends PageLayoutGen<Object> {
 	**/
 	protected void _vertx(Wrap<Vertx> w) {
 	}
-
 	/**
 	 * Ignore: true
 	 * Description: The current request object
@@ -185,6 +184,13 @@ public class PageLayout extends PageLayoutGen<Object> {
 	}
 
 	/**
+	 * Description: The current user's id
+	 */
+	protected void _userId(Wrap<String> w) {
+		w.o(siteRequest_.getUserId());
+	}
+
+	/**
 	 * Description: The current user's email
 	 */
 	protected void _userEmail(Wrap<String> w) {
@@ -276,10 +282,10 @@ public class PageLayout extends PageLayoutGen<Object> {
 	protected void _varsQ(JsonObject vars) {
 	}
 
-	protected void _varsFq(JsonObject vars) {
+	protected void _varsFqCount(Wrap<Integer> w) {
 	}
 
-	protected void _varsFqCount(Wrap<Integer> w) {
+	protected void _varsFq(JsonObject vars) {
 	}
 
 	protected void _varsRange(JsonObject vars) {

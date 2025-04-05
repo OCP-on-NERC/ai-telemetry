@@ -2,6 +2,7 @@ package org.mghpcc.aitelemetry.model.cluster;
 
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +40,12 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
+ *   AiClusterAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
  *   Admin:
  *     POST:
  *     PATCH:
@@ -50,6 +57,7 @@ import io.vertx.pgclient.data.Polygon;
  *     PATCH:
  *     GET:
  *     DELETE:
+ *     Admin:
  *     SuperAdmin:
  **/
 public class AiCluster extends AiClusterGen<BaseModel> {
@@ -67,6 +75,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Facet: true
 	 * VarName: true
 	 * VarId: true
+	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 
@@ -263,10 +272,18 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 				, siteRequest_.getConfig().getString(ConfigKeys.GRAFANA_BASE_URL, ConfigKeys.GRAFANA_BASE_URL)
 				, BaseApiServiceImpl.urlEncode(
 						String.format("[\"now-1h\",\"now\",\"observability-metrics\",{\"exemplar\":true,\"expr\":\"DCGM_FI_DEV_GPU_UTIL{cluster=\\\"%s\\\"}\"}]"
-								, BaseApiServiceImpl.urlEncode(clusterName)
+								, Optional.ofNullable(clusterName).map(n -> BaseApiServiceImpl.urlEncode(n)).orElse("-----")
 						)
 				)
 		));
+	}
+
+	/**
+	 * HtmColumn: 3
+	 */
+	@Override
+	protected void _modified(Wrap<ZonedDateTime> w) {
+		super._modified(w);
 	}
 }
 

@@ -20,6 +20,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.Exchange;
 import org.computate.vertx.config.ComputateConfigKeys;
@@ -40,18 +41,19 @@ import com.hubspot.jinjava.Jinjava;
 public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl {
 
 	@Override
-	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
 		// importDataRest(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onComplete(a -> promise.complete());
+		importDataVertx(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload);
 		promise.complete();
 		return promise.future();
 	}
 
-	protected Future<Void> importDataRest(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importDataRest(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
@@ -167,106 +169,6 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 		return promise.future();
 	}
 
-	public Future<Void> importDataCamel() {
-		Promise<Void> promise = Promise.promise();
-		try {
-			String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
-			Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
-			String authTokenUri = config.getString(ConfigKeys.AUTH_TOKEN_URI);
-			Boolean authSsl = Boolean.parseBoolean(config.getString(ConfigKeys.AUTH_SSL));
-			String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
-			String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "client_credentials");
-			UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);
-
-			ZonedDateTime now = ZonedDateTime.now(ZoneId.of(config.getString(ComputateConfigKeys.SITE_ZONE)));
-			String siteHostName = config.getString(ComputateConfigKeys.SITE_HOST_NAME);
-			Integer sitePort = Integer.parseInt(config.getString(ComputateConfigKeys.SITE_PORT));
-			Boolean siteSsl = false;
-
-			webClient.post(authPort, authHostName, authTokenUri).ssl(authSsl).authentication(credentials)
-					.putHeader("Content-Type", "application/json")
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-					.onSuccess(requestAuthResponse -> {
-				try {
-					String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-					Integer promKeycloakProxyPort = Integer.parseInt(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT));
-					String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
-					Boolean promKeycloakProxySsl = Boolean.parseBoolean(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL));
-					String promKeycloakProxyUri = String.format("/api/v1/query?query=DCGM_FI_DEV_GPU_UTIL");
-
-					webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, promKeycloakProxyUri).ssl(promKeycloakProxySsl)
-							.putHeader("Authorization", String.format("Bearer %s", accessToken))
-							.send()
-							.expecting(HttpResponseExpectation.SC_OK)
-							.onSuccess(metricsResponse -> {
-						JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
-						JsonArray dataResult = metricsBody.getJsonObject("data").getJsonArray("result");
-						List<Future<?>> futures = new ArrayList<>();
-						dataResult.stream().map(o -> (JsonObject)o).forEach(clusterResult -> {
-							futures.add(Future.future(promise1 -> {
-								try {
-									JsonObject clusterMetric = clusterResult.getJsonObject("metric");
-									JsonArray clusterValue = clusterResult.getJsonArray("value");
-									String clusterName = clusterMetric.getString("cluster");
-									String nodeName = clusterMetric.getString("Hostname");
-									Integer gpuDeviceNumber = Integer.parseInt(clusterMetric.getString("gpu"));
-									String gpuDeviceUtilization = clusterValue.getString(1);
-									JsonObject body = new JsonObject();
-									String gpuDeviceId = GpuDevice.toId(String.format("%s-%s-%s", clusterName, nodeName, gpuDeviceNumber));
-									body.put(GpuDevice.VAR_pk, gpuDeviceId);
-									body.put(GpuDevice.VAR_gpuDeviceId, gpuDeviceId);
-									body.put(GpuDevice.VAR_clusterName, clusterName);
-									body.put(GpuDevice.VAR_nodeName, nodeName);
-									body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber.toString());
-									body.put(GpuDevice.VAR_gpuDeviceUtilization, gpuDeviceUtilization);
-
-									webClient.put(443, siteHostName, "/en-us/api/gpu-device-import?softCommit=true")
-											.ssl(true)
-											.putHeader("Content-Type", "application/json")
-											.putHeader("Authorization", String.format("Bearer %s", accessToken))
-											.sendJsonObject(new JsonObject().put("list", new JsonArray().add(body)))
-											.expecting(HttpResponseExpectation.SC_OK)
-											.onSuccess(importResponse -> {
-										LOG.info(String.format("Imported %s GPU device", gpuDeviceId));
-										promise1.complete();
-									}).onFailure(ex -> {
-										LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-										promise1.fail(ex);
-									});
-								} catch(Exception ex) {
-									LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-									promise1.fail(ex);
-								}
-							}));
-						});
-						Future.all(futures).onSuccess(b -> {
-							promise.complete();
-						}).onFailure(ex -> {
-							LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-							promise.fail(ex);
-						});
-					}).onFailure(ex -> {
-						LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-						promise.fail(ex);
-					});
-				} catch(Throwable ex) {
-					LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-				promise.fail(ex);
-			});
-		} catch(Throwable ex) {
-			LOG.error(String.format(importDataFail, GpuDevice.CLASS_SIMPLE_NAME), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-
 	public Future<Void> importDataCamelCompensation() {
 		Promise<Void> promise = Promise.promise();
 		try {
@@ -291,18 +193,8 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 					.onSuccess(requestAuthResponse -> {
 				try {
 					String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-					JsonObject pageParams = new JsonObject();
-					pageParams.put("path", new JsonObject());
-					pageParams.put("cookie", new JsonObject());
-					pageParams.put("query", new JsonObject()
-							.put("softCommit", true)
-							.put("q", "*:*")
-							.put("rows", "1000")
-							.put("var", new JsonArray().add("refresh:false")));
-					JsonObject pageContext = new JsonObject().put("params", pageParams);
-					JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-					webClient.delete(443, siteHostName, "/en-us/api/gpu-device")
+					webClient.delete(443, siteHostName, "/en-us/api/gpu-device?rows=1000")
 							.ssl(true)
 							.putHeader("Content-Type", "application/json")
 							.putHeader("Authorization", String.format("Bearer %s", accessToken))
@@ -330,10 +222,10 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 		return promise.future();
 	}
 
-	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest,
-			String classSimpleName, String classApiAddress) {
+	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
+			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		super.importData(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));

@@ -50,6 +50,16 @@ import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
 import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import java.lang.Integer;
+import java.time.ZonedDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.util.Locale;
+import java.time.OffsetDateTime;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -111,6 +121,9 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * <h2>ApiMethode: UserPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: UserPage"</b>, which creates an API "UserPage". 
+ * </p>
+ * <h2>ApiMethode: DELETEFilter</h2>
+ * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
  * <p>This class contains a comment <b>"ApiTag: AI clusters"</b>, which groups all of the OpenAPIs for AiCluster objects under the tag "AI clusters". 
@@ -234,6 +247,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-cluster/{clusterName}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/ai-cluster/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/ai-cluster/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/ai-cluster";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/ai-cluster";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
 
 	public static final String Icon = "<i class=\"fa-regular fa-server\"></i>";
 
@@ -1761,7 +1777,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			}
 		}
 		if(location != null) {
-			doc.put("location_docvalues_location", String.format("%s,%s", location.getX(), location.getY()));
+			doc.put("location_docvalues_location", String.format("%s,%s", location.getY(), location.getX()));
 		}
 		if(id != null) {
 			doc.put("id_docvalues_string", id);
@@ -2024,6 +2040,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiCluster";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiCluster";
 	public static final String CLASS_API_ADDRESS_AiCluster = "ai-telemetry-enUS-AiCluster";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_AiCluster;
@@ -2106,7 +2123,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
@@ -2137,6 +2154,11 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
 		return "%s/en-us/user/ai-cluster/%s";
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
+		return null;
 	}
 
 	public static String displayNameForClass(String var) {

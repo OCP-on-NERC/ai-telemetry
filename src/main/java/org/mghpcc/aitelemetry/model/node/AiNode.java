@@ -36,6 +36,12 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
+ *   AiClusterAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
  *   Admin:
  *     POST:
  *     PATCH:
@@ -62,6 +68,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmColumn: 1
 	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
+	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 

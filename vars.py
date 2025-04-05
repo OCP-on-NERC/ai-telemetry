@@ -80,7 +80,10 @@ def quoted_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data, style="'")
 
 if __name__ == '__main__':
-    kubernetes.config.load_kube_config()
+    if os.path.exists('/var/run/secrets/kubernetes.io/serviceaccount/namespace'):
+        kubernetes.config.load_incluster_config()
+    else:
+        kubernetes.config.load_kube_config()
     k8s_client = kubernetes.client.ApiClient()
     openshift_client = DynamicClient(k8s_client)
 

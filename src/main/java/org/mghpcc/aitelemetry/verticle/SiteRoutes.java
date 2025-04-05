@@ -25,7 +25,7 @@ public class SiteRoutes {
 		router.getWithRegex("\\/prom-keycloak-proxy(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
 			String originalUri = handler.pathParam("uri");
 			ServiceRequest serviceRequest = apiSiteUser.generateServiceRequest(handler);
-			apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture").onSuccess(siteRequest -> {
+			apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 				try {
 
 					String uri = handler.pathParam("uri");

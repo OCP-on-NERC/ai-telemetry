@@ -292,6 +292,7 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	}
 
 	public static final String CLASS_SIMPLE_NAME = "AiProjectPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.project.AiProjectPage";
 
 
 	@Override
@@ -331,6 +332,11 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
+		return null;
+	}
+
+	@Override
+	public String classStringFormatUrlDownloadForClass() {
 		return null;
 	}
 

@@ -18,15 +18,17 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Order: 8
+ * Order: 7
  * Description: A research project using AI and GPUs
  * AName: an AI project
  * PluralName: AI projects
  * Icon: <i class="fa-regular fa-school"></i>
+ * Sort.asc: clusterName
+ * Sort.asc: projectName
  * 
  * SearchPageUri: /en-us/search/ai-project
- * EditPageUri: /en-us/edit/ai-project/{pageId}
- * UserPageUri: /en-us/user/ai-project/{pageId}
+ * EditPageUri: /en-us/edit/ai-project/{projectId}
+ * UserPageUri: /en-us/user/ai-project/{projectId}
  * ApiUri: /en-us/api/ai-project
  * ApiMethod:
  *   Search:
@@ -37,6 +39,12 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
+ *   AiProjectAdmin:
+ *     POST:
+ *     PATCH:
+ *     GET:
+ *     DELETE:
+ *     Admin:
  *   Admin:
  *     POST:
  *     PATCH:
@@ -48,24 +56,51 @@ import io.vertx.pgclient.data.Polygon;
  *     PATCH:
  *     GET:
  *     DELETE:
+ *     Admin:
  *     SuperAdmin:
  */
 public class AiProject extends AiProjectGen<BaseModel> {
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: cluster name
+	 * Description: The name of this cluster
+	 * HtmRow: 3
+	 * HtmCell: 1
+	 * HtmColumn: 1
+	 * HtmRowTitleOpen: cluster details
+	 * Facet: true
+	 * AuthorizationResource: AiCluster
+	 **/
+	protected void _clusterName(Wrap<String> w) {}
 
   /**
    * {@inheritDoc}
    * DocValues: true
    * Persist: true
-   * DisplayName: name
+   * DisplayName: project name
    * Description: The name of this AI project
    * HtmRow: 3
    * HtmCell: 1
    * HtmColumn: 1
    * HtmRowTitle: AI project details
    * Facet: true
-   * VarName: true
    **/
   protected void _projectName(Wrap<String> w) {}
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * DisplayName: project display name
+   * Description: The display name of this AI project
+   * Facet: true
+   * VarName: true
+   **/
+  protected void _projectDisplayName(Wrap<String> w) {
+    w.o(String.format("%s %s", clusterName, projectName));
+  }
 
   /**
    * {@inheritDoc}
@@ -79,7 +114,7 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * VarId: true
    **/
   protected void _projectId(Wrap<String> w) {
-    w.o(toId(projectName));
+    w.o(toId(String.format("%s-%s", clusterName, projectName)));
   }
 
   /**
