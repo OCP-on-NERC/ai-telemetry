@@ -15,7 +15,15 @@ SITE_MAIN_VERTICLE_PACKAGE: org.mghpcc.aitelemetry.verticle
 SITE_POM_ARTIFACT_ID: aitelemetry
 SITE_PORT: 10210
 SITE_SRC: "/opt/app-root/src/{{ SITE_NAME }}"
+COMPUTATE_SRC: "/opt/app-root/src/computate"
+COMPUTATE_VERTX_SRC: "/opt/app-root/src/computate-vertx"
+SOLR_NAMESPACE: "{{ SITE_NAMESPACE }}"
+DATABASE_NAMESPACE: "{{ SITE_NAMESPACE }}"
+AUTH_NAMESPACE: "{{ SITE_NAMESPACE }}"
+ADMIN_NAMESPACE: "{{ SITE_NAMESPACE }}"
+ENABLE_FIWARE: false
 WORKBENCH_NAMES:
 #  - USER_NAME: computate
+#    WORKBENCH_ADMIN: true
 #  - USER_NAME: dheeraj
   - USER_NAME: rh-csaggin

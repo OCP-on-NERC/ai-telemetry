@@ -6,3 +6,5 @@ bin/generatenow.sh
 bin/index.sh
 bin/indexnow.sh
 doc/getting-started/openshift-local/tls*
+*.code-workspace
+
