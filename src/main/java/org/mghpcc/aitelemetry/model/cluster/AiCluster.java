@@ -181,6 +181,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: NGSILD-Tenant
 	 * Description: The NGSILD-Tenant or Fiware-Service
+	 * HtmRowTitleOpen: NGSI-LD data
 	 * HtmRow: 5
 	 * HtmCell: 1
 	 * Facet: true
@@ -261,9 +262,9 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DocValues: true
 	 * DisplayName: Grafana GPU utilization
 	 * Description: Explore this cluster's GPU utilization in Grafana. 
-	 * HtmRow: 5
+	 * HtmRow: 4
 	 * HtmRowTitleOpen: Useful URLs
-	 * HtmCell: 1
+	 * HtmCell: 3
 	 * Facet: true
 	 * Link: true
 	 */
