@@ -8,7 +8,7 @@ metadata:
     opendatahub.io/accelerator-name: ''
     openshift.io/description: ''
     openshift.io/display-name: {{ WORKBENCH_NAME }}
-    notebooks.opendatahub.io/last-image-selection: 'vscode-java:1.2.0'
+    notebooks.opendatahub.io/last-image-selection: 'vscode-java:1.3.0'
     notebooks.opendatahub.io/last-size-selection: Small
     opendatahub.io/username: {{ WORKBENCH_NAME }}
   name: {{ WORKBENCH_NAME }}
@@ -61,7 +61,7 @@ spec:
                                   --ServerApp.quit_button=False
                                   --ServerApp.tornado_settings={"user":"{{ WORKBENCH_NAME }}","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.k5p2r6m6e1c4d2r.dq2p.p2.openshiftapps.com","hub_prefix":"/projects/{{ WORKBENCH_NAMESPACE }}"}
             - name: JUPYTER_IMAGE
-              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/vscode-java:1.2.0'
+              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/vscode-java:1.3.0'
             - name: GIT_SSL_CAINFO
               value: /etc/pki/tls/custom-certs/ca-bundle.crt
             - name: PIP_CERT
@@ -88,8 +88,10 @@ spec:
               subPath: ca-bundle.crt
           envFrom:
             - configMapRef:
-                name: workbench-{{ WORKBENCH_NAME }}
-          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/vscode-java:1.2.0'
+                name: workbench-{{ WORKBENCH_NAME }}-default
+            - configMapRef:
+                name: workbench-{{ WORKBENCH_NAME }}-{{ SITE_NAME }}
+          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/vscode-java:1.4.0'
           workingDir: /opt/app-root/src
         - resources:
             limits:

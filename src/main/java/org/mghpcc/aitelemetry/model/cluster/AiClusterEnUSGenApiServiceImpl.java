@@ -565,6 +565,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = listAiCluster.getSiteRequest_(SiteRequest.class);
 		listAiCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
@@ -1561,6 +1562,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = listAiCluster.getSiteRequest_(SiteRequest.class);
 		listAiCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
@@ -2817,6 +2819,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = listAiCluster.getSiteRequest_(SiteRequest.class);
 		listAiCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);

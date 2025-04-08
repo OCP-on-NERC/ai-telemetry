@@ -14,7 +14,7 @@
     }
     , {
       "type": "java"
-      , "name": "rebuild API"
+      , "name": "rebuild {{ SITE_NAME }} API"
       , "request": "launch"
       , "mainClass": "{{ SITE_MAIN_VERTICLE_PACKAGE }}.MainVerticle"
       , "projectName": "{{ SITE_POM_ARTIFACT_ID }}"

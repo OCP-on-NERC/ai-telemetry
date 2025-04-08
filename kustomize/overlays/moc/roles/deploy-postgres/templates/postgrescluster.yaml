@@ -1,0 +1,119 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: postgres
+  namespace: {{ SITE_NAMESPACE }}
+spec:
+  backups:
+    pgbackrest:
+      image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:ubi8-2.41-2
+      jobs:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 200m
+            memory: 200Mi
+      sidecars:
+        pgbackrestConfig:
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+        pgbackrest:
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 200m
+              memory: 200Mi
+      repoHost:
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 200m
+          limits:
+            memory: 200Mi
+            cpu: 200m
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: 20Gi
+                cpu: '200m'
+                memory: '200Mi'
+              limits:
+                cpu: '200Mi'
+                memory: '200Mi'
+  instances:
+    - replicas: 1
+      name: 'postgres'
+      dataVolumeClaimSpec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+            cpu: '200m'
+            memory: '200Mi'
+          limits:
+            cpu: '1'
+            memory: '1Gi'
+      walVolumeClaimSpec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+            cpu: '200m'
+            memory: '200Mi'
+          limits:
+            cpu: '200m'
+            memory: '200Mi'
+      resources:
+        requests:
+          cpu: '200m'
+          memory: '200Mi'
+        limits:
+          cpu: '1'
+          memory: '1Gi'
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-gis:ubi8-15.1-3.3-0
+  postgresVersion: 15
+  openshift: true
+  postGISVersion: 3.3.0
+  users:
+    - name: keycloak
+      options: "SUPERUSER"
+      databases:
+        - keycloak
+    - name: "scorpiobroker"
+      options: "SUPERUSER CREATEDB"
+      databases:
+        - "scorpiobroker"
+{% for WORKBENCH_VARS in WORKBENCH_NAMES %}
+    - name: "{{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }}"
+      options: "SUPERUSER"
+      databases:
+        - "{{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }}"
+{% endfor %}
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - "host keycloak keycloak all md5"
+          - "local keycloak keycloak trust"
+          - "host all scorpiobroker all md5"
+          - "local all scorpiobroker trust"
+{% for WORKBENCH_VARS in WORKBENCH_NAMES %}
+          - "host {{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }} {{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }} all md5"
+          - "local {{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }} {{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }} trust"
+{% endfor %}

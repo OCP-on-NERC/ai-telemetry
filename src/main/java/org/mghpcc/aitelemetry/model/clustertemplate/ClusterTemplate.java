@@ -100,4 +100,20 @@ public class ClusterTemplate extends ClusterTemplateGen<BaseModel> {
 	protected void _parameters(Wrap<JsonArray> w) {
 		w.o(new JsonArray());
 	}
+
+	@Override
+	protected void _objectSuggest(Wrap<String> w) {
+		StringBuilder b = new StringBuilder();
+		String objectId = idForClass();
+		String objectTitle = titleForClass();
+		if(pk != null)
+			b.append(" ").append(pk);
+		if(id != null)
+			b.append(" ").append(id);
+		if(objectId != null)
+			b.append(" ").append(objectId);
+		if(objectTitle != null)
+			b.append(" ").append(objectTitle);
+		w.o(b.toString());
+	}
 }

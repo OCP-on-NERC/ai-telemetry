@@ -113,7 +113,7 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 						futures.add(Future.future(promise1 -> {
 							try {
 								String templateTitle = oldClusterTemplate.getTitle();
-								JsonObject body = new JsonObject();
+								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
 								pageParams.put("body", body);
@@ -130,7 +130,7 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 
 								vertx.eventBus().request(ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate, pageRequest, new DeliveryOptions()
 										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
-										.addHeader("action", String.format("delete%sFuture", classSimpleName))
+										.addHeader("action", String.format("patch%sFuture", classSimpleName))
 										).onSuccess(message -> {
 									LOG.info(String.format("Deleted %s AI cluster", templateTitle));
 									promise1.complete(oldClusterTemplates);
@@ -174,6 +174,7 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 			ZonedDateTime dateTimeStarted = ZonedDateTime.now();
 			String accessToken = config.getString(ConfigKeys.FULFILLMENT_API_OPENSHIFT_TOKEN);
 			queryClusterTemplates(accessToken).onSuccess(templateResponse -> {
+				LOG.info(templateResponse.encodePrettily());
 				List<JsonObject> templates = templateResponse.getJsonArray("items").stream().map(template -> (JsonObject)template).collect(Collectors.toList());
 				List<Future<?>> futures = new ArrayList<>();
 				for(Integer i = 0; i < templates.size(); i++) {

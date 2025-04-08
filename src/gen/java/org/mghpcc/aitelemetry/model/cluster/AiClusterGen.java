@@ -2309,7 +2309,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_gpuDevicesTotal:
 			return 4;
 		case VAR_grafanaUrl:
-			return 5;
+			return 4;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -2338,7 +2338,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		case VAR_gpuDevicesTotal:
 			return 2;
 		case VAR_grafanaUrl:
-			return 1;
+			return 3;
 			default:
 				return BaseModel.htmCellBaseModel(var);
 		}

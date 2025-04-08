@@ -92,7 +92,7 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * Facet: true
 	 **/
 	protected void _gpuDeviceNumber(Wrap<Integer> w) {}
-
+ 
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true

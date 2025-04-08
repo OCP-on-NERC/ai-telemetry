@@ -8,3 +8,5 @@ bin/indexnow.sh
 bin/watch.sh
 bin/watchnow.sh
 doc/getting-started/openshift-local/tls*
+*.code-workspace
+
