@@ -1,11 +1,13 @@
 ---
 GITHUB_ORG: OCP-on-NERC
 CLUSTER_ADMIN_GROUP: nerc-ops
+SITE_NAMESPACE: ai-telemetry-cbca60
+AUTH_NAMESPACE: "{{ SITE_NAMESPACE }}"
+OPENSHIFT_APPS_DOMAIN: apps.shift.nerc.mghpcc.org
+AUTH_HOST_NAME: keycloak.apps.obs.nerc.mghpcc.org
 AUTH_URL: https://keycloak.apps.obs.nerc.mghpcc.org
 AUTH_REALM: NERC
 AUTH_CLIENT: ai-telemetry
-SITE_NAMESPACE: ai-telemetry-cbca60
-OPENSHIFT_APPS_DOMAIN: apps.shift.nerc.mghpcc.org
 WORKBENCH_SIZE: 20Gi
 SITE_SHORT_NAME: aitelemetry
 SITE_NAME: ai-telemetry
@@ -15,15 +17,21 @@ SITE_MAIN_VERTICLE_PACKAGE: org.mghpcc.aitelemetry.verticle
 SITE_POM_ARTIFACT_ID: aitelemetry
 SITE_PORT: 10210
 SITE_SRC: "/opt/app-root/src/{{ SITE_NAME }}"
+SITE_THEME: dark
 COMPUTATE_SRC: "/opt/app-root/src/computate"
 COMPUTATE_VERTX_SRC: "/opt/app-root/src/computate-vertx"
 SOLR_NAMESPACE: "{{ SITE_NAMESPACE }}"
 DATABASE_NAMESPACE: "{{ SITE_NAMESPACE }}"
-AUTH_NAMESPACE: "{{ SITE_NAMESPACE }}"
 ADMIN_NAMESPACE: "{{ SITE_NAMESPACE }}"
 ENABLE_FIWARE: false
+FULFILLMENT_API_HOST_NAME: fulfillment-api-innabox.apps.hypershift1.nerc.mghpcc.org
+FULFILLMENT_API_SSL: true
+FULFILLMENT_API_PORT: 443
 WORKBENCH_NAMES:
 #  - USER_NAME: computate
 #    WORKBENCH_ADMIN: true
 #  - USER_NAME: dheeraj
-  - USER_NAME: rh-csaggin
+#  - USER_NAME: rh-csaggin
+#  - USER_NAME: isaiahstapleton
+#  - USER_NAME: danniesh
+  - USER_NAME: schwesig
