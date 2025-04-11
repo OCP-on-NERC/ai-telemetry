@@ -37,6 +37,7 @@ import java.math.RoundingMode;
 import java.util.Map;
 import java.lang.String;
 import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
+import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -343,6 +344,62 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 		return clusterTemplateTitle;
 	}
 
+	////////////
+	// userId //
+	////////////
+
+
+	/**	 The entity userId
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String userId;
+
+	/**	<br> The entity userId
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest&fq=entiteVar_enUS_indexed_string:userId">Find the entity userId in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _userId(Wrap<String> w);
+
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String o) {
+		this.userId = ClusterRequest.staticSetUserId(siteRequest_, o);
+	}
+	public static String staticSetUserId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected ClusterRequest userIdInit() {
+		Wrap<String> userIdWrap = new Wrap<String>().var("userId");
+		if(userId == null) {
+			_userId(userIdWrap);
+			Optional.ofNullable(userIdWrap.getO()).ifPresent(o -> {
+				setUserId(o);
+			});
+		}
+		return (ClusterRequest)this;
+	}
+
+	public static String staticSearchUserId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrUserId(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqUserId(SiteRequest siteRequest_, String o) {
+		return ClusterRequest.staticSearchUserId(siteRequest_, ClusterRequest.staticSetUserId(siteRequest_, o)).toString();
+	}
+
+	public String sqlUserId() {
+		return userId;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -374,6 +431,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			try {
 				nameInit();
 				clusterTemplateTitleInit();
+				userIdInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -431,6 +489,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				return oClusterRequest.name;
 			case "clusterTemplateTitle":
 				return oClusterRequest.clusterTemplateTitle;
+			case "userId":
+				return oClusterRequest.userId;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -462,6 +522,12 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				if(!saves.contains("clusterTemplateTitle"))
 					saves.add("clusterTemplateTitle");
 				return val;
+			case "userId":
+				if(oClusterRequest.getUserId() == null)
+					oClusterRequest.setUserId(Optional.ofNullable(val).map(v -> v.toString()).orElse(null));
+				if(!saves.contains("userId"))
+					saves.add("userId");
+				return val;
 			default:
 				return super.relateBaseModel(var, val);
 		}
@@ -480,6 +546,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return ClusterRequest.staticSetName(siteRequest_, o);
 		case "clusterTemplateTitle":
 			return ClusterRequest.staticSetClusterTemplateTitle(siteRequest_, o);
+		case "userId":
+			return ClusterRequest.staticSetUserId(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -498,6 +566,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return ClusterRequest.staticSearchName(siteRequest_, (String)o);
 		case "clusterTemplateTitle":
 			return ClusterRequest.staticSearchClusterTemplateTitle(siteRequest_, (String)o);
+		case "userId":
+			return ClusterRequest.staticSearchUserId(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -516,6 +586,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return ClusterRequest.staticSearchStrName(siteRequest_, (String)o);
 		case "clusterTemplateTitle":
 			return ClusterRequest.staticSearchStrClusterTemplateTitle(siteRequest_, (String)o);
+		case "userId":
+			return ClusterRequest.staticSearchStrUserId(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -534,6 +606,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return ClusterRequest.staticSearchFqName(siteRequest_, o);
 		case "clusterTemplateTitle":
 			return ClusterRequest.staticSearchFqClusterTemplateTitle(siteRequest_, o);
+		case "userId":
+			return ClusterRequest.staticSearchFqUserId(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -572,6 +646,12 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				}
 				saves.add("clusterTemplateTitle");
 				return val;
+			} else if("userid".equals(varLower)) {
+				if(val instanceof String) {
+					setUserId((String)val);
+				}
+				saves.add("userId");
+				return val;
 		} else {
 			return super.persistBaseModel(var, val);
 		}
@@ -598,6 +678,10 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			String clusterTemplateTitle = (String)doc.get("clusterTemplateTitle_docvalues_string");
 			if(clusterTemplateTitle != null)
 				oClusterRequest.setClusterTemplateTitle(clusterTemplateTitle);
+
+			String userId = (String)doc.get("userId_docvalues_string");
+			if(userId != null)
+				oClusterRequest.setUserId(userId);
 		}
 
 		super.populateBaseModel(doc);
@@ -610,6 +694,9 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 		if(clusterTemplateTitle != null) {
 			doc.put("clusterTemplateTitle_docvalues_string", clusterTemplateTitle);
 		}
+		if(userId != null) {
+			doc.put("userId_docvalues_string", userId);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -620,6 +707,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				return "name_docvalues_string";
 			case "clusterTemplateTitle":
 				return "clusterTemplateTitle_docvalues_string";
+			case "userId":
+				return "userId_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -631,6 +720,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				return "name_docvalues_string";
 			case "clusterTemplateTitle":
 				return "clusterTemplateTitle_docvalues_string";
+			case "userId":
+				return "userId_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -642,6 +733,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				return "name";
 			case "clusterTemplateTitle_docvalues_string":
 				return "clusterTemplateTitle";
+			case "userId_docvalues_string":
+				return "userId";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -674,6 +767,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 
 		oClusterRequest.setName(Optional.ofNullable(doc.get("name_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oClusterRequest.setClusterTemplateTitle(Optional.ofNullable(doc.get("clusterTemplateTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oClusterRequest.setUserId(Optional.ofNullable(doc.get("userId_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -691,6 +785,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 				apiRequest.addVars("name");
 			if(!Objects.equals(clusterTemplateTitle, original.getClusterTemplateTitle()))
 				apiRequest.addVars("clusterTemplateTitle");
+			if(!Objects.equals(userId, original.getUserId()))
+				apiRequest.addVars("userId");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -704,6 +800,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 		sb.append(super.toString());
 		sb.append(Optional.ofNullable(name).map(v -> "name: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(clusterTemplateTitle).map(v -> "clusterTemplateTitle: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(userId).map(v -> "userId: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -715,6 +812,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	}
 	public static final String VAR_name = "name";
 	public static final String VAR_clusterTemplateTitle = "clusterTemplateTitle";
+	public static final String VAR_userId = "userId";
 
 	public static List<String> varsQForClass() {
 		return ClusterRequest.varsQClusterRequest(new ArrayList<String>());
@@ -730,6 +828,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	public static List<String> varsFqClusterRequest(List<String> vars) {
 		vars.add(VAR_name);
 		vars.add(VAR_clusterTemplateTitle);
+		vars.add(VAR_userId);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -744,6 +843,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 
 	public static final String DISPLAY_NAME_name = "cluster name";
 	public static final String DISPLAY_NAME_clusterTemplateTitle = "cluster template";
+	public static final String DISPLAY_NAME_userId = "user";
 
 	@Override
 	public String idForClass() {
@@ -799,6 +899,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_name;
 		case VAR_clusterTemplateTitle:
 			return DISPLAY_NAME_clusterTemplateTitle;
+		case VAR_userId:
+			return DISPLAY_NAME_userId;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -810,6 +912,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return "The name of this cluster";
 		case VAR_clusterTemplateTitle:
 			return "The cluster template to use for this request. ";
+		case VAR_userId:
+			return "The user who requested the cluster";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -820,6 +924,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 		case VAR_name:
 			return "String";
 		case VAR_clusterTemplateTitle:
+			return "String";
+		case VAR_userId:
 			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
@@ -832,6 +938,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return 1;
 		case VAR_clusterTemplateTitle:
 			return 2;
+		case VAR_userId:
+			return 3;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}
@@ -842,6 +950,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 		case VAR_name:
 			return 3;
 		case VAR_clusterTemplateTitle:
+			return 3;
+		case VAR_userId:
 			return 3;
 			default:
 				return BaseModel.htmRowBaseModel(var);
@@ -854,6 +964,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 			return 1;
 		case VAR_clusterTemplateTitle:
 			return 2;
+		case VAR_userId:
+			return 3;
 			default:
 				return BaseModel.htmCellBaseModel(var);
 		}

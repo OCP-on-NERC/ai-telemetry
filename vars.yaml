@@ -599,3 +599,20 @@ FULFILLMENT_API_SSL: "{{ (lookup('env', 'FULFILLMENT_API_SSL') | lower) != 'fals
 FULFILLMENT_API_HOST_NAME: "{{ lookup('env', 'FULFILLMENT_API_HOST_NAME') | default('', true) }}"
 # The default port that the fulfillment API runs. 
 FULFILLMENT_API_PORT: "{{ lookup('env', 'FULFILLMENT_API_PORT') | default('443', true) }}"
+
+###########
+# ESI API #
+###########
+
+# The Auth openshift secret with the admin credentials. 
+ESI_API_OPENSHIFT_SECRET: "{{ lookup('env', 'ESI_API_OPENSHIFT_SECRET') | default('fulfillment-api', true) }}"
+# The Auth admin username. 
+ESI_API_OPENSHIFT_TOKEN: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=ESI_API_OPENSHIFT_SECRET, namespace=SITE_NAMESPACE)[0].data['token'] | b64decode }}"
+# Whether to use SSL when connecting to the fulfillment API. 
+ESI_API_SSL: "{{ (lookup('env', 'ESI_API_SSL') | lower) != 'false' }}"
+# The host name to connect to the fulfillment API in OpenShift. 
+ESI_API_HOST_NAME: "{{ lookup('env', 'ESI_API_HOST_NAME') | default('', true) }}"
+# The default port that the fulfillment API runs. 
+ESI_API_PORT: "{{ lookup('env', 'ESI_API_PORT') | default('443', true) }}"
+
+

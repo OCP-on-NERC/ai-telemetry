@@ -26,6 +26,7 @@ import org.apache.camel.Exchange;
 import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
+import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
@@ -90,7 +91,7 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 							JsonObject metricsBody = metricsResponse.bodyAsJsonObject();
 							JsonArray dataResult = metricsBody.getJsonObject("data").getJsonArray("result");
 							List<Future<?>> futures = new ArrayList<>();
-							dataResult.stream().map(o -> (JsonObject)o).forEach(clusterResult -> {
+							dataResult.stream().map(o -> (JsonObject)o).filter(o -> o.getString("Hostname") != null).forEach(clusterResult -> {
 								futures.add(Future.future(promise1 -> {
 									try {
 										JsonObject clusterMetric = clusterResult.getJsonObject("metric");
@@ -225,6 +226,7 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
 			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
+		ZonedDateTime dateTimeStarted = ZonedDateTime.now();
 		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
@@ -299,7 +301,12 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 								}));
 							});
 							Future.all(futures).onSuccess(b -> {
-								promise.complete();
+								cleanupGpuDevices(siteRequest, dateTimeStarted, classSimpleName, accessToken).onSuccess(oldAiNodes -> {
+									promise.complete();
+								}).onFailure(ex -> {
+									LOG.error(String.format(importDataFail, classSimpleName), ex);
+									promise.fail(ex);
+								});
 							}).onFailure(ex -> {
 								LOG.error(String.format(importDataFail, classSimpleName), ex);
 								promise.fail(ex);
@@ -324,6 +331,70 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 			LOG.error(String.format(importDataFail, classSimpleName), ex);
 			promise.fail(ex);
 		});
+		return promise.future();
+	}
+
+	protected Future<SearchList<GpuDevice>> cleanupGpuDevices(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName, String accessToken) {
+		Promise<SearchList<GpuDevice>> promise = Promise.promise();
+		try {
+			SearchList<GpuDevice> searchList = new SearchList<GpuDevice>();
+			searchList.setStore(true);
+			searchList.q("*:*");
+			searchList.setC(GpuDevice.class);
+			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", GpuDevice.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.promiseDeepForClass(siteRequest).onSuccess(oldGpuDevices -> {
+				try {
+					List<Future<?>> futures = new ArrayList<>();
+					for(Integer i = 0; i < oldGpuDevices.getList().size(); i++) {
+						GpuDevice oldGpuDevice = oldGpuDevices.getList().get(i);
+						futures.add(Future.future(promise1 -> {
+							try {
+								String clusterName = oldGpuDevice.getClusterName();
+								JsonObject body = new JsonObject();
+								body.put("setArchived", true);
+
+								JsonObject pageParams = new JsonObject();
+								pageParams.put("body", body);
+								pageParams.put("path", new JsonObject());
+								pageParams.put("cookie", new JsonObject());
+								pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+								JsonObject pageContext = new JsonObject().put("params", pageParams);
+								JsonObject pageRequest = new JsonObject().put("context", pageContext);
+
+								vertx.eventBus().request(GpuDevice.CLASS_API_ADDRESS_GpuDevice, pageRequest, new DeliveryOptions()
+										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
+										.addHeader("action", String.format("patch%sFuture", classSimpleName))
+										).onSuccess(message -> {
+									LOG.info(String.format("Archived %s GPU node", clusterName));
+									promise1.complete(oldGpuDevices);
+								}).onFailure(ex -> {
+									LOG.error(String.format(importDataFail, classSimpleName), ex);
+									promise.fail(ex);
+								});
+							} catch(Exception ex) {
+								LOG.error(String.format(importDataFail, classSimpleName), ex);
+								promise1.fail(ex);
+							}
+						}));
+					}
+					Future.all(futures).onSuccess(b -> {
+						promise.complete();
+					}).onFailure(ex -> {
+						LOG.error(String.format(importDataFail, classSimpleName), ex);
+						promise.fail(ex);
+					});
+				} catch(Throwable ex) {
+					LOG.error(String.format(importDataFail, classSimpleName), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format(importDataFail, classSimpleName), ex);
+				promise.fail(ex);
+			});
+		} catch(Throwable ex) {
+			LOG.error(String.format(importDataFail, classSimpleName), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 }

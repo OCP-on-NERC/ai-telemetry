@@ -22,6 +22,8 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  *   DELETE:
  *   PUTImport:
  * 
+ * AuthUser: true
+ * AuthSession: true
  * AuthGroup:
  *   ClusterOwner:
  *     POST:
@@ -68,4 +70,18 @@ public class ClusterRequest extends ClusterRequestGen<BaseModel> {
 	 * Relate: ClusterTemplate.title
 	 **/
 	protected void _clusterTemplateTitle(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: user
+	 * Description: The user who requested the cluster
+	 * HtmRow: 3
+	 * HtmCell: 3
+	 * HtmColumn: 3
+	 * Facet: true
+	 * Relate: SiteUser.userId
+	 **/
+	protected void _userId(Wrap<String> w) {}
 }

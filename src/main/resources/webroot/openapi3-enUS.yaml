@@ -3,6 +3,729 @@ info:
   title: "AI Telemetry"
   version: 3.0.0
 paths:
+  /en-us/api/bare-metal-network:
+    get:
+      operationId: searchBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchBareMetalNetworkResponse'
+    patch:
+      operationId: patchBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PATCHBareMetalNetworkRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PATCHBareMetalNetworkResponse'
+    post:
+      operationId: postBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSTBareMetalNetworkRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/POSTBareMetalNetworkResponse'
+    delete:
+      operationId: deletefilterBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterBareMetalNetworkResponse'
+  /en-us/api/bare-metal-network-import:
+    put:
+      operationId: putimportBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PUTImportBareMetalNetworkRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PUTImportBareMetalNetworkResponse'
+  /en-us/api/bare-metal-network/{id}:
+    get:
+      operationId: getBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GETBareMetalNetworkResponse'
+    delete:
+      operationId: deleteBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEBareMetalNetworkResponse'
+  /en-us/edit/bare-metal-network/{id}:
+    get:
+      operationId: editpageBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageBareMetalNetworkResponse'
+  /en-us/search/bare-metal-network:
+    get:
+      operationId: searchpageBareMetalNetwork
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNetwork
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal networks
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageBareMetalNetworkResponse'
   /en-us/api/ai-cluster:
     get:
       operationId: searchAiCluster
@@ -251,6 +974,15 @@ paths:
       summary: >+
       tags:
         - AI clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -755,10 +1487,6 @@ paths:
     get:
       operationId: searchClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -934,10 +1662,6 @@ paths:
     patch:
       operationId: patchClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -991,14 +1715,19 @@ paths:
     post:
       operationId: postClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
         - cluster requests
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -1145,10 +1874,6 @@ paths:
     get:
       operationId: getClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1255,10 +1980,6 @@ paths:
     get:
       operationId: editpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1289,10 +2010,6 @@ paths:
     get:
       operationId: searchpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1469,10 +2186,6 @@ paths:
     get:
       operationId: userpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1503,10 +2216,6 @@ paths:
     get:
       operationId: searchClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -1747,6 +2456,15 @@ paths:
       summary: >+
       tags:
         - cluster templates
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -1893,10 +2611,6 @@ paths:
     get:
       operationId: getClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -2003,10 +2717,6 @@ paths:
     get:
       operationId: editpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -2037,10 +2747,6 @@ paths:
     get:
       operationId: searchpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -2461,6 +3167,15 @@ paths:
       summary: >+
       tags:
         - GPU devices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -3209,6 +3924,15 @@ paths:
       summary: >+
       tags:
         - GPU slices
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -3957,6 +4681,15 @@ paths:
       summary: >+
       tags:
         - AI nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -4705,6 +5438,15 @@ paths:
       summary: >+
       tags:
         - AI projects
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -5449,6 +6191,15 @@ paths:
       summary: >+
       tags:
         - articles
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -6039,6 +6790,15 @@ paths:
       summary: >+
       tags:
         - site users
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -6299,6 +7059,66 @@ components:
       type: openIdConnect
       openIdConnectUrl: https://keycloak.apps.obs.nerc.mghpcc.org/realms/NERC/.well-known/openid-configuration
   requestBodies:
+    SearchBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchBareMetalNetworkResponse'
+    PATCHBareMetalNetworkRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalNetworkRequest'
+    PATCHBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalNetworkResponse'
+    POSTBareMetalNetworkRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalNetworkRequest'
+    POSTBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalNetworkResponse'
+    DELETEFilterBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterBareMetalNetworkResponse'
+    PUTImportBareMetalNetworkRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PUTImportBareMetalNetworkRequest'
+    PUTImportBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PUTImportBareMetalNetworkResponse'
+    GETBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/GETBareMetalNetworkResponse'
+    DELETEBareMetalNetworkResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEBareMetalNetworkResponse'
+    EditPageBareMetalNetworkResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageBareMetalNetworkResponse'
+    SearchPageBareMetalNetworkResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageBareMetalNetworkResponse'
     SearchAiClusterResponse:
       content:
         application/json; charset=utf-8:
@@ -6840,6 +7660,1283 @@ components:
           schema:
             $ref: '#/components/schemas/SearchPageSiteUserResponse'
   schemas:
+    SearchBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            startNum:
+              type: integer
+              minimum: 0
+            foundNum:
+              type: integer
+              minimum: 0
+            returnedNum:
+              type: integer
+              minimum: 0
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  availabilityZoneHints:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  availabilityZones:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  dnsDomain:
+                    type: string
+                  mtu:
+                    type: string
+                  projectId:
+                    type: string
+                  providerNetworkType:
+                    type: string
+                  providerPhysicalNetwork:
+                    type: string
+                  providerSegmentationId:
+                    type: string
+                  qosPolicyId:
+                    type: string
+                  revisionNumber:
+                    type: string
+                  status:
+                    type: string
+                  subnetIds:
+                    type: array
+                    items:
+                      type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  tenantId:
+                    type: string
+                  updatedAt:
+                    type: string
+                  isAdminStateUp:
+                    type: boolean
+                  isDefault:
+                    type: boolean
+                  isPortSecurityEnabled:
+                    type: boolean
+                  isRouterExternal:
+                    type: boolean
+                  isShared:
+                    type: boolean
+                  isVlanQueing:
+                    type: boolean
+                  isVlanTransparent:
+                    type: boolean
+                  l2Adjacency:
+                    type: boolean
+                  locationCloud:
+                    type: string
+                  locationProjectDomainId:
+                    type: string
+                  locationProjectDomainName:
+                    type: string
+                  locationProjectId:
+                    type: string
+                  locationProjectName:
+                    type: string
+                  locationRegionName:
+                    type: string
+                  locationZone:
+                    type: string
+    PATCHBareMetalNetworkRequest:
+      allOf:
+        - type: object
+          properties:
+            setId:
+              type: string
+              nullable: true
+            removeId:
+              type: string
+            removeAllId:
+              type: string
+            setName:
+              type: string
+              nullable: true
+            removeName:
+              type: string
+            removeAllName:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+            setAvailabilityZoneHints:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAvailabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllAvailabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setAvailabilityZones:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeAvailabilityZones:
+              type: string
+            removeAllAvailabilityZones:
+              type: array
+              items:
+                type: string
+            addAvailabilityZones:
+              type: string
+            addAllAvailabilityZones:
+              type: array
+              items:
+                type: string
+            setCreatedAt:
+              type: string
+              nullable: true
+            removeCreatedAt:
+              type: string
+            removeAllCreatedAt:
+              type: string
+            setDnsDomain:
+              type: string
+              nullable: true
+            removeDnsDomain:
+              type: string
+            removeAllDnsDomain:
+              type: string
+            setMtu:
+              type: string
+              nullable: true
+            removeMtu:
+              type: string
+            removeAllMtu:
+              type: string
+            setProjectId:
+              type: string
+              nullable: true
+            removeProjectId:
+              type: string
+            removeAllProjectId:
+              type: string
+            setProviderNetworkType:
+              type: string
+              nullable: true
+            removeProviderNetworkType:
+              type: string
+            removeAllProviderNetworkType:
+              type: string
+            setProviderPhysicalNetwork:
+              type: string
+              nullable: true
+            removeProviderPhysicalNetwork:
+              type: string
+            removeAllProviderPhysicalNetwork:
+              type: string
+            setProviderSegmentationId:
+              type: string
+              nullable: true
+            removeProviderSegmentationId:
+              type: string
+            removeAllProviderSegmentationId:
+              type: string
+            setQosPolicyId:
+              type: string
+              nullable: true
+            removeQosPolicyId:
+              type: string
+            removeAllQosPolicyId:
+              type: string
+            setRevisionNumber:
+              type: string
+              nullable: true
+            removeRevisionNumber:
+              type: string
+            removeAllRevisionNumber:
+              type: string
+            setStatus:
+              type: string
+              nullable: true
+            removeStatus:
+              type: string
+            removeAllStatus:
+              type: string
+            setSubnetIds:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubnetIds:
+              type: string
+            removeAllSubnetIds:
+              type: array
+              items:
+                type: string
+            addSubnetIds:
+              type: string
+            addAllSubnetIds:
+              type: array
+              items:
+                type: string
+            setTags:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeTags:
+              type: string
+            removeAllTags:
+              type: array
+              items:
+                type: string
+            addTags:
+              type: string
+            addAllTags:
+              type: array
+              items:
+                type: string
+            setTenantId:
+              type: string
+              nullable: true
+            removeTenantId:
+              type: string
+            removeAllTenantId:
+              type: string
+            setUpdatedAt:
+              type: string
+              nullable: true
+            removeUpdatedAt:
+              type: string
+            removeAllUpdatedAt:
+              type: string
+            setIsAdminStateUp:
+              type: boolean
+              nullable: true
+            removeIsAdminStateUp:
+              type: boolean
+            removeAllIsAdminStateUp:
+              type: boolean
+            setIsDefault:
+              type: boolean
+              nullable: true
+            removeIsDefault:
+              type: boolean
+            removeAllIsDefault:
+              type: boolean
+            setIsPortSecurityEnabled:
+              type: boolean
+              nullable: true
+            removeIsPortSecurityEnabled:
+              type: boolean
+            removeAllIsPortSecurityEnabled:
+              type: boolean
+            setIsRouterExternal:
+              type: boolean
+              nullable: true
+            removeIsRouterExternal:
+              type: boolean
+            removeAllIsRouterExternal:
+              type: boolean
+            setIsShared:
+              type: boolean
+              nullable: true
+            removeIsShared:
+              type: boolean
+            removeAllIsShared:
+              type: boolean
+            setIsVlanQueing:
+              type: boolean
+              nullable: true
+            removeIsVlanQueing:
+              type: boolean
+            removeAllIsVlanQueing:
+              type: boolean
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
+            setL2Adjacency:
+              type: boolean
+              nullable: true
+            removeL2Adjacency:
+              type: boolean
+            removeAllL2Adjacency:
+              type: boolean
+            setLocationCloud:
+              type: string
+              nullable: true
+            removeLocationCloud:
+              type: string
+            removeAllLocationCloud:
+              type: string
+            setLocationProjectDomainId:
+              type: string
+              nullable: true
+            removeLocationProjectDomainId:
+              type: string
+            removeAllLocationProjectDomainId:
+              type: string
+            setLocationProjectDomainName:
+              type: string
+              nullable: true
+            removeLocationProjectDomainName:
+              type: string
+            removeAllLocationProjectDomainName:
+              type: string
+            setLocationProjectId:
+              type: string
+              nullable: true
+            removeLocationProjectId:
+              type: string
+            removeAllLocationProjectId:
+              type: string
+            setLocationProjectName:
+              type: string
+              nullable: true
+            removeLocationProjectName:
+              type: string
+            removeAllLocationProjectName:
+              type: string
+            setLocationRegionName:
+              type: string
+              nullable: true
+            removeLocationRegionName:
+              type: string
+            removeAllLocationRegionName:
+              type: string
+            setLocationZone:
+              type: string
+              nullable: true
+            removeLocationZone:
+              type: string
+            removeAllLocationZone:
+              type: string
+    PATCHBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            setId:
+              type: string
+              nullable: true
+            removeId:
+              type: string
+            removeAllId:
+              type: string
+            setName:
+              type: string
+              nullable: true
+            removeName:
+              type: string
+            removeAllName:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+            setAvailabilityZoneHints:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAvailabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllAvailabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setAvailabilityZones:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeAvailabilityZones:
+              type: string
+            removeAllAvailabilityZones:
+              type: array
+              items:
+                type: string
+            addAvailabilityZones:
+              type: string
+            addAllAvailabilityZones:
+              type: array
+              items:
+                type: string
+            setCreatedAt:
+              type: string
+              nullable: true
+            removeCreatedAt:
+              type: string
+            removeAllCreatedAt:
+              type: string
+            setDnsDomain:
+              type: string
+              nullable: true
+            removeDnsDomain:
+              type: string
+            removeAllDnsDomain:
+              type: string
+            setMtu:
+              type: string
+              nullable: true
+            removeMtu:
+              type: string
+            removeAllMtu:
+              type: string
+            setProjectId:
+              type: string
+              nullable: true
+            removeProjectId:
+              type: string
+            removeAllProjectId:
+              type: string
+            setProviderNetworkType:
+              type: string
+              nullable: true
+            removeProviderNetworkType:
+              type: string
+            removeAllProviderNetworkType:
+              type: string
+            setProviderPhysicalNetwork:
+              type: string
+              nullable: true
+            removeProviderPhysicalNetwork:
+              type: string
+            removeAllProviderPhysicalNetwork:
+              type: string
+            setProviderSegmentationId:
+              type: string
+              nullable: true
+            removeProviderSegmentationId:
+              type: string
+            removeAllProviderSegmentationId:
+              type: string
+            setQosPolicyId:
+              type: string
+              nullable: true
+            removeQosPolicyId:
+              type: string
+            removeAllQosPolicyId:
+              type: string
+            setRevisionNumber:
+              type: string
+              nullable: true
+            removeRevisionNumber:
+              type: string
+            removeAllRevisionNumber:
+              type: string
+            setStatus:
+              type: string
+              nullable: true
+            removeStatus:
+              type: string
+            removeAllStatus:
+              type: string
+            setSubnetIds:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubnetIds:
+              type: string
+            removeAllSubnetIds:
+              type: array
+              items:
+                type: string
+            addSubnetIds:
+              type: string
+            addAllSubnetIds:
+              type: array
+              items:
+                type: string
+            setTags:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeTags:
+              type: string
+            removeAllTags:
+              type: array
+              items:
+                type: string
+            addTags:
+              type: string
+            addAllTags:
+              type: array
+              items:
+                type: string
+            setTenantId:
+              type: string
+              nullable: true
+            removeTenantId:
+              type: string
+            removeAllTenantId:
+              type: string
+            setUpdatedAt:
+              type: string
+              nullable: true
+            removeUpdatedAt:
+              type: string
+            removeAllUpdatedAt:
+              type: string
+            setIsAdminStateUp:
+              type: boolean
+              nullable: true
+            removeIsAdminStateUp:
+              type: boolean
+            removeAllIsAdminStateUp:
+              type: boolean
+            setIsDefault:
+              type: boolean
+              nullable: true
+            removeIsDefault:
+              type: boolean
+            removeAllIsDefault:
+              type: boolean
+            setIsPortSecurityEnabled:
+              type: boolean
+              nullable: true
+            removeIsPortSecurityEnabled:
+              type: boolean
+            removeAllIsPortSecurityEnabled:
+              type: boolean
+            setIsRouterExternal:
+              type: boolean
+              nullable: true
+            removeIsRouterExternal:
+              type: boolean
+            removeAllIsRouterExternal:
+              type: boolean
+            setIsShared:
+              type: boolean
+              nullable: true
+            removeIsShared:
+              type: boolean
+            removeAllIsShared:
+              type: boolean
+            setIsVlanQueing:
+              type: boolean
+              nullable: true
+            removeIsVlanQueing:
+              type: boolean
+            removeAllIsVlanQueing:
+              type: boolean
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
+            setL2Adjacency:
+              type: boolean
+              nullable: true
+            removeL2Adjacency:
+              type: boolean
+            removeAllL2Adjacency:
+              type: boolean
+            setLocationCloud:
+              type: string
+              nullable: true
+            removeLocationCloud:
+              type: string
+            removeAllLocationCloud:
+              type: string
+            setLocationProjectDomainId:
+              type: string
+              nullable: true
+            removeLocationProjectDomainId:
+              type: string
+            removeAllLocationProjectDomainId:
+              type: string
+            setLocationProjectDomainName:
+              type: string
+              nullable: true
+            removeLocationProjectDomainName:
+              type: string
+            removeAllLocationProjectDomainName:
+              type: string
+            setLocationProjectId:
+              type: string
+              nullable: true
+            removeLocationProjectId:
+              type: string
+            removeAllLocationProjectId:
+              type: string
+            setLocationProjectName:
+              type: string
+              nullable: true
+            removeLocationProjectName:
+              type: string
+            removeAllLocationProjectName:
+              type: string
+            setLocationRegionName:
+              type: string
+              nullable: true
+            removeLocationRegionName:
+              type: string
+            removeAllLocationRegionName:
+              type: string
+            setLocationZone:
+              type: string
+              nullable: true
+            removeLocationZone:
+              type: string
+            removeAllLocationZone:
+              type: string
+    POSTBareMetalNetworkRequest:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            availabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            availabilityZones:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+            dnsDomain:
+              type: string
+            mtu:
+              type: string
+            projectId:
+              type: string
+            providerNetworkType:
+              type: string
+            providerPhysicalNetwork:
+              type: string
+            providerSegmentationId:
+              type: string
+            qosPolicyId:
+              type: string
+            revisionNumber:
+              type: string
+            status:
+              type: string
+            subnetIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            tenantId:
+              type: string
+            updatedAt:
+              type: string
+            isAdminStateUp:
+              type: boolean
+            isDefault:
+              type: boolean
+            isPortSecurityEnabled:
+              type: boolean
+            isRouterExternal:
+              type: boolean
+            isShared:
+              type: boolean
+            isVlanQueing:
+              type: boolean
+            isVlanTransparent:
+              type: boolean
+            l2Adjacency:
+              type: boolean
+            locationCloud:
+              type: string
+            locationProjectDomainId:
+              type: string
+            locationProjectDomainName:
+              type: string
+            locationProjectId:
+              type: string
+            locationProjectName:
+              type: string
+            locationRegionName:
+              type: string
+            locationZone:
+              type: string
+    POSTBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            availabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            availabilityZones:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+            dnsDomain:
+              type: string
+            mtu:
+              type: string
+            projectId:
+              type: string
+            providerNetworkType:
+              type: string
+            providerPhysicalNetwork:
+              type: string
+            providerSegmentationId:
+              type: string
+            qosPolicyId:
+              type: string
+            revisionNumber:
+              type: string
+            status:
+              type: string
+            subnetIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            tenantId:
+              type: string
+            updatedAt:
+              type: string
+            isAdminStateUp:
+              type: boolean
+            isDefault:
+              type: boolean
+            isPortSecurityEnabled:
+              type: boolean
+            isRouterExternal:
+              type: boolean
+            isShared:
+              type: boolean
+            isVlanQueing:
+              type: boolean
+            isVlanTransparent:
+              type: boolean
+            l2Adjacency:
+              type: boolean
+            locationCloud:
+              type: string
+            locationProjectDomainId:
+              type: string
+            locationProjectDomainName:
+              type: string
+            locationProjectId:
+              type: string
+            locationProjectName:
+              type: string
+            locationRegionName:
+              type: string
+            locationZone:
+              type: string
+    DELETEFilterBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            availabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            availabilityZones:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+            dnsDomain:
+              type: string
+            mtu:
+              type: string
+            projectId:
+              type: string
+            providerNetworkType:
+              type: string
+            providerPhysicalNetwork:
+              type: string
+            providerSegmentationId:
+              type: string
+            qosPolicyId:
+              type: string
+            revisionNumber:
+              type: string
+            status:
+              type: string
+            subnetIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            tenantId:
+              type: string
+            updatedAt:
+              type: string
+            isAdminStateUp:
+              type: boolean
+            isDefault:
+              type: boolean
+            isPortSecurityEnabled:
+              type: boolean
+            isRouterExternal:
+              type: boolean
+            isShared:
+              type: boolean
+            isVlanQueing:
+              type: boolean
+            isVlanTransparent:
+              type: boolean
+            l2Adjacency:
+              type: boolean
+            locationCloud:
+              type: string
+            locationProjectDomainId:
+              type: string
+            locationProjectDomainName:
+              type: string
+            locationProjectId:
+              type: string
+            locationProjectName:
+              type: string
+            locationRegionName:
+              type: string
+            locationZone:
+              type: string
+    PUTImportBareMetalNetworkRequest:
+      allOf:
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  availabilityZoneHints:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  availabilityZones:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  dnsDomain:
+                    type: string
+                  mtu:
+                    type: string
+                  projectId:
+                    type: string
+                  providerNetworkType:
+                    type: string
+                  providerPhysicalNetwork:
+                    type: string
+                  providerSegmentationId:
+                    type: string
+                  qosPolicyId:
+                    type: string
+                  revisionNumber:
+                    type: string
+                  status:
+                    type: string
+                  subnetIds:
+                    type: array
+                    items:
+                      type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  tenantId:
+                    type: string
+                  updatedAt:
+                    type: string
+                  isAdminStateUp:
+                    type: boolean
+                  isDefault:
+                    type: boolean
+                  isPortSecurityEnabled:
+                    type: boolean
+                  isRouterExternal:
+                    type: boolean
+                  isShared:
+                    type: boolean
+                  isVlanQueing:
+                    type: boolean
+                  isVlanTransparent:
+                    type: boolean
+                  l2Adjacency:
+                    type: boolean
+                  locationCloud:
+                    type: string
+                  locationProjectDomainId:
+                    type: string
+                  locationProjectDomainName:
+                    type: string
+                  locationProjectId:
+                    type: string
+                  locationProjectName:
+                    type: string
+                  locationRegionName:
+                    type: string
+                  locationZone:
+                    type: string
+    PUTImportBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  availabilityZoneHints:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  availabilityZones:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  dnsDomain:
+                    type: string
+                  mtu:
+                    type: string
+                  projectId:
+                    type: string
+                  providerNetworkType:
+                    type: string
+                  providerPhysicalNetwork:
+                    type: string
+                  providerSegmentationId:
+                    type: string
+                  qosPolicyId:
+                    type: string
+                  revisionNumber:
+                    type: string
+                  status:
+                    type: string
+                  subnetIds:
+                    type: array
+                    items:
+                      type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  tenantId:
+                    type: string
+                  updatedAt:
+                    type: string
+                  isAdminStateUp:
+                    type: boolean
+                  isDefault:
+                    type: boolean
+                  isPortSecurityEnabled:
+                    type: boolean
+                  isRouterExternal:
+                    type: boolean
+                  isShared:
+                    type: boolean
+                  isVlanQueing:
+                    type: boolean
+                  isVlanTransparent:
+                    type: boolean
+                  l2Adjacency:
+                    type: boolean
+                  locationCloud:
+                    type: string
+                  locationProjectDomainId:
+                    type: string
+                  locationProjectDomainName:
+                    type: string
+                  locationProjectId:
+                    type: string
+                  locationProjectName:
+                    type: string
+                  locationRegionName:
+                    type: string
+                  locationZone:
+                    type: string
+    GETBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            availabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            availabilityZones:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+            dnsDomain:
+              type: string
+            mtu:
+              type: string
+            projectId:
+              type: string
+            providerNetworkType:
+              type: string
+            providerPhysicalNetwork:
+              type: string
+            providerSegmentationId:
+              type: string
+            qosPolicyId:
+              type: string
+            revisionNumber:
+              type: string
+            status:
+              type: string
+            subnetIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            tenantId:
+              type: string
+            updatedAt:
+              type: string
+            isAdminStateUp:
+              type: boolean
+            isDefault:
+              type: boolean
+            isPortSecurityEnabled:
+              type: boolean
+            isRouterExternal:
+              type: boolean
+            isShared:
+              type: boolean
+            isVlanQueing:
+              type: boolean
+            isVlanTransparent:
+              type: boolean
+            l2Adjacency:
+              type: boolean
+            locationCloud:
+              type: string
+            locationProjectDomainId:
+              type: string
+            locationProjectDomainName:
+              type: string
+            locationProjectId:
+              type: string
+            locationProjectName:
+              type: string
+            locationRegionName:
+              type: string
+            locationZone:
+              type: string
+    DELETEBareMetalNetworkResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            availabilityZoneHints:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            availabilityZones:
+              type: array
+              items:
+                type: string
+            createdAt:
+              type: string
+            dnsDomain:
+              type: string
+            mtu:
+              type: string
+            projectId:
+              type: string
+            providerNetworkType:
+              type: string
+            providerPhysicalNetwork:
+              type: string
+            providerSegmentationId:
+              type: string
+            qosPolicyId:
+              type: string
+            revisionNumber:
+              type: string
+            status:
+              type: string
+            subnetIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            tenantId:
+              type: string
+            updatedAt:
+              type: string
+            isAdminStateUp:
+              type: boolean
+            isDefault:
+              type: boolean
+            isPortSecurityEnabled:
+              type: boolean
+            isRouterExternal:
+              type: boolean
+            isShared:
+              type: boolean
+            isVlanQueing:
+              type: boolean
+            isVlanTransparent:
+              type: boolean
+            l2Adjacency:
+              type: boolean
+            locationCloud:
+              type: string
+            locationProjectDomainId:
+              type: string
+            locationProjectDomainName:
+              type: string
+            locationProjectId:
+              type: string
+            locationProjectName:
+              type: string
+            locationRegionName:
+              type: string
+            locationZone:
+              type: string
+    EditPageBareMetalNetworkResponse:
+      allOf:
+        - type: string
+    SearchPageBareMetalNetworkResponse:
+      allOf:
+        - type: string
     SearchAiClusterResponse:
       allOf:
         - type: object
@@ -7518,6 +9615,8 @@ components:
                     type: string
                   clusterTemplateTitle:
                     type: string
+                  userId:
+                    type: string
     PATCHClusterRequestRequest:
       allOf:
         - type: object
@@ -7535,6 +9634,13 @@ components:
             removeClusterTemplateTitle:
               type: string
             removeAllClusterTemplateTitle:
+              type: string
+            setUserId:
+              type: string
+              nullable: true
+            removeUserId:
+              type: string
+            removeAllUserId:
               type: string
     PATCHClusterRequestResponse:
       allOf:
@@ -7554,6 +9660,13 @@ components:
               type: string
             removeAllClusterTemplateTitle:
               type: string
+            setUserId:
+              type: string
+              nullable: true
+            removeUserId:
+              type: string
+            removeAllUserId:
+              type: string
     POSTClusterRequestRequest:
       allOf:
         - type: object
@@ -7561,6 +9674,8 @@ components:
             name:
               type: string
             clusterTemplateTitle:
+              type: string
+            userId:
               type: string
     POSTClusterRequestResponse:
       allOf:
@@ -7570,6 +9685,8 @@ components:
               type: string
             clusterTemplateTitle:
               type: string
+            userId:
+              type: string
     DELETEFilterClusterRequestResponse:
       allOf:
         - type: object
@@ -7577,6 +9694,8 @@ components:
             name:
               type: string
             clusterTemplateTitle:
+              type: string
+            userId:
               type: string
     PUTImportClusterRequestRequest:
       allOf:
@@ -7591,6 +9710,8 @@ components:
                     type: string
                   clusterTemplateTitle:
                     type: string
+                  userId:
+                    type: string
     PUTImportClusterRequestResponse:
       allOf:
         - type: object
@@ -7598,6 +9719,8 @@ components:
                   name:
                     type: string
                   clusterTemplateTitle:
+                    type: string
+                  userId:
                     type: string
     GETClusterRequestResponse:
       allOf:
@@ -7607,6 +9730,8 @@ components:
               type: string
             clusterTemplateTitle:
               type: string
+            userId:
+              type: string
     DELETEClusterRequestResponse:
       allOf:
         - type: object
@@ -7614,6 +9739,8 @@ components:
             name:
               type: string
             clusterTemplateTitle:
+              type: string
+            userId:
               type: string
     EditPageClusterRequestResponse:
       allOf:
@@ -7656,6 +9783,8 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  objectSuggest:
+                    type: string
     PATCHClusterTemplateRequest:
       allOf:
         - type: object
@@ -7706,6 +9835,13 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            setObjectSuggest:
+              type: string
+              nullable: true
+            removeObjectSuggest:
+              type: string
+            removeAllObjectSuggest:
+              type: string
     PATCHClusterTemplateResponse:
       allOf:
         - type: object
@@ -7756,6 +9892,13 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            setObjectSuggest:
+              type: string
+              nullable: true
+            removeObjectSuggest:
+              type: string
+            removeAllObjectSuggest:
+              type: string
     POSTClusterTemplateRequest:
       allOf:
         - type: object
@@ -7774,6 +9917,8 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            objectSuggest:
+              type: string
     POSTClusterTemplateResponse:
       allOf:
         - type: object
@@ -7792,6 +9937,8 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            objectSuggest:
+              type: string
     DELETEFilterClusterTemplateResponse:
       allOf:
         - type: object
@@ -7810,6 +9957,8 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            objectSuggest:
+              type: string
     PUTImportClusterTemplateRequest:
       allOf:
         - type: object
@@ -7833,6 +9982,8 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  objectSuggest:
+                    type: string
     PUTImportClusterTemplateResponse:
       allOf:
         - type: object
@@ -7851,6 +10002,8 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  objectSuggest:
+                    type: string
     GETClusterTemplateResponse:
       allOf:
         - type: object
@@ -7869,6 +10022,8 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            objectSuggest:
+              type: string
     DELETEClusterTemplateResponse:
       allOf:
         - type: object
@@ -7887,6 +10042,8 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            objectSuggest:
+              type: string
     EditPageClusterTemplateResponse:
       allOf:
         - type: string

@@ -22,6 +22,7 @@ import io.vertx.core.json.JsonArray;
  *   DELETE:
  *   PUTImport:
  * 
+ * PublicRead: true
  * AuthGroup:
  *   Admin:
  *     POST:
@@ -36,15 +37,6 @@ import io.vertx.core.json.JsonArray;
  *     SuperAdmin:
  */
 public class ClusterTemplate extends ClusterTemplateGen<BaseModel> {
-
-	/**
-	 * 
-	 * DisplayName: manage
-	 */
-	@Override
-	protected void _editPage(Wrap<String> w) {
-		super._editPage(w);
-	}
 
 	/**
 	 * {@inheritDoc}

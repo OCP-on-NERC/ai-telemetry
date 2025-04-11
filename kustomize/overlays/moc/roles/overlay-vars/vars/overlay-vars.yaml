@@ -27,11 +27,16 @@ ENABLE_FIWARE: false
 FULFILLMENT_API_HOST_NAME: fulfillment-api-innabox.apps.hypershift1.nerc.mghpcc.org
 FULFILLMENT_API_SSL: true
 FULFILLMENT_API_PORT: 443
+
+ESI_API_OPENSHIFT_SECRET: esi-uitest-cloud-config
+ESI_API_SSL: "false"
+ESI_API_HOST_NAME: "localhost"
+ESI_API_PORT: "8081"
 WORKBENCH_NAMES:
-#  - USER_NAME: computate
-#    WORKBENCH_ADMIN: true
+  - USER_NAME: computate
+    WORKBENCH_ADMIN: true
 #  - USER_NAME: dheeraj
 #  - USER_NAME: rh-csaggin
-#  - USER_NAME: isaiahstapleton
-#  - USER_NAME: danniesh
+  - USER_NAME: isaiahstapleton
+  - USER_NAME: danniesh
   - USER_NAME: schwesig
