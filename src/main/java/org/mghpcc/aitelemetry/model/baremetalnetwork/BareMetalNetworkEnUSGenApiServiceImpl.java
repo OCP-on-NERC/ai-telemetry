@@ -1,9 +1,5 @@
-package org.mghpcc.aitelemetry.model.clusterrequest;
+package org.mghpcc.aitelemetry.model.baremetalnetwork;
 
-import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
-import org.mghpcc.aitelemetry.user.SiteUserEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.user.SiteUser;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -107,37 +103,37 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestPage;
+import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl implements ClusterRequestEnUSGenApiService {
+public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl implements BareMetalNetworkEnUSGenApiService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(ClusterRequestEnUSGenApiServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(BareMetalNetworkEnUSGenApiServiceImpl.class);
 
 	// Search //
 
 	@Override
-	public void searchClusterRequest(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void searchBareMetalNetwork(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -154,25 +150,21 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, false).onSuccess(listClusterRequest -> {
-							response200SearchClusterRequest(listClusterRequest).onSuccess(response -> {
+						searchBareMetalNetworkList(siteRequest, false, true, false).onSuccess(listBareMetalNetwork -> {
+							response200SearchBareMetalNetwork(listBareMetalNetwork).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchClusterRequest succeeded. "));
+								LOG.debug(String.format("searchBareMetalNetwork succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchClusterRequest failed. "), ex);
+								LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchClusterRequest failed. "), ex);
+							LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchClusterRequest failed. "), ex);
+					LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -181,7 +173,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchClusterRequest failed. ", ex2));
+					LOG.error(String.format("searchBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -196,27 +188,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("searchClusterRequest failed. "), ex);
+				LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200SearchClusterRequest(SearchList<ClusterRequest> listClusterRequest) {
+	public Future<ServiceResponse> response200SearchBareMetalNetwork(SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-			List<String> fls = listClusterRequest.getRequest().getFields();
+			SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+			List<String> fls = listBareMetalNetwork.getRequest().getFields();
 			JsonObject json = new JsonObject();
 			JsonArray l = new JsonArray();
-			listClusterRequest.getList().stream().forEach(o -> {
+			listBareMetalNetwork.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
 				if(fls.size() > 0) {
 					Set<String> fieldNames = new HashSet<String>();
 					for(String fieldName : json2.fieldNames()) {
-						String v = ClusterRequest.varIndexedClusterRequest(fieldName);
+						String v = BareMetalNetwork.varIndexedBareMetalNetwork(fieldName);
 						if(v != null)
-							fieldNames.add(ClusterRequest.varIndexedClusterRequest(fieldName));
+							fieldNames.add(BareMetalNetwork.varIndexedBareMetalNetwork(fieldName));
 					}
 					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
 						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -234,10 +226,10 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				l.add(json2);
 			});
 			json.put("list", l);
-			response200Search(listClusterRequest.getRequest(), listClusterRequest.getResponse(), json);
+			response200Search(listBareMetalNetwork.getRequest(), listBareMetalNetwork.getResponse(), json);
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -245,12 +237,12 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchClusterRequest failed. "), ex);
+			LOG.error(String.format("response200SearchBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchClusterRequest(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchBareMetalNetwork(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -279,7 +271,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchClusterRequest(pivotFields2, pivotArray2);
+					responsePivotSearchBareMetalNetwork(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -288,23 +280,23 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// GET //
 
 	@Override
-	public void getClusterRequest(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void getBareMetalNetwork(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -321,25 +313,21 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, false).onSuccess(listClusterRequest -> {
-							response200GETClusterRequest(listClusterRequest).onSuccess(response -> {
+						searchBareMetalNetworkList(siteRequest, false, true, false).onSuccess(listBareMetalNetwork -> {
+							response200GETBareMetalNetwork(listBareMetalNetwork).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("getClusterRequest succeeded. "));
+								LOG.debug(String.format("getBareMetalNetwork succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("getClusterRequest failed. "), ex);
+								LOG.error(String.format("getBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("getClusterRequest failed. "), ex);
+							LOG.error(String.format("getBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("getClusterRequest failed. "), ex);
+					LOG.error(String.format("getBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -348,7 +336,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("getClusterRequest failed. ", ex2));
+					LOG.error(String.format("getBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -363,20 +351,20 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("getClusterRequest failed. "), ex);
+				LOG.error(String.format("getBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200GETClusterRequest(SearchList<ClusterRequest> listClusterRequest) {
+	public Future<ServiceResponse> response200GETBareMetalNetwork(SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-			JsonObject json = JsonObject.mapFrom(listClusterRequest.getList().stream().findFirst().orElse(null));
+			SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+			JsonObject json = JsonObject.mapFrom(listBareMetalNetwork.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -384,7 +372,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200GETClusterRequest failed. "), ex);
+			LOG.error(String.format("response200GETBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -393,24 +381,24 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// PATCH //
 
 	@Override
-	public void patchClusterRequest(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("patchClusterRequest started. "));
-		Boolean classPublicRead = true;
+	public void patchBareMetalNetwork(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("patchBareMetalNetwork started. "));
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -427,47 +415,43 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+						searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listClusterRequest.getRequest().getRows());
-								apiRequest.setNumFound(listClusterRequest.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalNetwork.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalNetwork.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listClusterRequest.first());
-								apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalNetwork.first());
+								apiRequest.setId(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getId()).orElse(null));
+								apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 
-								listPATCHClusterRequest(apiRequest, listClusterRequest).onSuccess(e -> {
-									response200PATCHClusterRequest(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("patchClusterRequest succeeded. "));
+								listPATCHBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(e -> {
+									response200PATCHBareMetalNetwork(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("patchBareMetalNetwork succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("patchClusterRequest failed. "), ex);
+										LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("patchClusterRequest failed. "), ex);
+									LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("patchClusterRequest failed. "), ex);
+								LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("patchClusterRequest failed. "), ex);
+							LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("patchClusterRequest failed. "), ex);
+					LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -476,7 +460,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("patchClusterRequest failed. ", ex2));
+					LOG.error(String.format("patchBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -491,68 +475,68 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("patchClusterRequest failed. "), ex);
+				LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPATCHClusterRequest(ApiRequest apiRequest, SearchList<ClusterRequest> listClusterRequest) {
+	public Future<Void> listPATCHBareMetalNetwork(ApiRequest apiRequest, SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-		listClusterRequest.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+		listBareMetalNetwork.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			ClusterRequest o2 = jsonObject.mapTo(ClusterRequest.class);
+			BareMetalNetwork o2 = jsonObject.mapTo(BareMetalNetwork.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				patchClusterRequestFuture(o2, false).onSuccess(a -> {
+				patchBareMetalNetworkFuture(o2, false).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listPATCHClusterRequest failed. "), ex);
+					LOG.error(String.format("listPATCHBareMetalNetwork failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listClusterRequest.next().onSuccess(next -> {
+			listBareMetalNetwork.next().onSuccess(next -> {
 				if(next) {
-					listPATCHClusterRequest(apiRequest, listClusterRequest).onSuccess(b -> {
+					listPATCHBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPATCHClusterRequest failed. "), ex);
+						LOG.error(String.format("listPATCHBareMetalNetwork failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPATCHClusterRequest failed. "), ex);
+				LOG.error(String.format("listPATCHBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listPATCHClusterRequest failed. "), ex);
+			LOG.error(String.format("listPATCHBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void patchClusterRequestFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void patchBareMetalNetworkFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
-						ClusterRequest o = listClusterRequest.first();
-						if(o != null && listClusterRequest.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalNetwork o = listBareMetalNetwork.first();
+						if(o != null && listBareMetalNetwork.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -564,12 +548,12 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getId()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
-							ClusterRequest o2 = jsonObject.mapTo(ClusterRequest.class);
+							BareMetalNetwork o2 = jsonObject.mapTo(BareMetalNetwork.class);
 							o2.setSiteRequest_(siteRequest);
-							patchClusterRequestFuture(o2, false).onSuccess(o3 -> {
+							patchBareMetalNetworkFuture(o2, false).onSuccess(o3 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -578,46 +562,46 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("patchClusterRequest failed. "), ex);
+						LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("patchClusterRequest failed. "), ex);
+					LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("patchClusterRequest failed. "), ex);
+				LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("patchClusterRequest failed. "), ex);
+			LOG.error(String.format("patchBareMetalNetwork failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<ClusterRequest> patchClusterRequestFuture(ClusterRequest o, Boolean name) {
+	public Future<BareMetalNetwork> patchBareMetalNetworkFuture(BareMetalNetwork o, Boolean id) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<ClusterRequest> promise = Promise.promise();
+		Promise<BareMetalNetwork> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<ClusterRequest> promise1 = Promise.promise();
+			Promise<BareMetalNetwork> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsClusterRequest(siteRequest).onSuccess(a -> {
-					sqlPATCHClusterRequest(o, name).onSuccess(clusterRequest -> {
-						persistClusterRequest(clusterRequest, true).onSuccess(c -> {
-							relateClusterRequest(clusterRequest).onSuccess(d -> {
-								indexClusterRequest(clusterRequest).onSuccess(o2 -> {
+				varsBareMetalNetwork(siteRequest).onSuccess(a -> {
+					sqlPATCHBareMetalNetwork(o, id).onSuccess(bareMetalNetwork -> {
+						persistBareMetalNetwork(bareMetalNetwork, true).onSuccess(c -> {
+							relateBareMetalNetwork(bareMetalNetwork).onSuccess(d -> {
+								indexBareMetalNetwork(bareMetalNetwork).onSuccess(o2 -> {
 									if(apiRequest != null) {
 										apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 										if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-											o2.apiRequestClusterRequest();
+											o2.apiRequestBareMetalNetwork();
 											if(apiRequest.getVars().size() > 0)
-												eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+												eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 										}
 									}
-									promise1.complete(clusterRequest);
+									promise1.complete(bareMetalNetwork);
 								}).onFailure(ex -> {
 									promise1.fail(ex);
 								});
@@ -639,28 +623,28 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(clusterRequest -> {
-				Promise<ClusterRequest> promise2 = Promise.promise();
-				refreshClusterRequest(clusterRequest).onSuccess(a -> {
-					promise2.complete(clusterRequest);
+			}).compose(bareMetalNetwork -> {
+				Promise<BareMetalNetwork> promise2 = Promise.promise();
+				refreshBareMetalNetwork(bareMetalNetwork).onSuccess(a -> {
+					promise2.complete(bareMetalNetwork);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(clusterRequest -> {
-				promise.complete(clusterRequest);
+			}).onSuccess(bareMetalNetwork -> {
+				promise.complete(bareMetalNetwork);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("patchClusterRequestFuture failed. "), ex);
+			LOG.error(String.format("patchBareMetalNetworkFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ClusterRequest> sqlPATCHClusterRequest(ClusterRequest o, Boolean name) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> sqlPATCHBareMetalNetwork(BareMetalNetwork o, Boolean id) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -668,133 +652,337 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE ClusterRequest SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalNetwork SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
 			Set<String> methodNames = jsonObject.fieldNames();
-			ClusterRequest o2 = new ClusterRequest();
+			BareMetalNetwork o2 = new BareMetalNetwork();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
+					case "setId":
+							o2.setId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_id + "=$" + num);
+							num++;
+							bParams.add(o2.sqlId());
+						break;
 					case "setName":
 							o2.setName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_name + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_name + "=$" + num);
 							num++;
 							bParams.add(o2.sqlName());
-						break;
-					case "setClusterTemplateTitle":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, name).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("ClusterTemplate");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, pk2, val).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
-					case "removeClusterTemplateTitle":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
-							futures2.add(Future.future(promise2 -> {
-								sql(siteRequest).update(ClusterRequest.class, pk).setToNull(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, null).onSuccess(a -> {
-									promise2.complete();
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_created + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
-					case "setUserId":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, name).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("SiteUser");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, pk2, val).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
+					case "setDescription":
+							o2.setDescription(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_description + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDescription());
 						break;
-					case "removeUserId":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
-							futures2.add(Future.future(promise2 -> {
-								sql(siteRequest).update(ClusterRequest.class, pk).setToNull(ClusterRequest.VAR_userId, SiteUser.class, null).onSuccess(a -> {
-									promise2.complete();
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
+					case "setAvailabilityZoneHints":
+							o2.setAvailabilityZoneHints(jsonObject.getJsonArray(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_availabilityZoneHints + "=$" + num);
+							num++;
+							bParams.add(o2.sqlAvailabilityZoneHints());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_archived + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
+						break;
+					case "setAvailabilityZones":
+							o2.setAvailabilityZones(jsonObject.getJsonArray(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_availabilityZones + "=$" + num);
+							num++;
+							bParams.add(o2.sqlAvailabilityZones());
+						break;
+					case "setCreatedAt":
+							o2.setCreatedAt(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_createdAt + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreatedAt());
+						break;
+					case "setDnsDomain":
+							o2.setDnsDomain(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_dnsDomain + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDnsDomain());
+						break;
+					case "setMtu":
+							o2.setMtu(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_mtu + "=$" + num);
+							num++;
+							bParams.add(o2.sqlMtu());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_sessionId + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
+						break;
+					case "setProjectId":
+							o2.setProjectId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_projectId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlProjectId());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_userKey + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
+						break;
+					case "setProviderNetworkType":
+							o2.setProviderNetworkType(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_providerNetworkType + "=$" + num);
+							num++;
+							bParams.add(o2.sqlProviderNetworkType());
+						break;
+					case "setProviderPhysicalNetwork":
+							o2.setProviderPhysicalNetwork(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_providerPhysicalNetwork + "=$" + num);
+							num++;
+							bParams.add(o2.sqlProviderPhysicalNetwork());
+						break;
+					case "setProviderSegmentationId":
+							o2.setProviderSegmentationId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_providerSegmentationId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlProviderSegmentationId());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_objectTitle + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
+						break;
+					case "setQosPolicyId":
+							o2.setQosPolicyId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_qosPolicyId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlQosPolicyId());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_displayPage + "=$" + num);
+							bSql.append(BareMetalNetwork.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
+						break;
+					case "setRevisionNumber":
+							o2.setRevisionNumber(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_revisionNumber + "=$" + num);
+							num++;
+							bParams.add(o2.sqlRevisionNumber());
+						break;
+					case "setStatus":
+							o2.setStatus(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_status + "=$" + num);
+							num++;
+							bParams.add(o2.sqlStatus());
+						break;
+					case "setSubnetIds":
+							o2.setSubnetIds(jsonObject.getJsonArray(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_subnetIds + "=$" + num);
+							num++;
+							bParams.add(o2.sqlSubnetIds());
+						break;
+					case "setTags":
+							o2.setTags(jsonObject.getJsonArray(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_tags + "=$" + num);
+							num++;
+							bParams.add(o2.sqlTags());
+						break;
+					case "setTenantId":
+							o2.setTenantId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_tenantId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlTenantId());
+						break;
+					case "setUpdatedAt":
+							o2.setUpdatedAt(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_updatedAt + "=$" + num);
+							num++;
+							bParams.add(o2.sqlUpdatedAt());
+						break;
+					case "setIsAdminStateUp":
+							o2.setIsAdminStateUp(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isAdminStateUp + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsAdminStateUp());
+						break;
+					case "setIsDefault":
+							o2.setIsDefault(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isDefault + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsDefault());
+						break;
+					case "setIsPortSecurityEnabled":
+							o2.setIsPortSecurityEnabled(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isPortSecurityEnabled + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsPortSecurityEnabled());
+						break;
+					case "setIsRouterExternal":
+							o2.setIsRouterExternal(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isRouterExternal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsRouterExternal());
+						break;
+					case "setIsShared":
+							o2.setIsShared(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isShared + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsShared());
+						break;
+					case "setIsVlanQueing":
+							o2.setIsVlanQueing(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isVlanQueing + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsVlanQueing());
+						break;
+					case "setIsVlanTransparent":
+							o2.setIsVlanTransparent(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_isVlanTransparent + "=$" + num);
+							num++;
+							bParams.add(o2.sqlIsVlanTransparent());
+						break;
+					case "setL2Adjacency":
+							o2.setL2Adjacency(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_l2Adjacency + "=$" + num);
+							num++;
+							bParams.add(o2.sqlL2Adjacency());
+						break;
+					case "setLocationCloud":
+							o2.setLocationCloud(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationCloud + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationCloud());
+						break;
+					case "setLocationProjectDomainId":
+							o2.setLocationProjectDomainId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationProjectDomainId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationProjectDomainId());
+						break;
+					case "setLocationProjectDomainName":
+							o2.setLocationProjectDomainName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationProjectDomainName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationProjectDomainName());
+						break;
+					case "setLocationProjectId":
+							o2.setLocationProjectId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationProjectId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationProjectId());
+						break;
+					case "setLocationProjectName":
+							o2.setLocationProjectName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationProjectName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationProjectName());
+						break;
+					case "setLocationRegionName":
+							o2.setLocationRegionName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationRegionName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationRegionName());
+						break;
+					case "setLocationZone":
+							o2.setLocationZone(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNetwork.VAR_locationZone + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocationZone());
 						break;
 				}
 			}
@@ -808,40 +996,40 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value ClusterRequest failed", ex);
-						LOG.error(String.format("relateClusterRequest failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalNetwork failed", ex);
+						LOG.error(String.format("relateBareMetalNetwork failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					ClusterRequest o3 = new ClusterRequest();
+					BareMetalNetwork o3 = new BareMetalNetwork();
 					o3.setSiteRequest_(o.getSiteRequest_());
 					o3.setPk(pk);
 					promise.complete(o3);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPATCHClusterRequest failed. "), ex);
+					LOG.error(String.format("sqlPATCHBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPATCHClusterRequest failed. "), ex);
+				LOG.error(String.format("sqlPATCHBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPATCHClusterRequest failed. "), ex);
+			LOG.error(String.format("sqlPATCHBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200PATCHClusterRequest(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PATCHBareMetalNetwork(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -849,7 +1037,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PATCHClusterRequest failed. "), ex);
+			LOG.error(String.format("response200PATCHBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -858,24 +1046,24 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// POST //
 
 	@Override
-	public void postClusterRequest(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("postClusterRequest started. "));
-		Boolean classPublicRead = true;
+	public void postBareMetalNetwork(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("postBareMetalNetwork started. "));
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -892,17 +1080,13 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+						eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
@@ -921,19 +1105,19 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						params.put("query", query);
 						JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 						JsonObject json = new JsonObject().put("context", context);
-						eventBus.request(ClusterRequest.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postClusterRequestFuture")).onSuccess(a -> {
+						eventBus.request(BareMetalNetwork.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalNetworkFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
 							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-							LOG.debug(String.format("postClusterRequest succeeded. "));
+							LOG.debug(String.format("postBareMetalNetwork succeeded. "));
 						}).onFailure(ex -> {
-							LOG.error(String.format("postClusterRequest failed. "), ex);
+							LOG.error(String.format("postBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("postClusterRequest failed. "), ex);
+					LOG.error(String.format("postBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -942,7 +1126,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postClusterRequest failed. ", ex2));
+					LOG.error(String.format("postBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -957,15 +1141,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("postClusterRequest failed. "), ex);
+				LOG.error(String.format("postBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
 	@Override
-	public void postClusterRequestFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void postBareMetalNetworkFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -978,13 +1162,13 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-				postClusterRequestFuture(siteRequest, false).onSuccess(o -> {
+				postBareMetalNetworkFuture(siteRequest, false).onSuccess(o -> {
 					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
 				}).onFailure(ex -> {
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Throwable ex) {
-				LOG.error(String.format("postClusterRequest failed. "), ex);
+				LOG.error(String.format("postBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
@@ -992,7 +1176,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postClusterRequest failed. ", ex2));
+					LOG.error(String.format("postBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1007,26 +1191,26 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("postClusterRequest failed. "), ex);
+				LOG.error(String.format("postBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ClusterRequest> postClusterRequestFuture(SiteRequest siteRequest, Boolean name) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> postBareMetalNetworkFuture(SiteRequest siteRequest, Boolean id) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 
 		try {
 			pgPool.withTransaction(sqlConnection -> {
-				Promise<ClusterRequest> promise1 = Promise.promise();
+				Promise<BareMetalNetwork> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				varsClusterRequest(siteRequest).onSuccess(a -> {
-					createClusterRequest(siteRequest).onSuccess(clusterRequest -> {
-						sqlPOSTClusterRequest(clusterRequest, name).onSuccess(b -> {
-							persistClusterRequest(clusterRequest, false).onSuccess(c -> {
-								relateClusterRequest(clusterRequest).onSuccess(d -> {
-									indexClusterRequest(clusterRequest).onSuccess(o2 -> {
-										promise1.complete(clusterRequest);
+				varsBareMetalNetwork(siteRequest).onSuccess(a -> {
+					createBareMetalNetwork(siteRequest).onSuccess(bareMetalNetwork -> {
+						sqlPOSTBareMetalNetwork(bareMetalNetwork, id).onSuccess(b -> {
+							persistBareMetalNetwork(bareMetalNetwork, false).onSuccess(c -> {
+								relateBareMetalNetwork(bareMetalNetwork).onSuccess(d -> {
+									indexBareMetalNetwork(bareMetalNetwork).onSuccess(o2 -> {
+										promise1.complete(bareMetalNetwork);
 									}).onFailure(ex -> {
 										promise1.fail(ex);
 									});
@@ -1051,50 +1235,50 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(clusterRequest -> {
-				Promise<ClusterRequest> promise2 = Promise.promise();
-				refreshClusterRequest(clusterRequest).onSuccess(a -> {
+			}).compose(bareMetalNetwork -> {
+				Promise<BareMetalNetwork> promise2 = Promise.promise();
+				refreshBareMetalNetwork(bareMetalNetwork).onSuccess(a -> {
 					try {
 						ApiRequest apiRequest = siteRequest.getApiRequest_();
 						if(apiRequest != null) {
 							apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-							clusterRequest.apiRequestClusterRequest();
-							eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+							bareMetalNetwork.apiRequestBareMetalNetwork();
+							eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 						}
-						promise2.complete(clusterRequest);
+						promise2.complete(bareMetalNetwork);
 					} catch(Exception ex) {
-						LOG.error(String.format("postClusterRequestFuture failed. "), ex);
+						LOG.error(String.format("postBareMetalNetworkFuture failed. "), ex);
 						promise.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(clusterRequest -> {
+			}).onSuccess(bareMetalNetwork -> {
 				try {
 					ApiRequest apiRequest = siteRequest.getApiRequest_();
 					if(apiRequest != null) {
 						apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-						clusterRequest.apiRequestClusterRequest();
-						eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+						bareMetalNetwork.apiRequestBareMetalNetwork();
+						eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 					}
-					promise.complete(clusterRequest);
+					promise.complete(bareMetalNetwork);
 				} catch(Exception ex) {
-					LOG.error(String.format("postClusterRequestFuture failed. "), ex);
+					LOG.error(String.format("postBareMetalNetworkFuture failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("postClusterRequestFuture failed. "), ex);
+			LOG.error(String.format("postBareMetalNetworkFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ClusterRequest> sqlPOSTClusterRequest(ClusterRequest o, Boolean name) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> sqlPOSTBareMetalNetwork(BareMetalNetwork o, Boolean id) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1102,11 +1286,11 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE ClusterRequest SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalNetwork SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			ClusterRequest o2 = new ClusterRequest();
+			BareMetalNetwork o2 = new BareMetalNetwork();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1132,106 +1316,365 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case ClusterRequest.VAR_name:
+					case BareMetalNetwork.VAR_id:
+						o2.setId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_id + "=$" + num);
+						num++;
+						bParams.add(o2.sqlId());
+						break;
+					case BareMetalNetwork.VAR_name:
 						o2.setName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_name + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_name + "=$" + num);
 						num++;
 						bParams.add(o2.sqlName());
 						break;
-					case ClusterRequest.VAR_clusterTemplateTitle:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, name).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("ClusterTemplate");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, pk2, val).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
-					case ClusterRequest.VAR_created:
+					case BareMetalNetwork.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_created + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case ClusterRequest.VAR_userId:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, name).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("SiteUser");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, pk2, val).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
+					case BareMetalNetwork.VAR_description:
+						o2.setDescription(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_description + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDescription());
 						break;
-					case ClusterRequest.VAR_archived:
+					case BareMetalNetwork.VAR_availabilityZoneHints:
+						o2.setAvailabilityZoneHints(jsonObject.getJsonArray(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_availabilityZoneHints + "=$" + num);
+						num++;
+						bParams.add(o2.sqlAvailabilityZoneHints());
+						break;
+					case BareMetalNetwork.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_archived + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
 						break;
-					case ClusterRequest.VAR_sessionId:
+					case BareMetalNetwork.VAR_availabilityZones:
+						o2.setAvailabilityZones(jsonObject.getJsonArray(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_availabilityZones + "=$" + num);
+						num++;
+						bParams.add(o2.sqlAvailabilityZones());
+						break;
+					case BareMetalNetwork.VAR_createdAt:
+						o2.setCreatedAt(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_createdAt + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreatedAt());
+						break;
+					case BareMetalNetwork.VAR_dnsDomain:
+						o2.setDnsDomain(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_dnsDomain + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDnsDomain());
+						break;
+					case BareMetalNetwork.VAR_mtu:
+						o2.setMtu(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_mtu + "=$" + num);
+						num++;
+						bParams.add(o2.sqlMtu());
+						break;
+					case BareMetalNetwork.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_sessionId + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case ClusterRequest.VAR_userKey:
+					case BareMetalNetwork.VAR_projectId:
+						o2.setProjectId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_projectId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlProjectId());
+						break;
+					case BareMetalNetwork.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_userKey + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case ClusterRequest.VAR_objectTitle:
+					case BareMetalNetwork.VAR_providerNetworkType:
+						o2.setProviderNetworkType(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_providerNetworkType + "=$" + num);
+						num++;
+						bParams.add(o2.sqlProviderNetworkType());
+						break;
+					case BareMetalNetwork.VAR_providerPhysicalNetwork:
+						o2.setProviderPhysicalNetwork(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_providerPhysicalNetwork + "=$" + num);
+						num++;
+						bParams.add(o2.sqlProviderPhysicalNetwork());
+						break;
+					case BareMetalNetwork.VAR_providerSegmentationId:
+						o2.setProviderSegmentationId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_providerSegmentationId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlProviderSegmentationId());
+						break;
+					case BareMetalNetwork.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_objectTitle + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case ClusterRequest.VAR_displayPage:
+					case BareMetalNetwork.VAR_qosPolicyId:
+						o2.setQosPolicyId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_qosPolicyId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlQosPolicyId());
+						break;
+					case BareMetalNetwork.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(ClusterRequest.VAR_displayPage + "=$" + num);
+						bSql.append(BareMetalNetwork.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
+						break;
+					case BareMetalNetwork.VAR_revisionNumber:
+						o2.setRevisionNumber(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_revisionNumber + "=$" + num);
+						num++;
+						bParams.add(o2.sqlRevisionNumber());
+						break;
+					case BareMetalNetwork.VAR_status:
+						o2.setStatus(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_status + "=$" + num);
+						num++;
+						bParams.add(o2.sqlStatus());
+						break;
+					case BareMetalNetwork.VAR_subnetIds:
+						o2.setSubnetIds(jsonObject.getJsonArray(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_subnetIds + "=$" + num);
+						num++;
+						bParams.add(o2.sqlSubnetIds());
+						break;
+					case BareMetalNetwork.VAR_tags:
+						o2.setTags(jsonObject.getJsonArray(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_tags + "=$" + num);
+						num++;
+						bParams.add(o2.sqlTags());
+						break;
+					case BareMetalNetwork.VAR_tenantId:
+						o2.setTenantId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_tenantId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlTenantId());
+						break;
+					case BareMetalNetwork.VAR_updatedAt:
+						o2.setUpdatedAt(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_updatedAt + "=$" + num);
+						num++;
+						bParams.add(o2.sqlUpdatedAt());
+						break;
+					case BareMetalNetwork.VAR_isAdminStateUp:
+						o2.setIsAdminStateUp(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isAdminStateUp + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsAdminStateUp());
+						break;
+					case BareMetalNetwork.VAR_isDefault:
+						o2.setIsDefault(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isDefault + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsDefault());
+						break;
+					case BareMetalNetwork.VAR_isPortSecurityEnabled:
+						o2.setIsPortSecurityEnabled(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isPortSecurityEnabled + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsPortSecurityEnabled());
+						break;
+					case BareMetalNetwork.VAR_isRouterExternal:
+						o2.setIsRouterExternal(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isRouterExternal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsRouterExternal());
+						break;
+					case BareMetalNetwork.VAR_isShared:
+						o2.setIsShared(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isShared + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsShared());
+						break;
+					case BareMetalNetwork.VAR_isVlanQueing:
+						o2.setIsVlanQueing(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isVlanQueing + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsVlanQueing());
+						break;
+					case BareMetalNetwork.VAR_isVlanTransparent:
+						o2.setIsVlanTransparent(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_isVlanTransparent + "=$" + num);
+						num++;
+						bParams.add(o2.sqlIsVlanTransparent());
+						break;
+					case BareMetalNetwork.VAR_l2Adjacency:
+						o2.setL2Adjacency(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_l2Adjacency + "=$" + num);
+						num++;
+						bParams.add(o2.sqlL2Adjacency());
+						break;
+					case BareMetalNetwork.VAR_locationCloud:
+						o2.setLocationCloud(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationCloud + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationCloud());
+						break;
+					case BareMetalNetwork.VAR_locationProjectDomainId:
+						o2.setLocationProjectDomainId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationProjectDomainId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationProjectDomainId());
+						break;
+					case BareMetalNetwork.VAR_locationProjectDomainName:
+						o2.setLocationProjectDomainName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationProjectDomainName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationProjectDomainName());
+						break;
+					case BareMetalNetwork.VAR_locationProjectId:
+						o2.setLocationProjectId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationProjectId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationProjectId());
+						break;
+					case BareMetalNetwork.VAR_locationProjectName:
+						o2.setLocationProjectName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationProjectName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationProjectName());
+						break;
+					case BareMetalNetwork.VAR_locationRegionName:
+						o2.setLocationRegionName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationRegionName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationRegionName());
+						break;
+					case BareMetalNetwork.VAR_locationZone:
+						o2.setLocationZone(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNetwork.VAR_locationZone + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocationZone());
 						break;
 					}
 				}
@@ -1246,8 +1689,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value ClusterRequest failed", ex);
-						LOG.error(String.format("relateClusterRequest failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalNetwork failed", ex);
+						LOG.error(String.format("relateBareMetalNetwork failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
@@ -1256,28 +1699,28 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete(o2);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPOSTClusterRequest failed. "), ex);
+					LOG.error(String.format("sqlPOSTBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPOSTClusterRequest failed. "), ex);
+				LOG.error(String.format("sqlPOSTBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPOSTClusterRequest failed. "), ex);
+			LOG.error(String.format("sqlPOSTBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200POSTClusterRequest(ClusterRequest o) {
+	public Future<ServiceResponse> response200POSTBareMetalNetwork(BareMetalNetwork o) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1285,7 +1728,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200POSTClusterRequest failed. "), ex);
+			LOG.error(String.format("response200POSTBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1294,24 +1737,24 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// DELETE //
 
 	@Override
-	public void deleteClusterRequest(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deleteClusterRequest started. "));
-		Boolean classPublicRead = true;
+	public void deleteBareMetalNetwork(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deleteBareMetalNetwork started. "));
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1328,46 +1771,42 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+						searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listClusterRequest.getRequest().getRows());
-								apiRequest.setNumFound(listClusterRequest.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalNetwork.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalNetwork.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listClusterRequest.first());
-								apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalNetwork.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEClusterRequest(apiRequest, listClusterRequest).onSuccess(e -> {
-									response200DELETEClusterRequest(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deleteClusterRequest succeeded. "));
+								listDELETEBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(e -> {
+									response200DELETEBareMetalNetwork(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deleteBareMetalNetwork succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deleteClusterRequest failed. "), ex);
+										LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deleteClusterRequest failed. "), ex);
+									LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deleteClusterRequest failed. "), ex);
+								LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deleteClusterRequest failed. "), ex);
+							LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deleteClusterRequest failed. "), ex);
+					LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1376,7 +1815,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deleteClusterRequest failed. ", ex2));
+					LOG.error(String.format("deleteBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1391,68 +1830,68 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("deleteClusterRequest failed. "), ex);
+				LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEClusterRequest(ApiRequest apiRequest, SearchList<ClusterRequest> listClusterRequest) {
+	public Future<Void> listDELETEBareMetalNetwork(ApiRequest apiRequest, SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-		listClusterRequest.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+		listBareMetalNetwork.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			ClusterRequest o2 = jsonObject.mapTo(ClusterRequest.class);
+			BareMetalNetwork o2 = jsonObject.mapTo(BareMetalNetwork.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deleteClusterRequestFuture(o).onSuccess(a -> {
+				deleteBareMetalNetworkFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEClusterRequest failed. "), ex);
+					LOG.error(String.format("listDELETEBareMetalNetwork failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listClusterRequest.next().onSuccess(next -> {
+			listBareMetalNetwork.next().onSuccess(next -> {
 				if(next) {
-					listDELETEClusterRequest(apiRequest, listClusterRequest).onSuccess(b -> {
+					listDELETEBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEClusterRequest failed. "), ex);
+						LOG.error(String.format("listDELETEBareMetalNetwork failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEClusterRequest failed. "), ex);
+				LOG.error(String.format("listDELETEBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEClusterRequest failed. "), ex);
+			LOG.error(String.format("listDELETEBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deleteClusterRequestFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void deleteBareMetalNetworkFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
-						ClusterRequest o = listClusterRequest.first();
-						if(o != null && listClusterRequest.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalNetwork o = listBareMetalNetwork.first();
+						if(o != null && listBareMetalNetwork.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -1464,9 +1903,9 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
-							deleteClusterRequestFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getId()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
+							deleteBareMetalNetworkFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -1475,42 +1914,42 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deleteClusterRequest failed. "), ex);
+						LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deleteClusterRequest failed. "), ex);
+					LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deleteClusterRequest failed. "), ex);
+				LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deleteClusterRequest failed. "), ex);
+			LOG.error(String.format("deleteBareMetalNetwork failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<ClusterRequest> deleteClusterRequestFuture(ClusterRequest o) {
+	public Future<BareMetalNetwork> deleteBareMetalNetworkFuture(BareMetalNetwork o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<ClusterRequest> promise = Promise.promise();
+		Promise<BareMetalNetwork> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<ClusterRequest> promise1 = Promise.promise();
+			Promise<BareMetalNetwork> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsClusterRequest(siteRequest).onSuccess(a -> {
-					sqlDELETEClusterRequest(o).onSuccess(clusterRequest -> {
-						relateClusterRequest(o).onSuccess(d -> {
-							unindexClusterRequest(o).onSuccess(o2 -> {
+				varsBareMetalNetwork(siteRequest).onSuccess(a -> {
+					sqlDELETEBareMetalNetwork(o).onSuccess(bareMetalNetwork -> {
+						relateBareMetalNetwork(o).onSuccess(d -> {
+							unindexBareMetalNetwork(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestClusterRequest();
+										o2.apiRequestBareMetalNetwork();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -1532,27 +1971,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(clusterRequest -> {
-				Promise<ClusterRequest> promise2 = Promise.promise();
-				refreshClusterRequest(o).onSuccess(a -> {
+			}).compose(bareMetalNetwork -> {
+				Promise<BareMetalNetwork> promise2 = Promise.promise();
+				refreshBareMetalNetwork(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(clusterRequest -> {
-				promise.complete(clusterRequest);
+			}).onSuccess(bareMetalNetwork -> {
+				promise.complete(bareMetalNetwork);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deleteClusterRequestFuture failed. "), ex);
+			LOG.error(String.format("deleteBareMetalNetworkFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEClusterRequest(ClusterRequest o) {
+	public Future<Void> sqlDELETEBareMetalNetwork(BareMetalNetwork o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1561,11 +2000,11 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM ClusterRequest ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalNetwork ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			ClusterRequest o2 = new ClusterRequest();
+			BareMetalNetwork o2 = new BareMetalNetwork();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1574,44 +2013,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case ClusterRequest.VAR_clusterTemplateTitle:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("ClusterTemplate");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, null, null).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
-					case ClusterRequest.VAR_userId:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("SiteUser");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, null, null).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
 					}
 				}
 			}
@@ -1624,8 +2025,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value ClusterRequest failed", ex);
-					LOG.error(String.format("unrelateClusterRequest failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalNetwork failed", ex);
+					LOG.error(String.format("unrelateBareMetalNetwork failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -1633,27 +2034,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEClusterRequest failed. "), ex);
+					LOG.error(String.format("sqlDELETEBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEClusterRequest failed. "), ex);
+				LOG.error(String.format("sqlDELETEBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEClusterRequest failed. "), ex);
+			LOG.error(String.format("sqlDELETEBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEClusterRequest(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEBareMetalNetwork(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1661,7 +2062,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEClusterRequest failed. "), ex);
+			LOG.error(String.format("response200DELETEBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1670,24 +2071,24 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// PUTImport //
 
 	@Override
-	public void putimportClusterRequest(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("putimportClusterRequest started. "));
-		Boolean classPublicRead = true;
+	public void putimportBareMetalNetwork(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("putimportBareMetalNetwork started. "));
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1704,10 +2105,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
 						apiRequest.setRows(Long.valueOf(jsonArray.size()));
@@ -1715,27 +2112,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
-						varsClusterRequest(siteRequest).onSuccess(d -> {
-							listPUTImportClusterRequest(apiRequest, siteRequest).onSuccess(e -> {
-								response200PUTImportClusterRequest(siteRequest).onSuccess(response -> {
-									LOG.debug(String.format("putimportClusterRequest succeeded. "));
+						eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
+						varsBareMetalNetwork(siteRequest).onSuccess(d -> {
+							listPUTImportBareMetalNetwork(apiRequest, siteRequest).onSuccess(e -> {
+								response200PUTImportBareMetalNetwork(siteRequest).onSuccess(response -> {
+									LOG.debug(String.format("putimportBareMetalNetwork succeeded. "));
 									eventHandler.handle(Future.succeededFuture(response));
 								}).onFailure(ex -> {
-									LOG.error(String.format("putimportClusterRequest failed. "), ex);
+									LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportClusterRequest failed. "), ex);
+								LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportClusterRequest failed. "), ex);
+							LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("putimportClusterRequest failed. "), ex);
+					LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1744,7 +2141,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportClusterRequest failed. ", ex2));
+					LOG.error(String.format("putimportBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1759,13 +2156,13 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportClusterRequest failed. "), ex);
+				LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPUTImportClusterRequest(ApiRequest apiRequest, SiteRequest siteRequest) {
+	public Future<Void> listPUTImportBareMetalNetwork(ApiRequest apiRequest, SiteRequest siteRequest) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
 		JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1790,10 +2187,10 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(ClusterRequest.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportClusterRequestFuture")).onSuccess(a -> {
+					eventBus.request(BareMetalNetwork.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportBareMetalNetworkFuture")).onSuccess(a -> {
 						promise1.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPUTImportClusterRequest failed. "), ex);
+						LOG.error(String.format("listPUTImportBareMetalNetwork failed. "), ex);
 						promise1.fail(ex);
 					});
 				}));
@@ -1802,19 +2199,19 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 				promise.complete();
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPUTImportClusterRequest failed. "), ex);
+				LOG.error(String.format("listPUTImportBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("listPUTImportClusterRequest failed. "), ex);
+			LOG.error(String.format("listPUTImportBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
 	@Override
-	public void putimportClusterRequestFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void putimportBareMetalNetworkFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1824,22 +2221,22 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String name = Optional.ofNullable(body.getString(ClusterRequest.VAR_name)).orElse(body.getString(ClusterRequest.VAR_solrId));
+				String id = Optional.ofNullable(body.getString(BareMetalNetwork.VAR_id)).orElse(body.getString(BareMetalNetwork.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 
-				SearchList<ClusterRequest> searchList = new SearchList<ClusterRequest>();
+				SearchList<BareMetalNetwork> searchList = new SearchList<BareMetalNetwork>();
 				searchList.setStore(true);
 				searchList.q("*:*");
-				searchList.setC(ClusterRequest.class);
+				searchList.setC(BareMetalNetwork.class);
 				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("name_docvalues_string:" + SearchTool.escapeQueryChars(name));
+				searchList.fq("id_docvalues_string:" + SearchTool.escapeQueryChars(id));
 				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
 					try {
 						if(searchList.size() >= 1) {
-							ClusterRequest o = searchList.getList().stream().findFirst().orElse(null);
-							ClusterRequest o2 = new ClusterRequest();
+							BareMetalNetwork o = searchList.getList().stream().findFirst().orElse(null);
+							BareMetalNetwork o2 = new BareMetalNetwork();
 							o2.setSiteRequest_(siteRequest);
 							JsonObject body2 = new JsonObject();
 							for(String f : body.fieldNames()) {
@@ -1870,48 +2267,48 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								} else {
 									o2.persistForClass(f, bodyVal);
 									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
 							}
 							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 										body2.putNull("set" + StringUtils.capitalize(f));
 								}
 							}
 							if(searchList.size() == 1) {
 								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getName());
+								apiRequest.setId(o.getId());
 								apiRequest.setPk(o.getPk());
 							}
 							siteRequest.setJsonObject(body2);
-							patchClusterRequestFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import ClusterRequest {} succeeded, modified ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+							patchBareMetalNetworkFuture(o, true).onSuccess(b -> {
+								LOG.debug("Import BareMetalNetwork {} succeeded, modified BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+								LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							});
 						} else {
-							postClusterRequestFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import ClusterRequest {} succeeded, created new ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+							postBareMetalNetworkFuture(siteRequest, true).onSuccess(b -> {
+								LOG.debug("Import BareMetalNetwork {} succeeded, created new BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
 								eventHandler.handle(Future.succeededFuture());
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+								LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							});
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+						LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+					LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+				LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 				eventHandler.handle(Future.failedFuture(ex));
 			}
 		}).onFailure(ex -> {
@@ -1919,7 +2316,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportClusterRequest failed. ", ex2));
+					LOG.error(String.format("putimportBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1934,19 +2331,19 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportClusterRequest failed. "), ex);
+				LOG.error(String.format("putimportBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200PUTImportClusterRequest(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PUTImportBareMetalNetwork(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1954,7 +2351,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PUTImportClusterRequest failed. "), ex);
+			LOG.error(String.format("response200PUTImportBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1963,23 +2360,23 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// SearchPage //
 
 	@Override
-	public void searchpageClusterRequest(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void searchpageBareMetalNetwork(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1996,25 +2393,21 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, false).onSuccess(listClusterRequest -> {
-							response200SearchPageClusterRequest(listClusterRequest).onSuccess(response -> {
+						searchBareMetalNetworkList(siteRequest, false, true, false).onSuccess(listBareMetalNetwork -> {
+							response200SearchPageBareMetalNetwork(listBareMetalNetwork).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchpageClusterRequest succeeded. "));
+								LOG.debug(String.format("searchpageBareMetalNetwork succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchpageClusterRequest failed. "), ex);
+								LOG.error(String.format("searchpageBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchpageClusterRequest failed. "), ex);
+							LOG.error(String.format("searchpageBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchpageClusterRequest failed. "), ex);
+					LOG.error(String.format("searchpageBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2023,7 +2416,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageClusterRequest failed. ", ex2));
+					LOG.error(String.format("searchpageBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2038,38 +2431,38 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageClusterRequest failed. "), ex);
+				LOG.error(String.format("searchpageBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void searchpageClusterRequestPageInit(ClusterRequestPage page, SearchList<ClusterRequest> listClusterRequest) {
+	public void searchpageBareMetalNetworkPageInit(BareMetalNetworkPage page, SearchList<BareMetalNetwork> listBareMetalNetwork) {
 	}
 
-	public String templateSearchPageClusterRequest(ServiceRequest serviceRequest) {
-		return "en-us/search/cluster-request/ClusterRequestSearchPage.htm";
+	public String templateSearchPageBareMetalNetwork(ServiceRequest serviceRequest) {
+		return "en-us/search/bare-metal-network/BareMetalNetworkSearchPage.htm";
 	}
-	public Future<ServiceResponse> response200SearchPageClusterRequest(SearchList<ClusterRequest> listClusterRequest) {
+	public Future<ServiceResponse> response200SearchPageBareMetalNetwork(SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateSearchPageClusterRequest(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateSearchPageBareMetalNetwork(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			ClusterRequestPage page = new ClusterRequestPage();
+			BareMetalNetworkPage page = new BareMetalNetworkPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listClusterRequest.size() >= 1)
-				siteRequest.setRequestPk(listClusterRequest.get(0).getPk());
-			page.setSearchListClusterRequest_(listClusterRequest);
+			if(listBareMetalNetwork.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalNetwork.get(0).getPk());
+			page.setSearchListBareMetalNetwork_(listBareMetalNetwork);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalNetworkPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2077,19 +2470,19 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200SearchPageClusterRequest failed. "), ex);
+					LOG.error(String.format("response200SearchPageBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchPageClusterRequest failed. "), ex);
+			LOG.error(String.format("response200SearchPageBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchPageClusterRequest(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchPageBareMetalNetwork(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2118,7 +2511,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchPageClusterRequest(pivotFields2, pivotArray2);
+					responsePivotSearchPageBareMetalNetwork(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2127,23 +2520,23 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// EditPage //
 
 	@Override
-	public void editpageClusterRequest(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void editpageBareMetalNetwork(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2160,25 +2553,21 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, false).onSuccess(listClusterRequest -> {
-							response200EditPageClusterRequest(listClusterRequest).onSuccess(response -> {
+						searchBareMetalNetworkList(siteRequest, false, true, false).onSuccess(listBareMetalNetwork -> {
+							response200EditPageBareMetalNetwork(listBareMetalNetwork).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("editpageClusterRequest succeeded. "));
+								LOG.debug(String.format("editpageBareMetalNetwork succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("editpageClusterRequest failed. "), ex);
+								LOG.error(String.format("editpageBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("editpageClusterRequest failed. "), ex);
+							LOG.error(String.format("editpageBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("editpageClusterRequest failed. "), ex);
+					LOG.error(String.format("editpageBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2187,7 +2576,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("editpageClusterRequest failed. ", ex2));
+					LOG.error(String.format("editpageBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2202,38 +2591,38 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("editpageClusterRequest failed. "), ex);
+				LOG.error(String.format("editpageBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void editpageClusterRequestPageInit(ClusterRequestPage page, SearchList<ClusterRequest> listClusterRequest) {
+	public void editpageBareMetalNetworkPageInit(BareMetalNetworkPage page, SearchList<BareMetalNetwork> listBareMetalNetwork) {
 	}
 
-	public String templateEditPageClusterRequest(ServiceRequest serviceRequest) {
-		return "en-us/edit/cluster-request/ClusterRequestEditPage.htm";
+	public String templateEditPageBareMetalNetwork(ServiceRequest serviceRequest) {
+		return "en-us/edit/bare-metal-network/BareMetalNetworkEditPage.htm";
 	}
-	public Future<ServiceResponse> response200EditPageClusterRequest(SearchList<ClusterRequest> listClusterRequest) {
+	public Future<ServiceResponse> response200EditPageBareMetalNetwork(SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateEditPageClusterRequest(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateEditPageBareMetalNetwork(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			ClusterRequestPage page = new ClusterRequestPage();
+			BareMetalNetworkPage page = new BareMetalNetworkPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listClusterRequest.size() >= 1)
-				siteRequest.setRequestPk(listClusterRequest.get(0).getPk());
-			page.setSearchListClusterRequest_(listClusterRequest);
+			if(listBareMetalNetwork.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalNetwork.get(0).getPk());
+			page.setSearchListBareMetalNetwork_(listBareMetalNetwork);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalNetworkPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2241,19 +2630,19 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200EditPageClusterRequest failed. "), ex);
+					LOG.error(String.format("response200EditPageBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200EditPageClusterRequest failed. "), ex);
+			LOG.error(String.format("response200EditPageBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotEditPageClusterRequest(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotEditPageBareMetalNetwork(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2282,171 +2671,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotEditPageClusterRequest(pivotFields2, pivotArray2);
-				}
-			}
-		}
-	}
-
-	// UserPage //
-
-	@Override
-	public void userpageClusterRequest(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, false).onSuccess(listClusterRequest -> {
-							response200UserPageClusterRequest(listClusterRequest).onSuccess(response -> {
-								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("userpageClusterRequest succeeded. "));
-							}).onFailure(ex -> {
-								LOG.error(String.format("userpageClusterRequest failed. "), ex);
-								error(siteRequest, eventHandler, ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(String.format("userpageClusterRequest failed. "), ex);
-							error(siteRequest, eventHandler, ex);
-						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("userpageClusterRequest failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("userpageClusterRequest failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("userpageClusterRequest failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-	}
-
-	public void userpageClusterRequestPageInit(ClusterRequestPage page, SearchList<ClusterRequest> listClusterRequest) {
-	}
-
-	public String templateUserPageClusterRequest(ServiceRequest serviceRequest) {
-		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
-	}
-	public Future<ServiceResponse> response200UserPageClusterRequest(SearchList<ClusterRequest> listClusterRequest) {
-		Promise<ServiceResponse> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateUserPageClusterRequest(siteRequest.getServiceRequest());
-			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
-			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
-			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			ClusterRequestPage page = new ClusterRequestPage();
-			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
-			siteRequest.setRequestHeaders(requestHeaders);
-
-			if(listClusterRequest.size() >= 1)
-				siteRequest.setRequestPk(listClusterRequest.get(0).getPk());
-			page.setSearchListClusterRequest_(listClusterRequest);
-			page.setSiteRequest_(siteRequest);
-			page.setServiceRequest(siteRequest.getServiceRequest());
-			page.setWebClient(webClient);
-			page.setVertx(vertx);
-			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
-				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
-					ctx.mergeIn(JsonObject.mapFrom(page));
-					String renderedTemplate = jinjava.render(template, ctx.getMap());
-					Buffer buffer = Buffer.buffer(renderedTemplate);
-					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
-				} catch(Exception ex) {
-					LOG.error(String.format("response200UserPageClusterRequest failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				promise.fail(ex);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("response200UserPageClusterRequest failed. "), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-	public void responsePivotUserPageClusterRequest(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
-		if(pivots != null) {
-			for(SolrResponse.Pivot pivotField : pivots) {
-				String entityIndexed = pivotField.getField();
-				String entityVar = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-				JsonObject pivotJson = new JsonObject();
-				pivotArray.add(pivotJson);
-				pivotJson.put("field", entityVar);
-				pivotJson.put("value", pivotField.getValue());
-				pivotJson.put("count", pivotField.getCount());
-				Collection<SolrResponse.PivotRange> pivotRanges = pivotField.getRanges().values();
-				List<SolrResponse.Pivot> pivotFields2 = pivotField.getPivotList();
-				if(pivotRanges != null) {
-					JsonObject rangeJson = new JsonObject();
-					pivotJson.put("ranges", rangeJson);
-					for(SolrResponse.PivotRange rangeFacet : pivotRanges) {
-						JsonObject rangeFacetJson = new JsonObject();
-						String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-						rangeJson.put(rangeFacetVar, rangeFacetJson);
-						JsonObject rangeFacetCountsObject = new JsonObject();
-						rangeFacetJson.put("counts", rangeFacetCountsObject);
-						rangeFacet.getCounts().forEach((value, count) -> {
-							rangeFacetCountsObject.put(value, count);
-						});
-					}
-				}
-				if(pivotFields2 != null) {
-					JsonArray pivotArray2 = new JsonArray();
-					pivotJson.put("pivot", pivotArray2);
-					responsePivotUserPageClusterRequest(pivotFields2, pivotArray2);
+					responsePivotEditPageBareMetalNetwork(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2455,24 +2680,24 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	// DELETEFilter //
 
 	@Override
-	public void deletefilterClusterRequest(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deletefilterClusterRequest started. "));
-		Boolean classPublicRead = true;
+	public void deletefilterBareMetalNetwork(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterBareMetalNetwork started. "));
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
-			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_SIMPLE_NAME, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2489,46 +2714,42 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
-						searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+						searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listClusterRequest.getRequest().getRows());
-								apiRequest.setNumFound(listClusterRequest.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalNetwork.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalNetwork.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listClusterRequest.first());
-								apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalNetwork.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEFilterClusterRequest(apiRequest, listClusterRequest).onSuccess(e -> {
-									response200DELETEFilterClusterRequest(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deletefilterClusterRequest succeeded. "));
+								listDELETEFilterBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(e -> {
+									response200DELETEFilterBareMetalNetwork(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterBareMetalNetwork succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+										LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+									LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+								LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+							LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+					LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2537,7 +2758,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deletefilterClusterRequest failed. ", ex2));
+					LOG.error(String.format("deletefilterBareMetalNetwork failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2552,68 +2773,68 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							)
 					));
 			} else {
-				LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEFilterClusterRequest(ApiRequest apiRequest, SearchList<ClusterRequest> listClusterRequest) {
+	public Future<Void> listDELETEFilterBareMetalNetwork(ApiRequest apiRequest, SearchList<BareMetalNetwork> listBareMetalNetwork) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listClusterRequest.getSiteRequest_(SiteRequest.class);
-		listClusterRequest.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalNetwork.getSiteRequest_(SiteRequest.class);
+		listBareMetalNetwork.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			ClusterRequest o2 = jsonObject.mapTo(ClusterRequest.class);
+			BareMetalNetwork o2 = jsonObject.mapTo(BareMetalNetwork.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deletefilterClusterRequestFuture(o).onSuccess(a -> {
+				deletefilterBareMetalNetworkFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEFilterClusterRequest failed. "), ex);
+					LOG.error(String.format("listDELETEFilterBareMetalNetwork failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listClusterRequest.next().onSuccess(next -> {
+			listBareMetalNetwork.next().onSuccess(next -> {
 				if(next) {
-					listDELETEFilterClusterRequest(apiRequest, listClusterRequest).onSuccess(b -> {
+					listDELETEFilterBareMetalNetwork(apiRequest, listBareMetalNetwork).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEFilterClusterRequest failed. "), ex);
+						LOG.error(String.format("listDELETEFilterBareMetalNetwork failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEFilterClusterRequest failed. "), ex);
+				LOG.error(String.format("listDELETEFilterBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEFilterClusterRequest failed. "), ex);
+			LOG.error(String.format("listDELETEFilterBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deletefilterClusterRequestFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = true;
+	public void deletefilterBareMetalNetworkFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchClusterRequestList(siteRequest, false, true, true).onSuccess(listClusterRequest -> {
+				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
-						ClusterRequest o = listClusterRequest.first();
-						if(o != null && listClusterRequest.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalNetwork o = listBareMetalNetwork.first();
+						if(o != null && listBareMetalNetwork.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -2625,9 +2846,9 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
-							deletefilterClusterRequestFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getId()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalNetwork.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterBareMetalNetworkFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -2636,42 +2857,42 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+						LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+					LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deletefilterClusterRequest failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalNetwork failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<ClusterRequest> deletefilterClusterRequestFuture(ClusterRequest o) {
+	public Future<BareMetalNetwork> deletefilterBareMetalNetworkFuture(BareMetalNetwork o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<ClusterRequest> promise = Promise.promise();
+		Promise<BareMetalNetwork> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<ClusterRequest> promise1 = Promise.promise();
+			Promise<BareMetalNetwork> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsClusterRequest(siteRequest).onSuccess(a -> {
-					sqlDELETEFilterClusterRequest(o).onSuccess(clusterRequest -> {
-						relateClusterRequest(o).onSuccess(d -> {
-							unindexClusterRequest(o).onSuccess(o2 -> {
+				varsBareMetalNetwork(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterBareMetalNetwork(o).onSuccess(bareMetalNetwork -> {
+						relateBareMetalNetwork(o).onSuccess(d -> {
+							unindexBareMetalNetwork(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestClusterRequest();
+										o2.apiRequestBareMetalNetwork();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalNetwork", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -2693,27 +2914,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(clusterRequest -> {
-				Promise<ClusterRequest> promise2 = Promise.promise();
-				refreshClusterRequest(o).onSuccess(a -> {
+			}).compose(bareMetalNetwork -> {
+				Promise<BareMetalNetwork> promise2 = Promise.promise();
+				refreshBareMetalNetwork(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(clusterRequest -> {
-				promise.complete(clusterRequest);
+			}).onSuccess(bareMetalNetwork -> {
+				promise.complete(bareMetalNetwork);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deletefilterClusterRequestFuture failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalNetworkFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEFilterClusterRequest(ClusterRequest o) {
+	public Future<Void> sqlDELETEFilterBareMetalNetwork(BareMetalNetwork o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -2722,11 +2943,11 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM ClusterRequest ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalNetwork ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			ClusterRequest o2 = new ClusterRequest();
+			BareMetalNetwork o2 = new BareMetalNetwork();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -2735,44 +2956,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case ClusterRequest.VAR_clusterTemplateTitle:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("ClusterTemplate");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, null, null).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
-					case ClusterRequest.VAR_userId:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
-										classes.add("SiteUser");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, null, null).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
 					}
 				}
 			}
@@ -2785,8 +2968,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value ClusterRequest failed", ex);
-					LOG.error(String.format("unrelateClusterRequest failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalNetwork failed", ex);
+					LOG.error(String.format("unrelateBareMetalNetwork failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -2794,27 +2977,27 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEFilterClusterRequest failed. "), ex);
+					LOG.error(String.format("sqlDELETEFilterBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEFilterClusterRequest failed. "), ex);
+				LOG.error(String.format("sqlDELETEFilterBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEFilterClusterRequest failed. "), ex);
+			LOG.error(String.format("sqlDELETEFilterBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEFilterClusterRequest(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEFilterBareMetalNetwork(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "bare metal network", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2822,7 +3005,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEFilterClusterRequest failed. "), ex);
+			LOG.error(String.format("response200DELETEFilterBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -2830,78 +3013,78 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	// General //
 
-	public Future<ClusterRequest> createClusterRequest(SiteRequest siteRequest) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> createBareMetalNetwork(SiteRequest siteRequest) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 		try {
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
 			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-			sqlConnection.preparedQuery("INSERT INTO ClusterRequest(created, userKey) VALUES($1, $2) RETURNING pk")
+			sqlConnection.preparedQuery("INSERT INTO BareMetalNetwork(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
 				Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
 				Long pk = createLine.getLong(0);
-				ClusterRequest o = new ClusterRequest();
+				BareMetalNetwork o = new BareMetalNetwork();
 				o.setPk(pk);
 				o.setSiteRequest_(siteRequest);
 				promise.complete(o);
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error("createClusterRequest failed. ", ex2);
+				LOG.error("createBareMetalNetwork failed. ", ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("createClusterRequest failed. "), ex);
+			LOG.error(String.format("createBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public void searchClusterRequestQ(SearchList<ClusterRequest> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalNetworkQ(SearchList<BareMetalNetwork> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
 		if(!"*".equals(entityVar)) {
 		}
 	}
 
-	public String searchClusterRequestFq(SearchList<ClusterRequest> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public String searchBareMetalNetworkFq(SearchList<BareMetalNetwork> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		if(StringUtils.startsWith(valueIndexed, "[")) {
 			String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
 			if(fqs.length != 2)
 				throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-			String fq1 = fqs[0].equals("*") ? fqs[0] : ClusterRequest.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-			String fq2 = fqs[1].equals("*") ? fqs[1] : ClusterRequest.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+			String fq1 = fqs[0].equals("*") ? fqs[0] : BareMetalNetwork.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+			String fq2 = fqs[1].equals("*") ? fqs[1] : BareMetalNetwork.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
 			 return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
 		} else {
-			return varIndexed + ":" + SearchTool.escapeQueryChars(ClusterRequest.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+			return varIndexed + ":" + SearchTool.escapeQueryChars(BareMetalNetwork.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
 		}
 	}
 
-	public void searchClusterRequestSort(SearchList<ClusterRequest> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalNetworkSort(SearchList<BareMetalNetwork> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		searchList.sort(varIndexed, valueIndexed);
 	}
 
-	public void searchClusterRequestRows(SearchList<ClusterRequest> searchList, Long valueRows) {
+	public void searchBareMetalNetworkRows(SearchList<BareMetalNetwork> searchList, Long valueRows) {
 			searchList.rows(valueRows != null ? valueRows : 10L);
 	}
 
-	public void searchClusterRequestStart(SearchList<ClusterRequest> searchList, Long valueStart) {
+	public void searchBareMetalNetworkStart(SearchList<BareMetalNetwork> searchList, Long valueStart) {
 		searchList.start(valueStart);
 	}
 
-	public void searchClusterRequestVar(SearchList<ClusterRequest> searchList, String var, String value) {
+	public void searchBareMetalNetworkVar(SearchList<BareMetalNetwork> searchList, String var, String value) {
 		searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
 	}
 
-	public void searchClusterRequestUri(SearchList<ClusterRequest> searchList) {
+	public void searchBareMetalNetworkUri(SearchList<BareMetalNetwork> searchList) {
 	}
 
-	public Future<ServiceResponse> varsClusterRequest(SiteRequest siteRequest) {
+	public Future<ServiceResponse> varsBareMetalNetwork(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -2919,25 +3102,25 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						siteRequest.getRequestVars().put(entityVar, valueIndexed);
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchClusterRequest failed. "), ex);
+					LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				}
 			});
 			promise.complete();
 		} catch(Exception ex) {
-			LOG.error(String.format("searchClusterRequest failed. "), ex);
+			LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<SearchList<ClusterRequest>> searchClusterRequestList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
-		Promise<SearchList<ClusterRequest>> promise = Promise.promise();
+	public Future<SearchList<BareMetalNetwork>> searchBareMetalNetworkList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
+		Promise<SearchList<BareMetalNetwork>> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
 			String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
 			String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-			SearchList<ClusterRequest> searchList = new SearchList<ClusterRequest>();
+			SearchList<BareMetalNetwork> searchList = new SearchList<BareMetalNetwork>();
 			String facetRange = null;
 			Date facetRangeStart = null;
 			Date facetRangeEnd = null;
@@ -2947,25 +3130,20 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			searchList.setPopulate(populate);
 			searchList.setStore(store);
 			searchList.q("*:*");
-			searchList.setC(ClusterRequest.class);
+			searchList.setC(BareMetalNetwork.class);
 			searchList.setSiteRequest_(siteRequest);
 			searchList.facetMinCount(1);
 			if(entityList != null) {
 				for(String v : entityList) {
-					searchList.fl(ClusterRequest.varIndexedClusterRequest(v));
+					searchList.fl(BareMetalNetwork.varIndexedBareMetalNetwork(v));
 				}
 			}
 
-			String name = serviceRequest.getParams().getJsonObject("path").getString("name");
-			if(name != null && NumberUtils.isCreatable(name)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(name) + " OR name_docvalues_string:" + SearchTool.escapeQueryChars(name) + ")");
-			} else if(name != null) {
-				searchList.fq("name_docvalues_string:" + SearchTool.escapeQueryChars(name));
-			}
-
-			if(!siteRequest.getScopes().contains("GET")) {
-				searchList.fq("sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionId()).orElse("\"-----\"")) + " OR " + "sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionIdBefore()).orElse("\"-----\""))
-						+ " OR userId_docvalues_string:" + Optional.ofNullable(siteRequest.getUserId()).orElse("\"-----\""));
+			String id = serviceRequest.getParams().getJsonObject("path").getString("id");
+			if(id != null && NumberUtils.isCreatable(id)) {
+				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(id) + " OR id_docvalues_string:" + SearchTool.escapeQueryChars(id) + ")");
+			} else if(id != null) {
+				searchList.fq("id_docvalues_string:" + SearchTool.escapeQueryChars(id));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -2988,7 +3166,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							String[] varsIndexed = new String[entityVars.length];
 							for(Integer i = 0; i < entityVars.length; i++) {
 								entityVar = entityVars[i];
-								varsIndexed[i] = ClusterRequest.varIndexedClusterRequest(entityVar);
+								varsIndexed[i] = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
 							}
 							searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
 						}
@@ -3000,8 +3178,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								while(mQ.find()) {
 									entityVar = mQ.group(1).trim();
 									valueIndexed = mQ.group(2).trim();
-									varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
-									String entityQ = searchClusterRequestFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
+									String entityQ = searchBareMetalNetworkFq(searchList, entityVar, valueIndexed, varIndexed);
 									mQ.appendReplacement(sb, entityQ);
 								}
 								if(!sb.isEmpty()) {
@@ -3014,8 +3192,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								while(mFq.find()) {
 									entityVar = mFq.group(1).trim();
 									valueIndexed = mFq.group(2).trim();
-									varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
-									String entityFq = searchClusterRequestFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
+									String entityFq = searchBareMetalNetworkFq(searchList, entityVar, valueIndexed, varIndexed);
 									mFq.appendReplacement(sb, entityFq);
 								}
 								if(!sb.isEmpty()) {
@@ -3025,14 +3203,14 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							} else if(paramName.equals("sort")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
 								valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-								varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
-								searchClusterRequestSort(searchList, entityVar, valueIndexed, varIndexed);
+								varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
+								searchBareMetalNetworkSort(searchList, entityVar, valueIndexed, varIndexed);
 							} else if(paramName.equals("start")) {
 								valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchClusterRequestStart(searchList, valueStart);
+								searchBareMetalNetworkStart(searchList, valueStart);
 							} else if(paramName.equals("rows")) {
 								valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchClusterRequestRows(searchList, valueRows);
+								searchBareMetalNetworkRows(searchList, valueRows);
 							} else if(paramName.equals("stats")) {
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
@@ -3040,7 +3218,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
-									varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
+									varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
 									searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									statsField = entityVar;
 									statsFieldIndexed = varIndexed;
@@ -3066,25 +3244,25 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
-									varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
+									varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
 									searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									facetRange = entityVar;
 								}
 							} else if(paramName.equals("facet.field")) {
 								entityVar = (String)paramObject;
-								varIndexed = ClusterRequest.varIndexedClusterRequest(entityVar);
+								varIndexed = BareMetalNetwork.varIndexedBareMetalNetwork(entityVar);
 								if(varIndexed != null)
 									searchList.facetField(varIndexed);
 							} else if(paramName.equals("var")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
 								valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-								searchClusterRequestVar(searchList, entityVar, valueIndexed);
+								searchBareMetalNetworkVar(searchList, entityVar, valueIndexed);
 							} else if(paramName.equals("cursorMark")) {
 								valueCursorMark = (String)paramObject;
 								searchList.cursorMark((String)paramObject);
 							}
 						}
-						searchClusterRequestUri(searchList);
+						searchBareMetalNetworkUri(searchList);
 					}
 				} catch(Exception e) {
 					ExceptionUtils.rethrow(e);
@@ -3099,7 +3277,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			String facetRangeGap2 = facetRangeGap;
 			String statsField2 = statsField;
 			String statsFieldIndexed2 = statsFieldIndexed;
-			searchClusterRequest2(siteRequest, populate, store, modify, searchList);
+			searchBareMetalNetwork2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
 				if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
 					StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3135,32 +3313,32 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					searchList.query().onSuccess(b -> {
 						promise.complete(searchList);
 					}).onFailure(ex -> {
-						LOG.error(String.format("searchClusterRequest failed. "), ex);
+						LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete(searchList);
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("searchClusterRequest failed. "), ex);
+				LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("searchClusterRequest failed. "), ex);
+			LOG.error(String.format("searchBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void searchClusterRequest2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<ClusterRequest> searchList) {
+	public void searchBareMetalNetwork2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<BareMetalNetwork> searchList) {
 	}
 
-	public Future<Void> persistClusterRequest(ClusterRequest o, Boolean patch) {
+	public Future<Void> persistBareMetalNetwork(BareMetalNetwork o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT * FROM ClusterRequest WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT * FROM BareMetalNetwork WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3173,7 +3351,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								try {
 									o.persistForClass(columnName, columnValue);
 								} catch(Exception e) {
-									LOG.error(String.format("persistClusterRequest failed. "), e);
+									LOG.error(String.format("persistBareMetalNetwork failed. "), e);
 								}
 							}
 						}
@@ -3181,68 +3359,42 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					o.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("persistClusterRequest failed. "), ex);
+						LOG.error(String.format("persistBareMetalNetwork failed. "), ex);
 						promise.fail(ex);
 					});
 				} catch(Exception ex) {
-					LOG.error(String.format("persistClusterRequest failed. "), ex);
+					LOG.error(String.format("persistBareMetalNetwork failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("persistClusterRequest failed. "), ex2);
+				LOG.error(String.format("persistBareMetalNetwork failed. "), ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("persistClusterRequest failed. "), ex);
+			LOG.error(String.format("persistBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> relateClusterRequest(ClusterRequest o) {
+	public Future<Void> relateBareMetalNetwork(BareMetalNetwork o) {
 		Promise<Void> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = o.getSiteRequest_();
-			SqlConnection sqlConnection = siteRequest.getSqlConnection();
-			sqlConnection.preparedQuery("SELECT title as pk2, 'clusterTemplateTitle' from ClusterTemplate where title=$1 UNION SELECT userId as pk2, 'userId' from SiteUser where userId=$1")
-					.collecting(Collectors.toList())
-					.execute(Tuple.of(o.getName())
-					).onSuccess(result -> {
-				try {
-					if(result != null) {
-						for(Row definition : result.value()) {
-							o.relateForClass(definition.getString(1), definition.getValue(0));
-						}
-					}
-					promise.complete();
-				} catch(Exception ex) {
-					LOG.error(String.format("relateClusterRequest failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("relateClusterRequest failed. "), ex2);
-				promise.fail(ex2);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("relateClusterRequest failed. "), ex);
-			promise.fail(ex);
-		}
+			promise.complete();
 		return promise.future();
 	}
 
 	public String searchVar(String varIndexed) {
-		return ClusterRequest.searchVarClusterRequest(varIndexed);
+		return BareMetalNetwork.searchVarBareMetalNetwork(varIndexed);
 	}
 
 	@Override
 	public String getClassApiAddress() {
-		return ClusterRequest.CLASS_API_ADDRESS_ClusterRequest;
+		return BareMetalNetwork.CLASS_API_ADDRESS_BareMetalNetwork;
 	}
 
-	public Future<ClusterRequest> indexClusterRequest(ClusterRequest o) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> indexBareMetalNetwork(BareMetalNetwork o) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3251,7 +3403,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			json.put("add", add);
 			JsonObject doc = new JsonObject();
 			add.put("doc", doc);
-			o.indexClusterRequest(doc);
+			o.indexBareMetalNetwork(doc);
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3268,18 +3420,18 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
-				LOG.error(String.format("indexClusterRequest failed. "), new RuntimeException(ex));
+				LOG.error(String.format("indexBareMetalNetwork failed. "), new RuntimeException(ex));
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("indexClusterRequest failed. "), ex);
+			LOG.error(String.format("indexBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ClusterRequest> unindexClusterRequest(ClusterRequest o) {
-		Promise<ClusterRequest> promise = Promise.promise();
+	public Future<BareMetalNetwork> unindexBareMetalNetwork(BareMetalNetwork o) {
+		Promise<BareMetalNetwork> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3305,21 +3457,21 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
-					LOG.error(String.format("unindexClusterRequest failed. "), new RuntimeException(ex));
+					LOG.error(String.format("unindexBareMetalNetwork failed. "), new RuntimeException(ex));
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("unindexClusterRequest failed. "), ex);
+				LOG.error(String.format("unindexBareMetalNetwork failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("unindexClusterRequest failed. "), ex);
+			LOG.error(String.format("unindexBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> refreshClusterRequest(ClusterRequest o) {
+	public Future<Void> refreshBareMetalNetwork(BareMetalNetwork o) {
 		Promise<Void> promise = Promise.promise();
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
@@ -3333,76 +3485,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				for(int i=0; i < pks.size(); i++) {
 					Long pk2 = pks.get(i);
 					String classSimpleName2 = classes.get(i);
-
-					if("ClusterTemplate".equals(classSimpleName2) && pk2 != null) {
-						SearchList<ClusterTemplate> searchList2 = new SearchList<ClusterTemplate>();
-						searchList2.setStore(true);
-						searchList2.q("*:*");
-						searchList2.setC(ClusterTemplate.class);
-						searchList2.fq("pk_docvalues_long:" + pk2);
-						searchList2.rows(1L);
-						futures.add(Future.future(promise2 -> {
-							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
-								ClusterTemplate o2 = searchList2.getList().stream().findFirst().orElse(null);
-								if(o2 != null) {
-									JsonObject params = new JsonObject();
-									params.put("body", new JsonObject());
-									params.put("cookie", new JsonObject());
-									params.put("path", new JsonObject());
-									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
-									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
-									JsonObject json = new JsonObject().put("context", context);
-									eventBus.request("ai-telemetry-enUS-ClusterTemplate", json, new DeliveryOptions().addHeader("action", "patchClusterTemplateFuture")).onSuccess(c -> {
-										JsonObject responseMessage = (JsonObject)c.body();
-										Integer statusCode = responseMessage.getInteger("statusCode");
-										if(statusCode.equals(200))
-											promise2.complete();
-										else
-											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}
-							}).onFailure(ex -> {
-								promise2.fail(ex);
-							});
-						}));
-					}
-
-					if("SiteUser".equals(classSimpleName2) && pk2 != null) {
-						SearchList<SiteUser> searchList2 = new SearchList<SiteUser>();
-						searchList2.setStore(true);
-						searchList2.q("*:*");
-						searchList2.setC(SiteUser.class);
-						searchList2.fq("pk_docvalues_long:" + pk2);
-						searchList2.rows(1L);
-						futures.add(Future.future(promise2 -> {
-							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
-								SiteUser o2 = searchList2.getList().stream().findFirst().orElse(null);
-								if(o2 != null) {
-									JsonObject params = new JsonObject();
-									params.put("body", new JsonObject());
-									params.put("cookie", new JsonObject());
-									params.put("path", new JsonObject());
-									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
-									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
-									JsonObject json = new JsonObject().put("context", context);
-									eventBus.request("ai-telemetry-enUS-SiteUser", json, new DeliveryOptions().addHeader("action", "patchSiteUserFuture")).onSuccess(c -> {
-										JsonObject responseMessage = (JsonObject)c.body();
-										Integer statusCode = responseMessage.getInteger("statusCode");
-										if(statusCode.equals(200))
-											promise2.complete();
-										else
-											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}
-							}).onFailure(ex -> {
-								promise2.fail(ex);
-							});
-						}));
-					}
 				}
 
 				CompositeFuture.all(futures).onSuccess(b -> {
@@ -3425,7 +3507,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(ClusterRequest.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchClusterRequestFuture")).onSuccess(c -> {
+					eventBus.request(BareMetalNetwork.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchBareMetalNetworkFuture")).onSuccess(c -> {
 						JsonObject responseMessage = (JsonObject)c.body();
 						Integer statusCode = responseMessage.getInteger("statusCode");
 						if(statusCode.equals(200))
@@ -3444,7 +3526,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				promise.complete();
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("refreshClusterRequest failed. "), ex);
+			LOG.error(String.format("refreshBareMetalNetwork failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3457,18 +3539,49 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
 			SiteRequest siteRequest2 = (SiteRequest)siteRequest;
 			String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-			ClusterRequest page = new ClusterRequest();
+			BareMetalNetwork page = new BareMetalNetwork();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(ClusterRequest.VAR_name, ClusterRequest.staticSetName(siteRequest2, (String)result.get(ClusterRequest.VAR_name)));
-			page.persistForClass(ClusterRequest.VAR_clusterTemplateTitle, ClusterRequest.staticSetClusterTemplateTitle(siteRequest2, (String)result.get(ClusterRequest.VAR_clusterTemplateTitle)));
-			page.persistForClass(ClusterRequest.VAR_created, ClusterRequest.staticSetCreated(siteRequest2, (String)result.get(ClusterRequest.VAR_created)));
-			page.persistForClass(ClusterRequest.VAR_userId, ClusterRequest.staticSetUserId(siteRequest2, (String)result.get(ClusterRequest.VAR_userId)));
-			page.persistForClass(ClusterRequest.VAR_archived, ClusterRequest.staticSetArchived(siteRequest2, (String)result.get(ClusterRequest.VAR_archived)));
-			page.persistForClass(ClusterRequest.VAR_sessionId, ClusterRequest.staticSetSessionId(siteRequest2, (String)result.get(ClusterRequest.VAR_sessionId)));
-			page.persistForClass(ClusterRequest.VAR_userKey, ClusterRequest.staticSetUserKey(siteRequest2, (String)result.get(ClusterRequest.VAR_userKey)));
-			page.persistForClass(ClusterRequest.VAR_objectTitle, ClusterRequest.staticSetObjectTitle(siteRequest2, (String)result.get(ClusterRequest.VAR_objectTitle)));
-			page.persistForClass(ClusterRequest.VAR_displayPage, ClusterRequest.staticSetDisplayPage(siteRequest2, (String)result.get(ClusterRequest.VAR_displayPage)));
+			page.persistForClass(BareMetalNetwork.VAR_id, BareMetalNetwork.staticSetId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_id)));
+			page.persistForClass(BareMetalNetwork.VAR_name, BareMetalNetwork.staticSetName(siteRequest2, (String)result.get(BareMetalNetwork.VAR_name)));
+			page.persistForClass(BareMetalNetwork.VAR_created, BareMetalNetwork.staticSetCreated(siteRequest2, (String)result.get(BareMetalNetwork.VAR_created)));
+			page.persistForClass(BareMetalNetwork.VAR_description, BareMetalNetwork.staticSetDescription(siteRequest2, (String)result.get(BareMetalNetwork.VAR_description)));
+			page.persistForClass(BareMetalNetwork.VAR_availabilityZoneHints, BareMetalNetwork.staticSetAvailabilityZoneHints(siteRequest2, (String)result.get(BareMetalNetwork.VAR_availabilityZoneHints)));
+			page.persistForClass(BareMetalNetwork.VAR_archived, BareMetalNetwork.staticSetArchived(siteRequest2, (String)result.get(BareMetalNetwork.VAR_archived)));
+			page.persistForClass(BareMetalNetwork.VAR_availabilityZones, BareMetalNetwork.staticSetAvailabilityZones(siteRequest2, (String)result.get(BareMetalNetwork.VAR_availabilityZones)));
+			page.persistForClass(BareMetalNetwork.VAR_createdAt, BareMetalNetwork.staticSetCreatedAt(siteRequest2, (String)result.get(BareMetalNetwork.VAR_createdAt)));
+			page.persistForClass(BareMetalNetwork.VAR_dnsDomain, BareMetalNetwork.staticSetDnsDomain(siteRequest2, (String)result.get(BareMetalNetwork.VAR_dnsDomain)));
+			page.persistForClass(BareMetalNetwork.VAR_mtu, BareMetalNetwork.staticSetMtu(siteRequest2, (String)result.get(BareMetalNetwork.VAR_mtu)));
+			page.persistForClass(BareMetalNetwork.VAR_sessionId, BareMetalNetwork.staticSetSessionId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_sessionId)));
+			page.persistForClass(BareMetalNetwork.VAR_projectId, BareMetalNetwork.staticSetProjectId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_projectId)));
+			page.persistForClass(BareMetalNetwork.VAR_userKey, BareMetalNetwork.staticSetUserKey(siteRequest2, (String)result.get(BareMetalNetwork.VAR_userKey)));
+			page.persistForClass(BareMetalNetwork.VAR_providerNetworkType, BareMetalNetwork.staticSetProviderNetworkType(siteRequest2, (String)result.get(BareMetalNetwork.VAR_providerNetworkType)));
+			page.persistForClass(BareMetalNetwork.VAR_providerPhysicalNetwork, BareMetalNetwork.staticSetProviderPhysicalNetwork(siteRequest2, (String)result.get(BareMetalNetwork.VAR_providerPhysicalNetwork)));
+			page.persistForClass(BareMetalNetwork.VAR_providerSegmentationId, BareMetalNetwork.staticSetProviderSegmentationId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_providerSegmentationId)));
+			page.persistForClass(BareMetalNetwork.VAR_objectTitle, BareMetalNetwork.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalNetwork.VAR_objectTitle)));
+			page.persistForClass(BareMetalNetwork.VAR_qosPolicyId, BareMetalNetwork.staticSetQosPolicyId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_qosPolicyId)));
+			page.persistForClass(BareMetalNetwork.VAR_displayPage, BareMetalNetwork.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalNetwork.VAR_displayPage)));
+			page.persistForClass(BareMetalNetwork.VAR_revisionNumber, BareMetalNetwork.staticSetRevisionNumber(siteRequest2, (String)result.get(BareMetalNetwork.VAR_revisionNumber)));
+			page.persistForClass(BareMetalNetwork.VAR_status, BareMetalNetwork.staticSetStatus(siteRequest2, (String)result.get(BareMetalNetwork.VAR_status)));
+			page.persistForClass(BareMetalNetwork.VAR_subnetIds, BareMetalNetwork.staticSetSubnetIds(siteRequest2, (String)result.get(BareMetalNetwork.VAR_subnetIds)));
+			page.persistForClass(BareMetalNetwork.VAR_tags, BareMetalNetwork.staticSetTags(siteRequest2, (String)result.get(BareMetalNetwork.VAR_tags)));
+			page.persistForClass(BareMetalNetwork.VAR_tenantId, BareMetalNetwork.staticSetTenantId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_tenantId)));
+			page.persistForClass(BareMetalNetwork.VAR_updatedAt, BareMetalNetwork.staticSetUpdatedAt(siteRequest2, (String)result.get(BareMetalNetwork.VAR_updatedAt)));
+			page.persistForClass(BareMetalNetwork.VAR_isAdminStateUp, BareMetalNetwork.staticSetIsAdminStateUp(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isAdminStateUp)));
+			page.persistForClass(BareMetalNetwork.VAR_isDefault, BareMetalNetwork.staticSetIsDefault(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isDefault)));
+			page.persistForClass(BareMetalNetwork.VAR_isPortSecurityEnabled, BareMetalNetwork.staticSetIsPortSecurityEnabled(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isPortSecurityEnabled)));
+			page.persistForClass(BareMetalNetwork.VAR_isRouterExternal, BareMetalNetwork.staticSetIsRouterExternal(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isRouterExternal)));
+			page.persistForClass(BareMetalNetwork.VAR_isShared, BareMetalNetwork.staticSetIsShared(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isShared)));
+			page.persistForClass(BareMetalNetwork.VAR_isVlanQueing, BareMetalNetwork.staticSetIsVlanQueing(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isVlanQueing)));
+			page.persistForClass(BareMetalNetwork.VAR_isVlanTransparent, BareMetalNetwork.staticSetIsVlanTransparent(siteRequest2, (String)result.get(BareMetalNetwork.VAR_isVlanTransparent)));
+			page.persistForClass(BareMetalNetwork.VAR_l2Adjacency, BareMetalNetwork.staticSetL2Adjacency(siteRequest2, (String)result.get(BareMetalNetwork.VAR_l2Adjacency)));
+			page.persistForClass(BareMetalNetwork.VAR_locationCloud, BareMetalNetwork.staticSetLocationCloud(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationCloud)));
+			page.persistForClass(BareMetalNetwork.VAR_locationProjectDomainId, BareMetalNetwork.staticSetLocationProjectDomainId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationProjectDomainId)));
+			page.persistForClass(BareMetalNetwork.VAR_locationProjectDomainName, BareMetalNetwork.staticSetLocationProjectDomainName(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationProjectDomainName)));
+			page.persistForClass(BareMetalNetwork.VAR_locationProjectId, BareMetalNetwork.staticSetLocationProjectId(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationProjectId)));
+			page.persistForClass(BareMetalNetwork.VAR_locationProjectName, BareMetalNetwork.staticSetLocationProjectName(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationProjectName)));
+			page.persistForClass(BareMetalNetwork.VAR_locationRegionName, BareMetalNetwork.staticSetLocationRegionName(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationRegionName)));
+			page.persistForClass(BareMetalNetwork.VAR_locationZone, BareMetalNetwork.staticSetLocationZone(siteRequest2, (String)result.get(BareMetalNetwork.VAR_locationZone)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

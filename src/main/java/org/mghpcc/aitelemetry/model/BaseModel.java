@@ -207,8 +207,8 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * DocValues: true
 	 * HtmColumn: 99
 	 * Facet: true
-	 * DisplayName: edit
-	 * Description: Edit this
+	 * DisplayName: manage
+	 * Description: Manage this
 	 * Link: true
 	 * Icon: <i class="fa-duotone fa-regular fa-pen-to-square"></i>
 	 * VarUrlEditPage: true

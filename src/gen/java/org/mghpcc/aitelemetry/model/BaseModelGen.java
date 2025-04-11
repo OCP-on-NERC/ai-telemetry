@@ -279,6 +279,10 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public void setCreated(String o) {
 		this.created = BaseModel.staticSetCreated(siteRequest_, o);
 	}
+	@JsonIgnore
+	public void setCreated(Date o) {
+		this.created = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+	}
 	public static ZonedDateTime staticSetCreated(SiteRequest siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
@@ -288,10 +292,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
 			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-	}
-	@JsonIgnore
-	public void setCreated(Date o) {
-		this.created = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseModel createdInit() {
 		Wrap<ZonedDateTime> createdWrap = new Wrap<ZonedDateTime>().var("created");
@@ -359,6 +359,10 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public void setModified(String o) {
 		this.modified = BaseModel.staticSetModified(siteRequest_, o);
 	}
+	@JsonIgnore
+	public void setModified(Date o) {
+		this.modified = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+	}
 	public static ZonedDateTime staticSetModified(SiteRequest siteRequest_, String o) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
@@ -368,10 +372,6 @@ public abstract class BaseModelGen<DEV> extends Object {
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
 			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
-	}
-	@JsonIgnore
-	public void setModified(Date o) {
-		this.modified = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseModel modifiedInit() {
 		Wrap<ZonedDateTime> modifiedWrap = new Wrap<ZonedDateTime>().var("modified");
@@ -2214,7 +2214,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_saves = "";
 	public static final String DISPLAY_NAME_objectTitle = "title";
 	public static final String DISPLAY_NAME_displayPage = "display page";
-	public static final String DISPLAY_NAME_editPage = "edit";
+	public static final String DISPLAY_NAME_editPage = "manage";
 	public static final String DISPLAY_NAME_userPage = "user";
 	public static final String DISPLAY_NAME_download = "download";
 	public static final String DISPLAY_NAME_objectSuggest = "autosuggest";
@@ -2334,7 +2334,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 		case VAR_displayPage:
 			return "Visit this landing page. ";
 		case VAR_editPage:
-			return "Edit this";
+			return "Manage this";
 		case VAR_userPage:
 			return "User page";
 		case VAR_download:

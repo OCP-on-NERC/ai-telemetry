@@ -46,6 +46,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * Persist: true
 	 * Description: The unique user ID from the SSO server
 	 * VarId: true
+	 * Unique: true
 	 */
 	protected void _userId(Wrap<String> c) {
 	}

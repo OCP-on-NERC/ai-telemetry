@@ -174,7 +174,6 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 			ZonedDateTime dateTimeStarted = ZonedDateTime.now();
 			String accessToken = config.getString(ConfigKeys.FULFILLMENT_API_OPENSHIFT_TOKEN);
 			queryClusterTemplates(accessToken).onSuccess(templateResponse -> {
-				LOG.info(templateResponse.encodePrettily());
 				List<JsonObject> templates = templateResponse.getJsonArray("items").stream().map(template -> (JsonObject)template).collect(Collectors.toList());
 				List<Future<?>> futures = new ArrayList<>();
 				for(Integer i = 0; i < templates.size(); i++) {
