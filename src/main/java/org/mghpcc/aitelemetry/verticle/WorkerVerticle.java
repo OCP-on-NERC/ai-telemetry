@@ -63,6 +63,9 @@ import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSGenApiServi
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSGenApiService;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
@@ -589,6 +592,8 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 			initializeApiService(apiClusterRequest);
 			BareMetalNetworkEnUSApiServiceImpl apiBareMetalNetwork = new BareMetalNetworkEnUSApiServiceImpl();
 			initializeApiService(apiBareMetalNetwork);
+			BareMetalNodeEnUSApiServiceImpl apiBareMetalNode = new BareMetalNodeEnUSApiServiceImpl();
+			initializeApiService(apiBareMetalNode);
 
 			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "userPage", "download").onSuccess(q1 -> {
 				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "userPage", "download").onSuccess(q2 -> {
@@ -599,8 +604,10 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 									apiClusterTemplate.importTimer(Paths.get(templatePath, ""), vertx, siteRequest, ClusterTemplate.CLASS_CANONICAL_NAME, ClusterTemplate.CLASS_SIMPLE_NAME, ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate, "title", "userPage", "download").onSuccess(q7 -> {
 										apiClusterRequest.importTimer(Paths.get(templatePath, "/en-us/user/cluster-request"), vertx, siteRequest, ClusterRequest.CLASS_CANONICAL_NAME, ClusterRequest.CLASS_SIMPLE_NAME, ClusterRequest.CLASS_API_ADDRESS_ClusterRequest, "name", "userPage", "download").onSuccess(q8 -> {
 											apiBareMetalNetwork.importTimer(Paths.get(templatePath, ""), vertx, siteRequest, BareMetalNetwork.CLASS_CANONICAL_NAME, BareMetalNetwork.CLASS_SIMPLE_NAME, BareMetalNetwork.CLASS_API_ADDRESS_BareMetalNetwork, "id", "userPage", "download").onSuccess(q9 -> {
-												LOG.info("data import complete");
-												promise.complete();
+												apiBareMetalNode.importTimer(Paths.get(templatePath, ""), vertx, siteRequest, BareMetalNode.CLASS_CANONICAL_NAME, BareMetalNode.CLASS_SIMPLE_NAME, BareMetalNode.CLASS_API_ADDRESS_BareMetalNode, "nodeId", "userPage", "download").onSuccess(q10 -> {
+													LOG.info("data import complete");
+													promise.complete();
+												}).onFailure(ex -> promise.fail(ex));
 											}).onFailure(ex -> promise.fail(ex));
 										}).onFailure(ex -> promise.fail(ex));
 									}).onFailure(ex -> promise.fail(ex));

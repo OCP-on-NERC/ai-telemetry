@@ -140,7 +140,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -308,7 +308,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -769,7 +769,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -793,7 +793,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
-						params.put("cookie", new JsonObject());
+						params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 						params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 						params.put("form", new JsonObject());
 						JsonObject query = new JsonObject();
@@ -1237,7 +1237,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1401,7 +1401,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {

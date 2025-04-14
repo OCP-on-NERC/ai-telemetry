@@ -1,10 +1,9 @@
-package org.mghpcc.aitelemetry.model.gpuslice;
+package org.mghpcc.aitelemetry.model.baremetalnode;
 
-import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
+import io.vertx.core.json.JsonArray;
 import java.lang.String;
-import java.util.List;
-import io.vertx.pgclient.data.Point;
-import io.vertx.core.json.JsonObject;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -22,12 +21,13 @@ import java.time.temporal.ChronoUnit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Locale;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
-import io.vertx.core.json.JsonArray;
 import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -49,37 +49,37 @@ import java.time.ZoneId;
  * Translate: false
  * Generated: true
  **/
-public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
+public class BareMetalNodeGenPage extends BareMetalNodeGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
    * Ignore: true
    **/
-  protected void _searchListGpuSlice_(Wrap<SearchList<GpuSlice>> w) {
+  protected void _searchListBareMetalNode_(Wrap<SearchList<BareMetalNode>> w) {
   }
 
   @Override
   protected void _pageResponse(Wrap<String> w) {
-    if(searchListGpuSlice_ != null)
-      w.o(JsonObject.mapFrom(searchListGpuSlice_.getResponse()).toString());
+    if(searchListBareMetalNode_ != null)
+      w.o(JsonObject.mapFrom(searchListBareMetalNode_.getResponse()).toString());
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListGpuSlice_.getResponse().getStats());
+    w.o(searchListBareMetalNode_.getResponse().getStats());
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListGpuSlice_.getResponse().getFacetCounts());
+    w.o(searchListBareMetalNode_.getResponse().getFacetCounts());
   }
 
   @Override
   protected void _pagination(JsonObject pagination) {
     JsonArray pages = new JsonArray();
-    Long start = searchListGpuSlice_.getStart().longValue();
-    Long rows = searchListGpuSlice_.getRows().longValue();
-    Long foundNum = searchListGpuSlice_.getResponse().getResponse().getNumFound().longValue();
+    Long start = searchListBareMetalNode_.getStart().longValue();
+    Long rows = searchListBareMetalNode_.getRows().longValue();
+    Long foundNum = searchListBareMetalNode_.getResponse().getResponse().getNumFound().longValue();
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -121,12 +121,12 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _varsQ(JsonObject vars) {
-    GpuSlice.varsQForClass().forEach(var -> {
+    BareMetalNode.varsQForClass().forEach(var -> {
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(GpuSlice.displayNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(GpuSlice.classSimpleNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", Optional.ofNullable(searchListGpuSlice_.getRequest().getQuery()).filter(fq -> fq.startsWith(GpuSlice.varIndexedGpuSlice(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(BareMetalNode.displayNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(BareMetalNode.classSimpleNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", Optional.ofNullable(searchListBareMetalNode_.getRequest().getQuery()).filter(fq -> fq.startsWith(BareMetalNode.varIndexedBareMetalNode(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -139,17 +139,17 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
     varsFqCount = 0;
-    for(String var : GpuSlice.varsFqForClass()) {
-      String varIndexed = GpuSlice.varIndexedGpuSlice(var);
-      String varStored = GpuSlice.varStoredGpuSlice(var);
+    for(String var : BareMetalNode.varsFqForClass()) {
+      String varIndexed = BareMetalNode.varIndexedBareMetalNode(var);
+      String varStored = BareMetalNode.varStoredBareMetalNode(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
       json.put("varStored", varStored);
       json.put("varIndexed", varIndexed);
       String type = StringUtils.substringAfterLast(varIndexed, "_");
-      json.put("displayName", Optional.ofNullable(GpuSlice.displayNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(GpuSlice.classSimpleNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      Object v = searchListGpuSlice_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(GpuSlice.varIndexedGpuSlice(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      json.put("displayName", Optional.ofNullable(BareMetalNode.displayNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(BareMetalNode.classSimpleNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      Object v = searchListBareMetalNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(BareMetalNode.varIndexedBareMetalNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
       if(v != null) {
         json.put("val", v);
         varsFqCount++;
@@ -215,13 +215,13 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _varsRange(JsonObject vars) {
-    GpuSlice.varsRangeForClass().forEach(var -> {
-      String varIndexed = GpuSlice.varIndexedGpuSlice(var);
+    BareMetalNode.varsRangeForClass().forEach(var -> {
+      String varIndexed = BareMetalNode.varIndexedBareMetalNode(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(GpuSlice.displayNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(GpuSlice.classSimpleNameGpuSlice(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListGpuSlice_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(GpuSlice.varIndexedGpuSlice(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(BareMetalNode.displayNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(BareMetalNode.classSimpleNameBareMetalNode(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", searchListBareMetalNode_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(BareMetalNode.varIndexedBareMetalNode(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -232,7 +232,7 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListGpuSlice_.getResponse().getResponse().getNumFound().longValue();
+    Long num = searchListBareMetalNode_.getResponse().getResponse().getNumFound().longValue();
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
@@ -260,28 +260,28 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
     }
     query.put("q", q);
 
-    Long rows1 = Optional.ofNullable(searchListGpuSlice_).map(l -> l.getRows()).orElse(10L);
-    Long start1 = Optional.ofNullable(searchListGpuSlice_).map(l -> l.getStart()).orElse(1L);
+    Long rows1 = Optional.ofNullable(searchListBareMetalNode_).map(l -> l.getRows()).orElse(10L);
+    Long start1 = Optional.ofNullable(searchListBareMetalNode_).map(l -> l.getStart()).orElse(1L);
     Long start2 = start1 - rows1;
     Long start3 = start1 + rows1;
     Long rows2 = rows1 / 2;
     Long rows3 = rows1 * 2;
     start2 = start2 < 0 ? 0 : start2;
     JsonObject fqs = new JsonObject();
-    for(String fq : Optional.ofNullable(searchListGpuSlice_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
+    for(String fq : Optional.ofNullable(searchListBareMetalNode_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
       if(!StringUtils.contains(fq, "(")) {
-        String fq1 = GpuSlice.searchVarGpuSlice(StringUtils.substringBefore(fq, ":"));
+        String fq1 = BareMetalNode.searchVarBareMetalNode(StringUtils.substringBefore(fq, ":"));
         String fq2 = StringUtils.substringAfter(fq, ":");
         if(!StringUtils.startsWithAny(fq, "classCanonicalNames_", "archived_", "sessionId", "userKeys"))
-          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", GpuSlice.displayNameForClass(fq1)));
+          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", BareMetalNode.displayNameForClass(fq1)));
         }
       }
     query.put("fq", fqs);
 
     JsonArray sorts = new JsonArray();
-    for(String sort : Optional.ofNullable(searchListGpuSlice_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
-      String sort1 = GpuSlice.searchVarGpuSlice(StringUtils.substringBefore(sort, " "));
-      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", GpuSlice.displayNameForClass(sort1)));
+    for(String sort : Optional.ofNullable(searchListBareMetalNode_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
+      String sort1 = BareMetalNode.searchVarBareMetalNode(StringUtils.substringBefore(sort, " "));
+      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", BareMetalNode.displayNameForClass(sort1)));
     }
     query.put("sort", sorts);
   }
@@ -315,31 +315,31 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
   @Override
   protected void _rows(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("rows", null) != null)
-      w.o(searchListGpuSlice_.getRows());
+      w.o(searchListBareMetalNode_.getRows());
   }
 
   @Override
   protected void _start(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("start", null) != null)
-      w.o(searchListGpuSlice_.getStart());
+      w.o(searchListBareMetalNode_.getStart());
   }
 
   @Override
   protected void _rangeGap(Wrap<String> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.gap", null) != null)
-      w.o(Optional.ofNullable(searchListGpuSlice_.getFacetRangeGap()).orElse(null));
+      w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetRangeGap()).orElse(null));
   }
 
   @Override
   protected void _rangeEnd(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.end", null) != null)
-      w.o(Optional.ofNullable(searchListGpuSlice_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
   protected void _rangeStart(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.start", null) != null)
-      w.o(Optional.ofNullable(searchListGpuSlice_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
@@ -359,33 +359,31 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeVar(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListGpuSlice_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return GpuSlice.searchVarGpuSlice(v); }).orElse("created"));
+    w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return BareMetalNode.searchVarBareMetalNode(v); }).orElse("created"));
   }
 
   @Override
   protected void _defaultFacetSort(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListGpuSlice_.getFacetSort()).orElse("index"));
+    w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetSort()).orElse("index"));
   }
 
   @Override
   protected void _defaultFacetLimit(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListGpuSlice_.getFacetLimit()).orElse(1));
+    w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetLimit()).orElse(1));
   }
 
   @Override
   protected void _defaultFacetMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListGpuSlice_.getFacetMinCount()).orElse(1));
+    w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetMinCount()).orElse(1));
   }
 
   @Override
   protected void _defaultPivotMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListGpuSlice_.getFacetPivotMinCount()).orElse(0));
+    w.o(Optional.ofNullable(searchListBareMetalNode_.getFacetPivotMinCount()).orElse(0));
   }
 
   @Override
   protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
-    Point point = GpuSlice.staticSetLocation(siteRequest_, Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_LOCATION)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION)));
-    w.o(new JsonObject().put("type", "Point").put("coordinates", new JsonArray().add(Double.valueOf(point.getX())).add(Double.valueOf(point.getY()))));
   }
 
   @Override
@@ -397,10 +395,10 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultSortVars(List<String> l) {
-    if(!searchListGpuSlice_.getDefaultSort()) {
-      Optional.ofNullable(searchListGpuSlice_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+    if(!searchListBareMetalNode_.getDefaultSort()) {
+      Optional.ofNullable(searchListBareMetalNode_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
         String varSortParts[] = varSortStr.split(" ");
-        String varSort = GpuSlice.searchVarGpuSlice(varSortParts[0]);
+        String varSort = BareMetalNode.searchVarBareMetalNode(varSortParts[0]);
         String varSortDirection = varSortParts[1];
         l.add(String.format("%s %s", varSort, varSortDirection));
       });
@@ -409,14 +407,14 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultFieldListVars(List<String> l) {
-    Optional.ofNullable(searchListGpuSlice_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
+    Optional.ofNullable(searchListBareMetalNode_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
       if(StringUtils.contains(varStored2, "}"))
         varStored2 = StringUtils.substringAfterLast(varStored2, "}");
       String[] parts = varStored2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = GpuSlice.searchVarGpuSlice(part);
+          String var = BareMetalNode.searchVarBareMetalNode(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -426,14 +424,14 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultStatsVars(List<String> l) {
-    Optional.ofNullable(searchListGpuSlice_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
+    Optional.ofNullable(searchListBareMetalNode_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
       String varIndexed2 = varIndexed;
       if(StringUtils.contains(varIndexed2, "}"))
         varIndexed2 = StringUtils.substringAfterLast(varIndexed2, "}");
       String[] parts = varIndexed2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = GpuSlice.searchVarGpuSlice(part);
+          String var = BareMetalNode.searchVarBareMetalNode(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -443,14 +441,14 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultPivotVars(List<String> l) {
-    Optional.ofNullable(searchListGpuSlice_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
+    Optional.ofNullable(searchListBareMetalNode_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
       String facetPivot2 = facetPivot;
       if(StringUtils.contains(facetPivot2, "}"))
         facetPivot2 = StringUtils.substringAfterLast(facetPivot2, "}");
       String[] parts = facetPivot2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = GpuSlice.searchVarGpuSlice(part);
+          String var = BareMetalNode.searchVarBareMetalNode(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -461,20 +459,20 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
   /**
    * {@inheritDoc}
    **/
-  protected void _listGpuSlice(JsonArray l) {
-    Optional.ofNullable(searchListGpuSlice_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
+  protected void _listBareMetalNode(JsonArray l) {
+    Optional.ofNullable(searchListBareMetalNode_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
   protected void _resultCount(Wrap<Integer> w) {
-    w.o(searchListGpuSlice_ == null ? 0 : searchListGpuSlice_.size());
+    w.o(searchListBareMetalNode_ == null ? 0 : searchListBareMetalNode_.size());
   }
 
   /**
    * Initialized: false
   **/
-  protected void _result(Wrap<GpuSlice> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("sliceName")).orElse(null) != null)
-      w.o(searchListGpuSlice_.get(0));
+  protected void _result(Wrap<BareMetalNode> w) {
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("nodeId")).orElse(null) != null)
+      w.o(searchListBareMetalNode_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
@@ -494,7 +492,7 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _classSimpleName(Wrap<String> w) {
-    w.o("GpuSlice");
+    w.o("BareMetalNode");
   }
 
   @Override
@@ -502,21 +500,21 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("GPU slices");
-    else if(searchListGpuSlice_ == null || resultCount == 0)
-      c.o("no GPU slice found");
+      c.o("bare metal nodes");
+    else if(searchListBareMetalNode_ == null || resultCount == 0)
+      c.o("no bare metal node found");
     else
-      c.o("GPU slices");
+      c.o("bare metal nodes");
   }
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/en-us/search/gpu-slice");
+    c.o("/en-us/search/bare-metal-node");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/en-us/api/gpu-slice");
+    c.o("/en-us/api/bare-metal-node");
   }
 
   @Override
@@ -526,20 +524,20 @@ public class GpuSliceGenPage extends GpuSliceGenPageGen<PageLayout> {
 
   @Override
   protected void _pageDescription(Wrap<String> c) {
-      c.o("A GPU slice inside a GPU");
+      c.o("An OpenStack bare metal node");
   }
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/en-us/search/gpu-slice-999.png");
+      c.o("/png/en-us/search/bare-metal-node-999.png");
   }
 
   @Override
   protected void _classIcon(Wrap<String> c) {
-      c.o("<i class=\"fa-regular fa-cake-slice\"></i>");
+      c.o("<i class=\"fa-duotone fa-regular fa-hexagon-nodes\"></i>");
   }
 
-  protected void _pageUriGpuSlice(Wrap<String> c) {
-      c.o("/en-us/search/gpu-slice");
+  protected void _pageUriBareMetalNode(Wrap<String> c) {
+      c.o("/en-us/search/bare-metal-node");
   }
 }

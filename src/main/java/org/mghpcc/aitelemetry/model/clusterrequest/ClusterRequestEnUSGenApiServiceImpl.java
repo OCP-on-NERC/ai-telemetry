@@ -144,7 +144,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -311,7 +311,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -417,7 +417,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -882,7 +882,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1318,7 +1318,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1694,7 +1694,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1986,7 +1986,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2150,7 +2150,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2314,7 +2314,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2479,7 +2479,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(user -> user.principal().getString("access_token")).orElse("")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {

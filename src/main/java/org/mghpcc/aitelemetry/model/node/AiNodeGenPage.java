@@ -139,7 +139,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
   @Override
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
-    Integer varsFqCount = 0;
+    varsFqCount = 0;
     for(String var : AiNode.varsFqForClass()) {
       String varIndexed = AiNode.varIndexedAiNode(var);
       String varStored = AiNode.varStoredAiNode(var);

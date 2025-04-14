@@ -118,7 +118,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void searchAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -139,7 +140,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -176,6 +177,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200SearchAiNode(listAiNode).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -307,7 +309,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void getAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -328,7 +331,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -365,6 +368,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200GETAiNode(listAiNode).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -435,7 +439,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void patchAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -456,7 +461,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -493,6 +498,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -565,6 +571,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
 		listAiNode.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
@@ -604,7 +611,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void patchAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -940,7 +948,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void postAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -961,7 +970,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -998,6 +1007,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
@@ -1008,7 +1018,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
-						params.put("cookie", new JsonObject());
+						params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 						params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 						params.put("form", new JsonObject());
 						JsonObject query = new JsonObject();
@@ -1067,7 +1077,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void postAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
@@ -1449,7 +1460,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void deleteAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deleteAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -1470,7 +1482,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1507,6 +1519,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -1578,6 +1591,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
 		listAiNode.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
@@ -1617,7 +1631,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void deleteAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -1807,7 +1822,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void putimportAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("putimportAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -1828,7 +1844,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1865,6 +1881,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
 						apiRequest.setRows(Long.valueOf(jsonArray.size()));
@@ -1932,7 +1949,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					JsonObject params = new JsonObject();
 					params.put("body", obj);
 					params.put("path", new JsonObject());
-					params.put("cookie", new JsonObject());
+					params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 					params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 					params.put("form", new JsonObject());
 					JsonObject query = new JsonObject();
@@ -1971,7 +1988,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void putimportAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
@@ -2122,7 +2140,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	public void searchpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
 			serviceRequest.setUser(user.principal());
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2143,7 +2162,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2180,6 +2199,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200SearchPageAiNode(listAiNode).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2332,7 +2352,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void editpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2353,7 +2374,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2390,6 +2411,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200EditPageAiNode(listAiNode).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2518,7 +2540,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void userpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2539,7 +2562,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2576,6 +2599,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
 							response200UserPageAiNode(listAiNode).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2705,7 +2729,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	@Override
 	public void deletefilterAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deletefilterAiNode started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2726,7 +2751,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2763,6 +2788,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -2834,6 +2860,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
 		listAiNode.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
+			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
@@ -2873,7 +2900,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	@Override
 	public void deletefilterAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -3537,7 +3565,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures).onSuccess(b -> {
 					JsonObject params = new JsonObject();
 					params.put("body", new JsonObject());
-					params.put("cookie", new JsonObject());
+					params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 					params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 					params.put("form", new JsonObject());
 					params.put("path", new JsonObject());

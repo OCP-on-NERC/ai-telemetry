@@ -726,6 +726,729 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageBareMetalNetworkResponse'
+  /en-us/api/bare-metal-node:
+    get:
+      operationId: searchBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchBareMetalNodeResponse'
+    patch:
+      operationId: patchBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PATCHBareMetalNodeRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PATCHBareMetalNodeResponse'
+    post:
+      operationId: postBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSTBareMetalNodeRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/POSTBareMetalNodeResponse'
+    delete:
+      operationId: deletefilterBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterBareMetalNodeResponse'
+  /en-us/api/bare-metal-node-import:
+    put:
+      operationId: putimportBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PUTImportBareMetalNodeRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PUTImportBareMetalNodeResponse'
+  /en-us/api/bare-metal-node/{nodeId}:
+    get:
+      operationId: getBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GETBareMetalNodeResponse'
+    delete:
+      operationId: deleteBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEBareMetalNodeResponse'
+  /en-us/edit/bare-metal-node/{nodeId}:
+    get:
+      operationId: editpageBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: nodeId
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageBareMetalNodeResponse'
+  /en-us/search/bare-metal-node:
+    get:
+      operationId: searchpageBareMetalNode
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalNode
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal nodes
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageBareMetalNodeResponse'
   /en-us/api/ai-cluster:
     get:
       operationId: searchAiCluster
@@ -6306,10 +7029,6 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -7119,6 +7838,66 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageBareMetalNetworkResponse'
+    SearchBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchBareMetalNodeResponse'
+    PATCHBareMetalNodeRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalNodeRequest'
+    PATCHBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalNodeResponse'
+    POSTBareMetalNodeRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalNodeRequest'
+    POSTBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalNodeResponse'
+    DELETEFilterBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterBareMetalNodeResponse'
+    PUTImportBareMetalNodeRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PUTImportBareMetalNodeRequest'
+    PUTImportBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PUTImportBareMetalNodeResponse'
+    GETBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/GETBareMetalNodeResponse'
+    DELETEBareMetalNodeResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEBareMetalNodeResponse'
+    EditPageBareMetalNodeResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageBareMetalNodeResponse'
+    SearchPageBareMetalNodeResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageBareMetalNodeResponse'
     SearchAiClusterResponse:
       content:
         application/json; charset=utf-8:
@@ -8935,6 +9714,563 @@ components:
       allOf:
         - type: string
     SearchPageBareMetalNetworkResponse:
+      allOf:
+        - type: string
+    SearchBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            startNum:
+              type: integer
+              minimum: 0
+            foundNum:
+              type: integer
+              minimum: 0
+            returnedNum:
+              type: integer
+              minimum: 0
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaseInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  networkInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeId:
+                    type: string
+                  nodeIsMaintenance:
+                    type: string
+                  nodeLinks:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeName:
+                    type: string
+                  nodePowerState:
+                    type: string
+                  nodeProvisionState:
+                    type: string
+    PATCHBareMetalNodeRequest:
+      allOf:
+        - type: object
+          properties:
+            setLeaseInfo:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeLeaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllLeaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNetworkInfo:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeNetworkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllNetworkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
+            setNodeIsMaintenance:
+              type: string
+              nullable: true
+            removeNodeIsMaintenance:
+              type: string
+            removeAllNodeIsMaintenance:
+              type: string
+            setNodeLinks:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeNodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllNodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
+              type: string
+            setNodePowerState:
+              type: string
+              nullable: true
+            removeNodePowerState:
+              type: string
+            removeAllNodePowerState:
+              type: string
+            setNodeProvisionState:
+              type: string
+              nullable: true
+            removeNodeProvisionState:
+              type: string
+            removeAllNodeProvisionState:
+              type: string
+    PATCHBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            setLeaseInfo:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeLeaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllLeaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNetworkInfo:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeNetworkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllNetworkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
+            setNodeIsMaintenance:
+              type: string
+              nullable: true
+            removeNodeIsMaintenance:
+              type: string
+            removeAllNodeIsMaintenance:
+              type: string
+            setNodeLinks:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeNodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllNodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setNodeName:
+              type: string
+              nullable: true
+            removeNodeName:
+              type: string
+            removeAllNodeName:
+              type: string
+            setNodePowerState:
+              type: string
+              nullable: true
+            removeNodePowerState:
+              type: string
+            removeAllNodePowerState:
+              type: string
+            setNodeProvisionState:
+              type: string
+              nullable: true
+            removeNodeProvisionState:
+              type: string
+            removeAllNodeProvisionState:
+              type: string
+    POSTBareMetalNodeRequest:
+      allOf:
+        - type: object
+          properties:
+            leaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            networkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeId:
+              type: string
+            nodeIsMaintenance:
+              type: string
+            nodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeName:
+              type: string
+            nodePowerState:
+              type: string
+            nodeProvisionState:
+              type: string
+    POSTBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            leaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            networkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeId:
+              type: string
+            nodeIsMaintenance:
+              type: string
+            nodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeName:
+              type: string
+            nodePowerState:
+              type: string
+            nodeProvisionState:
+              type: string
+    DELETEFilterBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            leaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            networkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeId:
+              type: string
+            nodeIsMaintenance:
+              type: string
+            nodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeName:
+              type: string
+            nodePowerState:
+              type: string
+            nodeProvisionState:
+              type: string
+    PUTImportBareMetalNodeRequest:
+      allOf:
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaseInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  networkInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeId:
+                    type: string
+                  nodeIsMaintenance:
+                    type: string
+                  nodeLinks:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeName:
+                    type: string
+                  nodePowerState:
+                    type: string
+                  nodeProvisionState:
+                    type: string
+    PUTImportBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+                  leaseInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  networkInfo:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeId:
+                    type: string
+                  nodeIsMaintenance:
+                    type: string
+                  nodeLinks:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  nodeName:
+                    type: string
+                  nodePowerState:
+                    type: string
+                  nodeProvisionState:
+                    type: string
+    GETBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            leaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            networkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeId:
+              type: string
+            nodeIsMaintenance:
+              type: string
+            nodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeName:
+              type: string
+            nodePowerState:
+              type: string
+            nodeProvisionState:
+              type: string
+    DELETEBareMetalNodeResponse:
+      allOf:
+        - type: object
+          properties:
+            leaseInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            networkInfo:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeId:
+              type: string
+            nodeIsMaintenance:
+              type: string
+            nodeLinks:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            nodeName:
+              type: string
+            nodePowerState:
+              type: string
+            nodeProvisionState:
+              type: string
+    EditPageBareMetalNodeResponse:
+      allOf:
+        - type: string
+    SearchPageBareMetalNodeResponse:
       allOf:
         - type: string
     SearchAiClusterResponse:

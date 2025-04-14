@@ -118,7 +118,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void searchGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -139,7 +140,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -148,6 +149,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, false).onSuccess(listGpuDevice -> {
 							response200SearchGpuDevice(listGpuDevice).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -279,7 +281,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void getGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -300,7 +303,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -309,6 +312,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, false).onSuccess(listGpuDevice -> {
 							response200GETGpuDevice(listGpuDevice).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -379,7 +383,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void patchGpuDevice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchGpuDevice started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -400,7 +405,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -409,6 +414,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -521,7 +527,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void patchGpuDeviceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -865,7 +872,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void postGpuDevice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postGpuDevice started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -886,7 +894,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -895,6 +903,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
@@ -905,7 +914,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
-						params.put("cookie", new JsonObject());
+						params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 						params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 						params.put("form", new JsonObject());
 						JsonObject query = new JsonObject();
@@ -964,7 +973,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void postGpuDeviceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
@@ -1355,7 +1365,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void deleteGpuDevice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deleteGpuDevice started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -1376,7 +1387,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1385,6 +1396,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -1496,7 +1508,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void deleteGpuDeviceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -1686,7 +1699,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void putimportGpuDevice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("putimportGpuDevice started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -1707,7 +1721,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -1716,6 +1730,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
 						apiRequest.setRows(Long.valueOf(jsonArray.size()));
@@ -1783,7 +1798,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonObject params = new JsonObject();
 					params.put("body", obj);
 					params.put("path", new JsonObject());
-					params.put("cookie", new JsonObject());
+					params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 					params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 					params.put("form", new JsonObject());
 					JsonObject query = new JsonObject();
@@ -1822,7 +1837,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void putimportGpuDeviceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
@@ -1971,7 +1987,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void searchpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -1992,7 +2009,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2001,6 +2018,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, false).onSuccess(listGpuDevice -> {
 							response200SearchPageGpuDevice(listGpuDevice).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2129,7 +2147,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void editpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2150,7 +2169,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2159,6 +2178,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, false).onSuccess(listGpuDevice -> {
 							response200EditPageGpuDevice(listGpuDevice).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2287,7 +2307,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void userpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2308,7 +2329,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2317,6 +2338,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, false).onSuccess(listGpuDevice -> {
 							response200UserPageGpuDevice(listGpuDevice).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2446,7 +2468,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	@Override
 	public void deletefilterGpuDevice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deletefilterGpuDevice started. "));
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
@@ -2467,7 +2490,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
 					)
 					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", siteRequest.getUser().principal().getString("access_token")))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
 					.sendForm(form)
 					.expecting(HttpResponseExpectation.SC_OK)
 			.onComplete(authorizationDecisionResponse -> {
@@ -2476,6 +2499,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -2587,7 +2611,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void deletefilterGpuDeviceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
@@ -3251,7 +3276,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				CompositeFuture.all(futures).onSuccess(b -> {
 					JsonObject params = new JsonObject();
 					params.put("body", new JsonObject());
-					params.put("cookie", new JsonObject());
+					params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
 					params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
 					params.put("form", new JsonObject());
 					params.put("path", new JsonObject());

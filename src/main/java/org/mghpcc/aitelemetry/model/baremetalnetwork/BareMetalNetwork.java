@@ -28,24 +28,10 @@ import io.vertx.core.json.JsonArray;
  * AuthGroup:
  *   BareMetalNetworkReader:
  *     GET:
- *   BareMetalNetworkAdmin:
- *     GET:
- *     POST:
- *     PATCH:
- *     DELETE:
  *   Admin:
  *     GET:
- *     POST:
- *     PATCH:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     GET:
- *     POST:
- *     PATCH:
- *     DELETE:
- *     Admin:
- *     SuperAdmin:
  */
 public class BareMetalNetwork extends BareMetalNetworkGen<BaseModel> {
 
