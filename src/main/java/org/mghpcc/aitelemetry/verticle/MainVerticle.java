@@ -189,6 +189,9 @@ import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
 
 
 /**
@@ -361,6 +364,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			apiBareMetalNetwork.setVertx(vertx);
 			apiBareMetalNetwork.setConfig(config);
 			apiBareMetalNetwork.setWebClient(webClient);
+			BareMetalNodeEnUSApiServiceImpl apiBareMetalNode = new BareMetalNodeEnUSApiServiceImpl();
+			apiBareMetalNode.setVertx(vertx);
+			apiBareMetalNode.setConfig(config);
+			apiBareMetalNode.setWebClient(webClient);
 			apiSiteUser.createAuthorizationScopes().onSuccess(authToken -> {
 				apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q1 -> {
 					apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
@@ -391,12 +398,16 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 														.compose(q9 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 														.onSuccess(q9 -> {
 													apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkReader", new String[] { "GET" })
-															.compose(q10 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkAdmin", new String[] { "GET", "POST", "PATCH", "DELETE" }))
-															.compose(q10 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET", "POST", "PATCH", "DELETE", "Admin" }))
-															.compose(q10 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET", "POST", "PATCH", "DELETE", "Admin", "SuperAdmin" }))
+															.compose(q10 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+															.compose(q10 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
 															.onSuccess(q10 -> {
-														LOG.info("authorize data complete");
-														promise.complete();
+														apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "BareMetalNodeReader", new String[] { "GET" })
+																.compose(q11 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+																.compose(q11 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
+																.onSuccess(q11 -> {
+															LOG.info("authorize data complete");
+															promise.complete();
+														}).onFailure(ex -> promise.fail(ex));
 													}).onFailure(ex -> promise.fail(ex));
 												}).onFailure(ex -> promise.fail(ex));
 											}).onFailure(ex -> promise.fail(ex));
@@ -1400,7 +1411,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterRequest","BareMetalNetwork");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterRequest","BareMetalNetwork","BareMetalNode");
 			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
@@ -1443,6 +1454,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			BareMetalNetworkEnUSApiServiceImpl apiBareMetalNetwork = new BareMetalNetworkEnUSApiServiceImpl();
 			initializeApiService(apiBareMetalNetwork);
 			registerApiService(BareMetalNetworkEnUSGenApiService.class, apiBareMetalNetwork, BareMetalNetwork.getClassApiAddress());
+
+			BareMetalNodeEnUSApiServiceImpl apiBareMetalNode = new BareMetalNodeEnUSApiServiceImpl();
+			initializeApiService(apiBareMetalNode);
+			registerApiService(BareMetalNodeEnUSGenApiService.class, apiBareMetalNode, BareMetalNode.getClassApiAddress());
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");

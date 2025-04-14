@@ -1,4 +1,18 @@
-package org.mghpcc.aitelemetry.model.baremetalnetwork;
+package org.mghpcc.aitelemetry.model.baremetalnode;
+
+import io.vertx.ext.auth.authorization.AuthorizationProvider;
+import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.core.Vertx;
+import io.vertx.core.WorkerExecutor;
+import io.vertx.core.json.JsonObject;
+import io.vertx.sqlclient.Pool;
+import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
+import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.mqtt.MqttClient;
+import io.vertx.amqp.AmqpSender;
+import io.vertx.rabbitmq.RabbitMQClient;
+import com.hubspot.jinjava.Jinjava;
 
 import io.vertx.ext.auth.authorization.AuthorizationProvider;
 import io.vertx.ext.auth.oauth2.OAuth2Auth;
@@ -43,15 +57,15 @@ import com.hubspot.jinjava.Jinjava;
 /**
  * Translate: false
  **/
-public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenApiServiceImpl {
+public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServiceImpl {
 
-	protected Future<JsonArray> queryBareMetalNetworks() {
+	protected Future<JsonArray> queryBareMetalNodes() {
 		Promise<JsonArray> promise = Promise.promise();
 		try {
 			Integer esiApiPort = Integer.parseInt(config.getString(ConfigKeys.ESI_API_PORT));
 			String esiApiHostName = config.getString(ConfigKeys.ESI_API_HOST_NAME);
 			Boolean esiApiSsl = Boolean.parseBoolean(config.getString(ConfigKeys.ESI_API_SSL));
-			String esiApiUri = String.format("/api/v1/networks/list");
+			String esiApiUri = String.format("/api/v1/nodes/list");
 
 			webClient.get(esiApiPort, esiApiHostName, esiApiUri).ssl(esiApiSsl)
 					.send()
@@ -59,7 +73,7 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 					.onSuccess(templatesResponse -> {
 				promise.complete(templatesResponse.bodyAsJsonArray());
 			}).onFailure(ex -> {
-				LOG.error(String.format("Querying ESI API cluster templates failed. ", BareMetalNetwork.CLASS_SIMPLE_NAME), ex);
+				LOG.error(String.format("Querying ESI API cluster templates failed. ", BareMetalNode.CLASS_SIMPLE_NAME), ex);
 				promise.fail(ex);
 			});
 		} catch(Throwable ex) {
@@ -73,41 +87,15 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 		Promise<Void> promise = Promise.promise();
 		try {
 			JsonObject body = new JsonObject();
-			String networkName = result.getString(BareMetalNetwork.VAR_name);
-			body.put(BareMetalNetwork.VAR_id, result.getString(BareMetalNetwork.idESI_enUS));
-			body.put(BareMetalNetwork.VAR_name, result.getString(BareMetalNetwork.nameESI_enUS));
-			body.put(BareMetalNetwork.VAR_description, result.getString(BareMetalNetwork.descriptionESI_enUS));
-			body.put(BareMetalNetwork.VAR_availabilityZoneHints, result.getJsonArray(BareMetalNetwork.availabilityZoneHintsESI_enUS));
-			body.put(BareMetalNetwork.VAR_availabilityZones, result.getJsonArray(BareMetalNetwork.availabilityZonesESI_enUS));
-			body.put(BareMetalNetwork.VAR_createdAt, result.getString(BareMetalNetwork.createdAtESI_enUS));
-			body.put(BareMetalNetwork.VAR_dnsDomain, result.getString(BareMetalNetwork.dnsDomainESI_enUS));
-			body.put(BareMetalNetwork.VAR_isAdminStateUp, result.getBoolean(BareMetalNetwork.isAdminStateUpESI_enUS));
-			body.put(BareMetalNetwork.VAR_isDefault, result.getBoolean(BareMetalNetwork.isDefaultESI_enUS));
-			body.put(BareMetalNetwork.VAR_isPortSecurityEnabled, result.getBoolean(BareMetalNetwork.isPortSecurityEnabledESI_enUS));
-			body.put(BareMetalNetwork.VAR_isRouterExternal, result.getBoolean(BareMetalNetwork.isRouterExternalESI_enUS));
-			body.put(BareMetalNetwork.VAR_isShared, result.getBoolean(BareMetalNetwork.isSharedESI_enUS));
-			body.put(BareMetalNetwork.VAR_isVlanQueing, result.getBoolean(BareMetalNetwork.isVlanQueingESI_enUS));
-			body.put(BareMetalNetwork.VAR_isVlanTransparent, result.getBoolean(BareMetalNetwork.isVlanTransparentESI_enUS));
-			body.put(BareMetalNetwork.VAR_l2Adjacency, result.getBoolean(BareMetalNetwork.l2AdjacencyESI_enUS));
-			body.put(BareMetalNetwork.VAR_locationCloud, result.getJsonObject(BareMetalNetwork.locationCloudESIlocation_enUS).getString(BareMetalNetwork.locationCloudESIcloud_enUS));
-			body.put(BareMetalNetwork.VAR_locationProjectDomainId, result.getJsonObject(BareMetalNetwork.locationProjectDomainIdESIlocation_enUS).getJsonObject(BareMetalNetwork.locationProjectDomainIdESIproject_enUS).getString(BareMetalNetwork.locationProjectDomainIdESIdomain_id_enUS));
-			body.put(BareMetalNetwork.VAR_locationProjectDomainName, result.getJsonObject(BareMetalNetwork.locationProjectDomainNameESIlocation_enUS).getJsonObject(BareMetalNetwork.locationProjectDomainNameESIproject_enUS).getString(BareMetalNetwork.locationProjectDomainNameESIdomain_name_enUS));
-			body.put(BareMetalNetwork.VAR_locationProjectId, result.getJsonObject(BareMetalNetwork.locationProjectIdESIlocation_enUS).getJsonObject(BareMetalNetwork.locationProjectIdESIproject_enUS).getString(BareMetalNetwork.locationProjectIdESIid_enUS));
-			body.put(BareMetalNetwork.VAR_locationProjectName, result.getJsonObject(BareMetalNetwork.locationProjectNameESIlocation_enUS).getJsonObject(BareMetalNetwork.locationProjectNameESIproject_enUS).getString(BareMetalNetwork.locationProjectNameESIname_enUS));
-			body.put(BareMetalNetwork.VAR_locationRegionName, result.getJsonObject(BareMetalNetwork.locationRegionNameESIlocation_enUS).getString(BareMetalNetwork.locationRegionNameESIregion_name_enUS));
-			body.put(BareMetalNetwork.VAR_locationZone, result.getJsonObject(BareMetalNetwork.locationZoneESIlocation_enUS).getString(BareMetalNetwork.locationZoneESIzone_enUS));
-			body.put(BareMetalNetwork.VAR_mtu, result.getInteger(BareMetalNetwork.mtuESI_enUS));
-			body.put(BareMetalNetwork.VAR_projectId, result.getString(BareMetalNetwork.projectIdESI_enUS));
-			body.put(BareMetalNetwork.VAR_providerNetworkType, result.getString(BareMetalNetwork.providerNetworkTypeESI_enUS));
-			body.put(BareMetalNetwork.VAR_providerPhysicalNetwork, result.getString(BareMetalNetwork.providerPhysicalNetworkESI_enUS));
-			body.put(BareMetalNetwork.VAR_providerSegmentationId, result.getString(BareMetalNetwork.providerSegmentationIdESI_enUS));
-			body.put(BareMetalNetwork.VAR_qosPolicyId, result.getString(BareMetalNetwork.qosPolicyIdESI_enUS));
-			body.put(BareMetalNetwork.VAR_revisionNumber, result.getInteger(BareMetalNetwork.revisionNumberESI_enUS));
-			body.put(BareMetalNetwork.VAR_status, result.getString(BareMetalNetwork.statusESI_enUS));
-			body.put(BareMetalNetwork.VAR_subnetIds, result.getJsonArray(BareMetalNetwork.subnetIdsESI_enUS));
-			body.put(BareMetalNetwork.VAR_tags, result.getJsonArray(BareMetalNetwork.tagsESI_enUS));
-			body.put(BareMetalNetwork.VAR_tenantId, result.getString(BareMetalNetwork.tenantIdESI_enUS));
-			body.put(BareMetalNetwork.VAR_updatedAt, result.getString(BareMetalNetwork.updatedAtESI_enUS));
+			String nodeName = result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeNameESI_enUS);
+			body.put(BareMetalNode.VAR_leaseInfo, result.getJsonArray(BareMetalNode.leaseInfoESI_enUS));
+			body.put(BareMetalNode.VAR_networkInfo, result.getJsonArray(BareMetalNode.networkInfoESI_enUS));
+			body.put(BareMetalNode.VAR_nodeId, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeIdESI_enUS));
+			body.put(BareMetalNode.VAR_nodeIsMaintenance, result.getJsonObject(BareMetalNode.nodeESI_enUS).getBoolean(BareMetalNode.nodeIsMaintenanceESI_enUS));
+			body.put(BareMetalNode.VAR_nodeLinks, result.getJsonObject(BareMetalNode.nodeESI_enUS).getJsonArray(BareMetalNode.nodeLinksESI_enUS));
+			body.put(BareMetalNode.VAR_nodeName, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeNameESI_enUS));
+			body.put(BareMetalNode.VAR_nodePowerState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodePowerStateESI_enUS));
+			body.put(BareMetalNode.VAR_nodeProvisionState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeProvisionStateESI_enUS));
 
 			JsonObject pageParams = new JsonObject();
 			pageParams.put("body", body);
@@ -121,7 +109,7 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 					.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 					.addHeader("action", String.format("putimport%sFuture", classSimpleName))
 					).onSuccess(message -> {
-				LOG.info(String.format("Imported %s %s", BareMetalNetwork.SingularName_enUS, networkName));
+				LOG.info(String.format("Imported %s %s", BareMetalNode.SingularName_enUS, nodeName));
 				promise.complete();
 			}).onFailure(ex -> {
 				LOG.error(String.format(importDataFail, classSimpleName), ex);
@@ -134,22 +122,22 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 		return promise.future();
 	}
 
-	protected Future<SearchList<BareMetalNetwork>> cleanupOldBareMetalNetworks(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName) {
-		Promise<SearchList<BareMetalNetwork>> promise = Promise.promise();
+	protected Future<SearchList<BareMetalNode>> cleanupOldBareMetalNodes(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName) {
+		Promise<SearchList<BareMetalNode>> promise = Promise.promise();
 		try {
-			SearchList<BareMetalNetwork> searchList = new SearchList<BareMetalNetwork>();
+			SearchList<BareMetalNode> searchList = new SearchList<BareMetalNode>();
 			searchList.setStore(true);
 			searchList.q("*:*");
-			searchList.setC(BareMetalNetwork.class);
-			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNetwork.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
-			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalNetworks -> {
+			searchList.setC(BareMetalNode.class);
+			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNode.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalNodes -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
-					for(Integer i = 0; i < oldBareMetalNetworks.getList().size(); i++) {
-						BareMetalNetwork oldBareMetalNetwork = oldBareMetalNetworks.getList().get(i);
+					for(Integer i = 0; i < oldBareMetalNodes.getList().size(); i++) {
+						BareMetalNode oldBareMetalNode = oldBareMetalNodes.getList().get(i);
 						futures.add(Future.future(promise1 -> {
 							try {
-								String templateTitle = oldBareMetalNetwork.getName();
+								String templateTitle = oldBareMetalNode.getNodeName();
 								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
@@ -160,17 +148,17 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 									.put("softCommit", true)
 									.put("q", "*:*")
 									.put("var", new JsonArray().add("refresh:false"))
-									.put("fq", String.format("%s:%s", BareMetalNetwork.VAR_name, oldBareMetalNetwork.getName()))
+									.put("fq", String.format("%s:%s", BareMetalNode.VAR_nodeName, oldBareMetalNode.getNodeName()))
 									);
 								JsonObject pageContext = new JsonObject().put("params", pageParams);
 								JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-								vertx.eventBus().request(BareMetalNetwork.CLASS_API_ADDRESS_BareMetalNetwork, pageRequest, new DeliveryOptions()
+								vertx.eventBus().request(BareMetalNode.CLASS_API_ADDRESS_BareMetalNode, pageRequest, new DeliveryOptions()
 										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 										.addHeader("action", String.format("patch%sFuture", classSimpleName))
 										).onSuccess(message -> {
-									LOG.info(String.format("Archived %s %s", BareMetalNetwork.SingularName_enUS, templateTitle));
-									promise1.complete(oldBareMetalNetworks);
+									LOG.info(String.format("Archived %s %s", BareMetalNode.SingularName_enUS, templateTitle));
+									promise1.complete(oldBareMetalNodes);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
 									promise.fail(ex);
@@ -209,10 +197,10 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 		Promise<Void> promise = Promise.promise();
 		try {
 			ZonedDateTime dateTimeStarted = ZonedDateTime.now();
-			queryBareMetalNetworks().onSuccess(networks -> {
+			queryBareMetalNodes().onSuccess(nodes -> {
 				List<Future<?>> futures = new ArrayList<>();
-				for(Integer i = 0; i < networks.size(); i++) {
-					JsonObject template = networks.getJsonObject(i);
+				for(Integer i = 0; i < nodes.size(); i++) {
+					JsonObject template = nodes.getJsonObject(i);
 					futures.add(Future.future(promise1 -> {
 						importResult(classSimpleName, classApiAddress, template).onComplete(b -> {
 							promise1.complete();
@@ -223,7 +211,7 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 					}));
 				}
 				Future.all(futures).onSuccess(b -> {
-					cleanupOldBareMetalNetworks(siteRequest, dateTimeStarted, classSimpleName).onSuccess(oldAiNodes -> {
+					cleanupOldBareMetalNodes(siteRequest, dateTimeStarted, classSimpleName).onSuccess(oldAiNodes -> {
 						promise.complete();
 					}).onFailure(ex -> {
 						LOG.error(String.format(importDataFail, classSimpleName), ex);
