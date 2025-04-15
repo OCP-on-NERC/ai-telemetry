@@ -4343,7 +4343,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 		switch(var) {
 		case VAR_name:
 			return 0;
-		case VAR_description:
+		case VAR_providerSegmentationId:
 			return 1;
 			default:
 				return BaseModel.htmColumnBaseModel(var);

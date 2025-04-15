@@ -73,7 +73,6 @@ public class BareMetalNetwork extends BareMetalNetworkGen<BaseModel> {
 	 * Description: The description of this bare metal network
 	 * HtmRow: 3
 	 * HtmCell: 2
-	 * HtmColumn: 1
 	 * Facet: true
 	 * VarDescription: true
 	 * Val.ESI: description
@@ -183,6 +182,7 @@ public class BareMetalNetwork extends BareMetalNetworkGen<BaseModel> {
 	 * DisplayName: provider segmentation ID
 	 * HtmRow: 3
 	 * HtmCell: 11
+	 * HtmColumn: 1
 	 * Facet: true
 	 * Val.ESI: provider_segmentation_id
 	 **/
