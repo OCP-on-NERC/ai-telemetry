@@ -1,5 +1,7 @@
 package org.mghpcc.aitelemetry.model.baremetalorder;
 
+import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -692,6 +694,36 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
+					case "setNetworkId":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("BareMetalNetwork");
+									}
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, pk2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeNetworkId":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(BareMetalOrder.class, pk).setToNull(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
@@ -699,6 +731,22 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
+						break;
+					case "setNumberOfFc430":
+							o2.setNumberOfFc430(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfFc430 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfFc430());
+						break;
+					case "setNumberOfFc830":
+							o2.setNumberOfFc830(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfFc830 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfFc830());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -708,6 +756,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
+					case "setNumberOfR730xd":
+							o2.setNumberOfR730xd(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfR730xd());
+						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -715,6 +771,30 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
+						break;
+					case "setNumberOfWhiteboxFlax1":
+							o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfWhiteboxFlax1());
+						break;
+					case "setNumberOfLenovoSd650nv2A100":
+							o2.setNumberOfLenovoSd650nv2A100(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfLenovoSd650nv2A100());
+						break;
+					case "setNumberOfLenovoSd665nv3H100":
+							o2.setNumberOfLenovoSd665nv3H100(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfLenovoSd665nv3H100());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
@@ -1086,6 +1166,25 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
+					case BareMetalOrder.VAR_networkId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("BareMetalNetwork");
+									}
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, pk2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					case BareMetalOrder.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
@@ -1094,6 +1193,24 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
+						break;
+					case BareMetalOrder.VAR_numberOfFc430:
+						o2.setNumberOfFc430(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfFc430 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfFc430());
+						break;
+					case BareMetalOrder.VAR_numberOfFc830:
+						o2.setNumberOfFc830(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfFc830 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfFc830());
 						break;
 					case BareMetalOrder.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -1104,6 +1221,15 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
+					case BareMetalOrder.VAR_numberOfR730xd:
+						o2.setNumberOfR730xd(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfR730xd());
+						break;
 					case BareMetalOrder.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1112,6 +1238,33 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
+						break;
+					case BareMetalOrder.VAR_numberOfWhiteboxFlax1:
+						o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfWhiteboxFlax1());
+						break;
+					case BareMetalOrder.VAR_numberOfLenovoSd650nv2A100:
+						o2.setNumberOfLenovoSd650nv2A100(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfLenovoSd650nv2A100());
+						break;
+					case BareMetalOrder.VAR_numberOfLenovoSd665nv3H100:
+						o2.setNumberOfLenovoSd665nv3H100(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfLenovoSd665nv3H100());
 						break;
 					case BareMetalOrder.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
@@ -1472,6 +1625,25 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case BareMetalOrder.VAR_networkId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, false).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("BareMetalNetwork");
+									}
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -2302,6 +2474,25 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case BareMetalOrder.VAR_networkId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, false).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("BareMetalNetwork");
+									}
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -2729,7 +2920,33 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	public Future<Void> relateBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT id as pk1, 'networkId' from BareMetalNetwork where id=$1")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getNetworkId())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateBareMetalOrder failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateBareMetalOrder failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateBareMetalOrder failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 
@@ -2834,6 +3051,41 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				for(int i=0; i < pks.size(); i++) {
 					Long pk2 = pks.get(i);
 					String classSimpleName2 = classes.get(i);
+
+					if("BareMetalNetwork".equals(classSimpleName2) && pk2 != null) {
+						SearchList<BareMetalNetwork> searchList2 = new SearchList<BareMetalNetwork>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(BareMetalNetwork.class);
+						searchList2.fq("pk_docvalues_long:" + pk2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								BareMetalNetwork o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-BareMetalNetwork", json, new DeliveryOptions().addHeader("action", "patchBareMetalNetworkFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
 				}
 
 				CompositeFuture.all(futures).onSuccess(b -> {
@@ -2893,9 +3145,16 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 			page.persistForClass(BareMetalOrder.VAR_description, BareMetalOrder.staticSetDescription(siteRequest2, (String)result.get(BareMetalOrder.VAR_description)));
 			page.persistForClass(BareMetalOrder.VAR_created, BareMetalOrder.staticSetCreated(siteRequest2, (String)result.get(BareMetalOrder.VAR_created)));
+			page.persistForClass(BareMetalOrder.VAR_networkId, BareMetalOrder.staticSetNetworkId(siteRequest2, (String)result.get(BareMetalOrder.VAR_networkId)));
 			page.persistForClass(BareMetalOrder.VAR_archived, BareMetalOrder.staticSetArchived(siteRequest2, (String)result.get(BareMetalOrder.VAR_archived)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfFc430, BareMetalOrder.staticSetNumberOfFc430(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfFc430)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfFc830, BareMetalOrder.staticSetNumberOfFc830(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfFc830)));
 			page.persistForClass(BareMetalOrder.VAR_sessionId, BareMetalOrder.staticSetSessionId(siteRequest2, (String)result.get(BareMetalOrder.VAR_sessionId)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfR730xd, BareMetalOrder.staticSetNumberOfR730xd(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfR730xd)));
 			page.persistForClass(BareMetalOrder.VAR_userKey, BareMetalOrder.staticSetUserKey(siteRequest2, (String)result.get(BareMetalOrder.VAR_userKey)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfWhiteboxFlax1, BareMetalOrder.staticSetNumberOfWhiteboxFlax1(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfWhiteboxFlax1)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100, BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100, BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100)));
 			page.persistForClass(BareMetalOrder.VAR_objectTitle, BareMetalOrder.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalOrder.VAR_objectTitle)));
 			page.persistForClass(BareMetalOrder.VAR_displayPage, BareMetalOrder.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalOrder.VAR_displayPage)));
 

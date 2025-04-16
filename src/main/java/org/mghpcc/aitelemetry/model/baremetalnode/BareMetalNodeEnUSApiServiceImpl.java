@@ -129,7 +129,7 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 			searchList.setStore(true);
 			searchList.q("*:*");
 			searchList.setC(BareMetalNode.class);
-			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNode.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			// searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNode.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalNodes -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
@@ -161,7 +161,7 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 									promise1.complete(oldBareMetalNodes);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
-									promise.fail(ex);
+									promise1.fail(ex);
 								});
 							} catch(Exception ex) {
 								LOG.error(String.format(importDataFail, classSimpleName), ex);

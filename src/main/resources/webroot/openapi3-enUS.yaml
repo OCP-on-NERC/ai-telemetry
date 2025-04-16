@@ -11047,9 +11047,23 @@ components:
                 properties:
                   pk:
                     type: string
-                  name:
-                    type: string
                   description:
+                    type: string
+                  networkId:
+                    type: string
+                  networkName:
+                    type: string
+                  numberOfFc430:
+                    type: string
+                  numberOfFc830:
+                    type: string
+                  numberOfR730xd:
+                    type: string
+                  numberOfWhiteboxFlax1:
+                    type: string
+                  numberOfLenovoSd650nv2A100:
+                    type: string
+                  numberOfLenovoSd665nv3H100:
                     type: string
     PATCHBareMetalOrderRequest:
       allOf:
@@ -11062,19 +11076,68 @@ components:
               type: string
             removeAllPk:
               type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
-              type: string
             setDescription:
               type: string
               nullable: true
             removeDescription:
               type: string
             removeAllDescription:
+              type: string
+            setNetworkId:
+              type: string
+              nullable: true
+            removeNetworkId:
+              type: string
+            removeAllNetworkId:
+              type: string
+            setNetworkName:
+              type: string
+              nullable: true
+            removeNetworkName:
+              type: string
+            removeAllNetworkName:
+              type: string
+            setNumberOfFc430:
+              type: string
+              nullable: true
+            removeNumberOfFc430:
+              type: string
+            removeAllNumberOfFc430:
+              type: string
+            setNumberOfFc830:
+              type: string
+              nullable: true
+            removeNumberOfFc830:
+              type: string
+            removeAllNumberOfFc830:
+              type: string
+            setNumberOfR730xd:
+              type: string
+              nullable: true
+            removeNumberOfR730xd:
+              type: string
+            removeAllNumberOfR730xd:
+              type: string
+            setNumberOfWhiteboxFlax1:
+              type: string
+              nullable: true
+            removeNumberOfWhiteboxFlax1:
+              type: string
+            removeAllNumberOfWhiteboxFlax1:
+              type: string
+            setNumberOfLenovoSd650nv2A100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd650nv2A100:
+              type: string
+            removeAllNumberOfLenovoSd650nv2A100:
+              type: string
+            setNumberOfLenovoSd665nv3H100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd665nv3H100:
+              type: string
+            removeAllNumberOfLenovoSd665nv3H100:
               type: string
     PATCHBareMetalOrderResponse:
       allOf:
@@ -11087,13 +11150,6 @@ components:
               type: string
             removeAllPk:
               type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
-              type: string
             setDescription:
               type: string
               nullable: true
@@ -11101,15 +11157,85 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setNetworkId:
+              type: string
+              nullable: true
+            removeNetworkId:
+              type: string
+            removeAllNetworkId:
+              type: string
+            setNetworkName:
+              type: string
+              nullable: true
+            removeNetworkName:
+              type: string
+            removeAllNetworkName:
+              type: string
+            setNumberOfFc430:
+              type: string
+              nullable: true
+            removeNumberOfFc430:
+              type: string
+            removeAllNumberOfFc430:
+              type: string
+            setNumberOfFc830:
+              type: string
+              nullable: true
+            removeNumberOfFc830:
+              type: string
+            removeAllNumberOfFc830:
+              type: string
+            setNumberOfR730xd:
+              type: string
+              nullable: true
+            removeNumberOfR730xd:
+              type: string
+            removeAllNumberOfR730xd:
+              type: string
+            setNumberOfWhiteboxFlax1:
+              type: string
+              nullable: true
+            removeNumberOfWhiteboxFlax1:
+              type: string
+            removeAllNumberOfWhiteboxFlax1:
+              type: string
+            setNumberOfLenovoSd650nv2A100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd650nv2A100:
+              type: string
+            removeAllNumberOfLenovoSd650nv2A100:
+              type: string
+            setNumberOfLenovoSd665nv3H100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd665nv3H100:
+              type: string
+            removeAllNumberOfLenovoSd665nv3H100:
+              type: string
     POSTBareMetalOrderRequest:
       allOf:
         - type: object
           properties:
             pk:
               type: string
-            name:
-              type: string
             description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
               type: string
     POSTBareMetalOrderResponse:
       allOf:
@@ -11117,9 +11243,23 @@ components:
           properties:
             pk:
               type: string
-            name:
-              type: string
             description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
               type: string
     DELETEFilterBareMetalOrderResponse:
       allOf:
@@ -11127,9 +11267,23 @@ components:
           properties:
             pk:
               type: string
-            name:
-              type: string
             description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
               type: string
     GETBareMetalOrderResponse:
       allOf:
@@ -11137,9 +11291,23 @@ components:
           properties:
             pk:
               type: string
-            name:
-              type: string
             description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
               type: string
     DELETEBareMetalOrderResponse:
       allOf:
@@ -11147,9 +11315,23 @@ components:
           properties:
             pk:
               type: string
-            name:
-              type: string
             description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
               type: string
     EditPageBareMetalOrderResponse:
       allOf:
