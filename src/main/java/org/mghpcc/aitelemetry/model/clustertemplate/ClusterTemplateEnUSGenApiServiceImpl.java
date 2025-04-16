@@ -323,7 +323,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterTemplate.first());
-								apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 
@@ -440,7 +440,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
@@ -471,7 +471,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		});
 	}
 
-	public Future<ClusterTemplate> patchClusterTemplateFuture(ClusterTemplate o, Boolean title) {
+	public Future<ClusterTemplate> patchClusterTemplateFuture(ClusterTemplate o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<ClusterTemplate> promise = Promise.promise();
 
@@ -481,7 +481,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsClusterTemplate(siteRequest).onSuccess(a -> {
-					sqlPATCHClusterTemplate(o, title).onSuccess(clusterTemplate -> {
+					sqlPATCHClusterTemplate(o, inheritPrimaryKey).onSuccess(clusterTemplate -> {
 						persistClusterTemplate(clusterTemplate, true).onSuccess(c -> {
 							relateClusterTemplate(clusterTemplate).onSuccess(d -> {
 								indexClusterTemplate(clusterTemplate).onSuccess(o2 -> {
@@ -535,7 +535,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		return promise.future();
 	}
 
-	public Future<ClusterTemplate> sqlPATCHClusterTemplate(ClusterTemplate o, Boolean title) {
+	public Future<ClusterTemplate> sqlPATCHClusterTemplate(ClusterTemplate o, Boolean inheritPrimaryKey) {
 		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -893,7 +893,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		return promise.future();
 	}
 
-	public Future<ClusterTemplate> sqlPOSTClusterTemplate(ClusterTemplate o, Boolean title) {
+	public Future<ClusterTemplate> sqlPOSTClusterTemplate(ClusterTemplate o, Boolean inheritPrimaryKey) {
 		Promise<ClusterTemplate> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1213,7 +1213,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2012,7 +2012,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2306,9 +2306,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 			}
 
 			String title = serviceRequest.getParams().getJsonObject("path").getString("title");
-			if(title != null && NumberUtils.isCreatable(title)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(title) + " OR title_docvalues_string:" + SearchTool.escapeQueryChars(title) + ")");
-			} else if(title != null) {
+			if(title != null) {
 				searchList.fq("title_docvalues_string:" + SearchTool.escapeQueryChars(title));
 			}
 

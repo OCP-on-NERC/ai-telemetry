@@ -66,6 +66,9 @@ import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSGenApiS
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderEnUSGenApiService;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.vertx.config.ComputateConfigKeys;

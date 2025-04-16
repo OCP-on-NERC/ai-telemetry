@@ -425,7 +425,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalNode.first());
-								apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketBareMetalNode", JsonObject.mapFrom(apiRequest).toString());
 
@@ -548,7 +548,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							BareMetalNode o2 = jsonObject.mapTo(BareMetalNode.class);
@@ -579,7 +579,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		});
 	}
 
-	public Future<BareMetalNode> patchBareMetalNodeFuture(BareMetalNode o, Boolean nodeId) {
+	public Future<BareMetalNode> patchBareMetalNodeFuture(BareMetalNode o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<BareMetalNode> promise = Promise.promise();
 
@@ -589,7 +589,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsBareMetalNode(siteRequest).onSuccess(a -> {
-					sqlPATCHBareMetalNode(o, nodeId).onSuccess(bareMetalNode -> {
+					sqlPATCHBareMetalNode(o, inheritPrimaryKey).onSuccess(bareMetalNode -> {
 						persistBareMetalNode(bareMetalNode, true).onSuccess(c -> {
 							relateBareMetalNode(bareMetalNode).onSuccess(d -> {
 								indexBareMetalNode(bareMetalNode).onSuccess(o2 -> {
@@ -643,7 +643,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		return promise.future();
 	}
 
-	public Future<BareMetalNode> sqlPATCHBareMetalNode(BareMetalNode o, Boolean nodeId) {
+	public Future<BareMetalNode> sqlPATCHBareMetalNode(BareMetalNode o, Boolean inheritPrimaryKey) {
 		Promise<BareMetalNode> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1069,7 +1069,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		return promise.future();
 	}
 
-	public Future<BareMetalNode> sqlPOSTBareMetalNode(BareMetalNode o, Boolean nodeId) {
+	public Future<BareMetalNode> sqlPOSTBareMetalNode(BareMetalNode o, Boolean inheritPrimaryKey) {
 		Promise<BareMetalNode> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1461,7 +1461,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteBareMetalNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2404,7 +2404,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterBareMetalNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2698,9 +2698,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			}
 
 			String nodeId = serviceRequest.getParams().getJsonObject("path").getString("nodeId");
-			if(nodeId != null && NumberUtils.isCreatable(nodeId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + " OR nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + ")");
-			} else if(nodeId != null) {
+			if(nodeId != null) {
 				searchList.fq("nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId));
 			}
 

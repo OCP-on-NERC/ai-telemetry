@@ -192,6 +192,9 @@ import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder;
 
 
 /**
@@ -368,6 +371,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			apiBareMetalNode.setVertx(vertx);
 			apiBareMetalNode.setConfig(config);
 			apiBareMetalNode.setWebClient(webClient);
+			BareMetalOrderEnUSApiServiceImpl apiBareMetalOrder = new BareMetalOrderEnUSApiServiceImpl();
+			apiBareMetalOrder.setVertx(vertx);
+			apiBareMetalOrder.setConfig(config);
+			apiBareMetalOrder.setWebClient(webClient);
 			apiSiteUser.createAuthorizationScopes().onSuccess(authToken -> {
 				apiSiteUser.authorizeClientData(authToken, SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_CLIENT), new String[] { "GET", "PATCH" }).onSuccess(q1 -> {
 					apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
@@ -405,8 +412,13 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 																.compose(q11 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
 																.compose(q11 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
 																.onSuccess(q11 -> {
-															LOG.info("authorize data complete");
-															promise.complete();
+															apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "BareMetalOrderOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+																	.compose(q12 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+																	.compose(q12 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+																	.onSuccess(q12 -> {
+																LOG.info("authorize data complete");
+																promise.complete();
+															}).onFailure(ex -> promise.fail(ex));
 														}).onFailure(ex -> promise.fail(ex));
 													}).onFailure(ex -> promise.fail(ex));
 												}).onFailure(ex -> promise.fail(ex));
@@ -1411,7 +1423,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterRequest","BareMetalNetwork","BareMetalNode");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
 			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
@@ -1458,6 +1470,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			BareMetalNodeEnUSApiServiceImpl apiBareMetalNode = new BareMetalNodeEnUSApiServiceImpl();
 			initializeApiService(apiBareMetalNode);
 			registerApiService(BareMetalNodeEnUSGenApiService.class, apiBareMetalNode, BareMetalNode.getClassApiAddress());
+
+			BareMetalOrderEnUSApiServiceImpl apiBareMetalOrder = new BareMetalOrderEnUSApiServiceImpl();
+			initializeApiService(apiBareMetalOrder);
+			registerApiService(BareMetalOrderEnUSGenApiService.class, apiBareMetalOrder, BareMetalOrder.getClassApiAddress());
 
 			Future.all(futures).onSuccess( a -> {
 				LOG.info("The API was configured properly.");

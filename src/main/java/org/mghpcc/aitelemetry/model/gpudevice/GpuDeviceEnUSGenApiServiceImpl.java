@@ -425,7 +425,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuDevice.first());
-								apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketGpuDevice", JsonObject.mapFrom(apiRequest).toString());
 
@@ -548,7 +548,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							GpuDevice o2 = jsonObject.mapTo(GpuDevice.class);
@@ -579,7 +579,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<GpuDevice> patchGpuDeviceFuture(GpuDevice o, Boolean gpuDeviceId) {
+	public Future<GpuDevice> patchGpuDeviceFuture(GpuDevice o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<GpuDevice> promise = Promise.promise();
 
@@ -589,7 +589,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsGpuDevice(siteRequest).onSuccess(a -> {
-					sqlPATCHGpuDevice(o, gpuDeviceId).onSuccess(gpuDevice -> {
+					sqlPATCHGpuDevice(o, inheritPrimaryKey).onSuccess(gpuDevice -> {
 						persistGpuDevice(gpuDevice, true).onSuccess(c -> {
 							relateGpuDevice(gpuDevice).onSuccess(d -> {
 								indexGpuDevice(gpuDevice).onSuccess(o2 -> {
@@ -643,7 +643,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<GpuDevice> sqlPATCHGpuDevice(GpuDevice o, Boolean gpuDeviceId) {
+	public Future<GpuDevice> sqlPATCHGpuDevice(GpuDevice o, Boolean inheritPrimaryKey) {
 		Promise<GpuDevice> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1101,7 +1101,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<GpuDevice> sqlPOSTGpuDevice(GpuDevice o, Boolean gpuDeviceId) {
+	public Future<GpuDevice> sqlPOSTGpuDevice(GpuDevice o, Boolean inheritPrimaryKey) {
 		Promise<GpuDevice> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1529,7 +1529,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2632,7 +2632,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2926,9 +2926,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}
 
 			String gpuDeviceId = serviceRequest.getParams().getJsonObject("path").getString("gpuDeviceId");
-			if(gpuDeviceId != null && NumberUtils.isCreatable(gpuDeviceId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceId) + " OR gpuDeviceId_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceId) + ")");
-			} else if(gpuDeviceId != null) {
+			if(gpuDeviceId != null) {
 				searchList.fq("gpuDeviceId_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceId));
 			}
 

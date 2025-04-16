@@ -190,3 +190,14 @@ ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS sessionId text;
 ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS userKey bigint;
 ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS objectTitle text;
 ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS displayPage text;
+
+CREATE TABLE IF NOT EXISTS BareMetalOrder();
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key UNIQUE;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS displayPage text;

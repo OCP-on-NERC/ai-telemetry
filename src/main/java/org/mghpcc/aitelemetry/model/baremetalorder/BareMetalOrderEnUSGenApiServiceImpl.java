@@ -1,4 +1,4 @@
-package org.mghpcc.aitelemetry.model.gpuslice;
+package org.mghpcc.aitelemetry.model.baremetalorder;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -103,37 +103,37 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.gpuslice.GpuSlicePage;
+import org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements GpuSliceEnUSGenApiService {
+public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implements BareMetalOrderEnUSGenApiService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(GpuSliceEnUSGenApiServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(BareMetalOrderEnUSGenApiServiceImpl.class);
 
 	// Search //
 
 	@Override
-	public void searchGpuSlice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void searchBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -150,21 +150,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, false).onSuccess(listGpuSlice -> {
-							response200SearchGpuSlice(listGpuSlice).onSuccess(response -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
+							response200SearchBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchGpuSlice succeeded. "));
+								LOG.debug(String.format("searchBareMetalOrder succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchGpuSlice failed. "), ex);
+								LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchGpuSlice failed. "), ex);
+							LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchGpuSlice failed. "), ex);
+					LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -173,7 +177,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchGpuSlice failed. ", ex2));
+					LOG.error(String.format("searchBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -188,27 +192,27 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("searchGpuSlice failed. "), ex);
+				LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200SearchGpuSlice(SearchList<GpuSlice> listGpuSlice) {
+	public Future<ServiceResponse> response200SearchBareMetalOrder(SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-			List<String> fls = listGpuSlice.getRequest().getFields();
+			SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+			List<String> fls = listBareMetalOrder.getRequest().getFields();
 			JsonObject json = new JsonObject();
 			JsonArray l = new JsonArray();
-			listGpuSlice.getList().stream().forEach(o -> {
+			listBareMetalOrder.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
 				if(fls.size() > 0) {
 					Set<String> fieldNames = new HashSet<String>();
 					for(String fieldName : json2.fieldNames()) {
-						String v = GpuSlice.varIndexedGpuSlice(fieldName);
+						String v = BareMetalOrder.varIndexedBareMetalOrder(fieldName);
 						if(v != null)
-							fieldNames.add(GpuSlice.varIndexedGpuSlice(fieldName));
+							fieldNames.add(BareMetalOrder.varIndexedBareMetalOrder(fieldName));
 					}
 					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
 						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -226,10 +230,10 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				l.add(json2);
 			});
 			json.put("list", l);
-			response200Search(listGpuSlice.getRequest(), listGpuSlice.getResponse(), json);
+			response200Search(listBareMetalOrder.getRequest(), listBareMetalOrder.getResponse(), json);
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -237,12 +241,12 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchGpuSlice failed. "), ex);
+			LOG.error(String.format("response200SearchBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchGpuSlice(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchBareMetalOrder(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -271,7 +275,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchGpuSlice(pivotFields2, pivotArray2);
+					responsePivotSearchBareMetalOrder(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -280,23 +284,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// GET //
 
 	@Override
-	public void getGpuSlice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void getBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -313,21 +317,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, false).onSuccess(listGpuSlice -> {
-							response200GETGpuSlice(listGpuSlice).onSuccess(response -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
+							response200GETBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("getGpuSlice succeeded. "));
+								LOG.debug(String.format("getBareMetalOrder succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("getGpuSlice failed. "), ex);
+								LOG.error(String.format("getBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("getGpuSlice failed. "), ex);
+							LOG.error(String.format("getBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("getGpuSlice failed. "), ex);
+					LOG.error(String.format("getBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -336,7 +344,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("getGpuSlice failed. ", ex2));
+					LOG.error(String.format("getBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -351,20 +359,20 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("getGpuSlice failed. "), ex);
+				LOG.error(String.format("getBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200GETGpuSlice(SearchList<GpuSlice> listGpuSlice) {
+	public Future<ServiceResponse> response200GETBareMetalOrder(SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-			JsonObject json = JsonObject.mapFrom(listGpuSlice.getList().stream().findFirst().orElse(null));
+			SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+			JsonObject json = JsonObject.mapFrom(listBareMetalOrder.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -372,7 +380,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200GETGpuSlice failed. "), ex);
+			LOG.error(String.format("response200GETBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -381,24 +389,24 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// PATCH //
 
 	@Override
-	public void patchGpuSlice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("patchGpuSlice started. "));
+	public void patchBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("patchBareMetalOrder started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -415,43 +423,47 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listGpuSlice.getRequest().getRows());
-								apiRequest.setNumFound(listGpuSlice.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalOrder.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalOrder.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listGpuSlice.first());
-								apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalOrder.first());
+								apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
+								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
-								listPATCHGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
-									response200PATCHGpuSlice(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("patchGpuSlice succeeded. "));
+								listPATCHBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
+									response200PATCHBareMetalOrder(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("patchBareMetalOrder succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("patchGpuSlice failed. "), ex);
+										LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("patchGpuSlice failed. "), ex);
+									LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("patchGpuSlice failed. "), ex);
+								LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("patchGpuSlice failed. "), ex);
+							LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("patchGpuSlice failed. "), ex);
+					LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -460,7 +472,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("patchGpuSlice failed. ", ex2));
+					LOG.error(String.format("patchBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -475,68 +487,68 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("patchGpuSlice failed. "), ex);
+				LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPATCHGpuSlice(ApiRequest apiRequest, SearchList<GpuSlice> listGpuSlice) {
+	public Future<Void> listPATCHBareMetalOrder(ApiRequest apiRequest, SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-		listGpuSlice.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+		listBareMetalOrder.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			GpuSlice o2 = jsonObject.mapTo(GpuSlice.class);
+			BareMetalOrder o2 = jsonObject.mapTo(BareMetalOrder.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				patchGpuSliceFuture(o2, false).onSuccess(a -> {
+				patchBareMetalOrderFuture(o2, false).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listPATCHGpuSlice failed. "), ex);
+					LOG.error(String.format("listPATCHBareMetalOrder failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listGpuSlice.next().onSuccess(next -> {
+			listBareMetalOrder.next().onSuccess(next -> {
 				if(next) {
-					listPATCHGpuSlice(apiRequest, listGpuSlice).onSuccess(b -> {
+					listPATCHBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPATCHGpuSlice failed. "), ex);
+						LOG.error(String.format("listPATCHBareMetalOrder failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPATCHGpuSlice failed. "), ex);
+				LOG.error(String.format("listPATCHBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listPATCHGpuSlice failed. "), ex);
+			LOG.error(String.format("listPATCHBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void patchGpuSliceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void patchBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
-						GpuSlice o = listGpuSlice.first();
-						if(o != null && listGpuSlice.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalOrder o = listBareMetalOrder.first();
+						if(o != null && listBareMetalOrder.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -548,12 +560,12 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
-							GpuSlice o2 = jsonObject.mapTo(GpuSlice.class);
+							BareMetalOrder o2 = jsonObject.mapTo(BareMetalOrder.class);
 							o2.setSiteRequest_(siteRequest);
-							patchGpuSliceFuture(o2, false).onSuccess(o3 -> {
+							patchBareMetalOrderFuture(o2, false).onSuccess(o3 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -562,46 +574,46 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("patchGpuSlice failed. "), ex);
+						LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("patchGpuSlice failed. "), ex);
+					LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("patchGpuSlice failed. "), ex);
+				LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("patchGpuSlice failed. "), ex);
+			LOG.error(String.format("patchBareMetalOrder failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<GpuSlice> patchGpuSliceFuture(GpuSlice o, Boolean inheritPrimaryKey) {
+	public Future<BareMetalOrder> patchBareMetalOrderFuture(BareMetalOrder o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<GpuSlice> promise = Promise.promise();
+		Promise<BareMetalOrder> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<GpuSlice> promise1 = Promise.promise();
+			Promise<BareMetalOrder> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsGpuSlice(siteRequest).onSuccess(a -> {
-					sqlPATCHGpuSlice(o, inheritPrimaryKey).onSuccess(gpuSlice -> {
-						persistGpuSlice(gpuSlice, true).onSuccess(c -> {
-							relateGpuSlice(gpuSlice).onSuccess(d -> {
-								indexGpuSlice(gpuSlice).onSuccess(o2 -> {
+				varsBareMetalOrder(siteRequest).onSuccess(a -> {
+					sqlPATCHBareMetalOrder(o, inheritPrimaryKey).onSuccess(bareMetalOrder -> {
+						persistBareMetalOrder(bareMetalOrder, true).onSuccess(c -> {
+							relateBareMetalOrder(bareMetalOrder).onSuccess(d -> {
+								indexBareMetalOrder(bareMetalOrder).onSuccess(o2 -> {
 									if(apiRequest != null) {
 										apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 										if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-											o2.apiRequestGpuSlice();
+											o2.apiRequestBareMetalOrder();
 											if(apiRequest.getVars().size() > 0)
-												eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+												eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 										}
 									}
-									promise1.complete(gpuSlice);
+									promise1.complete(bareMetalOrder);
 								}).onFailure(ex -> {
 									promise1.fail(ex);
 								});
@@ -623,28 +635,28 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(gpuSlice -> {
-				Promise<GpuSlice> promise2 = Promise.promise();
-				refreshGpuSlice(gpuSlice).onSuccess(a -> {
-					promise2.complete(gpuSlice);
+			}).compose(bareMetalOrder -> {
+				Promise<BareMetalOrder> promise2 = Promise.promise();
+				refreshBareMetalOrder(bareMetalOrder).onSuccess(a -> {
+					promise2.complete(bareMetalOrder);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(gpuSlice -> {
-				promise.complete(gpuSlice);
+			}).onSuccess(bareMetalOrder -> {
+				promise.complete(bareMetalOrder);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("patchGpuSliceFuture failed. "), ex);
+			LOG.error(String.format("patchBareMetalOrderFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<GpuSlice> sqlPATCHGpuSlice(GpuSlice o, Boolean inheritPrimaryKey) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> sqlPATCHBareMetalOrder(BareMetalOrder o, Boolean inheritPrimaryKey) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -652,31 +664,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE GpuSlice SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalOrder SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
 			Set<String> methodNames = jsonObject.fieldNames();
-			GpuSlice o2 = new GpuSlice();
+			BareMetalOrder o2 = new BareMetalOrder();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
-					case "setSliceName":
-							o2.setSliceName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_sliceName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSliceName());
-						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_description + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_description + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDescription());
 						break;
@@ -684,7 +688,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_created + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
@@ -692,79 +696,31 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_archived + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
-						break;
-					case "setLocation":
-							o2.setLocation(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_location + "=$" + num);
-							num++;
-							bParams.add(o2.sqlLocation());
-						break;
-					case "setId":
-							o2.setId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_id + "=$" + num);
-							num++;
-							bParams.add(o2.sqlId());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_sessionId + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
-						break;
-					case "setNgsildTenant":
-							o2.setNgsildTenant(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_ngsildTenant + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildTenant());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_userKey + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
-						break;
-					case "setNgsildPath":
-							o2.setNgsildPath(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_ngsildPath + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildPath());
-						break;
-					case "setNgsildContext":
-							o2.setNgsildContext(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_ngsildContext + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildContext());
-						break;
-					case "setNgsildData":
-							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_ngsildData + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildData());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_objectTitle + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
 						break;
@@ -772,7 +728,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuSlice.VAR_displayPage + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
 						break;
@@ -788,40 +744,40 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value GpuSlice failed", ex);
-						LOG.error(String.format("relateGpuSlice failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalOrder failed", ex);
+						LOG.error(String.format("relateBareMetalOrder failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					GpuSlice o3 = new GpuSlice();
+					BareMetalOrder o3 = new BareMetalOrder();
 					o3.setSiteRequest_(o.getSiteRequest_());
 					o3.setPk(pk);
 					promise.complete(o3);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPATCHGpuSlice failed. "), ex);
+					LOG.error(String.format("sqlPATCHBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPATCHGpuSlice failed. "), ex);
+				LOG.error(String.format("sqlPATCHBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPATCHGpuSlice failed. "), ex);
+			LOG.error(String.format("sqlPATCHBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200PATCHGpuSlice(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PATCHBareMetalOrder(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -829,7 +785,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PATCHGpuSlice failed. "), ex);
+			LOG.error(String.format("response200PATCHBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -838,24 +794,24 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// POST //
 
 	@Override
-	public void postGpuSlice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("postGpuSlice started. "));
+	public void postBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("postBareMetalOrder started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -872,13 +828,17 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+						eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
@@ -897,19 +857,19 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						params.put("query", query);
 						JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 						JsonObject json = new JsonObject().put("context", context);
-						eventBus.request(GpuSlice.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postGpuSliceFuture")).onSuccess(a -> {
+						eventBus.request(BareMetalOrder.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalOrderFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
 							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-							LOG.debug(String.format("postGpuSlice succeeded. "));
+							LOG.debug(String.format("postBareMetalOrder succeeded. "));
 						}).onFailure(ex -> {
-							LOG.error(String.format("postGpuSlice failed. "), ex);
+							LOG.error(String.format("postBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("postGpuSlice failed. "), ex);
+					LOG.error(String.format("postBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -918,7 +878,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postGpuSlice failed. ", ex2));
+					LOG.error(String.format("postBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -933,14 +893,14 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("postGpuSlice failed. "), ex);
+				LOG.error(String.format("postBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
 	@Override
-	public void postGpuSliceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void postBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -954,13 +914,13 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-				postGpuSliceFuture(siteRequest, false).onSuccess(o -> {
+				postBareMetalOrderFuture(siteRequest, false).onSuccess(o -> {
 					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
 				}).onFailure(ex -> {
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Throwable ex) {
-				LOG.error(String.format("postGpuSlice failed. "), ex);
+				LOG.error(String.format("postBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
@@ -968,7 +928,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postGpuSlice failed. ", ex2));
+					LOG.error(String.format("postBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -983,26 +943,26 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("postGpuSlice failed. "), ex);
+				LOG.error(String.format("postBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<GpuSlice> postGpuSliceFuture(SiteRequest siteRequest, Boolean sliceName) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> postBareMetalOrderFuture(SiteRequest siteRequest, Boolean pk) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 
 		try {
 			pgPool.withTransaction(sqlConnection -> {
-				Promise<GpuSlice> promise1 = Promise.promise();
+				Promise<BareMetalOrder> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				varsGpuSlice(siteRequest).onSuccess(a -> {
-					createGpuSlice(siteRequest).onSuccess(gpuSlice -> {
-						sqlPOSTGpuSlice(gpuSlice, sliceName).onSuccess(b -> {
-							persistGpuSlice(gpuSlice, false).onSuccess(c -> {
-								relateGpuSlice(gpuSlice).onSuccess(d -> {
-									indexGpuSlice(gpuSlice).onSuccess(o2 -> {
-										promise1.complete(gpuSlice);
+				varsBareMetalOrder(siteRequest).onSuccess(a -> {
+					createBareMetalOrder(siteRequest).onSuccess(bareMetalOrder -> {
+						sqlPOSTBareMetalOrder(bareMetalOrder, pk).onSuccess(b -> {
+							persistBareMetalOrder(bareMetalOrder, false).onSuccess(c -> {
+								relateBareMetalOrder(bareMetalOrder).onSuccess(d -> {
+									indexBareMetalOrder(bareMetalOrder).onSuccess(o2 -> {
+										promise1.complete(bareMetalOrder);
 									}).onFailure(ex -> {
 										promise1.fail(ex);
 									});
@@ -1027,50 +987,50 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(gpuSlice -> {
-				Promise<GpuSlice> promise2 = Promise.promise();
-				refreshGpuSlice(gpuSlice).onSuccess(a -> {
+			}).compose(bareMetalOrder -> {
+				Promise<BareMetalOrder> promise2 = Promise.promise();
+				refreshBareMetalOrder(bareMetalOrder).onSuccess(a -> {
 					try {
 						ApiRequest apiRequest = siteRequest.getApiRequest_();
 						if(apiRequest != null) {
 							apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-							gpuSlice.apiRequestGpuSlice();
-							eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+							bareMetalOrder.apiRequestBareMetalOrder();
+							eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 						}
-						promise2.complete(gpuSlice);
+						promise2.complete(bareMetalOrder);
 					} catch(Exception ex) {
-						LOG.error(String.format("postGpuSliceFuture failed. "), ex);
+						LOG.error(String.format("postBareMetalOrderFuture failed. "), ex);
 						promise.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(gpuSlice -> {
+			}).onSuccess(bareMetalOrder -> {
 				try {
 					ApiRequest apiRequest = siteRequest.getApiRequest_();
 					if(apiRequest != null) {
 						apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-						gpuSlice.apiRequestGpuSlice();
-						eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+						bareMetalOrder.apiRequestBareMetalOrder();
+						eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 					}
-					promise.complete(gpuSlice);
+					promise.complete(bareMetalOrder);
 				} catch(Exception ex) {
-					LOG.error(String.format("postGpuSliceFuture failed. "), ex);
+					LOG.error(String.format("postBareMetalOrderFuture failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("postGpuSliceFuture failed. "), ex);
+			LOG.error(String.format("postBareMetalOrderFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<GpuSlice> sqlPOSTGpuSlice(GpuSlice o, Boolean inheritPrimaryKey) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> sqlPOSTBareMetalOrder(BareMetalOrder o, Boolean inheritPrimaryKey) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1078,11 +1038,11 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE GpuSlice SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalOrder SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			GpuSlice o2 = new GpuSlice();
+			BareMetalOrder o2 = new BareMetalOrder();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1108,129 +1068,66 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case GpuSlice.VAR_sliceName:
-						o2.setSliceName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_sliceName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSliceName());
-						break;
-					case GpuSlice.VAR_description:
+					case BareMetalOrder.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_description + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_description + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDescription());
 						break;
-					case GpuSlice.VAR_created:
+					case BareMetalOrder.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_created + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case GpuSlice.VAR_archived:
+					case BareMetalOrder.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_archived + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
 						break;
-					case GpuSlice.VAR_location:
-						o2.setLocation(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_location + "=$" + num);
-						num++;
-						bParams.add(o2.sqlLocation());
-						break;
-					case GpuSlice.VAR_id:
-						o2.setId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_id + "=$" + num);
-						num++;
-						bParams.add(o2.sqlId());
-						break;
-					case GpuSlice.VAR_sessionId:
+					case BareMetalOrder.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_sessionId + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case GpuSlice.VAR_ngsildTenant:
-						o2.setNgsildTenant(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_ngsildTenant + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildTenant());
-						break;
-					case GpuSlice.VAR_userKey:
+					case BareMetalOrder.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_userKey + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case GpuSlice.VAR_ngsildPath:
-						o2.setNgsildPath(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_ngsildPath + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildPath());
-						break;
-					case GpuSlice.VAR_ngsildContext:
-						o2.setNgsildContext(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_ngsildContext + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildContext());
-						break;
-					case GpuSlice.VAR_ngsildData:
-						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuSlice.VAR_ngsildData + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildData());
-						break;
-					case GpuSlice.VAR_objectTitle:
+					case BareMetalOrder.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_objectTitle + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case GpuSlice.VAR_displayPage:
+					case BareMetalOrder.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuSlice.VAR_displayPage + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
 						break;
@@ -1247,8 +1144,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value GpuSlice failed", ex);
-						LOG.error(String.format("relateGpuSlice failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalOrder failed", ex);
+						LOG.error(String.format("relateBareMetalOrder failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
@@ -1257,28 +1154,28 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete(o2);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPOSTGpuSlice failed. "), ex);
+					LOG.error(String.format("sqlPOSTBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPOSTGpuSlice failed. "), ex);
+				LOG.error(String.format("sqlPOSTBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPOSTGpuSlice failed. "), ex);
+			LOG.error(String.format("sqlPOSTBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200POSTGpuSlice(GpuSlice o) {
+	public Future<ServiceResponse> response200POSTBareMetalOrder(BareMetalOrder o) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1286,7 +1183,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200POSTGpuSlice failed. "), ex);
+			LOG.error(String.format("response200POSTBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1295,24 +1192,24 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// DELETE //
 
 	@Override
-	public void deleteGpuSlice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deleteGpuSlice started. "));
+	public void deleteBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deleteBareMetalOrder started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1329,42 +1226,46 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listGpuSlice.getRequest().getRows());
-								apiRequest.setNumFound(listGpuSlice.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalOrder.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalOrder.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listGpuSlice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalOrder.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
-									response200DELETEGpuSlice(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deleteGpuSlice succeeded. "));
+								listDELETEBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
+									response200DELETEBareMetalOrder(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deleteBareMetalOrder succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deleteGpuSlice failed. "), ex);
+										LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deleteGpuSlice failed. "), ex);
+									LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deleteGpuSlice failed. "), ex);
+								LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deleteGpuSlice failed. "), ex);
+							LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deleteGpuSlice failed. "), ex);
+					LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1373,7 +1274,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deleteGpuSlice failed. ", ex2));
+					LOG.error(String.format("deleteBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1388,68 +1289,68 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("deleteGpuSlice failed. "), ex);
+				LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEGpuSlice(ApiRequest apiRequest, SearchList<GpuSlice> listGpuSlice) {
+	public Future<Void> listDELETEBareMetalOrder(ApiRequest apiRequest, SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-		listGpuSlice.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+		listBareMetalOrder.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			GpuSlice o2 = jsonObject.mapTo(GpuSlice.class);
+			BareMetalOrder o2 = jsonObject.mapTo(BareMetalOrder.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deleteGpuSliceFuture(o).onSuccess(a -> {
+				deleteBareMetalOrderFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEGpuSlice failed. "), ex);
+					LOG.error(String.format("listDELETEBareMetalOrder failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listGpuSlice.next().onSuccess(next -> {
+			listBareMetalOrder.next().onSuccess(next -> {
 				if(next) {
-					listDELETEGpuSlice(apiRequest, listGpuSlice).onSuccess(b -> {
+					listDELETEBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEGpuSlice failed. "), ex);
+						LOG.error(String.format("listDELETEBareMetalOrder failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEGpuSlice failed. "), ex);
+				LOG.error(String.format("listDELETEBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEGpuSlice failed. "), ex);
+			LOG.error(String.format("listDELETEBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deleteGpuSliceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deleteBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
-						GpuSlice o = listGpuSlice.first();
-						if(o != null && listGpuSlice.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalOrder o = listBareMetalOrder.first();
+						if(o != null && listBareMetalOrder.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -1461,9 +1362,9 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
-							deleteGpuSliceFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							deleteBareMetalOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -1472,42 +1373,42 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deleteGpuSlice failed. "), ex);
+						LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deleteGpuSlice failed. "), ex);
+					LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deleteGpuSlice failed. "), ex);
+				LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deleteGpuSlice failed. "), ex);
+			LOG.error(String.format("deleteBareMetalOrder failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<GpuSlice> deleteGpuSliceFuture(GpuSlice o) {
+	public Future<BareMetalOrder> deleteBareMetalOrderFuture(BareMetalOrder o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<GpuSlice> promise = Promise.promise();
+		Promise<BareMetalOrder> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<GpuSlice> promise1 = Promise.promise();
+			Promise<BareMetalOrder> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsGpuSlice(siteRequest).onSuccess(a -> {
-					sqlDELETEGpuSlice(o).onSuccess(gpuSlice -> {
-						relateGpuSlice(o).onSuccess(d -> {
-							unindexGpuSlice(o).onSuccess(o2 -> {
+				varsBareMetalOrder(siteRequest).onSuccess(a -> {
+					sqlDELETEBareMetalOrder(o).onSuccess(bareMetalOrder -> {
+						relateBareMetalOrder(o).onSuccess(d -> {
+							unindexBareMetalOrder(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestGpuSlice();
+										o2.apiRequestBareMetalOrder();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -1529,27 +1430,27 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(gpuSlice -> {
-				Promise<GpuSlice> promise2 = Promise.promise();
-				refreshGpuSlice(o).onSuccess(a -> {
+			}).compose(bareMetalOrder -> {
+				Promise<BareMetalOrder> promise2 = Promise.promise();
+				refreshBareMetalOrder(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(gpuSlice -> {
-				promise.complete(gpuSlice);
+			}).onSuccess(bareMetalOrder -> {
+				promise.complete(bareMetalOrder);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deleteGpuSliceFuture failed. "), ex);
+			LOG.error(String.format("deleteBareMetalOrderFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEGpuSlice(GpuSlice o) {
+	public Future<Void> sqlDELETEBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1558,11 +1459,11 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM GpuSlice ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalOrder ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			GpuSlice o2 = new GpuSlice();
+			BareMetalOrder o2 = new BareMetalOrder();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1583,8 +1484,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value GpuSlice failed", ex);
-					LOG.error(String.format("unrelateGpuSlice failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalOrder failed", ex);
+					LOG.error(String.format("unrelateBareMetalOrder failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -1592,27 +1493,27 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEGpuSlice failed. "), ex);
+					LOG.error(String.format("sqlDELETEBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEGpuSlice failed. "), ex);
+				LOG.error(String.format("sqlDELETEBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEGpuSlice failed. "), ex);
+			LOG.error(String.format("sqlDELETEBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEGpuSlice(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEBareMetalOrder(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1620,296 +1521,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEGpuSlice failed. "), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-
-	// PUTImport //
-
-	@Override
-	public void putimportGpuSlice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("putimportGpuSlice started. "));
-		Boolean classPublicRead = false;
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "PUT"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						ApiRequest apiRequest = new ApiRequest();
-						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
-						apiRequest.setRows(Long.valueOf(jsonArray.size()));
-						apiRequest.setNumFound(Long.valueOf(jsonArray.size()));
-						apiRequest.setNumPATCH(0L);
-						apiRequest.initDeepApiRequest(siteRequest);
-						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
-						varsGpuSlice(siteRequest).onSuccess(d -> {
-							listPUTImportGpuSlice(apiRequest, siteRequest).onSuccess(e -> {
-								response200PUTImportGpuSlice(siteRequest).onSuccess(response -> {
-									LOG.debug(String.format("putimportGpuSlice succeeded. "));
-									eventHandler.handle(Future.succeededFuture(response));
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportGpuSlice failed. "), ex);
-									error(siteRequest, eventHandler, ex);
-								});
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportGpuSlice failed. "), ex);
-								error(siteRequest, eventHandler, ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(String.format("putimportGpuSlice failed. "), ex);
-							error(siteRequest, eventHandler, ex);
-						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("putimportGpuSlice failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("putimportGpuSlice failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("putimportGpuSlice failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-	}
-
-	public Future<Void> listPUTImportGpuSlice(ApiRequest apiRequest, SiteRequest siteRequest) {
-		Promise<Void> promise = Promise.promise();
-		List<Future> futures = new ArrayList<>();
-		JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
-		try {
-			jsonArray.forEach(obj -> {
-				futures.add(Future.future(promise1 -> {
-					JsonObject params = new JsonObject();
-					params.put("body", obj);
-					params.put("path", new JsonObject());
-					params.put("cookie", siteRequest.getServiceRequest().getParams().getJsonObject("cookie"));
-					params.put("header", siteRequest.getServiceRequest().getParams().getJsonObject("header"));
-					params.put("form", new JsonObject());
-					JsonObject query = new JsonObject();
-					Boolean softCommit = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getBoolean("softCommit")).orElse(null);
-					Integer commitWithin = Optional.ofNullable(siteRequest.getServiceRequest().getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getInteger("commitWithin")).orElse(null);
-					if(softCommit == null && commitWithin == null)
-						softCommit = true;
-					if(softCommit != null)
-						query.put("softCommit", softCommit);
-					if(commitWithin != null)
-						query.put("commitWithin", commitWithin);
-					params.put("query", query);
-					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
-					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(GpuSlice.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportGpuSliceFuture")).onSuccess(a -> {
-						promise1.complete();
-					}).onFailure(ex -> {
-						LOG.error(String.format("listPUTImportGpuSlice failed. "), ex);
-						promise1.fail(ex);
-					});
-				}));
-			});
-			CompositeFuture.all(futures).onSuccess(a -> {
-				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-				promise.complete();
-			}).onFailure(ex -> {
-				LOG.error(String.format("listPUTImportGpuSlice failed. "), ex);
-				promise.fail(ex);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("listPUTImportGpuSlice failed. "), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-
-	@Override
-	public void putimportGpuSliceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			try {
-				siteRequest.addScopes("GET");
-				ApiRequest apiRequest = new ApiRequest();
-				apiRequest.setRows(1L);
-				apiRequest.setNumFound(1L);
-				apiRequest.setNumPATCH(0L);
-				apiRequest.initDeepApiRequest(siteRequest);
-				siteRequest.setApiRequest_(apiRequest);
-				String sliceName = Optional.ofNullable(body.getString(GpuSlice.VAR_sliceName)).orElse(body.getString(GpuSlice.VAR_solrId));
-				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
-					siteRequest.getRequestVars().put( "refresh", "false" );
-				}
-
-				SearchList<GpuSlice> searchList = new SearchList<GpuSlice>();
-				searchList.setStore(true);
-				searchList.q("*:*");
-				searchList.setC(GpuSlice.class);
-				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("sliceName_docvalues_string:" + SearchTool.escapeQueryChars(sliceName));
-				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					try {
-						if(searchList.size() >= 1) {
-							GpuSlice o = searchList.getList().stream().findFirst().orElse(null);
-							GpuSlice o2 = new GpuSlice();
-							o2.setSiteRequest_(siteRequest);
-							JsonObject body2 = new JsonObject();
-							for(String f : body.fieldNames()) {
-								Object bodyVal = body.getValue(f);
-								if(bodyVal instanceof JsonArray) {
-									JsonArray bodyVals = (JsonArray)bodyVal;
-									Object valsObj = o.obtainForClass(f);
-									Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-									if(bodyVals.size() == vals.size()) {
-										Boolean match = true;
-										for(Object val : vals) {
-											if(val != null) {
-												if(!bodyVals.contains(val.toString())) {
-													match = false;
-													break;
-												}
-											} else {
-												match = false;
-												break;
-											}
-										}
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
-									} else {
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
-									}
-								} else {
-									o2.persistForClass(f, bodyVal);
-									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
-								}
-							}
-							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.putNull("set" + StringUtils.capitalize(f));
-								}
-							}
-							if(searchList.size() == 1) {
-								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getSliceName());
-								apiRequest.setPk(o.getPk());
-							}
-							siteRequest.setJsonObject(body2);
-							patchGpuSliceFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import GpuSlice {} succeeded, modified GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
-						} else {
-							postGpuSliceFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import GpuSlice {} succeeded, created new GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
-						}
-					} catch(Exception ex) {
-						LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-						eventHandler.handle(Future.failedFuture(ex));
-					}
-				}).onFailure(ex -> {
-					LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-					eventHandler.handle(Future.failedFuture(ex));
-				});
-			} catch(Exception ex) {
-				LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-				eventHandler.handle(Future.failedFuture(ex));
-			}
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("putimportGpuSlice failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("putimportGpuSlice failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-	}
-
-	public Future<ServiceResponse> response200PUTImportGpuSlice(SiteRequest siteRequest) {
-		Promise<ServiceResponse> promise = Promise.promise();
-		try {
-			JsonObject json = new JsonObject();
-			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
-				promise.complete(new ServiceResponse(404
-						, m
-						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
-			} else {
-				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
-			}
-		} catch(Exception ex) {
-			LOG.error(String.format("response200PUTImportGpuSlice failed. "), ex);
+			LOG.error(String.format("response200DELETEBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1918,23 +1530,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// SearchPage //
 
 	@Override
-	public void searchpageGpuSlice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void searchpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1951,21 +1563,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, false).onSuccess(listGpuSlice -> {
-							response200SearchPageGpuSlice(listGpuSlice).onSuccess(response -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
+							response200SearchPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchpageGpuSlice succeeded. "));
+								LOG.debug(String.format("searchpageBareMetalOrder succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchpageGpuSlice failed. "), ex);
+								LOG.error(String.format("searchpageBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchpageGpuSlice failed. "), ex);
+							LOG.error(String.format("searchpageBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchpageGpuSlice failed. "), ex);
+					LOG.error(String.format("searchpageBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1974,7 +1590,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageGpuSlice failed. ", ex2));
+					LOG.error(String.format("searchpageBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1989,38 +1605,38 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageGpuSlice failed. "), ex);
+				LOG.error(String.format("searchpageBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void searchpageGpuSlicePageInit(GpuSlicePage page, SearchList<GpuSlice> listGpuSlice) {
+	public void searchpageBareMetalOrderPageInit(BareMetalOrderPage page, SearchList<BareMetalOrder> listBareMetalOrder) {
 	}
 
-	public String templateSearchPageGpuSlice(ServiceRequest serviceRequest) {
-		return "en-us/search/gpu-slice/GpuSliceSearchPage.htm";
+	public String templateSearchPageBareMetalOrder(ServiceRequest serviceRequest) {
+		return "en-us/search/bare-metal-order/BareMetalOrderSearchPage.htm";
 	}
-	public Future<ServiceResponse> response200SearchPageGpuSlice(SearchList<GpuSlice> listGpuSlice) {
+	public Future<ServiceResponse> response200SearchPageBareMetalOrder(SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateSearchPageGpuSlice(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateSearchPageBareMetalOrder(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			GpuSlicePage page = new GpuSlicePage();
+			BareMetalOrderPage page = new BareMetalOrderPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listGpuSlice.size() >= 1)
-				siteRequest.setRequestPk(listGpuSlice.get(0).getPk());
-			page.setSearchListGpuSlice_(listGpuSlice);
+			if(listBareMetalOrder.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalOrder.get(0).getPk());
+			page.setSearchListBareMetalOrder_(listBareMetalOrder);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepGpuSlicePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2028,19 +1644,19 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200SearchPageGpuSlice failed. "), ex);
+					LOG.error(String.format("response200SearchPageBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchPageGpuSlice failed. "), ex);
+			LOG.error(String.format("response200SearchPageBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchPageGpuSlice(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchPageBareMetalOrder(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2069,7 +1685,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchPageGpuSlice(pivotFields2, pivotArray2);
+					responsePivotSearchPageBareMetalOrder(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2078,23 +1694,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// EditPage //
 
 	@Override
-	public void editpageGpuSlice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void editpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2111,21 +1727,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, false).onSuccess(listGpuSlice -> {
-							response200EditPageGpuSlice(listGpuSlice).onSuccess(response -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
+							response200EditPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("editpageGpuSlice succeeded. "));
+								LOG.debug(String.format("editpageBareMetalOrder succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("editpageGpuSlice failed. "), ex);
+								LOG.error(String.format("editpageBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("editpageGpuSlice failed. "), ex);
+							LOG.error(String.format("editpageBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("editpageGpuSlice failed. "), ex);
+					LOG.error(String.format("editpageBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2134,7 +1754,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("editpageGpuSlice failed. ", ex2));
+					LOG.error(String.format("editpageBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2149,38 +1769,38 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("editpageGpuSlice failed. "), ex);
+				LOG.error(String.format("editpageBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void editpageGpuSlicePageInit(GpuSlicePage page, SearchList<GpuSlice> listGpuSlice) {
+	public void editpageBareMetalOrderPageInit(BareMetalOrderPage page, SearchList<BareMetalOrder> listBareMetalOrder) {
 	}
 
-	public String templateEditPageGpuSlice(ServiceRequest serviceRequest) {
-		return "en-us/edit/gpu-slice/GpuSliceEditPage.htm";
+	public String templateEditPageBareMetalOrder(ServiceRequest serviceRequest) {
+		return "en-us/edit/bare-metal-order/BareMetalOrderEditPage.htm";
 	}
-	public Future<ServiceResponse> response200EditPageGpuSlice(SearchList<GpuSlice> listGpuSlice) {
+	public Future<ServiceResponse> response200EditPageBareMetalOrder(SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateEditPageGpuSlice(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateEditPageBareMetalOrder(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			GpuSlicePage page = new GpuSlicePage();
+			BareMetalOrderPage page = new BareMetalOrderPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listGpuSlice.size() >= 1)
-				siteRequest.setRequestPk(listGpuSlice.get(0).getPk());
-			page.setSearchListGpuSlice_(listGpuSlice);
+			if(listBareMetalOrder.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalOrder.get(0).getPk());
+			page.setSearchListBareMetalOrder_(listBareMetalOrder);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepGpuSlicePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2188,19 +1808,19 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200EditPageGpuSlice failed. "), ex);
+					LOG.error(String.format("response200EditPageBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200EditPageGpuSlice failed. "), ex);
+			LOG.error(String.format("response200EditPageBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotEditPageGpuSlice(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotEditPageBareMetalOrder(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2229,7 +1849,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotEditPageGpuSlice(pivotFields2, pivotArray2);
+					responsePivotEditPageBareMetalOrder(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2238,23 +1858,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// UserPage //
 
 	@Override
-	public void userpageGpuSlice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void userpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2271,21 +1891,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, false).onSuccess(listGpuSlice -> {
-							response200UserPageGpuSlice(listGpuSlice).onSuccess(response -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
+							response200UserPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("userpageGpuSlice succeeded. "));
+								LOG.debug(String.format("userpageBareMetalOrder succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("userpageGpuSlice failed. "), ex);
+								LOG.error(String.format("userpageBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("userpageGpuSlice failed. "), ex);
+							LOG.error(String.format("userpageBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("userpageGpuSlice failed. "), ex);
+					LOG.error(String.format("userpageBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2294,7 +1918,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("userpageGpuSlice failed. ", ex2));
+					LOG.error(String.format("userpageBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2309,38 +1933,38 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("userpageGpuSlice failed. "), ex);
+				LOG.error(String.format("userpageBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void userpageGpuSlicePageInit(GpuSlicePage page, SearchList<GpuSlice> listGpuSlice) {
+	public void userpageBareMetalOrderPageInit(BareMetalOrderPage page, SearchList<BareMetalOrder> listBareMetalOrder) {
 	}
 
-	public String templateUserPageGpuSlice(ServiceRequest serviceRequest) {
+	public String templateUserPageBareMetalOrder(ServiceRequest serviceRequest) {
 		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
 	}
-	public Future<ServiceResponse> response200UserPageGpuSlice(SearchList<GpuSlice> listGpuSlice) {
+	public Future<ServiceResponse> response200UserPageBareMetalOrder(SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateUserPageGpuSlice(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateUserPageBareMetalOrder(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			GpuSlicePage page = new GpuSlicePage();
+			BareMetalOrderPage page = new BareMetalOrderPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listGpuSlice.size() >= 1)
-				siteRequest.setRequestPk(listGpuSlice.get(0).getPk());
-			page.setSearchListGpuSlice_(listGpuSlice);
+			if(listBareMetalOrder.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalOrder.get(0).getPk());
+			page.setSearchListBareMetalOrder_(listBareMetalOrder);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepGpuSlicePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2348,19 +1972,19 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200UserPageGpuSlice failed. "), ex);
+					LOG.error(String.format("response200UserPageBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200UserPageGpuSlice failed. "), ex);
+			LOG.error(String.format("response200UserPageBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotUserPageGpuSlice(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotUserPageBareMetalOrder(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2389,7 +2013,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotUserPageGpuSlice(pivotFields2, pivotArray2);
+					responsePivotUserPageBareMetalOrder(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2398,24 +2022,24 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	// DELETEFilter //
 
 	@Override
-	public void deletefilterGpuSlice(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deletefilterGpuSlice started. "));
+	public void deletefilterBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterBareMetalOrder started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
+			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuSlice.CLASS_SIMPLE_NAME, "PUT"));
-			if(sliceName != null)
-				form.add("permission", String.format("%s-%s#%s", GpuSlice.CLASS_SIMPLE_NAME, sliceName, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
+			if(pk != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2432,42 +2056,46 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+						if(!scopes2.contains("POST"))
+							scopes2.add("POST");
+						if(!scopes2.contains("PATCH"))
+							scopes2.add("PATCH");
+						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listGpuSlice.getRequest().getRows());
-								apiRequest.setNumFound(listGpuSlice.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalOrder.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalOrder.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listGpuSlice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalOrder.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEFilterGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
-									response200DELETEFilterGpuSlice(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deletefilterGpuSlice succeeded. "));
+								listDELETEFilterBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
+									response200DELETEFilterBareMetalOrder(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterBareMetalOrder succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+										LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+									LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+								LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+							LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+					LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2476,7 +2104,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deletefilterGpuSlice failed. ", ex2));
+					LOG.error(String.format("deletefilterBareMetalOrder failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2491,68 +2119,68 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							)
 					));
 			} else {
-				LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEFilterGpuSlice(ApiRequest apiRequest, SearchList<GpuSlice> listGpuSlice) {
+	public Future<Void> listDELETEFilterBareMetalOrder(ApiRequest apiRequest, SearchList<BareMetalOrder> listBareMetalOrder) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listGpuSlice.getSiteRequest_(SiteRequest.class);
-		listGpuSlice.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalOrder.getSiteRequest_(SiteRequest.class);
+		listBareMetalOrder.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			GpuSlice o2 = jsonObject.mapTo(GpuSlice.class);
+			BareMetalOrder o2 = jsonObject.mapTo(BareMetalOrder.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deletefilterGpuSliceFuture(o).onSuccess(a -> {
+				deletefilterBareMetalOrderFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEFilterGpuSlice failed. "), ex);
+					LOG.error(String.format("listDELETEFilterBareMetalOrder failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listGpuSlice.next().onSuccess(next -> {
+			listBareMetalOrder.next().onSuccess(next -> {
 				if(next) {
-					listDELETEFilterGpuSlice(apiRequest, listGpuSlice).onSuccess(b -> {
+					listDELETEFilterBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEFilterGpuSlice failed. "), ex);
+						LOG.error(String.format("listDELETEFilterBareMetalOrder failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEFilterGpuSlice failed. "), ex);
+				LOG.error(String.format("listDELETEFilterBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEFilterGpuSlice failed. "), ex);
+			LOG.error(String.format("listDELETEFilterBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deletefilterGpuSliceFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deletefilterBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
+				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
-						GpuSlice o = listGpuSlice.first();
-						if(o != null && listGpuSlice.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalOrder o = listBareMetalOrder.first();
+						if(o != null && listBareMetalOrder.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -2564,9 +2192,9 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
-							deletefilterGpuSliceFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterBareMetalOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -2575,42 +2203,42 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+						LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+					LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deletefilterGpuSlice failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalOrder failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<GpuSlice> deletefilterGpuSliceFuture(GpuSlice o) {
+	public Future<BareMetalOrder> deletefilterBareMetalOrderFuture(BareMetalOrder o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<GpuSlice> promise = Promise.promise();
+		Promise<BareMetalOrder> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<GpuSlice> promise1 = Promise.promise();
+			Promise<BareMetalOrder> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsGpuSlice(siteRequest).onSuccess(a -> {
-					sqlDELETEFilterGpuSlice(o).onSuccess(gpuSlice -> {
-						relateGpuSlice(o).onSuccess(d -> {
-							unindexGpuSlice(o).onSuccess(o2 -> {
+				varsBareMetalOrder(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterBareMetalOrder(o).onSuccess(bareMetalOrder -> {
+						relateBareMetalOrder(o).onSuccess(d -> {
+							unindexBareMetalOrder(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestGpuSlice();
+										o2.apiRequestBareMetalOrder();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -2632,27 +2260,27 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(gpuSlice -> {
-				Promise<GpuSlice> promise2 = Promise.promise();
-				refreshGpuSlice(o).onSuccess(a -> {
+			}).compose(bareMetalOrder -> {
+				Promise<BareMetalOrder> promise2 = Promise.promise();
+				refreshBareMetalOrder(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(gpuSlice -> {
-				promise.complete(gpuSlice);
+			}).onSuccess(bareMetalOrder -> {
+				promise.complete(bareMetalOrder);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deletefilterGpuSliceFuture failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalOrderFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEFilterGpuSlice(GpuSlice o) {
+	public Future<Void> sqlDELETEFilterBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -2661,11 +2289,11 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM GpuSlice ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalOrder ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			GpuSlice o2 = new GpuSlice();
+			BareMetalOrder o2 = new BareMetalOrder();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -2686,8 +2314,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value GpuSlice failed", ex);
-					LOG.error(String.format("unrelateGpuSlice failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalOrder failed", ex);
+					LOG.error(String.format("unrelateBareMetalOrder failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -2695,27 +2323,27 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEFilterGpuSlice failed. "), ex);
+					LOG.error(String.format("sqlDELETEFilterBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEFilterGpuSlice failed. "), ex);
+				LOG.error(String.format("sqlDELETEFilterBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEFilterGpuSlice failed. "), ex);
+			LOG.error(String.format("sqlDELETEFilterBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEFilterGpuSlice(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEFilterBareMetalOrder(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
+						String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2723,7 +2351,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEFilterGpuSlice failed. "), ex);
+			LOG.error(String.format("response200DELETEFilterBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -2731,78 +2359,78 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	// General //
 
-	public Future<GpuSlice> createGpuSlice(SiteRequest siteRequest) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> createBareMetalOrder(SiteRequest siteRequest) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 		try {
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
 			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-			sqlConnection.preparedQuery("INSERT INTO GpuSlice(created, userKey) VALUES($1, $2) RETURNING pk")
+			sqlConnection.preparedQuery("INSERT INTO BareMetalOrder(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
 				Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
 				Long pk = createLine.getLong(0);
-				GpuSlice o = new GpuSlice();
+				BareMetalOrder o = new BareMetalOrder();
 				o.setPk(pk);
 				o.setSiteRequest_(siteRequest);
 				promise.complete(o);
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error("createGpuSlice failed. ", ex2);
+				LOG.error("createBareMetalOrder failed. ", ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("createGpuSlice failed. "), ex);
+			LOG.error(String.format("createBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public void searchGpuSliceQ(SearchList<GpuSlice> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalOrderQ(SearchList<BareMetalOrder> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
 		if(!"*".equals(entityVar)) {
 		}
 	}
 
-	public String searchGpuSliceFq(SearchList<GpuSlice> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public String searchBareMetalOrderFq(SearchList<BareMetalOrder> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		if(StringUtils.startsWith(valueIndexed, "[")) {
 			String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
 			if(fqs.length != 2)
 				throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-			String fq1 = fqs[0].equals("*") ? fqs[0] : GpuSlice.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-			String fq2 = fqs[1].equals("*") ? fqs[1] : GpuSlice.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+			String fq1 = fqs[0].equals("*") ? fqs[0] : BareMetalOrder.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+			String fq2 = fqs[1].equals("*") ? fqs[1] : BareMetalOrder.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
 			 return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
 		} else {
-			return varIndexed + ":" + SearchTool.escapeQueryChars(GpuSlice.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+			return varIndexed + ":" + SearchTool.escapeQueryChars(BareMetalOrder.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
 		}
 	}
 
-	public void searchGpuSliceSort(SearchList<GpuSlice> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalOrderSort(SearchList<BareMetalOrder> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		searchList.sort(varIndexed, valueIndexed);
 	}
 
-	public void searchGpuSliceRows(SearchList<GpuSlice> searchList, Long valueRows) {
+	public void searchBareMetalOrderRows(SearchList<BareMetalOrder> searchList, Long valueRows) {
 			searchList.rows(valueRows != null ? valueRows : 10L);
 	}
 
-	public void searchGpuSliceStart(SearchList<GpuSlice> searchList, Long valueStart) {
+	public void searchBareMetalOrderStart(SearchList<BareMetalOrder> searchList, Long valueStart) {
 		searchList.start(valueStart);
 	}
 
-	public void searchGpuSliceVar(SearchList<GpuSlice> searchList, String var, String value) {
+	public void searchBareMetalOrderVar(SearchList<BareMetalOrder> searchList, String var, String value) {
 		searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
 	}
 
-	public void searchGpuSliceUri(SearchList<GpuSlice> searchList) {
+	public void searchBareMetalOrderUri(SearchList<BareMetalOrder> searchList) {
 	}
 
-	public Future<ServiceResponse> varsGpuSlice(SiteRequest siteRequest) {
+	public Future<ServiceResponse> varsBareMetalOrder(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -2820,25 +2448,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						siteRequest.getRequestVars().put(entityVar, valueIndexed);
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchGpuSlice failed. "), ex);
+					LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				}
 			});
 			promise.complete();
 		} catch(Exception ex) {
-			LOG.error(String.format("searchGpuSlice failed. "), ex);
+			LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<SearchList<GpuSlice>> searchGpuSliceList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
-		Promise<SearchList<GpuSlice>> promise = Promise.promise();
+	public Future<SearchList<BareMetalOrder>> searchBareMetalOrderList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
+		Promise<SearchList<BareMetalOrder>> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
 			String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
 			String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-			SearchList<GpuSlice> searchList = new SearchList<GpuSlice>();
+			SearchList<BareMetalOrder> searchList = new SearchList<BareMetalOrder>();
 			String facetRange = null;
 			Date facetRangeStart = null;
 			Date facetRangeEnd = null;
@@ -2848,18 +2476,23 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			searchList.setPopulate(populate);
 			searchList.setStore(store);
 			searchList.q("*:*");
-			searchList.setC(GpuSlice.class);
+			searchList.setC(BareMetalOrder.class);
 			searchList.setSiteRequest_(siteRequest);
 			searchList.facetMinCount(1);
 			if(entityList != null) {
 				for(String v : entityList) {
-					searchList.fl(GpuSlice.varIndexedGpuSlice(v));
+					searchList.fl(BareMetalOrder.varIndexedBareMetalOrder(v));
 				}
 			}
 
-			String sliceName = serviceRequest.getParams().getJsonObject("path").getString("sliceName");
-			if(sliceName != null) {
-				searchList.fq("sliceName_docvalues_string:" + SearchTool.escapeQueryChars(sliceName));
+			String pk = serviceRequest.getParams().getJsonObject("path").getString("pk");
+			if(pk != null) {
+				searchList.fq("pk_docvalues_long:" + SearchTool.escapeQueryChars(pk));
+			}
+
+			if(!siteRequest.getScopes().contains("GET")) {
+				searchList.fq("sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionId()).orElse("\"-----\"")) + " OR " + "sessionId_docvalues_string:" + SearchTool.escapeQueryChars(Optional.ofNullable(siteRequest.getSessionIdBefore()).orElse("\"-----\""))
+						+ " OR userId_docvalues_string:" + Optional.ofNullable(siteRequest.getUserId()).orElse("\"-----\""));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -2882,7 +2515,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							String[] varsIndexed = new String[entityVars.length];
 							for(Integer i = 0; i < entityVars.length; i++) {
 								entityVar = entityVars[i];
-								varsIndexed[i] = GpuSlice.varIndexedGpuSlice(entityVar);
+								varsIndexed[i] = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
 							}
 							searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
 						}
@@ -2894,8 +2527,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								while(mQ.find()) {
 									entityVar = mQ.group(1).trim();
 									valueIndexed = mQ.group(2).trim();
-									varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
-									String entityQ = searchGpuSliceFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
+									String entityQ = searchBareMetalOrderFq(searchList, entityVar, valueIndexed, varIndexed);
 									mQ.appendReplacement(sb, entityQ);
 								}
 								if(!sb.isEmpty()) {
@@ -2908,8 +2541,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								while(mFq.find()) {
 									entityVar = mFq.group(1).trim();
 									valueIndexed = mFq.group(2).trim();
-									varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
-									String entityFq = searchGpuSliceFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
+									String entityFq = searchBareMetalOrderFq(searchList, entityVar, valueIndexed, varIndexed);
 									mFq.appendReplacement(sb, entityFq);
 								}
 								if(!sb.isEmpty()) {
@@ -2919,14 +2552,14 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							} else if(paramName.equals("sort")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
 								valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-								varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
-								searchGpuSliceSort(searchList, entityVar, valueIndexed, varIndexed);
+								varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
+								searchBareMetalOrderSort(searchList, entityVar, valueIndexed, varIndexed);
 							} else if(paramName.equals("start")) {
 								valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchGpuSliceStart(searchList, valueStart);
+								searchBareMetalOrderStart(searchList, valueStart);
 							} else if(paramName.equals("rows")) {
 								valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchGpuSliceRows(searchList, valueRows);
+								searchBareMetalOrderRows(searchList, valueRows);
 							} else if(paramName.equals("stats")) {
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
@@ -2934,7 +2567,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
-									varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
+									varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
 									searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									statsField = entityVar;
 									statsFieldIndexed = varIndexed;
@@ -2960,25 +2593,25 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
-									varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
+									varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
 									searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									facetRange = entityVar;
 								}
 							} else if(paramName.equals("facet.field")) {
 								entityVar = (String)paramObject;
-								varIndexed = GpuSlice.varIndexedGpuSlice(entityVar);
+								varIndexed = BareMetalOrder.varIndexedBareMetalOrder(entityVar);
 								if(varIndexed != null)
 									searchList.facetField(varIndexed);
 							} else if(paramName.equals("var")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
 								valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-								searchGpuSliceVar(searchList, entityVar, valueIndexed);
+								searchBareMetalOrderVar(searchList, entityVar, valueIndexed);
 							} else if(paramName.equals("cursorMark")) {
 								valueCursorMark = (String)paramObject;
 								searchList.cursorMark((String)paramObject);
 							}
 						}
-						searchGpuSliceUri(searchList);
+						searchBareMetalOrderUri(searchList);
 					}
 				} catch(Exception e) {
 					ExceptionUtils.rethrow(e);
@@ -2993,7 +2626,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			String facetRangeGap2 = facetRangeGap;
 			String statsField2 = statsField;
 			String statsFieldIndexed2 = statsFieldIndexed;
-			searchGpuSlice2(siteRequest, populate, store, modify, searchList);
+			searchBareMetalOrder2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
 				if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
 					StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3029,32 +2662,32 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					searchList.query().onSuccess(b -> {
 						promise.complete(searchList);
 					}).onFailure(ex -> {
-						LOG.error(String.format("searchGpuSlice failed. "), ex);
+						LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete(searchList);
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("searchGpuSlice failed. "), ex);
+				LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("searchGpuSlice failed. "), ex);
+			LOG.error(String.format("searchBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void searchGpuSlice2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<GpuSlice> searchList) {
+	public void searchBareMetalOrder2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<BareMetalOrder> searchList) {
 	}
 
-	public Future<Void> persistGpuSlice(GpuSlice o, Boolean patch) {
+	public Future<Void> persistBareMetalOrder(BareMetalOrder o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT * FROM GpuSlice WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT * FROM BareMetalOrder WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3067,7 +2700,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								try {
 									o.persistForClass(columnName, columnValue);
 								} catch(Exception e) {
-									LOG.error(String.format("persistGpuSlice failed. "), e);
+									LOG.error(String.format("persistBareMetalOrder failed. "), e);
 								}
 							}
 						}
@@ -3075,42 +2708,42 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					o.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("persistGpuSlice failed. "), ex);
+						LOG.error(String.format("persistBareMetalOrder failed. "), ex);
 						promise.fail(ex);
 					});
 				} catch(Exception ex) {
-					LOG.error(String.format("persistGpuSlice failed. "), ex);
+					LOG.error(String.format("persistBareMetalOrder failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("persistGpuSlice failed. "), ex2);
+				LOG.error(String.format("persistBareMetalOrder failed. "), ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("persistGpuSlice failed. "), ex);
+			LOG.error(String.format("persistBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> relateGpuSlice(GpuSlice o) {
+	public Future<Void> relateBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
 			promise.complete();
 		return promise.future();
 	}
 
 	public String searchVar(String varIndexed) {
-		return GpuSlice.searchVarGpuSlice(varIndexed);
+		return BareMetalOrder.searchVarBareMetalOrder(varIndexed);
 	}
 
 	@Override
 	public String getClassApiAddress() {
-		return GpuSlice.CLASS_API_ADDRESS_GpuSlice;
+		return BareMetalOrder.CLASS_API_ADDRESS_BareMetalOrder;
 	}
 
-	public Future<GpuSlice> indexGpuSlice(GpuSlice o) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> indexBareMetalOrder(BareMetalOrder o) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3119,7 +2752,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			json.put("add", add);
 			JsonObject doc = new JsonObject();
 			add.put("doc", doc);
-			o.indexGpuSlice(doc);
+			o.indexBareMetalOrder(doc);
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3136,18 +2769,18 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
-				LOG.error(String.format("indexGpuSlice failed. "), new RuntimeException(ex));
+				LOG.error(String.format("indexBareMetalOrder failed. "), new RuntimeException(ex));
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("indexGpuSlice failed. "), ex);
+			LOG.error(String.format("indexBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<GpuSlice> unindexGpuSlice(GpuSlice o) {
-		Promise<GpuSlice> promise = Promise.promise();
+	public Future<BareMetalOrder> unindexBareMetalOrder(BareMetalOrder o) {
+		Promise<BareMetalOrder> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3173,21 +2806,21 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
-					LOG.error(String.format("unindexGpuSlice failed. "), new RuntimeException(ex));
+					LOG.error(String.format("unindexBareMetalOrder failed. "), new RuntimeException(ex));
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("unindexGpuSlice failed. "), ex);
+				LOG.error(String.format("unindexBareMetalOrder failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("unindexGpuSlice failed. "), ex);
+			LOG.error(String.format("unindexBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> refreshGpuSlice(GpuSlice o) {
+	public Future<Void> refreshBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
@@ -3223,7 +2856,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(GpuSlice.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchGpuSliceFuture")).onSuccess(c -> {
+					eventBus.request(BareMetalOrder.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchBareMetalOrderFuture")).onSuccess(c -> {
 						JsonObject responseMessage = (JsonObject)c.body();
 						Integer statusCode = responseMessage.getInteger("statusCode");
 						if(statusCode.equals(200))
@@ -3242,7 +2875,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				promise.complete();
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("refreshGpuSlice failed. "), ex);
+			LOG.error(String.format("refreshBareMetalOrder failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3255,23 +2888,16 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
 			SiteRequest siteRequest2 = (SiteRequest)siteRequest;
 			String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-			GpuSlice page = new GpuSlice();
+			BareMetalOrder page = new BareMetalOrder();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(GpuSlice.VAR_sliceName, GpuSlice.staticSetSliceName(siteRequest2, (String)result.get(GpuSlice.VAR_sliceName)));
-			page.persistForClass(GpuSlice.VAR_description, GpuSlice.staticSetDescription(siteRequest2, (String)result.get(GpuSlice.VAR_description)));
-			page.persistForClass(GpuSlice.VAR_created, GpuSlice.staticSetCreated(siteRequest2, (String)result.get(GpuSlice.VAR_created)));
-			page.persistForClass(GpuSlice.VAR_archived, GpuSlice.staticSetArchived(siteRequest2, (String)result.get(GpuSlice.VAR_archived)));
-			page.persistForClass(GpuSlice.VAR_location, GpuSlice.staticSetLocation(siteRequest2, (String)result.get(GpuSlice.VAR_location)));
-			page.persistForClass(GpuSlice.VAR_id, GpuSlice.staticSetId(siteRequest2, (String)result.get(GpuSlice.VAR_id)));
-			page.persistForClass(GpuSlice.VAR_sessionId, GpuSlice.staticSetSessionId(siteRequest2, (String)result.get(GpuSlice.VAR_sessionId)));
-			page.persistForClass(GpuSlice.VAR_ngsildTenant, GpuSlice.staticSetNgsildTenant(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildTenant)));
-			page.persistForClass(GpuSlice.VAR_userKey, GpuSlice.staticSetUserKey(siteRequest2, (String)result.get(GpuSlice.VAR_userKey)));
-			page.persistForClass(GpuSlice.VAR_ngsildPath, GpuSlice.staticSetNgsildPath(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildPath)));
-			page.persistForClass(GpuSlice.VAR_ngsildContext, GpuSlice.staticSetNgsildContext(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildContext)));
-			page.persistForClass(GpuSlice.VAR_ngsildData, GpuSlice.staticSetNgsildData(siteRequest2, (String)result.get(GpuSlice.VAR_ngsildData)));
-			page.persistForClass(GpuSlice.VAR_objectTitle, GpuSlice.staticSetObjectTitle(siteRequest2, (String)result.get(GpuSlice.VAR_objectTitle)));
-			page.persistForClass(GpuSlice.VAR_displayPage, GpuSlice.staticSetDisplayPage(siteRequest2, (String)result.get(GpuSlice.VAR_displayPage)));
+			page.persistForClass(BareMetalOrder.VAR_description, BareMetalOrder.staticSetDescription(siteRequest2, (String)result.get(BareMetalOrder.VAR_description)));
+			page.persistForClass(BareMetalOrder.VAR_created, BareMetalOrder.staticSetCreated(siteRequest2, (String)result.get(BareMetalOrder.VAR_created)));
+			page.persistForClass(BareMetalOrder.VAR_archived, BareMetalOrder.staticSetArchived(siteRequest2, (String)result.get(BareMetalOrder.VAR_archived)));
+			page.persistForClass(BareMetalOrder.VAR_sessionId, BareMetalOrder.staticSetSessionId(siteRequest2, (String)result.get(BareMetalOrder.VAR_sessionId)));
+			page.persistForClass(BareMetalOrder.VAR_userKey, BareMetalOrder.staticSetUserKey(siteRequest2, (String)result.get(BareMetalOrder.VAR_userKey)));
+			page.persistForClass(BareMetalOrder.VAR_objectTitle, BareMetalOrder.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalOrder.VAR_objectTitle)));
+			page.persistForClass(BareMetalOrder.VAR_displayPage, BareMetalOrder.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalOrder.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {
