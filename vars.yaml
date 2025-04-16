@@ -614,5 +614,7 @@ ESI_API_SSL: "{{ (lookup('env', 'ESI_API_SSL') | lower) != 'false' }}"
 ESI_API_HOST_NAME: "{{ lookup('env', 'ESI_API_HOST_NAME') | default('', true) }}"
 # The default port that the fulfillment API runs. 
 ESI_API_PORT: "{{ lookup('env', 'ESI_API_PORT') | default('443', true) }}"
-
+# Ensure BareMetalNode is updated frequently
+IMPORT_DATA_START_TIME_BareMetalNode: 12:00 America/New_York
+IMPORT_DATA_PERIOD_BareMetalNode: 30 seconds
 
