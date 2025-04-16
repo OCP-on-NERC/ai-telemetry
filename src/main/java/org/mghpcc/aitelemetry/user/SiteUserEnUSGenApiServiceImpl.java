@@ -332,7 +332,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listSiteUser.first());
-								apiRequest.setId(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getUserId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getUserId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketSiteUser", JsonObject.mapFrom(apiRequest).toString());
 
@@ -455,7 +455,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getUserId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getUserId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listSiteUser.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							SiteUser o2 = jsonObject.mapTo(SiteUser.class);
@@ -486,7 +486,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		});
 	}
 
-	public Future<SiteUser> patchSiteUserFuture(SiteUser o, Boolean userId) {
+	public Future<SiteUser> patchSiteUserFuture(SiteUser o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<SiteUser> promise = Promise.promise();
 
@@ -496,7 +496,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsSiteUser(siteRequest).onSuccess(a -> {
-					sqlPATCHSiteUser(o, userId).onSuccess(siteUser -> {
+					sqlPATCHSiteUser(o, inheritPrimaryKey).onSuccess(siteUser -> {
 						persistSiteUser(siteUser, true).onSuccess(c -> {
 							relateSiteUser(siteUser).onSuccess(d -> {
 								indexSiteUser(siteUser).onSuccess(o2 -> {
@@ -550,7 +550,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		return promise.future();
 	}
 
-	public Future<SiteUser> sqlPATCHSiteUser(SiteUser o, Boolean userId) {
+	public Future<SiteUser> sqlPATCHSiteUser(SiteUser o, Boolean inheritPrimaryKey) {
 		Promise<SiteUser> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -980,7 +980,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		return promise.future();
 	}
 
-	public Future<SiteUser> sqlPOSTSiteUser(SiteUser o, Boolean userId) {
+	public Future<SiteUser> sqlPOSTSiteUser(SiteUser o, Boolean inheritPrimaryKey) {
 		Promise<SiteUser> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1668,9 +1668,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			}
 
 			String userId = serviceRequest.getParams().getJsonObject("path").getString("userId");
-			if(userId != null && NumberUtils.isCreatable(userId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(userId) + " OR userId_docvalues_string:" + SearchTool.escapeQueryChars(userId) + ")");
-			} else if(userId != null) {
+			if(userId != null) {
 				searchList.fq("userId_docvalues_string:" + SearchTool.escapeQueryChars(userId));
 			}
 

@@ -33,6 +33,7 @@ ESI_API_SSL: "false"
 ESI_API_HOST_NAME: "localhost"
 ESI_API_PORT: "8081"
 WORKBENCH_NAMES:
+  - USER_NAME: tzumainn
   - USER_NAME: computate
     WORKBENCH_ADMIN: true
 #  - USER_NAME: dheeraj

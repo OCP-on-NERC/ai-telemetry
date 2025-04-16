@@ -441,7 +441,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterRequest.first());
-								apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketClusterRequest", JsonObject.mapFrom(apiRequest).toString());
 
@@ -564,7 +564,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							ClusterRequest o2 = jsonObject.mapTo(ClusterRequest.class);
@@ -595,7 +595,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		});
 	}
 
-	public Future<ClusterRequest> patchClusterRequestFuture(ClusterRequest o, Boolean name) {
+	public Future<ClusterRequest> patchClusterRequestFuture(ClusterRequest o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<ClusterRequest> promise = Promise.promise();
 
@@ -605,7 +605,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsClusterRequest(siteRequest).onSuccess(a -> {
-					sqlPATCHClusterRequest(o, name).onSuccess(clusterRequest -> {
+					sqlPATCHClusterRequest(o, inheritPrimaryKey).onSuccess(clusterRequest -> {
 						persistClusterRequest(clusterRequest, true).onSuccess(c -> {
 							relateClusterRequest(clusterRequest).onSuccess(d -> {
 								indexClusterRequest(clusterRequest).onSuccess(o2 -> {
@@ -659,7 +659,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		return promise.future();
 	}
 
-	public Future<ClusterRequest> sqlPATCHClusterRequest(ClusterRequest o, Boolean name) {
+	public Future<ClusterRequest> sqlPATCHClusterRequest(ClusterRequest o, Boolean inheritPrimaryKey) {
 		Promise<ClusterRequest> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -691,7 +691,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case "setClusterTemplateTitle":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, name).onSuccess(pk2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
 									if(!pks.contains(pk2)) {
 										pks.add(pk2);
 										classes.add("ClusterTemplate");
@@ -729,7 +729,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case "setUserId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, name).onSuccess(pk2 -> {
+								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
 									if(!pks.contains(pk2)) {
 										pks.add(pk2);
 										classes.add("SiteUser");
@@ -1093,7 +1093,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		return promise.future();
 	}
 
-	public Future<ClusterRequest> sqlPOSTClusterRequest(ClusterRequest o, Boolean name) {
+	public Future<ClusterRequest> sqlPOSTClusterRequest(ClusterRequest o, Boolean inheritPrimaryKey) {
 		Promise<ClusterRequest> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1144,7 +1144,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_clusterTemplateTitle:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, name).onSuccess(pk2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
 									if(!pks.contains(pk2)) {
 										pks.add(pk2);
 										classes.add("ClusterTemplate");
@@ -1172,7 +1172,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_userId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, name).onSuccess(pk2 -> {
+								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.varIndexedSiteUser(SiteUser.VAR_pk), SiteUser.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
 									if(!pks.contains(pk2)) {
 										pks.add(pk2);
 										classes.add("SiteUser");
@@ -1464,7 +1464,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteClusterRequestFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2625,7 +2625,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterRequest.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterClusterRequestFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2957,9 +2957,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			}
 
 			String name = serviceRequest.getParams().getJsonObject("path").getString("name");
-			if(name != null && NumberUtils.isCreatable(name)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(name) + " OR name_docvalues_string:" + SearchTool.escapeQueryChars(name) + ")");
-			} else if(name != null) {
+			if(name != null) {
 				searchList.fq("name_docvalues_string:" + SearchTool.escapeQueryChars(name));
 			}
 

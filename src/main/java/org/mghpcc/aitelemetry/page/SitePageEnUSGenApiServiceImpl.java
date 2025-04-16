@@ -323,7 +323,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listSitePage.first());
-								apiRequest.setId(Optional.ofNullable(listSitePage.first()).map(o2 -> o2.getPageId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listSitePage.first()).map(o2 -> o2.getPageId().toString()).orElse(null));
 								eventBus.publish("websocketSitePage", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHSitePage(apiRequest, listSitePage).onSuccess(e -> {
@@ -439,7 +439,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listSitePage.first()).map(o2 -> o2.getPageId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listSitePage.first()).map(o2 -> o2.getPageId().toString()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							SitePage o2 = jsonObject.mapTo(SitePage.class);
 							o2.setSiteRequest_(siteRequest);
@@ -469,7 +469,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		});
 	}
 
-	public Future<SitePage> patchSitePageFuture(SitePage o, Boolean pageId) {
+	public Future<SitePage> patchSitePageFuture(SitePage o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<SitePage> promise = Promise.promise();
 

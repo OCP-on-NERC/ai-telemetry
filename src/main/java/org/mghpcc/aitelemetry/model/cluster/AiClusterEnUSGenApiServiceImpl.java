@@ -509,7 +509,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiCluster.first());
-								apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketAiCluster", JsonObject.mapFrom(apiRequest).toString());
 
@@ -632,7 +632,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiCluster o2 = jsonObject.mapTo(AiCluster.class);
@@ -663,7 +663,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiCluster> patchAiClusterFuture(AiCluster o, Boolean clusterName) {
+	public Future<AiCluster> patchAiClusterFuture(AiCluster o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<AiCluster> promise = Promise.promise();
 
@@ -673,7 +673,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiCluster(siteRequest).onSuccess(a -> {
-					sqlPATCHAiCluster(o, clusterName).onSuccess(aiCluster -> {
+					sqlPATCHAiCluster(o, inheritPrimaryKey).onSuccess(aiCluster -> {
 						persistAiCluster(aiCluster, true).onSuccess(c -> {
 							relateAiCluster(aiCluster).onSuccess(d -> {
 								indexAiCluster(aiCluster).onSuccess(o2 -> {
@@ -727,7 +727,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiCluster> sqlPATCHAiCluster(AiCluster o, Boolean clusterName) {
+	public Future<AiCluster> sqlPATCHAiCluster(AiCluster o, Boolean inheritPrimaryKey) {
 		Promise<AiCluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1197,7 +1197,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiCluster> sqlPOSTAiCluster(AiCluster o, Boolean clusterName) {
+	public Future<AiCluster> sqlPOSTAiCluster(AiCluster o, Boolean inheritPrimaryKey) {
 		Promise<AiCluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1635,7 +1635,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteAiClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2904,7 +2904,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterAiClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -3198,9 +3198,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}
 
 			String clusterName = serviceRequest.getParams().getJsonObject("path").getString("clusterName");
-			if(clusterName != null && NumberUtils.isCreatable(clusterName)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(clusterName) + " OR clusterName_docvalues_string:" + SearchTool.escapeQueryChars(clusterName) + ")");
-			} else if(clusterName != null) {
+			if(clusterName != null) {
 				searchList.fq("clusterName_docvalues_string:" + SearchTool.escapeQueryChars(clusterName));
 			}
 

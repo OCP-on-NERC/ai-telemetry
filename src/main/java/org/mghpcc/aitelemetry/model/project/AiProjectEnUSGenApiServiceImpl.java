@@ -509,7 +509,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
 
@@ -632,7 +632,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiProject o2 = jsonObject.mapTo(AiProject.class);
@@ -663,7 +663,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<AiProject> patchAiProjectFuture(AiProject o, Boolean projectId) {
+	public Future<AiProject> patchAiProjectFuture(AiProject o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<AiProject> promise = Promise.promise();
 
@@ -673,7 +673,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiProject(siteRequest).onSuccess(a -> {
-					sqlPATCHAiProject(o, projectId).onSuccess(aiProject -> {
+					sqlPATCHAiProject(o, inheritPrimaryKey).onSuccess(aiProject -> {
 						persistAiProject(aiProject, true).onSuccess(c -> {
 							relateAiProject(aiProject).onSuccess(d -> {
 								indexAiProject(aiProject).onSuccess(o2 -> {
@@ -727,7 +727,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPATCHAiProject(AiProject o, Boolean projectId) {
+	public Future<AiProject> sqlPATCHAiProject(AiProject o, Boolean inheritPrimaryKey) {
 		Promise<AiProject> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1149,7 +1149,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean projectId) {
+	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean inheritPrimaryKey) {
 		Promise<AiProject> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1533,7 +1533,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteAiProjectFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2802,7 +2802,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterAiProjectFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -3096,9 +3096,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}
 
 			String projectId = serviceRequest.getParams().getJsonObject("path").getString("projectId");
-			if(projectId != null && NumberUtils.isCreatable(projectId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(projectId) + " OR projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId) + ")");
-			} else if(projectId != null) {
+			if(projectId != null) {
 				searchList.fq("projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId));
 			}
 

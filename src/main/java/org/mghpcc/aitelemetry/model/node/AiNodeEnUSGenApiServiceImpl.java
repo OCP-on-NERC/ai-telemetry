@@ -509,7 +509,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
 
@@ -632,7 +632,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiNode o2 = jsonObject.mapTo(AiNode.class);
@@ -663,7 +663,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		});
 	}
 
-	public Future<AiNode> patchAiNodeFuture(AiNode o, Boolean nodeId) {
+	public Future<AiNode> patchAiNodeFuture(AiNode o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
 		Promise<AiNode> promise = Promise.promise();
 
@@ -673,7 +673,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
 				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlPATCHAiNode(o, nodeId).onSuccess(aiNode -> {
+					sqlPATCHAiNode(o, inheritPrimaryKey).onSuccess(aiNode -> {
 						persistAiNode(aiNode, true).onSuccess(c -> {
 							relateAiNode(aiNode).onSuccess(d -> {
 								indexAiNode(aiNode).onSuccess(o2 -> {
@@ -727,7 +727,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPATCHAiNode(AiNode o, Boolean nodeId) {
+	public Future<AiNode> sqlPATCHAiNode(AiNode o, Boolean inheritPrimaryKey) {
 		Promise<AiNode> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1205,7 +1205,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPOSTAiNode(AiNode o, Boolean nodeId) {
+	public Future<AiNode> sqlPOSTAiNode(AiNode o, Boolean inheritPrimaryKey) {
 		Promise<AiNode> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1652,7 +1652,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteAiNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2921,7 +2921,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterAiNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -3215,9 +3215,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}
 
 			String nodeId = serviceRequest.getParams().getJsonObject("path").getString("nodeId");
-			if(nodeId != null && NumberUtils.isCreatable(nodeId)) {
-				searchList.fq("(_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + " OR nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId) + ")");
-			} else if(nodeId != null) {
+			if(nodeId != null) {
 				searchList.fq("nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId));
 			}
 
