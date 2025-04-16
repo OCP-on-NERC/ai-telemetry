@@ -1,58 +1,23 @@
 package org.mghpcc.aitelemetry.model.baremetalnode;
 
-import io.vertx.ext.auth.authorization.AuthorizationProvider;
-import io.vertx.ext.auth.oauth2.OAuth2Auth;
-import io.vertx.ext.web.client.WebClient;
-import io.vertx.core.Vertx;
-import io.vertx.core.WorkerExecutor;
-import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.Pool;
-import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
-import io.vertx.kafka.client.producer.KafkaProducer;
-import io.vertx.mqtt.MqttClient;
-import io.vertx.amqp.AmqpSender;
-import io.vertx.rabbitmq.RabbitMQClient;
-import com.hubspot.jinjava.Jinjava;
-
-import io.vertx.ext.auth.authorization.AuthorizationProvider;
-import io.vertx.ext.auth.oauth2.OAuth2Auth;
-import io.vertx.ext.web.client.WebClient;
-import io.vertx.core.Future;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.core.WorkerExecutor;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.http.HttpResponseExpectation;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.Pool;
-
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.computate.vertx.config.ComputateConfigKeys;
-import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
-import io.vertx.ext.auth.authorization.AuthorizationProvider;
-import io.vertx.ext.auth.oauth2.OAuth2Auth;
-import io.vertx.ext.web.client.WebClient;
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.core.WorkerExecutor;
+import io.vertx.core.eventbus.DeliveryOptions;
+import io.vertx.core.http.HttpResponseExpectation;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.Pool;
-import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
-import io.vertx.kafka.client.producer.KafkaProducer;
-import io.vertx.mqtt.MqttClient;
-import io.vertx.amqp.AmqpSender;
-import io.vertx.rabbitmq.RabbitMQClient;
-import com.hubspot.jinjava.Jinjava;
 
 /**
  * Translate: false
@@ -137,11 +102,9 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 						BareMetalNode oldBareMetalNode = oldBareMetalNodes.getList().get(i);
 						futures.add(Future.future(promise1 -> {
 							try {
-								String templateTitle = oldBareMetalNode.getNodeName();
-								JsonObject body = new JsonObject().put("setArchived", true);
+								String nodeName = oldBareMetalNode.getNodeName();
 
 								JsonObject pageParams = new JsonObject();
-								pageParams.put("body", body);
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());
 								pageParams.put("query", new JsonObject()
@@ -155,13 +118,13 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 
 								vertx.eventBus().request(BareMetalNode.CLASS_API_ADDRESS_BareMetalNode, pageRequest, new DeliveryOptions()
 										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
-										.addHeader("action", String.format("patch%sFuture", classSimpleName))
+										.addHeader("action", String.format("delete%sFuture", classSimpleName))
 										).onSuccess(message -> {
-									LOG.info(String.format("Archived %s %s", BareMetalNode.SingularName_enUS, templateTitle));
+									LOG.info(String.format("Deleted %s %s", BareMetalNode.SingularName_enUS, nodeName));
 									promise1.complete(oldBareMetalNodes);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
-									promise.fail(ex);
+									promise1.fail(ex);
 								});
 							} catch(Exception ex) {
 								LOG.error(String.format(importDataFail, classSimpleName), ex);
