@@ -199,7 +199,6 @@ ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS sessionId text;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS userKey bigint;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS objectTitle text;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key UNIQUE;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS networkId text references BareMetalNetwork(id);
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS numberOfFc430 integer;
