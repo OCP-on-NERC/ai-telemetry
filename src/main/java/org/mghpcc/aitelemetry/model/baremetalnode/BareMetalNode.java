@@ -67,7 +67,6 @@ public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
      * DisplayName: id
      * HtmRow: 3
      * HtmCell: 19
-     * HtmColumn: 0
      * Facet: true
      * VarId: true
      * Val.ESI: id
@@ -108,7 +107,7 @@ public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
      * DisplayName: name
      * HtmRow: 3
      * HtmCell: 35
-     * HtmColumn: 1
+     * HtmColumn: 0
      * Facet: true
      * VarName: true
      * Val.ESI: name
@@ -123,7 +122,7 @@ public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
      * DisplayName: power state
      * HtmRow: 3
      * HtmCell: 42
-     * HtmColumn: 3
+     * HtmColumn: 2
      * Facet: true
      * Val.ESI: power_state
      **/
@@ -137,10 +136,24 @@ public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
      * DisplayName: provision state
      * HtmRow: 3
      * HtmCell: 45
-     * HtmColumn: 2
+     * HtmColumn: 3
      * Facet: true
      * Val.ESI: provision_state
      **/
     protected void _nodeProvisionState(Wrap<String> w) {
+    }
+
+    /**
+     * {@inheritDoc}
+     * DocValues: true
+     * Persist: true
+     * DisplayName: resource class
+     * HtmRow: 3
+     * HtmCell: 55
+     * HtmColumn: 1
+     * Facet: true
+     * Val.ESI: resource_class
+     **/
+    protected void _nodeResourceClass(Wrap<String> w) {
     }
 }

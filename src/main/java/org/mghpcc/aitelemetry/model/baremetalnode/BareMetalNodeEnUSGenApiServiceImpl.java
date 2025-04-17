@@ -752,6 +752,14 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
+					case "setNodeResourceClass":
+							o2.setNodeResourceClass(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNodeResourceClass());
+						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -1206,6 +1214,15 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						bSql.append(BareMetalNode.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
+						break;
+					case BareMetalNode.VAR_nodeResourceClass:
+						o2.setNodeResourceClass(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNodeResourceClass());
 						break;
 					case BareMetalNode.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
@@ -3109,6 +3126,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			page.persistForClass(BareMetalNode.VAR_nodePowerState, BareMetalNode.staticSetNodePowerState(siteRequest2, (String)result.get(BareMetalNode.VAR_nodePowerState)));
 			page.persistForClass(BareMetalNode.VAR_nodeProvisionState, BareMetalNode.staticSetNodeProvisionState(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeProvisionState)));
 			page.persistForClass(BareMetalNode.VAR_sessionId, BareMetalNode.staticSetSessionId(siteRequest2, (String)result.get(BareMetalNode.VAR_sessionId)));
+			page.persistForClass(BareMetalNode.VAR_nodeResourceClass, BareMetalNode.staticSetNodeResourceClass(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeResourceClass)));
 			page.persistForClass(BareMetalNode.VAR_userKey, BareMetalNode.staticSetUserKey(siteRequest2, (String)result.get(BareMetalNode.VAR_userKey)));
 			page.persistForClass(BareMetalNode.VAR_objectTitle, BareMetalNode.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalNode.VAR_objectTitle)));
 			page.persistForClass(BareMetalNode.VAR_displayPage, BareMetalNode.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalNode.VAR_displayPage)));

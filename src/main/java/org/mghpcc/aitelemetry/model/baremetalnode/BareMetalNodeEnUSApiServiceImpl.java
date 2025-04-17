@@ -61,7 +61,8 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 			body.put(BareMetalNode.VAR_nodeName, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeNameESI_enUS));
 			body.put(BareMetalNode.VAR_nodePowerState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodePowerStateESI_enUS));
 			body.put(BareMetalNode.VAR_nodeProvisionState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeProvisionStateESI_enUS));
-
+			body.put(BareMetalNode.VAR_nodeResourceClass, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeResourceClassESI_enUS));
+		
 			JsonObject pageParams = new JsonObject();
 			pageParams.put("body", body);
 			pageParams.put("path", new JsonObject());

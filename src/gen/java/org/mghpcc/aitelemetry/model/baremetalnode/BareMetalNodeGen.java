@@ -727,6 +727,64 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		return nodeProvisionState;
 	}
 
+	///////////////////////
+	// nodeResourceClass //
+	///////////////////////
+
+	public static final String nodeResourceClassESI1_enUS = "resource_class";
+	public static final String nodeResourceClassESI_enUS = nodeResourceClassESI1_enUS;
+
+	/**	 The entity nodeResourceClass
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String nodeResourceClass;
+
+	/**	<br> The entity nodeResourceClass
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode&fq=entiteVar_enUS_indexed_string:nodeResourceClass">Find the entity nodeResourceClass in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _nodeResourceClass(Wrap<String> w);
+
+	public String getNodeResourceClass() {
+		return nodeResourceClass;
+	}
+	public void setNodeResourceClass(String o) {
+		this.nodeResourceClass = BareMetalNode.staticSetNodeResourceClass(siteRequest_, o);
+	}
+	public static String staticSetNodeResourceClass(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BareMetalNode nodeResourceClassInit() {
+		Wrap<String> nodeResourceClassWrap = new Wrap<String>().var("nodeResourceClass");
+		if(nodeResourceClass == null) {
+			_nodeResourceClass(nodeResourceClassWrap);
+			Optional.ofNullable(nodeResourceClassWrap.getO()).ifPresent(o -> {
+				setNodeResourceClass(o);
+			});
+		}
+		return (BareMetalNode)this;
+	}
+
+	public static String staticSearchNodeResourceClass(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrNodeResourceClass(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqNodeResourceClass(SiteRequest siteRequest_, String o) {
+		return BareMetalNode.staticSearchNodeResourceClass(siteRequest_, BareMetalNode.staticSetNodeResourceClass(siteRequest_, o)).toString();
+	}
+
+	public String sqlNodeResourceClass() {
+		return nodeResourceClass;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -764,6 +822,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				nodeNameInit();
 				nodePowerStateInit();
 				nodeProvisionStateInit();
+				nodeResourceClassInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -833,6 +892,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				return oBareMetalNode.nodePowerState;
 			case "nodeProvisionState":
 				return oBareMetalNode.nodeProvisionState;
+			case "nodeResourceClass":
+				return oBareMetalNode.nodeResourceClass;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -888,6 +949,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return BareMetalNode.staticSetNodePowerState(siteRequest_, o);
 		case "nodeProvisionState":
 			return BareMetalNode.staticSetNodeProvisionState(siteRequest_, o);
+		case "nodeResourceClass":
+			return BareMetalNode.staticSetNodeResourceClass(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -918,6 +981,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return BareMetalNode.staticSearchNodePowerState(siteRequest_, (String)o);
 		case "nodeProvisionState":
 			return BareMetalNode.staticSearchNodeProvisionState(siteRequest_, (String)o);
+		case "nodeResourceClass":
+			return BareMetalNode.staticSearchNodeResourceClass(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -948,6 +1013,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return BareMetalNode.staticSearchStrNodePowerState(siteRequest_, (String)o);
 		case "nodeProvisionState":
 			return BareMetalNode.staticSearchStrNodeProvisionState(siteRequest_, (String)o);
+		case "nodeResourceClass":
+			return BareMetalNode.staticSearchStrNodeResourceClass(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -978,6 +1045,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return BareMetalNode.staticSearchFqNodePowerState(siteRequest_, o);
 		case "nodeProvisionState":
 			return BareMetalNode.staticSearchFqNodeProvisionState(siteRequest_, o);
+		case "nodeResourceClass":
+			return BareMetalNode.staticSearchFqNodeResourceClass(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1060,6 +1129,12 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				}
 				saves.add("nodeProvisionState");
 				return val;
+			} else if("noderesourceclass".equals(varLower)) {
+				if(val instanceof String) {
+					setNodeResourceClass((String)val);
+				}
+				saves.add("nodeResourceClass");
+				return val;
 		} else {
 			return super.persistBaseModel(var, val);
 		}
@@ -1124,6 +1199,12 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				if(nodeProvisionState != null)
 					oBareMetalNode.setNodeProvisionState(nodeProvisionState);
 			}
+
+			if(saves.contains("nodeResourceClass")) {
+				String nodeResourceClass = (String)doc.get("nodeResourceClass_docvalues_string");
+				if(nodeResourceClass != null)
+					oBareMetalNode.setNodeResourceClass(nodeResourceClass);
+			}
 		}
 
 		super.populateBaseModel(doc);
@@ -1154,6 +1235,9 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		if(nodeProvisionState != null) {
 			doc.put("nodeProvisionState_docvalues_string", nodeProvisionState);
 		}
+		if(nodeResourceClass != null) {
+			doc.put("nodeResourceClass_docvalues_string", nodeResourceClass);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1176,6 +1260,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				return "nodePowerState_docvalues_string";
 			case "nodeProvisionState":
 				return "nodeProvisionState_docvalues_string";
+			case "nodeResourceClass":
+				return "nodeResourceClass_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1199,6 +1285,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				return "nodePowerState_docvalues_string";
 			case "nodeProvisionState":
 				return "nodeProvisionState_docvalues_string";
+			case "nodeResourceClass":
+				return "nodeResourceClass_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1222,6 +1310,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				return "nodePowerState";
 			case "nodeProvisionState_docvalues_string":
 				return "nodeProvisionState";
+			case "nodeResourceClass_docvalues_string":
+				return "nodeResourceClass";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1260,6 +1350,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		oBareMetalNode.setNodeName(Optional.ofNullable(doc.get("nodeName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBareMetalNode.setNodePowerState(Optional.ofNullable(doc.get("nodePowerState_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBareMetalNode.setNodeProvisionState(Optional.ofNullable(doc.get("nodeProvisionState_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBareMetalNode.setNodeResourceClass(Optional.ofNullable(doc.get("nodeResourceClass_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1289,6 +1380,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 				apiRequest.addVars("nodePowerState");
 			if(!Objects.equals(nodeProvisionState, original.getNodeProvisionState()))
 				apiRequest.addVars("nodeProvisionState");
+			if(!Objects.equals(nodeResourceClass, original.getNodeResourceClass()))
+				apiRequest.addVars("nodeResourceClass");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1308,10 +1401,11 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(nodeName).map(v -> "nodeName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(nodePowerState).map(v -> "nodePowerState: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(nodeProvisionState).map(v -> "nodeProvisionState: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(nodeResourceClass).map(v -> "nodeResourceClass: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
-	public static final String[] BareMetalNodeVals = new String[] { nodeESI1_enUS, leaseInfoESI1_enUS, networkInfoESI1_enUS, nodeIdESI1_enUS, nodeIsMaintenanceESI1_enUS, nodeLinksESI1_enUS, nodeNameESI1_enUS, nodePowerStateESI1_enUS, nodeProvisionStateESI1_enUS };
+	public static final String[] BareMetalNodeVals = new String[] { nodeESI1_enUS, leaseInfoESI1_enUS, networkInfoESI1_enUS, nodeIdESI1_enUS, nodeIsMaintenanceESI1_enUS, nodeLinksESI1_enUS, nodeNameESI1_enUS, nodePowerStateESI1_enUS, nodeProvisionStateESI1_enUS, nodeResourceClassESI1_enUS };
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNode";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode";
@@ -1327,6 +1421,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	public static final String VAR_nodeName = "nodeName";
 	public static final String VAR_nodePowerState = "nodePowerState";
 	public static final String VAR_nodeProvisionState = "nodeProvisionState";
+	public static final String VAR_nodeResourceClass = "nodeResourceClass";
 
 	public static List<String> varsQForClass() {
 		return BareMetalNode.varsQBareMetalNode(new ArrayList<String>());
@@ -1348,6 +1443,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		vars.add(VAR_nodeName);
 		vars.add(VAR_nodePowerState);
 		vars.add(VAR_nodeProvisionState);
+		vars.add(VAR_nodeResourceClass);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1372,6 +1468,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_nodeName = "name";
 	public static final String DISPLAY_NAME_nodePowerState = "power state";
 	public static final String DISPLAY_NAME_nodeProvisionState = "provision state";
+	public static final String DISPLAY_NAME_nodeResourceClass = "resource class";
 
 	@Override
 	public String idForClass() {
@@ -1439,6 +1536,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_nodePowerState;
 		case VAR_nodeProvisionState:
 			return DISPLAY_NAME_nodeProvisionState;
+		case VAR_nodeResourceClass:
+			return DISPLAY_NAME_nodeResourceClass;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1469,6 +1568,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_nodeProvisionState:
 			return "String";
+		case VAR_nodeResourceClass:
+			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1476,14 +1577,14 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnBareMetalNode(String var) {
 		switch(var) {
-		case VAR_nodeId:
-			return 0;
 		case VAR_nodeName:
-			return 1;
+			return 0;
 		case VAR_nodePowerState:
-			return 3;
-		case VAR_nodeProvisionState:
 			return 2;
+		case VAR_nodeProvisionState:
+			return 3;
+		case VAR_nodeResourceClass:
+			return 1;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}
@@ -1506,6 +1607,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		case VAR_nodePowerState:
 			return 3;
 		case VAR_nodeProvisionState:
+			return 3;
+		case VAR_nodeResourceClass:
 			return 3;
 			default:
 				return BaseModel.htmRowBaseModel(var);
@@ -1530,6 +1633,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			return 42;
 		case VAR_nodeProvisionState:
 			return 45;
+		case VAR_nodeResourceClass:
+			return 55;
 			default:
 				return BaseModel.htmCellBaseModel(var);
 		}
