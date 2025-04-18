@@ -2,8 +2,13 @@ package org.mghpcc.aitelemetry.model.baremetalorder;
 
 import java.util.Optional;
 
+import org.computate.search.tool.SearchTool;
 import org.computate.search.wrap.Wrap;
+import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.model.BaseModel;
+import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
+
+import io.vertx.core.Promise;
 
 /**
  * Order: 12
@@ -62,11 +67,147 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * DisplayName: bare metal order description
 	 * Description: The description of this bare metal order
 	 * HtmRow: 3
-	 * HtmCell: 3
+	 * HtmCell: 0
 	 * HtmColumn: 1
 	 * HtmRowTitleOpen: bare metal order details
 	 * Facet: true
 	 * VarDescription: true
 	 **/
 	protected void _description(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: bare metal network
+	 * Description: The bare metal network to use for this order. 
+	 * HtmRow: 3
+	 * HtmCell: 1
+	 * Facet: true
+	 * Relate: BareMetalNetwork.id
+	 **/
+	protected void _networkId(Wrap<String> w) {}
+
+	/**
+	 * Ignore: true
+	 */
+	protected void _networkSearch(Promise<SearchList<BareMetalNetwork>> promise) {
+		SearchList<BareMetalNetwork> l = new SearchList<>();
+		if(networkId != null) {
+			l.setC(BareMetalNetwork.class);
+			l.q("*:*");
+			l.fq(String.format("id_docvalues_string:%s", SearchTool.escapeQueryChars(networkId)));
+			l.setStore(true);
+		}
+		promise.complete(l);
+	}
+
+	/**
+	 * Ignore: true
+	 * Initialized: false
+	 */
+	protected void _network(Wrap<BareMetalNetwork> w) {
+		if(networkSearch.first() != null) {
+			w.o(networkSearch.first());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * DisplayName: bare metal network name
+	 * Description: The bare metal network name to use for this order. 
+	 * HtmColumn: 2
+	 * Facet: true
+	 **/
+	protected void _networkName(Wrap<String> w) {
+		if(network != null) {
+			w.o(network.getName());
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of fc430
+	 * Description: The number of fc430 nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 0
+	 * HtmRowTitleOpen: node details
+	 * Facet: true
+	 **/
+	protected void _numberOfFc430(Wrap<Integer> w) {
+		w.o(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of fc830
+	 * Description: The number of fc830 nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 1
+	 * Facet: true
+	 **/
+	protected void _numberOfFc830(Wrap<Integer> w) {
+		w.o(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of r730xd
+	 * Description: The number of r730xd nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 2
+	 * Facet: true
+	 **/
+	protected void _numberOfR730xd(Wrap<Integer> w) {
+		w.o(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of whitebox-flax-1
+	 * Description: The number of whitebox-flax-1 nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 3
+	 * Facet: true
+	 **/
+	protected void _numberOfWhiteboxFlax1(Wrap<Integer> w) {
+		w.o(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of lenovo-sd650nv2-a100
+	 * Description: The number of lenovo-sd650nv2-a100 nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 4
+	 * Facet: true
+	 **/
+	protected void _numberOfLenovoSd650nv2A100(Wrap<Integer> w) {
+		w.o(0);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: number of lenovo-sd665nv3-h100
+	 * Description: The number of lenovo-sd665nv3-h100 nodes to request for this order. 
+	 * HtmRow: 4
+	 * HtmCell: 5
+	 * Facet: true
+	 **/
+	protected void _numberOfLenovoSd665nv3H100(Wrap<Integer> w) {
+		w.o(0);
+	}
 }

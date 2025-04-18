@@ -1449,6 +1449,705 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageBareMetalNodeResponse'
+  /en-us/api/bare-metal-order:
+    get:
+      operationId: searchBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchBareMetalOrderResponse'
+    patch:
+      operationId: patchBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PATCHBareMetalOrderRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PATCHBareMetalOrderResponse'
+    post:
+      operationId: postBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSTBareMetalOrderRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/POSTBareMetalOrderResponse'
+    delete:
+      operationId: deletefilterBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterBareMetalOrderResponse'
+  /en-us/api/bare-metal-order/{pk}:
+    get:
+      operationId: getBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pk
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GETBareMetalOrderResponse'
+    delete:
+      operationId: deleteBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pk
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEBareMetalOrderResponse'
+  /en-us/edit/bare-metal-order/{pk}:
+    get:
+      operationId: editpageBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pk
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageBareMetalOrderResponse'
+  /en-us/search/bare-metal-order:
+    get:
+      operationId: searchpageBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageBareMetalOrderResponse'
+  /en-us/user/bare-metal-order/{pk}:
+    get:
+      operationId: userpageBareMetalOrder
+      x-vertx-event-bus: ai-telemetry-enUS-BareMetalOrder
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - bare metal orders
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: pk
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageBareMetalOrderResponse'
   /en-us/api/ai-cluster:
     get:
       operationId: searchAiCluster
@@ -7898,6 +8597,61 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageBareMetalNodeResponse'
+    SearchBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchBareMetalOrderResponse'
+    PATCHBareMetalOrderRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalOrderRequest'
+    PATCHBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PATCHBareMetalOrderResponse'
+    POSTBareMetalOrderRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalOrderRequest'
+    POSTBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/POSTBareMetalOrderResponse'
+    DELETEFilterBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterBareMetalOrderResponse'
+    GETBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/GETBareMetalOrderResponse'
+    DELETEBareMetalOrderResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEBareMetalOrderResponse'
+    EditPageBareMetalOrderResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageBareMetalOrderResponse'
+    SearchPageBareMetalOrderResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageBareMetalOrderResponse'
+    UserPageBareMetalOrderResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageBareMetalOrderResponse'
     SearchAiClusterResponse:
       content:
         application/json; charset=utf-8:
@@ -10301,6 +11055,321 @@ components:
       allOf:
         - type: string
     SearchPageBareMetalNodeResponse:
+      allOf:
+        - type: string
+    SearchBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            startNum:
+              type: integer
+              minimum: 0
+            foundNum:
+              type: integer
+              minimum: 0
+            returnedNum:
+              type: integer
+              minimum: 0
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  pk:
+                    type: string
+                  description:
+                    type: string
+                  networkId:
+                    type: string
+                  networkName:
+                    type: string
+                  numberOfFc430:
+                    type: string
+                  numberOfFc830:
+                    type: string
+                  numberOfR730xd:
+                    type: string
+                  numberOfWhiteboxFlax1:
+                    type: string
+                  numberOfLenovoSd650nv2A100:
+                    type: string
+                  numberOfLenovoSd665nv3H100:
+                    type: string
+    PATCHBareMetalOrderRequest:
+      allOf:
+        - type: object
+          properties:
+            setPk:
+              type: string
+              nullable: true
+            removePk:
+              type: string
+            removeAllPk:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+            setNetworkId:
+              type: string
+              nullable: true
+            removeNetworkId:
+              type: string
+            removeAllNetworkId:
+              type: string
+            setNetworkName:
+              type: string
+              nullable: true
+            removeNetworkName:
+              type: string
+            removeAllNetworkName:
+              type: string
+            setNumberOfFc430:
+              type: string
+              nullable: true
+            removeNumberOfFc430:
+              type: string
+            removeAllNumberOfFc430:
+              type: string
+            setNumberOfFc830:
+              type: string
+              nullable: true
+            removeNumberOfFc830:
+              type: string
+            removeAllNumberOfFc830:
+              type: string
+            setNumberOfR730xd:
+              type: string
+              nullable: true
+            removeNumberOfR730xd:
+              type: string
+            removeAllNumberOfR730xd:
+              type: string
+            setNumberOfWhiteboxFlax1:
+              type: string
+              nullable: true
+            removeNumberOfWhiteboxFlax1:
+              type: string
+            removeAllNumberOfWhiteboxFlax1:
+              type: string
+            setNumberOfLenovoSd650nv2A100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd650nv2A100:
+              type: string
+            removeAllNumberOfLenovoSd650nv2A100:
+              type: string
+            setNumberOfLenovoSd665nv3H100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd665nv3H100:
+              type: string
+            removeAllNumberOfLenovoSd665nv3H100:
+              type: string
+    PATCHBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            setPk:
+              type: string
+              nullable: true
+            removePk:
+              type: string
+            removeAllPk:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+            setNetworkId:
+              type: string
+              nullable: true
+            removeNetworkId:
+              type: string
+            removeAllNetworkId:
+              type: string
+            setNetworkName:
+              type: string
+              nullable: true
+            removeNetworkName:
+              type: string
+            removeAllNetworkName:
+              type: string
+            setNumberOfFc430:
+              type: string
+              nullable: true
+            removeNumberOfFc430:
+              type: string
+            removeAllNumberOfFc430:
+              type: string
+            setNumberOfFc830:
+              type: string
+              nullable: true
+            removeNumberOfFc830:
+              type: string
+            removeAllNumberOfFc830:
+              type: string
+            setNumberOfR730xd:
+              type: string
+              nullable: true
+            removeNumberOfR730xd:
+              type: string
+            removeAllNumberOfR730xd:
+              type: string
+            setNumberOfWhiteboxFlax1:
+              type: string
+              nullable: true
+            removeNumberOfWhiteboxFlax1:
+              type: string
+            removeAllNumberOfWhiteboxFlax1:
+              type: string
+            setNumberOfLenovoSd650nv2A100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd650nv2A100:
+              type: string
+            removeAllNumberOfLenovoSd650nv2A100:
+              type: string
+            setNumberOfLenovoSd665nv3H100:
+              type: string
+              nullable: true
+            removeNumberOfLenovoSd665nv3H100:
+              type: string
+            removeAllNumberOfLenovoSd665nv3H100:
+              type: string
+    POSTBareMetalOrderRequest:
+      allOf:
+        - type: object
+          properties:
+            pk:
+              type: string
+            description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
+              type: string
+    POSTBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            pk:
+              type: string
+            description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
+              type: string
+    DELETEFilterBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            pk:
+              type: string
+            description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
+              type: string
+    GETBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            pk:
+              type: string
+            description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
+              type: string
+    DELETEBareMetalOrderResponse:
+      allOf:
+        - type: object
+          properties:
+            pk:
+              type: string
+            description:
+              type: string
+            networkId:
+              type: string
+            networkName:
+              type: string
+            numberOfFc430:
+              type: string
+            numberOfFc830:
+              type: string
+            numberOfR730xd:
+              type: string
+            numberOfWhiteboxFlax1:
+              type: string
+            numberOfLenovoSd650nv2A100:
+              type: string
+            numberOfLenovoSd665nv3H100:
+              type: string
+    EditPageBareMetalOrderResponse:
+      allOf:
+        - type: string
+    SearchPageBareMetalOrderResponse:
+      allOf:
+        - type: string
+    UserPageBareMetalOrderResponse:
       allOf:
         - type: string
     SearchAiClusterResponse:
