@@ -10522,6 +10522,8 @@ components:
                     type: string
                   nodeProvisionState:
                     type: string
+                  nodeResourceClass:
+                    type: string
     PATCHBareMetalNodeRequest:
       allOf:
         - type: object
@@ -10635,6 +10637,13 @@ components:
             removeNodeProvisionState:
               type: string
             removeAllNodeProvisionState:
+              type: string
+            setNodeResourceClass:
+              type: string
+              nullable: true
+            removeNodeResourceClass:
+              type: string
+            removeAllNodeResourceClass:
               type: string
     PATCHBareMetalNodeResponse:
       allOf:
@@ -10750,6 +10759,13 @@ components:
               type: string
             removeAllNodeProvisionState:
               type: string
+            setNodeResourceClass:
+              type: string
+              nullable: true
+            removeNodeResourceClass:
+              type: string
+            removeAllNodeResourceClass:
+              type: string
     POSTBareMetalNodeRequest:
       allOf:
         - type: object
@@ -10787,6 +10803,8 @@ components:
             nodePowerState:
               type: string
             nodeProvisionState:
+              type: string
+            nodeResourceClass:
               type: string
     POSTBareMetalNodeResponse:
       allOf:
@@ -10826,6 +10844,8 @@ components:
               type: string
             nodeProvisionState:
               type: string
+            nodeResourceClass:
+              type: string
     DELETEFilterBareMetalNodeResponse:
       allOf:
         - type: object
@@ -10863,6 +10883,8 @@ components:
             nodePowerState:
               type: string
             nodeProvisionState:
+              type: string
+            nodeResourceClass:
               type: string
     PUTImportBareMetalNodeRequest:
       allOf:
@@ -10907,6 +10929,8 @@ components:
                     type: string
                   nodeProvisionState:
                     type: string
+                  nodeResourceClass:
+                    type: string
     PUTImportBareMetalNodeResponse:
       allOf:
         - type: object
@@ -10944,6 +10968,8 @@ components:
                   nodePowerState:
                     type: string
                   nodeProvisionState:
+                    type: string
+                  nodeResourceClass:
                     type: string
     GETBareMetalNodeResponse:
       allOf:
@@ -10983,6 +11009,8 @@ components:
               type: string
             nodeProvisionState:
               type: string
+            nodeResourceClass:
+              type: string
     DELETEBareMetalNodeResponse:
       allOf:
         - type: object
@@ -11020,6 +11048,8 @@ components:
             nodePowerState:
               type: string
             nodeProvisionState:
+              type: string
+            nodeResourceClass:
               type: string
     EditPageBareMetalNodeResponse:
       allOf:
