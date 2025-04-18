@@ -673,7 +673,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							bParams.add(o2.sqlLeaseInfo());
 						break;
 					case "setNetworkInfo":
-							o2.setNetworkInfo(jsonObject.getJsonArray(entityVar));
+							o2.setNetworkInfo(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNode.VAR_networkInfo + "=$" + num);
@@ -1126,7 +1126,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						bParams.add(o2.sqlLeaseInfo());
 						break;
 					case BareMetalNode.VAR_networkInfo:
-						o2.setNetworkInfo(jsonObject.getJsonArray(entityVar));
+						o2.setNetworkInfo(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
