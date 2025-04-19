@@ -306,9 +306,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
-	@JsonDeserialize(using = JsonArrayDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
-	protected JsonArray networkInfo;
+	protected String networkInfo;
 
 	/**	<br> The entity networkInfo
 	 *  is defined as null before being initialized. 
@@ -316,27 +315,19 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _networkInfo(Wrap<JsonArray> w);
+	protected abstract void _networkInfo(Wrap<String> w);
 
-	public JsonArray getNetworkInfo() {
+	public String getNetworkInfo() {
 		return networkInfo;
 	}
-
-	public void setNetworkInfo(JsonArray networkInfo) {
-		this.networkInfo = networkInfo;
-	}
-	@JsonIgnore
 	public void setNetworkInfo(String o) {
 		this.networkInfo = BareMetalNode.staticSetNetworkInfo(siteRequest_, o);
 	}
-	public static JsonArray staticSetNetworkInfo(SiteRequest siteRequest_, String o) {
-		if(o != null) {
-				return new JsonArray(o);
-		}
-		return null;
+	public static String staticSetNetworkInfo(SiteRequest siteRequest_, String o) {
+		return o;
 	}
 	protected BareMetalNode networkInfoInit() {
-		Wrap<JsonArray> networkInfoWrap = new Wrap<JsonArray>().var("networkInfo");
+		Wrap<String> networkInfoWrap = new Wrap<String>().var("networkInfo");
 		if(networkInfo == null) {
 			_networkInfo(networkInfoWrap);
 			Optional.ofNullable(networkInfoWrap.getO()).ifPresent(o -> {
@@ -346,8 +337,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		return (BareMetalNode)this;
 	}
 
-	public static String staticSearchNetworkInfo(SiteRequest siteRequest_, JsonArray o) {
-		return o.toString();
+	public static String staticSearchNetworkInfo(SiteRequest siteRequest_, String o) {
+		return o;
 	}
 
 	public static String staticSearchStrNetworkInfo(SiteRequest siteRequest_, String o) {
@@ -358,7 +349,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		return BareMetalNode.staticSearchNetworkInfo(siteRequest_, BareMetalNode.staticSetNetworkInfo(siteRequest_, o)).toString();
 	}
 
-	public JsonArray sqlNetworkInfo() {
+	public String sqlNetworkInfo() {
 		return networkInfo;
 	}
 
@@ -968,7 +959,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		case "leaseInfo":
 			return BareMetalNode.staticSearchLeaseInfo(siteRequest_, (JsonArray)o);
 		case "networkInfo":
-			return BareMetalNode.staticSearchNetworkInfo(siteRequest_, (JsonArray)o);
+			return BareMetalNode.staticSearchNetworkInfo(siteRequest_, (String)o);
 		case "nodeId":
 			return BareMetalNode.staticSearchNodeId(siteRequest_, (String)o);
 		case "nodeIsMaintenance":
@@ -1084,8 +1075,6 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			} else if("networkinfo".equals(varLower)) {
 				if(val instanceof String) {
 					setNetworkInfo((String)val);
-				} else if(val instanceof JsonArray) {
-					setNetworkInfo((JsonArray)val);
 				}
 				saves.add("networkInfo");
 				return val;
@@ -1215,7 +1204,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 			doc.put("leaseInfo_docvalues_string", leaseInfo.toString());
 		}
 		if(networkInfo != null) {
-			doc.put("networkInfo_docvalues_string", networkInfo.toString());
+			doc.put("networkInfo_docvalues_string", networkInfo);
 		}
 		if(nodeId != null) {
 			doc.put("nodeId_docvalues_string", nodeId);
@@ -1394,7 +1383,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
 		sb.append(Optional.ofNullable(leaseInfo).map(v -> "leaseInfo: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(networkInfo).map(v -> "networkInfo: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(networkInfo).map(v -> "networkInfo: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(nodeId).map(v -> "nodeId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(nodeIsMaintenance).map(v -> "nodeIsMaintenance: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(nodeLinks).map(v -> "nodeLinks: " + v + "\n").orElse(""));
@@ -1453,7 +1442,6 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	}
 	public static List<String> varsRangeBareMetalNode(List<String> vars) {
 		vars.add(VAR_leaseInfo);
-		vars.add(VAR_networkInfo);
 		vars.add(VAR_nodeIsMaintenance);
 		vars.add(VAR_nodeLinks);
 		BaseModel.varsRangeBaseModel(vars);
@@ -1555,7 +1543,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 		case VAR_leaseInfo:
 			return "JsonArray";
 		case VAR_networkInfo:
-			return "JsonArray";
+			return "String";
 		case VAR_nodeId:
 			return "String";
 		case VAR_nodeIsMaintenance:
@@ -1577,6 +1565,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnBareMetalNode(String var) {
 		switch(var) {
+		case VAR_networkInfo:
+			return 4;
 		case VAR_nodeName:
 			return 0;
 		case VAR_nodePowerState:
