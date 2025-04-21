@@ -258,6 +258,6 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 */
 	protected void _solrId(Wrap<String> w) {
 		String objectId = idForClass();
-		w.o(String.format("%s_%s", getClass().getSimpleName(), objectId));
+		w.o(String.format("%s_%s_%s", getSiteRequest_().getConfig().getString(ComputateConfigKeys.SOLR_COLLECTION), getClass().getSimpleName(), objectId));
 	}
 }
