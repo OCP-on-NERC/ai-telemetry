@@ -131,6 +131,7 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 * Facet: true
 	 * HtmColumn: 2
 	 * VarDescription: true
+	 * Multiline: true
 	 **/
 	protected void _description(Wrap<String> w) {}
 

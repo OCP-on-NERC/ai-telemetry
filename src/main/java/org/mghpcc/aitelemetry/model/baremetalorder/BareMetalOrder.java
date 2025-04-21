@@ -72,6 +72,7 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * HtmRowTitleOpen: bare metal order details
 	 * Facet: true
 	 * VarDescription: true
+	 * Multiline: true
 	 **/
 	protected void _description(Wrap<String> w) {}
 

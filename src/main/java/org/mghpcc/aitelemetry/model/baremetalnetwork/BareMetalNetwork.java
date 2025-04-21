@@ -75,6 +75,7 @@ public class BareMetalNetwork extends BareMetalNetworkGen<BaseModel> {
 	 * HtmCell: 2
 	 * Facet: true
 	 * VarDescription: true
+	 * Multiline: true
 	 * Val.ESI: description
 	 **/
 	protected void _description(Wrap<String> w) {}
