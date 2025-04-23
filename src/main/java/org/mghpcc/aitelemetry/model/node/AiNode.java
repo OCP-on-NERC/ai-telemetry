@@ -113,6 +113,7 @@ public class AiNode extends AiNodeGen<BaseModel> {
 	 * HtmCell: 2
 	 * HtmColumn: 3
 	 * VarDescription: true
+	 * Multiline: true
 	 **/
 	protected void _description(Wrap<String> w) {
 		w.o(String.format("Contains %s GPU devices", gpuDevicesTotal));

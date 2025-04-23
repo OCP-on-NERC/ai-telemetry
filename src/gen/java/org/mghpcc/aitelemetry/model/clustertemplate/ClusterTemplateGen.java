@@ -51,8 +51,6 @@ import org.computate.search.response.solr.SolrResponse;
  * </li><li>You can add a class comment "Rows: 100" if you wish the ClusterTemplate API to return more or less than 10 records by default. 
  * In this case, the API will return 100 records from the API instead of 10 by default. 
  * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
- * </li><li>You can add a class comment "SqlOrder: " followed by an Integer to sort this class compared when generating the SQL code to create and drop tables. 
- * The Order comment allows you do define which order the SQL code is generated. 
  * </li>
  * <h3>About the ClusterTemplate class and it's generated class ClusterTemplateGen&lt;BaseModel&gt;: </h3>extends ClusterTemplateGen
  * <p>
@@ -117,6 +115,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>Rows: null</h2>
  * <h2>Order: 8</h2>
  * <p>This class contains a comment <b>"Order: 8"</b>, which means this class will be sorted by the given number 8 ascending when code that relates to multiple classes at the same time is generated. 
+ * </p>
+ * <h2>SqlOrder: 8</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 8"</b>, which means this class will be sorted by the given number 8 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 

@@ -90,6 +90,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * HtmCell: 2
 	 * HtmColumn: 2
 	 * VarDescription: true
+	 * Multiline: true
 	 **/
 	protected void _description(Wrap<String> w) {
 		w.o(String.format("Contains %s AI nodes and %s GPU devices", aiNodesTotal, gpuDevicesTotal));
