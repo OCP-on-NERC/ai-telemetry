@@ -132,6 +132,19 @@ ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS templateId text;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS clusterId text;
 
+CREATE TABLE IF NOT EXISTS ManagedCluster();
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS id text UNIQUE;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS state text;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS apiUrl text;
+ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS consoleUrl text;
+
 CREATE TABLE IF NOT EXISTS ClusterRequest();
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS name text UNIQUE;
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS clusterTemplateTitle text references ClusterTemplate(title);
