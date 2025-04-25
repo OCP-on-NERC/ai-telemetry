@@ -23,4 +23,6 @@ public class ConfigKeys extends ComputateConfigKeys {
     public static final String ESI_API_PORT = "ESI_API_PORT";
     public static final String ESI_API_OPENSHIFT_SECRET = "ESI_API_OPENSHIFT_SECRET";
     public static final String ESI_API_OPENSHIFT_TOKEN = "ESI_API_OPENSHIFT_TOKEN";
+    public static final String KAFKA_TOPIC_FULFILL_OFFER = "KAFKA_TOPIC_FULFILL_OFFER";
+    public static final String KAFKA_TOPIC_ORDER_LOOP = "KAFKA_TOPIC_ORDER_LOOP";
 }

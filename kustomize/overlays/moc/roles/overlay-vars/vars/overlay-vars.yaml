@@ -32,6 +32,23 @@ ESI_API_OPENSHIFT_SECRET: esi-uitest-cloud-config
 ESI_API_SSL: "false"
 ESI_API_HOST_NAME: "localhost"
 ESI_API_PORT: "8081"
+
+ENABLE_KAFKA: true
+KAFKA_NAMESPACE: "{{ SITE_NAMESPACE }}"
+KAFKA_SSL_KEYSTORE_SECRET: "kafka-{{ SITE_NAME }}"
+KAFKA_SSL_TRUSTSTORE_SECRET: kafka-cluster-ca-cert
+KAFKA_BROKERS: kafka-bootstrap:9093
+KAFKA_GROUP: "esi-ai-telemetry"
+KAFKA_SECURITY_PROTOCOL: SSL
+KAFKA_SSL_KEYSTORE_TYPE: PKCS12
+KAFKA_SSL_KEYSTORE_LOCATION: /opt/kafka/keystore/user.p12
+KAFKA_SSL_KEYSTORE_SECRET: kafka-ai-telemetry
+KAFKA_SSL_KEYSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=SITE_NAMESPACE)[0].data['user.password'] | b64decode }}"
+KAFKA_SSL_TRUSTSTORE_TYPE: PKCS12
+KAFKA_SSL_TRUSTSTORE_LOCATION: /opt/kafka/keystore/user.crt
+KAFKA_SSL_TRUSTSTORE_SECRET: kafka-cluster-ca-cert
+KAFKA_SSL_TRUSTSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=SITE_NAMESPACE)[0].data['ca.password'] | b64decode }}"
+
 WORKBENCH_NAMES:
   - USER_NAME: tzumainn
   - USER_NAME: computate

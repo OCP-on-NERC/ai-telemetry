@@ -211,4 +211,29 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	protected void _numberOfLenovoSd665nv3H100(Wrap<Integer> w) {
 		w.o(0);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: offer ID
+	 * Description: The offer ID of a bare metal fulfillment
+	 * HtmRowTitleOpen: bare metal fulfill offer details
+	 * HtmRow: 5
+	 * HtmCell: 0
+	 * Facet: true
+	 **/
+	protected void _offerId(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: lease ID
+	 * Description: The lease ID of a bare metal fulfillment
+	 * HtmRow: 5
+	 * HtmCell: 1
+	 * Facet: true
+	 **/
+	protected void _leaseId(Wrap<String> w) {}
 }

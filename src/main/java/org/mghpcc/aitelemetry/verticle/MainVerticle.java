@@ -143,6 +143,7 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.impl.RoutingContextImpl;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.sstore.LocalSessionStore;
+import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
@@ -231,6 +232,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private AuthorizationProvider authorizationProvider;
 
 	private KafkaProducer<String, String> kafkaProducer;
+	private KafkaConsumer<String, String> kafkaConsumer;
 
 	private MqttClient mqttClient;
 
@@ -846,10 +848,15 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_KAFKA))) {
 				Map<String, String> kafkaConfig = new HashMap<>();
 				kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
-				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-				kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				kafkaConfig.put("acks", "1");
 				kafkaConfig.put("security.protocol", "SSL");
+				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+				kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+				kafkaConfig.put("group.id", config().getString(ConfigKeys.KAFKA_GROUP));
+				kafkaConfig.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+				kafkaConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+				kafkaConfig.put("auto.offset.reset", "earliest");
+				kafkaConfig.put("enable.auto.commit", "true");
 				Optional.ofNullable(config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE)).ifPresent(keystoreType -> {
 					kafkaConfig.put("ssl.keystore.type", keystoreType);
 					kafkaConfig.put("ssl.keystore.location", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_LOCATION));
@@ -862,8 +869,15 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				});
 
 				kafkaProducer = KafkaProducer.createShared(vertx, config().getString(ConfigKeys.SITE_NAME), kafkaConfig);
-				LOG.info("The Kafka producer was initialized successfully. ");
-				promise.complete(kafkaProducer);
+							
+				// use consumer for interacting with Apache Kafka
+				kafkaConsumer = KafkaConsumer.create(vertx, kafkaConfig);
+				SiteRoutes.kafkaConsumer(vertx, kafkaConsumer, config()).onSuccess(a -> {
+					LOG.info("The Kafka producer was initialized successfully. ");
+					promise.complete(kafkaProducer);
+				}).onFailure(ex -> {
+					promise.fail(ex);
+				});
 			} else {
 				LOG.info("The Kafka producer was initialized successfully. ");
 				promise.complete(null);
@@ -875,6 +889,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 		return promise.future();
 	}
+
 	/**
 	 **/
 	public Future<MqttClient> configureMqtt() {

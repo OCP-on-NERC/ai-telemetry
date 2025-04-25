@@ -11011,6 +11011,10 @@ components:
                     type: string
                   numberOfLenovoSd665nv3H100:
                     type: string
+                  offerId:
+                    type: string
+                  leaseId:
+                    type: string
     PATCHBareMetalOrderRequest:
       allOf:
         - type: object
@@ -11084,6 +11088,20 @@ components:
             removeNumberOfLenovoSd665nv3H100:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
+              type: string
+            setOfferId:
+              type: string
+              nullable: true
+            removeOfferId:
+              type: string
+            removeAllOfferId:
+              type: string
+            setLeaseId:
+              type: string
+              nullable: true
+            removeLeaseId:
+              type: string
+            removeAllLeaseId:
               type: string
     PATCHBareMetalOrderResponse:
       allOf:
@@ -11159,6 +11177,20 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
+            setOfferId:
+              type: string
+              nullable: true
+            removeOfferId:
+              type: string
+            removeAllOfferId:
+              type: string
+            setLeaseId:
+              type: string
+              nullable: true
+            removeLeaseId:
+              type: string
+            removeAllLeaseId:
+              type: string
     POSTBareMetalOrderRequest:
       allOf:
         - type: object
@@ -11182,6 +11214,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     POSTBareMetalOrderResponse:
       allOf:
@@ -11207,6 +11243,10 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            offerId:
+              type: string
+            leaseId:
+              type: string
     DELETEFilterBareMetalOrderResponse:
       allOf:
         - type: object
@@ -11230,6 +11270,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     GETBareMetalOrderResponse:
       allOf:
@@ -11255,6 +11299,10 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            offerId:
+              type: string
+            leaseId:
+              type: string
     DELETEBareMetalOrderResponse:
       allOf:
         - type: object
@@ -11278,6 +11326,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     EditPageBareMetalOrderResponse:
       allOf:
