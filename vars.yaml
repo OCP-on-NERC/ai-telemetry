@@ -599,6 +599,9 @@ FULFILLMENT_API_SSL: "{{ (lookup('env', 'FULFILLMENT_API_SSL') | lower) != 'fals
 FULFILLMENT_API_HOST_NAME: "{{ lookup('env', 'FULFILLMENT_API_HOST_NAME') | default('', true) }}"
 # The default port that the fulfillment API runs. 
 FULFILLMENT_API_PORT: "{{ lookup('env', 'FULFILLMENT_API_PORT') | default('443', true) }}"
+# Ensure ClusterOrder is updated frequently
+IMPORT_DATA_START_TIME_ClusterOrder: 12:00 America/New_York
+IMPORT_DATA_PERIOD_ClusterOrder: 30 seconds
 
 ###########
 # ESI API #
