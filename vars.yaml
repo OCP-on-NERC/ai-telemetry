@@ -453,15 +453,31 @@ IOTAGENT_TRANSPORT: AMQP
 ##############
 
 # Enable Kafka message integration. 
-ENABLE_KAFKA: false
+ENABLE_KAFKA: "{{ (lookup('env', 'ENABLE_KAFKA') | lower) == 'true' }}"
 # The namespace in OpenShift where Kafka will run. 
-KAFKA_NAMESPACE: kafka
-# The Kafka SSL KeyStore secret name. 
-KAFKA_SSL_KEYSTORE_SECRET: "{{ SITE_SHORT_NAME }}-kafka"
-# The Kafka SSL TrustStore secret name. 
-KAFKA_SSL_TRUSTSTORE_SECRET: default-cluster-ca-cert
-# The Kafka port. 
-KAFKA_PORT: 9093
+KAFKA_NAMESPACE: "{{ lookup('env', 'KAFKA_NAMESPACE') | default('kafka', true) }}"
+# The Kafka brokers hostname and port. 
+KAFKA_BROKERS: "{{ lookup('env', 'KAFKA_BROKERS') | default('kafka-kafka-bootstrap:9093', true) }}"
+# The Kafka group for receiving messages. 
+KAFKA_GROUP: "{{ lookup('env', 'KAFKA_GROUP') | default('esi-ai-telemetry', true) }}"
+# The Kafka security protocol. 
+KAFKA_SECURITY_PROTOCOL: "{{ lookup('env', 'KAFKA_SECURITY_PROTOCOL') | default('SSL', true) }}"
+# The Kafka SSL keystore type. 
+KAFKA_SSL_KEYSTORE_TYPE: "{{ lookup('env', 'KAFKA_SSL_KEYSTORE_TYPE') | default('PKCS12', true) }}"
+# The Kafka SSL keystore location. 
+KAFKA_SSL_KEYSTORE_LOCATION: "{{ lookup('env', 'KAFKA_SSL_KEYSTORE_LOCATION') | default('/opt/app-root/src/kafka/keystore/user.p12', true) }}"
+# The Kafka SSL keystore OpenShift secret. 
+KAFKA_SSL_KEYSTORE_SECRET: "{{ lookup('env', 'KAFKA_SSL_KEYSTORE_SECRET') | default('esi', true) }}"
+# The Kafka SSL keystore password. 
+KAFKA_SSL_KEYSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=SITE_NAMESPACE)[0].data['user.password'] | b64decode }}"
+# The Kafka SSL truststore type. 
+KAFKA_SSL_TRUSTSTORE_TYPE: "{{ lookup('env', 'KAFKA_SSL_TRUSTSTORE_TYPE') | default('PKCS12', true) }}"
+# The Kafka SSL truststore location. 
+KAFKA_SSL_TRUSTSTORE_LOCATION: "{{ lookup('env', 'KAFKA_SSL_TRUSTSTORE_LOCATION') | default('/opt/app-root/src/kafka/truststore/ca.p12', true) }}"
+# The Kafka SSL truststore OpenShift secret. 
+KAFKA_SSL_TRUSTSTORE_SECRET: "{{ lookup('env', 'KAFKA_SSL_TRUSTSTORE_SECRET') | default('kafka-cluster-ca-cert', true) }}"
+# The Kafka SSL truststore password. 
+KAFKA_SSL_TRUSTSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_TRUSTSTORE_SECRET, namespace=SITE_NAMESPACE)[0].data['ca.password'] | b64decode }}"
 
 #############
 # MQTT vars #
@@ -619,6 +635,9 @@ ESI_API_SSL: "{{ (lookup('env', 'ESI_API_SSL') | lower) != 'false' }}"
 ESI_API_HOST_NAME: "{{ lookup('env', 'ESI_API_HOST_NAME') | default('', true) }}"
 # The default port that the fulfillment API runs. 
 ESI_API_PORT: "{{ lookup('env', 'ESI_API_PORT') | default('443', true) }}"
+# ESI Kafka topics
+KAFKA_TOPIC_FULFILL_OFFER: "{{ lookup('env', 'KAFKA_TOPIC_FULFILL_OFFER') | default('esi-fulfill-offer-task', true) }}"
+KAFKA_TOPIC_ORDER_LOOP: "{{ lookup('env', 'KAFKA_TOPIC_ORDER_LOOP') | default('esi-fulfill-order-loop', true) }}"
 # Ensure BareMetalNode is updated frequently
 IMPORT_DATA_START_TIME_BareMetalNode: 12:00 America/New_York
 IMPORT_DATA_PERIOD_BareMetalNode: 30 seconds

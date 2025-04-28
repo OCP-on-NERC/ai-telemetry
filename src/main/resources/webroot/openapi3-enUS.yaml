@@ -6562,695 +6562,6 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/UserPageGpuSliceResponse'
-  /en-us/api/managed-cluster:
-    get:
-      operationId: searchManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchManagedClusterResponse'
-    patch:
-      operationId: patchManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      security:
-        - openIdConnect:
-          - openid
-          - profile
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      requestBody:
-        description: >+
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PATCHManagedClusterRequest'
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/PATCHManagedClusterResponse'
-    post:
-      operationId: postManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      security:
-        - openIdConnect:
-          - openid
-          - profile
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-      requestBody:
-        description: >+
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/POSTManagedClusterRequest'
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/POSTManagedClusterResponse'
-    delete:
-      operationId: deletefilterManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      security:
-        - openIdConnect:
-          - openid
-          - profile
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: commitWithin
-          description: 'The number of milliseconds to commit the record to Solr. '
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: softCommit
-          description: 'Does a soft commit for the record in Solr immediately. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEFilterManagedClusterResponse'
-  /en-us/api/managed-cluster-import:
-    put:
-      operationId: putimportManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      security:
-        - openIdConnect:
-          - openid
-          - profile
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-      requestBody:
-        description: >+
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PUTImportManagedClusterRequest'
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/PUTImportManagedClusterResponse'
-  /en-us/api/managed-cluster/{id}:
-    get:
-      operationId: getManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - name: id
-          in: path
-          description: >+
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GETManagedClusterResponse'
-    delete:
-      operationId: deleteManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      security:
-        - openIdConnect:
-          - openid
-          - profile
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - name: id
-          in: path
-          description: >+
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: commitWithin
-          description: 'The number of milliseconds to commit the record to Solr. '
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: softCommit
-          description: 'Does a soft commit for the record in Solr immediately. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-      responses:
-        '200':
-          description: >+
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/DELETEManagedClusterResponse'
-  /en-us/edit/managed-cluster/{id}:
-    get:
-      operationId: editpageManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - name: id
-          in: path
-          description: >+
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/EditPageManagedClusterResponse'
-  /en-us/search/managed-cluster:
-    get:
-      operationId: searchpageManagedCluster
-      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
-      description: >+
-      summary: >+
-      parameters:
-        - name: vertx-web.session
-          in: cookie
-          schema:
-            type: string
-        - name: sessionIdBefore
-          in: cookie
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
-          required: false
-          schema:
-            type: string
-            default: '*:*'
-        - in: query
-          name: fq
-          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: var
-          description: 'The var parameters are additional optional variables and values to pass into the application. '
-          required: false
-          schema:
-            type: array
-            items:
-                type: string
-        - in: query
-          name: fl
-          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: start
-          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-        - in: query
-          name: rows
-          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 0
-        - in: query
-          name: facet
-          description: 'The facet parameter enables facet counts in the query response. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: facet.range.start
-          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.end
-          description: 'The facet.range.end specifies the upper bound of the ranges. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range.gap
-          description: 'The span of each range expressed as a value to be added to the lower bound. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.pivot
-          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.range
-          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: facet.field
-          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: d
-          description: 'The radial distance, usually in kilometers. '
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-        - in: query
-          name: pt
-          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: sfield
-          description: 'A spatial indexed field. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: score
-          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: distanceUnits
-          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
-          required: false
-          schema:
-            type: string
-        - in: query
-          name: stats
-          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: stats.field
-          description: 'Specifies a field for which statistics should be generated. '
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: >+
-          content:
-            text/html; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/SearchPageManagedClusterResponse'
   /en-us/api/ai-node:
     get:
       operationId: searchAiNode
@@ -10428,66 +9739,6 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/UserPageGpuSliceResponse'
-    SearchManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/SearchManagedClusterResponse'
-    PATCHManagedClusterRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PATCHManagedClusterRequest'
-    PATCHManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/PATCHManagedClusterResponse'
-    POSTManagedClusterRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/POSTManagedClusterRequest'
-    POSTManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/POSTManagedClusterResponse'
-    DELETEFilterManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEFilterManagedClusterResponse'
-    PUTImportManagedClusterRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PUTImportManagedClusterRequest'
-    PUTImportManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/PUTImportManagedClusterResponse'
-    GETManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/GETManagedClusterResponse'
-    DELETEManagedClusterResponse:
-      content:
-        application/json; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/DELETEManagedClusterResponse'
-    EditPageManagedClusterResponse:
-      content:
-        text/html; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/EditPageManagedClusterResponse'
-    SearchPageManagedClusterResponse:
-      content:
-        text/html; charset=utf-8:
-          schema:
-            $ref: '#/components/schemas/SearchPageManagedClusterResponse'
     SearchAiNodeResponse:
       content:
         application/json; charset=utf-8:
@@ -12527,6 +11778,10 @@ components:
                     type: string
                   numberOfLenovoSd665nv3H100:
                     type: string
+                  offerId:
+                    type: string
+                  leaseId:
+                    type: string
     PATCHBareMetalOrderRequest:
       allOf:
         - type: object
@@ -12600,6 +11855,20 @@ components:
             removeNumberOfLenovoSd665nv3H100:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
+              type: string
+            setOfferId:
+              type: string
+              nullable: true
+            removeOfferId:
+              type: string
+            removeAllOfferId:
+              type: string
+            setLeaseId:
+              type: string
+              nullable: true
+            removeLeaseId:
+              type: string
+            removeAllLeaseId:
               type: string
     PATCHBareMetalOrderResponse:
       allOf:
@@ -12675,6 +11944,20 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
+            setOfferId:
+              type: string
+              nullable: true
+            removeOfferId:
+              type: string
+            removeAllOfferId:
+              type: string
+            setLeaseId:
+              type: string
+              nullable: true
+            removeLeaseId:
+              type: string
+            removeAllLeaseId:
+              type: string
     POSTBareMetalOrderRequest:
       allOf:
         - type: object
@@ -12698,6 +11981,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     POSTBareMetalOrderResponse:
       allOf:
@@ -12723,6 +12010,10 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            offerId:
+              type: string
+            leaseId:
+              type: string
     DELETEFilterBareMetalOrderResponse:
       allOf:
         - type: object
@@ -12746,6 +12037,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     GETBareMetalOrderResponse:
       allOf:
@@ -12771,6 +12066,10 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            offerId:
+              type: string
+            leaseId:
+              type: string
     DELETEBareMetalOrderResponse:
       allOf:
         - type: object
@@ -12794,6 +12093,10 @@ components:
             numberOfLenovoSd650nv2A100:
               type: string
             numberOfLenovoSd665nv3H100:
+              type: string
+            offerId:
+              type: string
+            leaseId:
               type: string
     EditPageBareMetalOrderResponse:
       allOf:
@@ -15294,191 +14597,6 @@ components:
     UserPageGpuSliceResponse:
       allOf:
         - type: string
-    SearchManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            startNum:
-              type: integer
-              minimum: 0
-            foundNum:
-              type: integer
-              minimum: 0
-            returnedNum:
-              type: integer
-              minimum: 0
-            list:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  state:
-                    type: string
-                  apiUrl:
-                    type: string
-                  consoleUrl:
-                    type: string
-    PATCHManagedClusterRequest:
-      allOf:
-        - type: object
-          properties:
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
-            setState:
-              type: string
-              nullable: true
-            removeState:
-              type: string
-            removeAllState:
-              type: string
-            setApiUrl:
-              type: string
-              nullable: true
-            removeApiUrl:
-              type: string
-            removeAllApiUrl:
-              type: string
-            setConsoleUrl:
-              type: string
-              nullable: true
-            removeConsoleUrl:
-              type: string
-            removeAllConsoleUrl:
-              type: string
-    PATCHManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
-            setState:
-              type: string
-              nullable: true
-            removeState:
-              type: string
-            removeAllState:
-              type: string
-            setApiUrl:
-              type: string
-              nullable: true
-            removeApiUrl:
-              type: string
-            removeAllApiUrl:
-              type: string
-            setConsoleUrl:
-              type: string
-              nullable: true
-            removeConsoleUrl:
-              type: string
-            removeAllConsoleUrl:
-              type: string
-    POSTManagedClusterRequest:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            state:
-              type: string
-            apiUrl:
-              type: string
-            consoleUrl:
-              type: string
-    POSTManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            state:
-              type: string
-            apiUrl:
-              type: string
-            consoleUrl:
-              type: string
-    DELETEFilterManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            state:
-              type: string
-            apiUrl:
-              type: string
-            consoleUrl:
-              type: string
-    PUTImportManagedClusterRequest:
-      allOf:
-        - type: object
-          properties:
-            list:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  state:
-                    type: string
-                  apiUrl:
-                    type: string
-                  consoleUrl:
-                    type: string
-    PUTImportManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-                  id:
-                    type: string
-                  state:
-                    type: string
-                  apiUrl:
-                    type: string
-                  consoleUrl:
-                    type: string
-    GETManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            state:
-              type: string
-            apiUrl:
-              type: string
-            consoleUrl:
-              type: string
-    DELETEManagedClusterResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-            state:
-              type: string
-            apiUrl:
-              type: string
-            consoleUrl:
-              type: string
-    EditPageManagedClusterResponse:
-      allOf:
-        - type: string
-    SearchPageManagedClusterResponse:
-      allOf:
-        - type: string
     SearchAiNodeResponse:
       allOf:
         - type: object
@@ -15501,6 +14619,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -15531,8 +14651,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  nodeId:
-                    type: string
     PATCHAiNodeRequest:
       allOf:
         - type: object
@@ -15551,6 +14669,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -15665,13 +14790,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setNodeId:
-              type: string
-              nullable: true
-            removeNodeId:
-              type: string
-            removeAllNodeId:
-              type: string
     PATCHAiNodeResponse:
       allOf:
         - type: object
@@ -15690,6 +14808,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeId:
+              type: string
+              nullable: true
+            removeNodeId:
+              type: string
+            removeAllNodeId:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -15804,13 +14929,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setNodeId:
-              type: string
-              nullable: true
-            removeNodeId:
-              type: string
-            removeAllNodeId:
-              type: string
     POSTAiNodeRequest:
       allOf:
         - type: object
@@ -15819,6 +14937,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -15849,8 +14969,6 @@ components:
               type: string
             ngsildData:
               type: object
-            nodeId:
-              type: string
     POSTAiNodeResponse:
       allOf:
         - type: object
@@ -15859,6 +14977,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -15889,8 +15009,6 @@ components:
               type: string
             ngsildData:
               type: object
-            nodeId:
-              type: string
     DELETEFilterAiNodeResponse:
       allOf:
         - type: object
@@ -15899,6 +15017,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -15929,8 +15049,6 @@ components:
               type: string
             ngsildData:
               type: object
-            nodeId:
-              type: string
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -15944,6 +15062,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -15974,8 +15094,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  nodeId:
-                    type: string
     PUTImportAiNodeResponse:
       allOf:
         - type: object
@@ -15984,6 +15102,8 @@ components:
                     type: string
                   nodeName:
                     type: string
+                  nodeId:
+                    type: string
                   description:
                     type: string
                   locationColors:
@@ -16014,8 +15134,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  nodeId:
-                    type: string
     GETAiNodeResponse:
       allOf:
         - type: object
@@ -16024,6 +15142,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -16054,8 +15174,6 @@ components:
               type: string
             ngsildData:
               type: object
-            nodeId:
-              type: string
     DELETEAiNodeResponse:
       allOf:
         - type: object
@@ -16064,6 +15182,8 @@ components:
               type: string
             nodeName:
               type: string
+            nodeId:
+              type: string
             description:
               type: string
             locationColors:
@@ -16094,8 +15214,6 @@ components:
               type: string
             ngsildData:
               type: object
-            nodeId:
-              type: string
     EditPageAiNodeResponse:
       allOf:
         - type: string
