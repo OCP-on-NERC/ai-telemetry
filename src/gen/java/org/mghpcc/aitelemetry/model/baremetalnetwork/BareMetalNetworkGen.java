@@ -490,7 +490,6 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
-	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
 	protected List<String> availabilityZones = new ArrayList<String>();
 
@@ -1191,7 +1190,6 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
-	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
 	protected List<String> subnetIds = new ArrayList<String>();
 
@@ -1272,7 +1270,6 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
-	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 	@JsonInclude(Include.NON_NULL)
 	protected List<String> tags = new ArrayList<String>();
 
@@ -3268,8 +3265,11 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 
 			if(saves.contains("availabilityZones")) {
 				List<String> availabilityZones = (List<String>)doc.get("availabilityZones_docvalues_strings");
-				if(availabilityZones != null)
-					oBareMetalNetwork.availabilityZones.addAll(availabilityZones);
+				if(availabilityZones != null) {
+					availabilityZones.stream().forEach( v -> {
+						oBareMetalNetwork.availabilityZones.add(BareMetalNetwork.staticSetAvailabilityZones(siteRequest_, v));
+					});
+				}
 			}
 
 			if(saves.contains("createdAt")) {
@@ -3334,14 +3334,20 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 
 			if(saves.contains("subnetIds")) {
 				List<String> subnetIds = (List<String>)doc.get("subnetIds_docvalues_strings");
-				if(subnetIds != null)
-					oBareMetalNetwork.subnetIds.addAll(subnetIds);
+				if(subnetIds != null) {
+					subnetIds.stream().forEach( v -> {
+						oBareMetalNetwork.subnetIds.add(BareMetalNetwork.staticSetSubnetIds(siteRequest_, v));
+					});
+				}
 			}
 
 			if(saves.contains("tags")) {
 				List<String> tags = (List<String>)doc.get("tags_docvalues_strings");
-				if(tags != null)
-					oBareMetalNetwork.tags.addAll(tags);
+				if(tags != null) {
+					tags.stream().forEach( v -> {
+						oBareMetalNetwork.tags.add(BareMetalNetwork.staticSetTags(siteRequest_, v));
+					});
+				}
 			}
 
 			if(saves.contains("tenantId")) {
@@ -3467,7 +3473,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("availabilityZones_docvalues_strings", l);
 			for(String o : availabilityZones) {
-				l.add(o);
+				l.add(BareMetalNetwork.staticSearchAvailabilityZones(siteRequest_, o));
 			}
 		}
 		if(createdAt != null) {
@@ -3504,14 +3510,14 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("subnetIds_docvalues_strings", l);
 			for(String o : subnetIds) {
-				l.add(o);
+				l.add(BareMetalNetwork.staticSearchSubnetIds(siteRequest_, o));
 			}
 		}
 		if(tags != null) {
 			JsonArray l = new JsonArray();
 			doc.put("tags_docvalues_strings", l);
 			for(String o : tags) {
-				l.add(o);
+				l.add(BareMetalNetwork.staticSearchTags(siteRequest_, o));
 			}
 		}
 		if(tenantId != null) {

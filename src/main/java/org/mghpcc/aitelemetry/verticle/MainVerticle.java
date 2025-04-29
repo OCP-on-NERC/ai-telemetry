@@ -143,7 +143,6 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.impl.RoutingContextImpl;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
@@ -190,6 +189,9 @@ import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrder;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedCluster;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClass;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest;
@@ -238,7 +240,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private AuthorizationProvider authorizationProvider;
 
 	private KafkaProducer<String, String> kafkaProducer;
-	private KafkaConsumer<String, String> kafkaConsumer;
 
 	private MqttClient mqttClient;
 
@@ -375,6 +376,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			apiManagedCluster.setVertx(vertx);
 			apiManagedCluster.setConfig(config);
 			apiManagedCluster.setWebClient(webClient);
+			BareMetalResourceClassEnUSApiServiceImpl apiBareMetalResourceClass = new BareMetalResourceClassEnUSApiServiceImpl();
+			apiBareMetalResourceClass.setVertx(vertx);
+			apiBareMetalResourceClass.setConfig(config);
+			apiBareMetalResourceClass.setWebClient(webClient);
 			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
 			apiClusterRequest.setVertx(vertx);
 			apiClusterRequest.setConfig(config);
@@ -423,23 +428,27 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 													apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "GET", "DELETE", "Admin" })
 															.compose(q10 -> apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 															.onSuccess(q10 -> {
-														apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "ClusterOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-																.compose(q11 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+														apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "GET", "DELETE", "Admin" })
+																.compose(q11 -> apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																.onSuccess(q11 -> {
-															apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkReader", new String[] { "GET" })
-																	.compose(q12 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
-																	.compose(q12 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
+															apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "ClusterOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+																	.compose(q12 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																	.onSuccess(q12 -> {
-																apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "BareMetalNodeReader", new String[] { "GET" })
-																		.compose(q13 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
-																		.compose(q13 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
+																apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkReader", new String[] { "GET" })
+																		.compose(q13 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+																		.compose(q13 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
 																		.onSuccess(q13 -> {
-																	apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "BareMetalOrderOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-																			.compose(q14 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
-																			.compose(q14 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+																	apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "BareMetalNodeReader", new String[] { "GET" })
+																			.compose(q14 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+																			.compose(q14 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "GET" }))
 																			.onSuccess(q14 -> {
-																		LOG.info("authorize data complete");
-																		promise.complete();
+																		apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "BareMetalOrderOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+																				.compose(q15 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+																				.compose(q15 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+																				.onSuccess(q15 -> {
+																			LOG.info("authorize data complete");
+																			promise.complete();
+																		}).onFailure(ex -> promise.fail(ex));
 																	}).onFailure(ex -> promise.fail(ex));
 																}).onFailure(ex -> promise.fail(ex));
 															}).onFailure(ex -> promise.fail(ex));
@@ -870,15 +879,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_KAFKA))) {
 				Map<String, String> kafkaConfig = new HashMap<>();
 				kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
-				kafkaConfig.put("acks", "1");
-				kafkaConfig.put("security.protocol", "SSL");
 				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-				kafkaConfig.put("group.id", config().getString(ConfigKeys.KAFKA_GROUP));
-				kafkaConfig.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-				kafkaConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-				kafkaConfig.put("auto.offset.reset", "earliest");
-				kafkaConfig.put("enable.auto.commit", "true");
+				kafkaConfig.put("acks", "1");
+				kafkaConfig.put("security.protocol", "SSL");
 				Optional.ofNullable(config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE)).ifPresent(keystoreType -> {
 					kafkaConfig.put("ssl.keystore.type", keystoreType);
 					kafkaConfig.put("ssl.keystore.location", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_LOCATION));
@@ -891,15 +895,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				});
 
 				kafkaProducer = KafkaProducer.createShared(vertx, config().getString(ConfigKeys.SITE_NAME), kafkaConfig);
-							
-				// use consumer for interacting with Apache Kafka
-				kafkaConsumer = KafkaConsumer.create(vertx, kafkaConfig);
-				SiteRoutes.kafkaConsumer(vertx, kafkaConsumer, config()).onSuccess(a -> {
-					LOG.info("The Kafka producer was initialized successfully. ");
-					promise.complete(kafkaProducer);
-				}).onFailure(ex -> {
-					promise.fail(ex);
-				});
+				LOG.info("The Kafka producer was initialized successfully. ");
+				promise.complete(kafkaProducer);
 			} else {
 				LOG.info("The Kafka producer was initialized successfully. ");
 				promise.complete(null);
@@ -911,7 +908,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 		return promise.future();
 	}
-
 	/**
 	 **/
 	public Future<MqttClient> configureMqtt() {
@@ -1460,8 +1456,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterOrder","ManagedCluster","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
-			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate","ClusterOrder","ManagedCluster");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterOrder","ManagedCluster","BareMetalResourceClass","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
+			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate","ClusterOrder","ManagedCluster","BareMetalResourceClass");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
 			registerApiService(SiteUserEnUSGenApiService.class, apiSiteUser, SiteUser.getClassApiAddress());
@@ -1503,6 +1499,10 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			ManagedClusterEnUSApiServiceImpl apiManagedCluster = new ManagedClusterEnUSApiServiceImpl();
 			initializeApiService(apiManagedCluster);
 			registerApiService(ManagedClusterEnUSGenApiService.class, apiManagedCluster, ManagedCluster.getClassApiAddress());
+
+			BareMetalResourceClassEnUSApiServiceImpl apiBareMetalResourceClass = new BareMetalResourceClassEnUSApiServiceImpl();
+			initializeApiService(apiBareMetalResourceClass);
+			registerApiService(BareMetalResourceClassEnUSGenApiService.class, apiBareMetalResourceClass, BareMetalResourceClass.getClassApiAddress());
 
 			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
 			initializeApiService(apiClusterRequest);

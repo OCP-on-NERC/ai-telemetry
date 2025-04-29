@@ -641,4 +641,6 @@ KAFKA_TOPIC_ORDER_LOOP: "{{ lookup('env', 'KAFKA_TOPIC_ORDER_LOOP') | default('e
 # Ensure BareMetalNode is updated frequently
 IMPORT_DATA_START_TIME_BareMetalNode: 12:00 America/New_York
 IMPORT_DATA_PERIOD_BareMetalNode: 30 seconds
-
+# Ensure BareMetalResourceClass is updated frequently
+IMPORT_DATA_START_TIME_BareMetalResourceClass: 12:00 America/New_York
+IMPORT_DATA_PERIOD_BareMetalResourceClass: 1 minute
