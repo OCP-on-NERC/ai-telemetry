@@ -88,6 +88,12 @@ import io.vertx.core.json.JsonObject;
  * <p>By adding a class comment "{@inheritDoc}", the BaseResult class will inherit the helpful inherited class comments from the super class BaseResultGen. 
  * </p>
  * <h2>Rows: null</h2>
+ * <h2>Order: 0</h2>
+ * <p>This class contains a comment <b>"Order: 0"</b>, which means this class will be sorted by the given number 0 ascending when code that relates to multiple classes at the same time is generated. 
+ * </p>
+ * <h2>SqlOrder: 0</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 0"</b>, which means this class will be sorted by the given number 0 ascending when SQL code to create and drop the tables is generated. 
+ * </p>
  * <h2>Model: true</h2>
  * <h2>Page: true</h2>
  * <h2>SuperPage.enUS: null</h2>
@@ -1530,14 +1536,20 @@ public abstract class BaseResultGen<DEV> extends Object {
 
 			if(saves.contains("classCanonicalNames")) {
 				List<String> classCanonicalNames = (List<String>)doc.get("classCanonicalNames_docvalues_strings");
-				if(classCanonicalNames != null)
-					oBaseResult.classCanonicalNames.addAll(classCanonicalNames);
+				if(classCanonicalNames != null) {
+					classCanonicalNames.stream().forEach( v -> {
+						oBaseResult.classCanonicalNames.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("saves")) {
 				List<String> saves = (List<String>)doc.get("saves_docvalues_strings");
-				if(saves != null)
-					oBaseResult.saves.addAll(saves);
+				if(saves != null) {
+					saves.stream().forEach( v -> {
+						oBaseResult.saves.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("title")) {
@@ -1600,14 +1612,14 @@ public abstract class BaseResultGen<DEV> extends Object {
 			JsonArray l = new JsonArray();
 			doc.put("classCanonicalNames_docvalues_strings", l);
 			for(String o : classCanonicalNames) {
-				l.add(o);
+				l.add(BaseResult.staticSearchClassCanonicalNames(siteRequest_, o));
 			}
 		}
 		if(saves != null) {
 			JsonArray l = new JsonArray();
 			doc.put("saves_docvalues_strings", l);
 			for(String o : saves) {
-				l.add(o);
+				l.add(BaseResult.staticSearchSaves(siteRequest_, o));
 			}
 		}
 		if(title != null) {

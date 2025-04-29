@@ -61,8 +61,6 @@ import org.computate.search.response.solr.SolrResponse;
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these BaseModel objects in a RESTful API. 
  * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class BaseModelGen into the class BaseModel. 
- * </li><li>You can add a class comment "SqlOrder: " followed by an Integer to sort this class compared when generating the SQL code to create and drop tables. 
- * The Order comment allows you do define which order the SQL code is generated. 
  * </li>
  * <h3>About the BaseModel class and it's generated class BaseModelGen&lt;Object&gt;: </h3>extends BaseModelGen
  * <p>
@@ -92,6 +90,12 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the BaseModel class will inherit the helpful inherited class comments from the super class BaseModelGen. 
  * </p>
  * <h2>Rows: null</h2>
+ * <h2>Order: 0</h2>
+ * <p>This class contains a comment <b>"Order: 0"</b>, which means this class will be sorted by the given number 0 ascending when code that relates to multiple classes at the same time is generated. 
+ * </p>
+ * <h2>SqlOrder: 0</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 0"</b>, which means this class will be sorted by the given number 0 ascending when SQL code to create and drop the tables is generated. 
+ * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
  * Every protected void method that begins with "_" that contains a "Persist: true" comment will be a persisted field in the database table. 
@@ -1663,7 +1667,15 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 	public Object persistBaseModel(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("created".equals(varLower)) {
+			if("pk".equals(varLower)) {
+				if(val instanceof Long) {
+					setPk((Long)val);
+				} else {
+					setPk(val == null ? null : val.toString());
+				}
+				saves.add("pk");
+				return val;
+			} else if("created".equals(varLower)) {
 				if(val instanceof String) {
 					setCreated((String)val);
 				} else if(val instanceof OffsetDateTime) {
@@ -1757,8 +1769,11 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 			if(saves.contains("classCanonicalNames")) {
 				List<String> classCanonicalNames = (List<String>)doc.get("classCanonicalNames_docvalues_strings");
-				if(classCanonicalNames != null)
-					oBaseModel.classCanonicalNames.addAll(classCanonicalNames);
+				if(classCanonicalNames != null) {
+					classCanonicalNames.stream().forEach( v -> {
+						oBaseModel.classCanonicalNames.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("sessionId")) {
@@ -1775,8 +1790,11 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 			if(saves.contains("saves")) {
 				List<String> saves = (List<String>)doc.get("saves_docvalues_strings");
-				if(saves != null)
-					oBaseModel.saves.addAll(saves);
+				if(saves != null) {
+					saves.stream().forEach( v -> {
+						oBaseModel.saves.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("objectTitle")) {
@@ -1842,7 +1860,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 			JsonArray l = new JsonArray();
 			doc.put("classCanonicalNames_docvalues_strings", l);
 			for(String o : classCanonicalNames) {
-				l.add(o);
+				l.add(BaseModel.staticSearchClassCanonicalNames(siteRequest_, o));
 			}
 		}
 		if(sessionId != null) {
@@ -1855,7 +1873,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 			JsonArray l = new JsonArray();
 			doc.put("saves_docvalues_strings", l);
 			for(String o : saves) {
-				l.add(o);
+				l.add(BaseModel.staticSearchSaves(siteRequest_, o));
 			}
 		}
 		if(objectTitle != null) {

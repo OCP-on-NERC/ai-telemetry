@@ -226,7 +226,12 @@ public class AiNodeEnUSApiServiceImpl extends AiNodeEnUSGenApiServiceImpl {
 								JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
 								futures.add(Future.future(promise1 -> {
 									try {
-										importResult(classSimpleName, classApiAddress, gpuDeviceResult);
+										importResult(classSimpleName, classApiAddress, gpuDeviceResult).onSuccess(b -> {
+											promise1.complete();
+										}).onFailure(ex -> {
+											LOG.error(String.format(importDataFail, classSimpleName), ex);
+											promise1.fail(ex);
+										});
 									} catch(Exception ex) {
 										LOG.error(String.format(importDataFail, classSimpleName), ex);
 										promise1.fail(ex);

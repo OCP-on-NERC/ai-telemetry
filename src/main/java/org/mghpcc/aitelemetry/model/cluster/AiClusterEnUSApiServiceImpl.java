@@ -314,7 +314,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 									promise1.complete(oldAiClusters);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
-									promise.fail(ex);
+									promise1.fail(ex);
 								});
 							} catch(Exception ex) {
 								LOG.error(String.format(importDataFail, classSimpleName), ex);

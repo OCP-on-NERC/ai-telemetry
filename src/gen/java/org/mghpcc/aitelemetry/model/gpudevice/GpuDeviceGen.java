@@ -1766,20 +1766,29 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 			if(saves.contains("locationColors")) {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
-				if(locationColors != null)
-					oGpuDevice.locationColors.addAll(locationColors);
+				if(locationColors != null) {
+					locationColors.stream().forEach( v -> {
+						oGpuDevice.locationColors.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("locationTitles")) {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
-				if(locationTitles != null)
-					oGpuDevice.locationTitles.addAll(locationTitles);
+				if(locationTitles != null) {
+					locationTitles.stream().forEach( v -> {
+						oGpuDevice.locationTitles.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("locationLinks")) {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
-				if(locationLinks != null)
-					oGpuDevice.locationLinks.addAll(locationLinks);
+				if(locationLinks != null) {
+					locationLinks.stream().forEach( v -> {
+						oGpuDevice.locationLinks.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("location")) {
@@ -1851,21 +1860,21 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("locationColors_indexedstored_strings", l);
 			for(String o : locationColors) {
-				l.add(o);
+				l.add(GpuDevice.staticSearchLocationColors(siteRequest_, o));
 			}
 		}
 		if(locationTitles != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationTitles_indexedstored_strings", l);
 			for(String o : locationTitles) {
-				l.add(o);
+				l.add(GpuDevice.staticSearchLocationTitles(siteRequest_, o));
 			}
 		}
 		if(locationLinks != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationLinks_indexedstored_strings", l);
 			for(String o : locationLinks) {
-				l.add(o);
+				l.add(GpuDevice.staticSearchLocationLinks(siteRequest_, o));
 			}
 		}
 		if(location != null) {
