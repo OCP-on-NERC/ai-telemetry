@@ -1788,88 +1788,93 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					sqlConnection.preparedQuery(sqlQuery)
 							.execute(Tuple.tuple(Arrays.asList(sliceName))
 							).onSuccess(result -> {
-						try {
-							if(result.size() >= 1) {
-								GpuSlice o = new GpuSlice();
-								o.setSiteRequest_(siteRequest);
-								for(Row definition : result.value()) {
-									for(Integer i = 0; i < definition.size(); i++) {
-										try {
-											String columnName = definition.getColumnName(i);
-											Object columnValue = definition.getValue(i);
-											o.persistForClass(columnName, columnValue);
-										} catch(Exception e) {
-											LOG.error(String.format("persistGpuSlice failed. "), e);
+						sqlConnection.close().onSuccess(a -> {
+							try {
+								if(result.size() >= 1) {
+									GpuSlice o = new GpuSlice();
+									o.setSiteRequest_(siteRequest);
+									for(Row definition : result.value()) {
+										for(Integer i = 0; i < definition.size(); i++) {
+											try {
+												String columnName = definition.getColumnName(i);
+												Object columnValue = definition.getValue(i);
+												o.persistForClass(columnName, columnValue);
+											} catch(Exception e) {
+												LOG.error(String.format("persistGpuSlice failed. "), e);
+											}
 										}
 									}
-								}
-								GpuSlice o2 = new GpuSlice();
-								o2.setSiteRequest_(siteRequest);
-								JsonObject body2 = new JsonObject();
-								for(String f : body.fieldNames()) {
-									Object bodyVal = body.getValue(f);
-									if(bodyVal instanceof JsonArray) {
-										JsonArray bodyVals = (JsonArray)bodyVal;
-										Object valsObj = o.obtainForClass(f);
-										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-										if(bodyVals.size() == vals.size()) {
-											Boolean match = true;
-											for(Object val : vals) {
-												if(val != null) {
-													if(!bodyVals.contains(val.toString())) {
+									GpuSlice o2 = new GpuSlice();
+									o2.setSiteRequest_(siteRequest);
+									JsonObject body2 = new JsonObject();
+									for(String f : body.fieldNames()) {
+										Object bodyVal = body.getValue(f);
+										if(bodyVal instanceof JsonArray) {
+											JsonArray bodyVals = (JsonArray)bodyVal;
+											Object valsObj = o.obtainForClass(f);
+											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+											if(bodyVals.size() == vals.size()) {
+												Boolean match = true;
+												for(Object val : vals) {
+													if(val != null) {
+														if(!bodyVals.contains(val.toString())) {
+															match = false;
+															break;
+														}
+													} else {
 														match = false;
 														break;
 													}
-												} else {
-													match = false;
-													break;
 												}
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											} else {
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										} else {
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											o2.persistForClass(f, bodyVal);
+											o2.relateForClass(f, bodyVal);
+											if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-									} else {
-										o2.persistForClass(f, bodyVal);
-										o2.relateForClass(f, bodyVal);
-										if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								}
-								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-									if(!body.fieldNames().contains(f)) {
-										if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-											body2.putNull("set" + StringUtils.capitalize(f));
+									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+										if(!body.fieldNames().contains(f)) {
+											if(!StringUtils.containsAny(f, "sliceName", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.putNull("set" + StringUtils.capitalize(f));
+										}
 									}
+									if(result.size() >= 1) {
+										apiRequest.setOriginal(o);
+										apiRequest.setId(o.getSliceName());
+										apiRequest.setPk(o.getPk());
+									}
+									siteRequest.setJsonObject(body2);
+									patchGpuSliceFuture(o, true).onSuccess(b -> {
+										LOG.debug("Import GpuSlice {} succeeded, modified GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
+								} else {
+									postGpuSliceFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import GpuSlice {} succeeded, created new GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
 								}
-								if(result.size() >= 1) {
-									apiRequest.setOriginal(o);
-									apiRequest.setId(o.getSliceName());
-									apiRequest.setPk(o.getPk());
-								}
-								siteRequest.setJsonObject(body2);
-								patchGpuSliceFuture(o, true).onSuccess(b -> {
-									LOG.debug("Import GpuSlice {} succeeded, modified GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
-							} else {
-								postGpuSliceFuture(siteRequest, true).onSuccess(b -> {
-									LOG.debug("Import GpuSlice {} succeeded, created new GpuSlice. ", body.getValue(GpuSlice.VAR_sliceName));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
+							} catch(Exception ex) {
+								LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
+								eventHandler.handle(Future.failedFuture(ex));
 							}
-						} catch(Exception ex) {
+						}).onFailure(ex -> {
 							LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
-						}
+						});
 					}).onFailure(ex -> {
 						LOG.error(String.format("putimportGpuSliceFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));

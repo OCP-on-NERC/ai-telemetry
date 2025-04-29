@@ -721,6 +721,14 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}));
 						});
 						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(ClusterRequest.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
+						break;
 					case "setUserId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
@@ -750,14 +758,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								});
 							}));
 						});
-						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -1164,6 +1164,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}));
 						});
 						break;
+					case ClusterRequest.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ClusterRequest.VAR_created + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreated());
+						break;
 					case ClusterRequest.VAR_userId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
@@ -1182,15 +1191,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								});
 							}));
 						});
-						break;
-					case ClusterRequest.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(ClusterRequest.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
 						break;
 					case ClusterRequest.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -1839,88 +1839,93 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					sqlConnection.preparedQuery(sqlQuery)
 							.execute(Tuple.tuple(Arrays.asList(name))
 							).onSuccess(result -> {
-						try {
-							if(result.size() >= 1) {
-								ClusterRequest o = new ClusterRequest();
-								o.setSiteRequest_(siteRequest);
-								for(Row definition : result.value()) {
-									for(Integer i = 0; i < definition.size(); i++) {
-										try {
-											String columnName = definition.getColumnName(i);
-											Object columnValue = definition.getValue(i);
-											o.persistForClass(columnName, columnValue);
-										} catch(Exception e) {
-											LOG.error(String.format("persistClusterRequest failed. "), e);
+						sqlConnection.close().onSuccess(a -> {
+							try {
+								if(result.size() >= 1) {
+									ClusterRequest o = new ClusterRequest();
+									o.setSiteRequest_(siteRequest);
+									for(Row definition : result.value()) {
+										for(Integer i = 0; i < definition.size(); i++) {
+											try {
+												String columnName = definition.getColumnName(i);
+												Object columnValue = definition.getValue(i);
+												o.persistForClass(columnName, columnValue);
+											} catch(Exception e) {
+												LOG.error(String.format("persistClusterRequest failed. "), e);
+											}
 										}
 									}
-								}
-								ClusterRequest o2 = new ClusterRequest();
-								o2.setSiteRequest_(siteRequest);
-								JsonObject body2 = new JsonObject();
-								for(String f : body.fieldNames()) {
-									Object bodyVal = body.getValue(f);
-									if(bodyVal instanceof JsonArray) {
-										JsonArray bodyVals = (JsonArray)bodyVal;
-										Object valsObj = o.obtainForClass(f);
-										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-										if(bodyVals.size() == vals.size()) {
-											Boolean match = true;
-											for(Object val : vals) {
-												if(val != null) {
-													if(!bodyVals.contains(val.toString())) {
+									ClusterRequest o2 = new ClusterRequest();
+									o2.setSiteRequest_(siteRequest);
+									JsonObject body2 = new JsonObject();
+									for(String f : body.fieldNames()) {
+										Object bodyVal = body.getValue(f);
+										if(bodyVal instanceof JsonArray) {
+											JsonArray bodyVals = (JsonArray)bodyVal;
+											Object valsObj = o.obtainForClass(f);
+											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+											if(bodyVals.size() == vals.size()) {
+												Boolean match = true;
+												for(Object val : vals) {
+													if(val != null) {
+														if(!bodyVals.contains(val.toString())) {
+															match = false;
+															break;
+														}
+													} else {
 														match = false;
 														break;
 													}
-												} else {
-													match = false;
-													break;
 												}
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											} else {
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										} else {
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											o2.persistForClass(f, bodyVal);
+											o2.relateForClass(f, bodyVal);
+											if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-									} else {
-										o2.persistForClass(f, bodyVal);
-										o2.relateForClass(f, bodyVal);
-										if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								}
-								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-									if(!body.fieldNames().contains(f)) {
-										if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-											body2.putNull("set" + StringUtils.capitalize(f));
+									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+										if(!body.fieldNames().contains(f)) {
+											if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.putNull("set" + StringUtils.capitalize(f));
+										}
 									}
+									if(result.size() >= 1) {
+										apiRequest.setOriginal(o);
+										apiRequest.setId(o.getName());
+										apiRequest.setPk(o.getPk());
+									}
+									siteRequest.setJsonObject(body2);
+									patchClusterRequestFuture(o, true).onSuccess(b -> {
+										LOG.debug("Import ClusterRequest {} succeeded, modified ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
+								} else {
+									postClusterRequestFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import ClusterRequest {} succeeded, created new ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
 								}
-								if(result.size() >= 1) {
-									apiRequest.setOriginal(o);
-									apiRequest.setId(o.getName());
-									apiRequest.setPk(o.getPk());
-								}
-								siteRequest.setJsonObject(body2);
-								patchClusterRequestFuture(o, true).onSuccess(b -> {
-									LOG.debug("Import ClusterRequest {} succeeded, modified ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
-							} else {
-								postClusterRequestFuture(siteRequest, true).onSuccess(b -> {
-									LOG.debug("Import ClusterRequest {} succeeded, created new ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
+							} catch(Exception ex) {
+								LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+								eventHandler.handle(Future.failedFuture(ex));
 							}
-						} catch(Exception ex) {
+						}).onFailure(ex -> {
 							LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
-						}
+						});
 					}).onFailure(ex -> {
 						LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
@@ -3483,8 +3488,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 			page.persistForClass(ClusterRequest.VAR_name, ClusterRequest.staticSetName(siteRequest2, (String)result.get(ClusterRequest.VAR_name)));
 			page.persistForClass(ClusterRequest.VAR_clusterTemplateTitle, ClusterRequest.staticSetClusterTemplateTitle(siteRequest2, (String)result.get(ClusterRequest.VAR_clusterTemplateTitle)));
-			page.persistForClass(ClusterRequest.VAR_userId, ClusterRequest.staticSetUserId(siteRequest2, (String)result.get(ClusterRequest.VAR_userId)));
 			page.persistForClass(ClusterRequest.VAR_created, ClusterRequest.staticSetCreated(siteRequest2, (String)result.get(ClusterRequest.VAR_created)));
+			page.persistForClass(ClusterRequest.VAR_userId, ClusterRequest.staticSetUserId(siteRequest2, (String)result.get(ClusterRequest.VAR_userId)));
 			page.persistForClass(ClusterRequest.VAR_archived, ClusterRequest.staticSetArchived(siteRequest2, (String)result.get(ClusterRequest.VAR_archived)));
 			page.persistForClass(ClusterRequest.VAR_sessionId, ClusterRequest.staticSetSessionId(siteRequest2, (String)result.get(ClusterRequest.VAR_sessionId)));
 			page.persistForClass(ClusterRequest.VAR_userKey, ClusterRequest.staticSetUserKey(siteRequest2, (String)result.get(ClusterRequest.VAR_userKey)));

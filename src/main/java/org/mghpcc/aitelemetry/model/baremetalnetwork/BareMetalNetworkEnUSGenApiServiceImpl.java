@@ -2230,88 +2230,93 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 					sqlConnection.preparedQuery(sqlQuery)
 							.execute(Tuple.tuple(Arrays.asList(id))
 							).onSuccess(result -> {
-						try {
-							if(result.size() >= 1) {
-								BareMetalNetwork o = new BareMetalNetwork();
-								o.setSiteRequest_(siteRequest);
-								for(Row definition : result.value()) {
-									for(Integer i = 0; i < definition.size(); i++) {
-										try {
-											String columnName = definition.getColumnName(i);
-											Object columnValue = definition.getValue(i);
-											o.persistForClass(columnName, columnValue);
-										} catch(Exception e) {
-											LOG.error(String.format("persistBareMetalNetwork failed. "), e);
+						sqlConnection.close().onSuccess(a -> {
+							try {
+								if(result.size() >= 1) {
+									BareMetalNetwork o = new BareMetalNetwork();
+									o.setSiteRequest_(siteRequest);
+									for(Row definition : result.value()) {
+										for(Integer i = 0; i < definition.size(); i++) {
+											try {
+												String columnName = definition.getColumnName(i);
+												Object columnValue = definition.getValue(i);
+												o.persistForClass(columnName, columnValue);
+											} catch(Exception e) {
+												LOG.error(String.format("persistBareMetalNetwork failed. "), e);
+											}
 										}
 									}
-								}
-								BareMetalNetwork o2 = new BareMetalNetwork();
-								o2.setSiteRequest_(siteRequest);
-								JsonObject body2 = new JsonObject();
-								for(String f : body.fieldNames()) {
-									Object bodyVal = body.getValue(f);
-									if(bodyVal instanceof JsonArray) {
-										JsonArray bodyVals = (JsonArray)bodyVal;
-										Object valsObj = o.obtainForClass(f);
-										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-										if(bodyVals.size() == vals.size()) {
-											Boolean match = true;
-											for(Object val : vals) {
-												if(val != null) {
-													if(!bodyVals.contains(val.toString())) {
+									BareMetalNetwork o2 = new BareMetalNetwork();
+									o2.setSiteRequest_(siteRequest);
+									JsonObject body2 = new JsonObject();
+									for(String f : body.fieldNames()) {
+										Object bodyVal = body.getValue(f);
+										if(bodyVal instanceof JsonArray) {
+											JsonArray bodyVals = (JsonArray)bodyVal;
+											Object valsObj = o.obtainForClass(f);
+											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+											if(bodyVals.size() == vals.size()) {
+												Boolean match = true;
+												for(Object val : vals) {
+													if(val != null) {
+														if(!bodyVals.contains(val.toString())) {
+															match = false;
+															break;
+														}
+													} else {
 														match = false;
 														break;
 													}
-												} else {
-													match = false;
-													break;
 												}
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											} else {
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										} else {
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											o2.persistForClass(f, bodyVal);
+											o2.relateForClass(f, bodyVal);
+											if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-									} else {
-										o2.persistForClass(f, bodyVal);
-										o2.relateForClass(f, bodyVal);
-										if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								}
-								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-									if(!body.fieldNames().contains(f)) {
-										if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-											body2.putNull("set" + StringUtils.capitalize(f));
+									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+										if(!body.fieldNames().contains(f)) {
+											if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.putNull("set" + StringUtils.capitalize(f));
+										}
 									}
+									if(result.size() >= 1) {
+										apiRequest.setOriginal(o);
+										apiRequest.setId(o.getId());
+										apiRequest.setPk(o.getPk());
+									}
+									siteRequest.setJsonObject(body2);
+									patchBareMetalNetworkFuture(o, true).onSuccess(b -> {
+										LOG.debug("Import BareMetalNetwork {} succeeded, modified BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
+								} else {
+									postBareMetalNetworkFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import BareMetalNetwork {} succeeded, created new BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
 								}
-								if(result.size() >= 1) {
-									apiRequest.setOriginal(o);
-									apiRequest.setId(o.getId());
-									apiRequest.setPk(o.getPk());
-								}
-								siteRequest.setJsonObject(body2);
-								patchBareMetalNetworkFuture(o, true).onSuccess(b -> {
-									LOG.debug("Import BareMetalNetwork {} succeeded, modified BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
-							} else {
-								postBareMetalNetworkFuture(siteRequest, true).onSuccess(b -> {
-									LOG.debug("Import BareMetalNetwork {} succeeded, created new BareMetalNetwork. ", body.getValue(BareMetalNetwork.VAR_id));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
+							} catch(Exception ex) {
+								LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
+								eventHandler.handle(Future.failedFuture(ex));
 							}
-						} catch(Exception ex) {
+						}).onFailure(ex -> {
 							LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
-						}
+						});
 					}).onFailure(ex -> {
 						LOG.error(String.format("putimportBareMetalNetworkFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));

@@ -1061,8 +1061,6 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 
 	public void siteRequestBareMetalOrder(SiteRequest siteRequest_) {
 			super.siteRequestBaseModel(siteRequest_);
-		if(networkSearch != null)
-			networkSearch.setSiteRequest_(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
