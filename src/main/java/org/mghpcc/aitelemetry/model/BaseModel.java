@@ -21,7 +21,7 @@ import org.computate.vertx.model.base.ComputateBaseModel;
  * Model: true
  * Keyword: classSimpleNameBaseModel
  * Description: A reusable base class for all database model classes
- * Order: 1
+ * Order: 0
  */
 public class BaseModel extends BaseModelGen<Object> implements ComputateBaseModel {
 

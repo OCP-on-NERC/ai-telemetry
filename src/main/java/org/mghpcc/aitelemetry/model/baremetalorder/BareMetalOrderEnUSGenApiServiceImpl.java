@@ -120,7 +120,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void searchBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -136,6 +136,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -287,7 +288,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void getBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -303,6 +304,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -393,7 +395,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	@Override
 	public void patchBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchBareMetalOrder started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -409,6 +411,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "PATCH"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -541,7 +544,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void patchBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -892,7 +895,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	@Override
 	public void postBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postBareMetalOrder started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -908,6 +911,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "POST"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -997,7 +1001,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void postBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1381,7 +1385,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	@Override
 	public void deleteBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deleteBareMetalOrder started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -1397,6 +1401,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "DELETE"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1528,7 +1533,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void deleteBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1737,7 +1742,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void searchpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -1753,6 +1758,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1901,7 +1907,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void editpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -1917,6 +1923,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2065,7 +2072,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void userpageBareMetalOrder(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -2081,6 +2088,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2230,7 +2238,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 	@Override
 	public void deletefilterBareMetalOrder(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("deletefilterBareMetalOrder started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -2246,6 +2254,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, "PUT"));
 			if(pk != null)
 				form.add("permission", String.format("%s-%s#%s", BareMetalOrder.CLASS_SIMPLE_NAME, pk, "DELETE"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2377,7 +2386,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	@Override
 	public void deletefilterBareMetalOrderFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -3039,7 +3048,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
+				String query = String.format("filter(%s:%s)", BareMetalOrder.VAR_solrId, o.obtainForClass(BareMetalOrder.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

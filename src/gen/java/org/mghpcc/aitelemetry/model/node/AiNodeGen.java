@@ -1671,20 +1671,29 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 
 			if(saves.contains("locationColors")) {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
-				if(locationColors != null)
-					oAiNode.locationColors.addAll(locationColors);
+				if(locationColors != null) {
+					locationColors.stream().forEach( v -> {
+						oAiNode.locationColors.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("locationTitles")) {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
-				if(locationTitles != null)
-					oAiNode.locationTitles.addAll(locationTitles);
+				if(locationTitles != null) {
+					locationTitles.stream().forEach( v -> {
+						oAiNode.locationTitles.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("locationLinks")) {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
-				if(locationLinks != null)
-					oAiNode.locationLinks.addAll(locationLinks);
+				if(locationLinks != null) {
+					locationLinks.stream().forEach( v -> {
+						oAiNode.locationLinks.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("location")) {
@@ -1756,21 +1765,21 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("locationColors_indexedstored_strings", l);
 			for(String o : locationColors) {
-				l.add(o);
+				l.add(AiNode.staticSearchLocationColors(siteRequest_, o));
 			}
 		}
 		if(locationTitles != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationTitles_indexedstored_strings", l);
 			for(String o : locationTitles) {
-				l.add(o);
+				l.add(AiNode.staticSearchLocationTitles(siteRequest_, o));
 			}
 		}
 		if(locationLinks != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationLinks_indexedstored_strings", l);
 			for(String o : locationLinks) {
-				l.add(o);
+				l.add(AiNode.staticSearchLocationLinks(siteRequest_, o));
 			}
 		}
 		if(location != null) {

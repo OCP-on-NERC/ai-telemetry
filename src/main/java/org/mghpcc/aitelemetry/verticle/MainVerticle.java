@@ -143,8 +143,8 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.impl.RoutingContextImpl;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgBuilder;
@@ -1218,7 +1218,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				if(StringUtils.startsWith(siteBaseUrl, "https://"))
 					sessionHandler.setCookieSecureFlag(true);
 		
-				RouterBuilder.create(vertx, "webroot/openapi3-enUS.yaml").onSuccess(routerBuilder -> {
+				String siteSrc = config().getString(ComputateConfigKeys.SITE_SRC);
+				RouterBuilder.create(vertx, Path.of(siteSrc, "src/main/resources/webroot/openapi3-enUS.yaml").toAbsolutePath().toString()).onSuccess(routerBuilder -> {
 					routerBuilder.rootHandler(sessionHandler);
 					routerBuilder.rootHandler(BodyHandler.create());
 
@@ -1461,7 +1462,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		try {
 			List<Future<?>> futures = new ArrayList<>();
 			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterTemplate","ClusterOrder","ManagedCluster","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
-			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate","ClusterOrder","ManagedCluster");
+			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
 			registerApiService(SiteUserEnUSGenApiService.class, apiSiteUser, SiteUser.getClassApiAddress());

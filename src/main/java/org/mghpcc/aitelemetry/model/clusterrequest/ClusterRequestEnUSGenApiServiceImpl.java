@@ -138,6 +138,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -305,6 +306,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -411,6 +413,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PATCH"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -876,6 +879,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "POST"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1312,6 +1316,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1688,6 +1693,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PUT"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1828,84 +1834,97 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-
-				SearchList<ClusterRequest> searchList = new SearchList<ClusterRequest>();
-				searchList.setStore(true);
-				searchList.q("*:*");
-				searchList.setC(ClusterRequest.class);
-				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("name_docvalues_string:" + SearchTool.escapeQueryChars(name));
-				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					try {
-						if(searchList.size() >= 1) {
-							ClusterRequest o = searchList.getList().stream().findFirst().orElse(null);
-							ClusterRequest o2 = new ClusterRequest();
-							o2.setSiteRequest_(siteRequest);
-							JsonObject body2 = new JsonObject();
-							for(String f : body.fieldNames()) {
-								Object bodyVal = body.getValue(f);
-								if(bodyVal instanceof JsonArray) {
-									JsonArray bodyVals = (JsonArray)bodyVal;
-									Object valsObj = o.obtainForClass(f);
-									Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-									if(bodyVals.size() == vals.size()) {
-										Boolean match = true;
-										for(Object val : vals) {
-											if(val != null) {
-												if(!bodyVals.contains(val.toString())) {
+				pgPool.getConnection().onSuccess(sqlConnection -> {
+					String sqlQuery = String.format("select * from %s WHERE name=$1", ClusterRequest.CLASS_SIMPLE_NAME);
+					sqlConnection.preparedQuery(sqlQuery)
+							.execute(Tuple.tuple(Arrays.asList(name))
+							).onSuccess(result -> {
+						try {
+							if(result.size() >= 1) {
+								ClusterRequest o = new ClusterRequest();
+								o.setSiteRequest_(siteRequest);
+								for(Row definition : result.value()) {
+									for(Integer i = 0; i < definition.size(); i++) {
+										try {
+											String columnName = definition.getColumnName(i);
+											Object columnValue = definition.getValue(i);
+											o.persistForClass(columnName, columnValue);
+										} catch(Exception e) {
+											LOG.error(String.format("persistClusterRequest failed. "), e);
+										}
+									}
+								}
+								ClusterRequest o2 = new ClusterRequest();
+								o2.setSiteRequest_(siteRequest);
+								JsonObject body2 = new JsonObject();
+								for(String f : body.fieldNames()) {
+									Object bodyVal = body.getValue(f);
+									if(bodyVal instanceof JsonArray) {
+										JsonArray bodyVals = (JsonArray)bodyVal;
+										Object valsObj = o.obtainForClass(f);
+										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+										if(bodyVals.size() == vals.size()) {
+											Boolean match = true;
+											for(Object val : vals) {
+												if(val != null) {
+													if(!bodyVals.contains(val.toString())) {
+														match = false;
+														break;
+													}
+												} else {
 													match = false;
 													break;
 												}
-											} else {
-												match = false;
-												break;
 											}
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										} else {
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									} else {
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										o2.persistForClass(f, bodyVal);
+										o2.relateForClass(f, bodyVal);
+										if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								} else {
-									o2.persistForClass(f, bodyVal);
-									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
-							}
-							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.putNull("set" + StringUtils.capitalize(f));
+								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+									if(!body.fieldNames().contains(f)) {
+										if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											body2.putNull("set" + StringUtils.capitalize(f));
+									}
 								}
+								if(result.size() >= 1) {
+									apiRequest.setOriginal(o);
+									apiRequest.setId(o.getName());
+									apiRequest.setPk(o.getPk());
+								}
+								siteRequest.setJsonObject(body2);
+								patchClusterRequestFuture(o, true).onSuccess(b -> {
+									LOG.debug("Import ClusterRequest {} succeeded, modified ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
+							} else {
+								postClusterRequestFuture(siteRequest, true).onSuccess(b -> {
+									LOG.debug("Import ClusterRequest {} succeeded, created new ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
 							}
-							if(searchList.size() == 1) {
-								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getName());
-								apiRequest.setPk(o.getPk());
-							}
-							siteRequest.setJsonObject(body2);
-							patchClusterRequestFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import ClusterRequest {} succeeded, modified ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
-						} else {
-							postClusterRequestFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import ClusterRequest {} succeeded, created new ClusterRequest. ", body.getValue(ClusterRequest.VAR_name));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
+						} catch(Exception ex) {
+							LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
+							eventHandler.handle(Future.failedFuture(ex));
 						}
-					} catch(Exception ex) {
+					}).onFailure(ex -> {
 						LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
-					}
+					});
 				}).onFailure(ex -> {
 					LOG.error(String.format("putimportClusterRequestFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
@@ -1980,6 +1999,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2144,6 +2164,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2308,6 +2329,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2473,6 +2495,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
 			if(name != null)
 				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -3285,7 +3308,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
+				String query = String.format("filter(%s:%s)", ClusterRequest.VAR_solrId, o.obtainForClass(ClusterRequest.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

@@ -20,7 +20,6 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  *   DELETE:
  *   PUTImport:
  * 
- * PublicRead: true
  * AuthGroup:
  *   Admin:
  *     POST:

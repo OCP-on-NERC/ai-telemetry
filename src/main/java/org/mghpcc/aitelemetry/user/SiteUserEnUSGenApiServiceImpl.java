@@ -118,7 +118,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void searchSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -134,6 +134,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
 			if(userId != null)
 				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -286,7 +287,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	@Override
 	public void patchSiteUser(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("patchSiteUser started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -302,6 +303,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
 			if(userId != null)
 				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "PATCH"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -434,7 +436,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void patchSiteUserFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -747,7 +749,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 	@Override
 	public void postSiteUser(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		LOG.debug(String.format("postSiteUser started. "));
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -763,6 +765,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
 			if(userId != null)
 				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "POST"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -852,7 +855,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void postSiteUserFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1215,7 +1218,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void searchpageSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -1231,6 +1234,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
 			if(userId != null)
 				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1379,7 +1383,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	@Override
 	public void editpageSiteUser(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
@@ -1395,6 +1399,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
 			if(userId != null)
 				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1970,7 +1975,7 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
+				String query = String.format("filter(%s:%s)", SiteUser.VAR_solrId, o.obtainForClass(SiteUser.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

@@ -802,83 +802,96 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-
-				SearchList<SitePage> searchList = new SearchList<SitePage>();
-				searchList.setStore(true);
-				searchList.q("*:*");
-				searchList.setC(SitePage.class);
-				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("pageId_docvalues_string:" + SearchTool.escapeQueryChars(pageId));
-				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					try {
-						if(searchList.size() >= 1) {
-							SitePage o = searchList.getList().stream().findFirst().orElse(null);
-							SitePage o2 = new SitePage();
-							o2.setSiteRequest_(siteRequest);
-							JsonObject body2 = new JsonObject();
-							for(String f : body.fieldNames()) {
-								Object bodyVal = body.getValue(f);
-								if(bodyVal instanceof JsonArray) {
-									JsonArray bodyVals = (JsonArray)bodyVal;
-									Object valsObj = o.obtainForClass(f);
-									Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-									if(bodyVals.size() == vals.size()) {
-										Boolean match = true;
-										for(Object val : vals) {
-											if(val != null) {
-												if(!bodyVals.contains(val.toString())) {
+				pgPool.getConnection().onSuccess(sqlConnection -> {
+					String sqlQuery = String.format("select * from %s WHERE pageId=$1", SitePage.CLASS_SIMPLE_NAME);
+					sqlConnection.preparedQuery(sqlQuery)
+							.execute(Tuple.tuple(Arrays.asList(pageId))
+							).onSuccess(result -> {
+						try {
+							if(result.size() >= 1) {
+								SitePage o = new SitePage();
+								o.setSiteRequest_(siteRequest);
+								for(Row definition : result.value()) {
+									for(Integer i = 0; i < definition.size(); i++) {
+										try {
+											String columnName = definition.getColumnName(i);
+											Object columnValue = definition.getValue(i);
+											o.persistForClass(columnName, columnValue);
+										} catch(Exception e) {
+											LOG.error(String.format("persistSitePage failed. "), e);
+										}
+									}
+								}
+								SitePage o2 = new SitePage();
+								o2.setSiteRequest_(siteRequest);
+								JsonObject body2 = new JsonObject();
+								for(String f : body.fieldNames()) {
+									Object bodyVal = body.getValue(f);
+									if(bodyVal instanceof JsonArray) {
+										JsonArray bodyVals = (JsonArray)bodyVal;
+										Object valsObj = o.obtainForClass(f);
+										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+										if(bodyVals.size() == vals.size()) {
+											Boolean match = true;
+											for(Object val : vals) {
+												if(val != null) {
+													if(!bodyVals.contains(val.toString())) {
+														match = false;
+														break;
+													}
+												} else {
 													match = false;
 													break;
 												}
-											} else {
-												match = false;
-												break;
 											}
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										} else {
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									} else {
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										o2.persistForClass(f, bodyVal);
+										o2.relateForClass(f, bodyVal);
+										if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								} else {
-									o2.persistForClass(f, bodyVal);
-									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
-							}
-							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.putNull("set" + StringUtils.capitalize(f));
+								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+									if(!body.fieldNames().contains(f)) {
+										if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											body2.putNull("set" + StringUtils.capitalize(f));
+									}
 								}
+								if(result.size() >= 1) {
+									apiRequest.setOriginal(o);
+									apiRequest.setId(o.getPageId());
+								}
+								siteRequest.setJsonObject(body2);
+								patchSitePageFuture(o2, true).onSuccess(b -> {
+									LOG.debug("Import SitePage {} succeeded, modified SitePage. ", body.getValue(SitePage.VAR_pageId));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
+							} else {
+								postSitePageFuture(siteRequest, true).onSuccess(b -> {
+									LOG.debug("Import SitePage {} succeeded, created new SitePage. ", body.getValue(SitePage.VAR_pageId));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
 							}
-							if(searchList.size() == 1) {
-								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getPageId());
-							}
-							siteRequest.setJsonObject(body2);
-							patchSitePageFuture(o2, true).onSuccess(b -> {
-								LOG.debug("Import SitePage {} succeeded, modified SitePage. ", body.getValue(SitePage.VAR_pageId));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportSitePageFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
-						} else {
-							postSitePageFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import SitePage {} succeeded, created new SitePage. ", body.getValue(SitePage.VAR_pageId));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportSitePageFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
+						} catch(Exception ex) {
+							LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+							eventHandler.handle(Future.failedFuture(ex));
 						}
-					} catch(Exception ex) {
+					}).onFailure(ex -> {
 						LOG.error(String.format("putimportSitePageFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
-					}
+					});
 				}).onFailure(ex -> {
 					LOG.error(String.format("putimportSitePageFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
@@ -1700,7 +1713,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(pageId_docvalues_string:%s)", o.obtainForClass("pageId"));
+				String query = String.format("filter(%s:%s)", SitePage.VAR_solrId, o.obtainForClass(SitePage.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

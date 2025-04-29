@@ -1851,84 +1851,97 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-
-				SearchList<GpuDevice> searchList = new SearchList<GpuDevice>();
-				searchList.setStore(true);
-				searchList.q("*:*");
-				searchList.setC(GpuDevice.class);
-				searchList.fq("archived_docvalues_boolean:false");
-				searchList.fq("gpuDeviceId_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceId));
-				searchList.promiseDeepForClass(siteRequest).onSuccess(a -> {
-					try {
-						if(searchList.size() >= 1) {
-							GpuDevice o = searchList.getList().stream().findFirst().orElse(null);
-							GpuDevice o2 = new GpuDevice();
-							o2.setSiteRequest_(siteRequest);
-							JsonObject body2 = new JsonObject();
-							for(String f : body.fieldNames()) {
-								Object bodyVal = body.getValue(f);
-								if(bodyVal instanceof JsonArray) {
-									JsonArray bodyVals = (JsonArray)bodyVal;
-									Object valsObj = o.obtainForClass(f);
-									Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-									if(bodyVals.size() == vals.size()) {
-										Boolean match = true;
-										for(Object val : vals) {
-											if(val != null) {
-												if(!bodyVals.contains(val.toString())) {
+				pgPool.getConnection().onSuccess(sqlConnection -> {
+					String sqlQuery = String.format("select * from %s WHERE gpuDeviceId=$1", GpuDevice.CLASS_SIMPLE_NAME);
+					sqlConnection.preparedQuery(sqlQuery)
+							.execute(Tuple.tuple(Arrays.asList(gpuDeviceId))
+							).onSuccess(result -> {
+						try {
+							if(result.size() >= 1) {
+								GpuDevice o = new GpuDevice();
+								o.setSiteRequest_(siteRequest);
+								for(Row definition : result.value()) {
+									for(Integer i = 0; i < definition.size(); i++) {
+										try {
+											String columnName = definition.getColumnName(i);
+											Object columnValue = definition.getValue(i);
+											o.persistForClass(columnName, columnValue);
+										} catch(Exception e) {
+											LOG.error(String.format("persistGpuDevice failed. "), e);
+										}
+									}
+								}
+								GpuDevice o2 = new GpuDevice();
+								o2.setSiteRequest_(siteRequest);
+								JsonObject body2 = new JsonObject();
+								for(String f : body.fieldNames()) {
+									Object bodyVal = body.getValue(f);
+									if(bodyVal instanceof JsonArray) {
+										JsonArray bodyVals = (JsonArray)bodyVal;
+										Object valsObj = o.obtainForClass(f);
+										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+										if(bodyVals.size() == vals.size()) {
+											Boolean match = true;
+											for(Object val : vals) {
+												if(val != null) {
+													if(!bodyVals.contains(val.toString())) {
+														match = false;
+														break;
+													}
+												} else {
 													match = false;
 													break;
 												}
-											} else {
-												match = false;
-												break;
 											}
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										} else {
+											vals.clear();
+											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									} else {
-										vals.clear();
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
+										o2.persistForClass(f, bodyVal);
+										o2.relateForClass(f, bodyVal);
+										if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								} else {
-									o2.persistForClass(f, bodyVal);
-									o2.relateForClass(f, bodyVal);
-									if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.put("set" + StringUtils.capitalize(f), bodyVal);
 								}
-							}
-							for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-								if(!body.fieldNames().contains(f)) {
-									if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-										body2.putNull("set" + StringUtils.capitalize(f));
+								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+									if(!body.fieldNames().contains(f)) {
+										if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											body2.putNull("set" + StringUtils.capitalize(f));
+									}
 								}
+								if(result.size() >= 1) {
+									apiRequest.setOriginal(o);
+									apiRequest.setId(o.getGpuDeviceId());
+									apiRequest.setPk(o.getPk());
+								}
+								siteRequest.setJsonObject(body2);
+								patchGpuDeviceFuture(o, true).onSuccess(b -> {
+									LOG.debug("Import GpuDevice {} succeeded, modified GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
+							} else {
+								postGpuDeviceFuture(siteRequest, true).onSuccess(b -> {
+									LOG.debug("Import GpuDevice {} succeeded, created new GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
+									eventHandler.handle(Future.succeededFuture());
+								}).onFailure(ex -> {
+									LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
+									eventHandler.handle(Future.failedFuture(ex));
+								});
 							}
-							if(searchList.size() == 1) {
-								apiRequest.setOriginal(o);
-								apiRequest.setId(o.getGpuDeviceId());
-								apiRequest.setPk(o.getPk());
-							}
-							siteRequest.setJsonObject(body2);
-							patchGpuDeviceFuture(o, true).onSuccess(b -> {
-								LOG.debug("Import GpuDevice {} succeeded, modified GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
-						} else {
-							postGpuDeviceFuture(siteRequest, true).onSuccess(b -> {
-								LOG.debug("Import GpuDevice {} succeeded, created new GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
-								eventHandler.handle(Future.succeededFuture());
-							}).onFailure(ex -> {
-								LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
-								eventHandler.handle(Future.failedFuture(ex));
-							});
+						} catch(Exception ex) {
+							LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
+							eventHandler.handle(Future.failedFuture(ex));
 						}
-					} catch(Exception ex) {
+					}).onFailure(ex -> {
 						LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
-					}
+					});
 				}).onFailure(ex -> {
 					LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
@@ -3223,7 +3236,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(pk_docvalues_long:%s)", o.obtainForClass("pk"));
+				String query = String.format("filter(%s:%s)", GpuDevice.VAR_solrId, o.obtainForClass(GpuDevice.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);

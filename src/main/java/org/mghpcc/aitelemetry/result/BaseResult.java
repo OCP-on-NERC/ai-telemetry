@@ -22,7 +22,7 @@ import io.vertx.core.Promise;
  * Indexed: true
  * Keyword: classSimpleNameBaseResult
  * Description: A reusable base class for all non-model search classes
- * Order: 2
+ * Order: 0
  * Promise: true
  */
 public class BaseResult extends BaseResultGen<Object> implements ComputateBaseResult {

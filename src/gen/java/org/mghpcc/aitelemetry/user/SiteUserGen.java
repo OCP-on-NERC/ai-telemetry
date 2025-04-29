@@ -213,7 +213,6 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	 */
 	@JsonProperty
 	@JsonFormat(shape = JsonFormat.Shape.ARRAY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
 	@JsonInclude(Include.NON_NULL)
 	protected List<Long> userKeys = new ArrayList<Long>();
 
@@ -1098,8 +1097,11 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 			if(saves.contains("userKeys")) {
 				List<Long> userKeys = (List<Long>)doc.get("userKeys_docvalues_longs");
-				if(userKeys != null)
-					oSiteUser.userKeys.addAll(userKeys);
+				if(userKeys != null) {
+					userKeys.stream().forEach( v -> {
+						oSiteUser.userKeys.add(v);
+					});
+				}
 			}
 
 			if(saves.contains("userId")) {
@@ -1159,7 +1161,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("userKeys_docvalues_longs", l);
 			for(Long o : userKeys) {
-				l.add(o);
+				l.add(SiteUser.staticSearchUserKeys(siteRequest_, o));
 			}
 		}
 		if(userId != null) {

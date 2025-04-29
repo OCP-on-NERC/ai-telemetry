@@ -642,3 +642,12 @@ KAFKA_TOPIC_ORDER_LOOP: "{{ lookup('env', 'KAFKA_TOPIC_ORDER_LOOP') | default('e
 IMPORT_DATA_START_TIME_BareMetalNode: 12:00 America/New_York
 IMPORT_DATA_PERIOD_BareMetalNode: 30 seconds
 
+ENABLE_IMPORT_DATA_AiCluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiCluster') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_AiNode: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiNode') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_AiProject: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiProject') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_GpuDevice: "{{ lookup('env', 'ENABLE_IMPORT_DATA_GpuDevice') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_ClusterOrder: "{{ lookup('env', 'ENABLE_IMPORT_DATA_ClusterOrder') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_ClusterTemplate: "{{ lookup('env', 'ENABLE_IMPORT_DATA_ClusterTemplate') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_BareMetalNetwork: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalNetwork') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_BareMetalNode: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalNode') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_ManagedCluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalCluster') | default('true', true) | bool }}"
