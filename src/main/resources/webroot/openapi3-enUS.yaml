@@ -2154,6 +2154,8 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2331,6 +2333,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2386,6 +2390,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2418,6 +2424,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2487,6 +2495,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2539,6 +2549,8 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2570,6 +2582,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2639,8 +2653,14 @@ paths:
     get:
       operationId: editpageBareMetalResourceClass
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -2669,6 +2689,8 @@ paths:
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
       description: >+
       summary: >+
+      tags:
+        - bare metal resource classes
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4814,6 +4836,10 @@ paths:
     get:
       operationId: editpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -5020,6 +5046,10 @@ paths:
     get:
       operationId: userpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -5551,6 +5581,10 @@ paths:
     get:
       operationId: editpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -7277,6 +7311,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7454,6 +7490,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7509,6 +7547,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7541,6 +7581,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7610,6 +7652,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7666,6 +7710,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7697,6 +7743,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7772,6 +7820,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7804,6 +7854,8 @@ paths:
           - profile
       description: >+
       summary: >+
+      tags:
+        - managed clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -9845,6 +9897,10 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
