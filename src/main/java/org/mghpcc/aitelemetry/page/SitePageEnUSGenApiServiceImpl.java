@@ -807,87 +807,92 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 					sqlConnection.preparedQuery(sqlQuery)
 							.execute(Tuple.tuple(Arrays.asList(pageId))
 							).onSuccess(result -> {
-						try {
-							if(result.size() >= 1) {
-								SitePage o = new SitePage();
-								o.setSiteRequest_(siteRequest);
-								for(Row definition : result.value()) {
-									for(Integer i = 0; i < definition.size(); i++) {
-										try {
-											String columnName = definition.getColumnName(i);
-											Object columnValue = definition.getValue(i);
-											o.persistForClass(columnName, columnValue);
-										} catch(Exception e) {
-											LOG.error(String.format("persistSitePage failed. "), e);
+						sqlConnection.close().onSuccess(a -> {
+							try {
+								if(result.size() >= 1) {
+									SitePage o = new SitePage();
+									o.setSiteRequest_(siteRequest);
+									for(Row definition : result.value()) {
+										for(Integer i = 0; i < definition.size(); i++) {
+											try {
+												String columnName = definition.getColumnName(i);
+												Object columnValue = definition.getValue(i);
+												o.persistForClass(columnName, columnValue);
+											} catch(Exception e) {
+												LOG.error(String.format("persistSitePage failed. "), e);
+											}
 										}
 									}
-								}
-								SitePage o2 = new SitePage();
-								o2.setSiteRequest_(siteRequest);
-								JsonObject body2 = new JsonObject();
-								for(String f : body.fieldNames()) {
-									Object bodyVal = body.getValue(f);
-									if(bodyVal instanceof JsonArray) {
-										JsonArray bodyVals = (JsonArray)bodyVal;
-										Object valsObj = o.obtainForClass(f);
-										Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-										if(bodyVals.size() == vals.size()) {
-											Boolean match = true;
-											for(Object val : vals) {
-												if(val != null) {
-													if(!bodyVals.contains(val.toString())) {
+									SitePage o2 = new SitePage();
+									o2.setSiteRequest_(siteRequest);
+									JsonObject body2 = new JsonObject();
+									for(String f : body.fieldNames()) {
+										Object bodyVal = body.getValue(f);
+										if(bodyVal instanceof JsonArray) {
+											JsonArray bodyVals = (JsonArray)bodyVal;
+											Object valsObj = o.obtainForClass(f);
+											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
+											if(bodyVals.size() == vals.size()) {
+												Boolean match = true;
+												for(Object val : vals) {
+													if(val != null) {
+														if(!bodyVals.contains(val.toString())) {
+															match = false;
+															break;
+														}
+													} else {
 														match = false;
 														break;
 													}
-												} else {
-													match = false;
-													break;
 												}
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											} else {
+												vals.clear();
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										} else {
-											vals.clear();
-											body2.put("set" + StringUtils.capitalize(f), bodyVal);
+											o2.persistForClass(f, bodyVal);
+											o2.relateForClass(f, bodyVal);
+											if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
-									} else {
-										o2.persistForClass(f, bodyVal);
-										o2.relateForClass(f, bodyVal);
-										if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-									body2.put("set" + StringUtils.capitalize(f), bodyVal);
 									}
-								}
-								for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
-									if(!body.fieldNames().contains(f)) {
-										if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
-											body2.putNull("set" + StringUtils.capitalize(f));
+									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
+										if(!body.fieldNames().contains(f)) {
+											if(!StringUtils.containsAny(f, "pageId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+												body2.putNull("set" + StringUtils.capitalize(f));
+										}
 									}
+									if(result.size() >= 1) {
+										apiRequest.setOriginal(o);
+										apiRequest.setId(o.getPageId());
+									}
+									siteRequest.setJsonObject(body2);
+									patchSitePageFuture(o2, true).onSuccess(b -> {
+										LOG.debug("Import SitePage {} succeeded, modified SitePage. ", body.getValue(SitePage.VAR_pageId));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
+								} else {
+									postSitePageFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import SitePage {} succeeded, created new SitePage. ", body.getValue(SitePage.VAR_pageId));
+										eventHandler.handle(Future.succeededFuture());
+									}).onFailure(ex -> {
+										LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+										eventHandler.handle(Future.failedFuture(ex));
+									});
 								}
-								if(result.size() >= 1) {
-									apiRequest.setOriginal(o);
-									apiRequest.setId(o.getPageId());
-								}
-								siteRequest.setJsonObject(body2);
-								patchSitePageFuture(o2, true).onSuccess(b -> {
-									LOG.debug("Import SitePage {} succeeded, modified SitePage. ", body.getValue(SitePage.VAR_pageId));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportSitePageFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
-							} else {
-								postSitePageFuture(siteRequest, true).onSuccess(b -> {
-									LOG.debug("Import SitePage {} succeeded, created new SitePage. ", body.getValue(SitePage.VAR_pageId));
-									eventHandler.handle(Future.succeededFuture());
-								}).onFailure(ex -> {
-									LOG.error(String.format("putimportSitePageFuture failed. "), ex);
-									eventHandler.handle(Future.failedFuture(ex));
-								});
+							} catch(Exception ex) {
+								LOG.error(String.format("putimportSitePageFuture failed. "), ex);
+								eventHandler.handle(Future.failedFuture(ex));
 							}
-						} catch(Exception ex) {
+						}).onFailure(ex -> {
 							LOG.error(String.format("putimportSitePageFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
-						}
+						});
 					}).onFailure(ex -> {
 						LOG.error(String.format("putimportSitePageFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
@@ -1757,7 +1762,7 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 			page.persistForClass(SitePage.VAR_created, SitePage.staticSetCreated(siteRequest2, (String)result.get(SitePage.VAR_created)));
 			page.persistForClass(SitePage.VAR_archived, SitePage.staticSetArchived(siteRequest2, (String)result.get(SitePage.VAR_archived)));
-			page.persistForClass(SitePage.VAR_title, SitePage.staticSetTitle(siteRequest2, (String)result.get(SitePage.VAR_title)));
+			page.persistForClass(SitePage.VAR_objectTitle, SitePage.staticSetObjectTitle(siteRequest2, (String)result.get(SitePage.VAR_objectTitle)));
 			page.persistForClass(SitePage.VAR_displayPage, SitePage.staticSetDisplayPage(siteRequest2, (String)result.get(SitePage.VAR_displayPage)));
 			page.persistForClass(SitePage.VAR_courseNum, SitePage.staticSetCourseNum(siteRequest2, (String)result.get(SitePage.VAR_courseNum)));
 			page.persistForClass(SitePage.VAR_lessonNum, SitePage.staticSetLessonNum(siteRequest2, (String)result.get(SitePage.VAR_lessonNum)));
