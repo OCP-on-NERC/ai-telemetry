@@ -6,7 +6,8 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 /**
  * Order: 8
  * Description: A bare metal resource class
- * Name: a bare metal resource class
+ * AName: a bare metal resource class
+ * PluralName: bare metal resource classes
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/bare-metal-resource-class

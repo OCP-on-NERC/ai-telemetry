@@ -6,7 +6,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 /**
  * Order: 8
  * Description: An OpenShift managed cluster
- * Name: a managed cluster
+ * AName: a managed cluster
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/managed-cluster

@@ -229,7 +229,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			response200Search(listManagedCluster.getRequest(), listManagedCluster.getResponse(), json);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -364,7 +364,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(listManagedCluster.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -789,7 +789,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1210,7 +1210,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1544,7 +1544,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1851,7 +1851,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2505,7 +2505,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "", id);
+						String m = String.format("%s %s not found", "managed cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));

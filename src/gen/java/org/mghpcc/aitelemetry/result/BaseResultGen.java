@@ -650,60 +650,60 @@ public abstract class BaseResultGen<DEV> extends Object {
 		return BaseResult.staticSearchSaves(siteRequest_, BaseResult.staticSetSaves(siteRequest_, o)).toString();
 	}
 
-	///////////
-	// title //
-	///////////
+	/////////////////
+	// objectTitle //
+	/////////////////
 
 
-	/**	 The entity title
+	/**	 The entity objectTitle
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String title;
+	protected String objectTitle;
 
-	/**	<br> The entity title
+	/**	<br> The entity objectTitle
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.result.BaseResult&fq=entiteVar_enUS_indexed_string:title">Find the entity title in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.result.BaseResult&fq=entiteVar_enUS_indexed_string:objectTitle">Find the entity objectTitle in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _title(Wrap<String> w);
+	protected abstract void _objectTitle(Wrap<String> w);
 
-	public String getTitle() {
-		return title;
+	public String getObjectTitle() {
+		return objectTitle;
 	}
-	public void setTitle(String o) {
-		this.title = BaseResult.staticSetTitle(siteRequest_, o);
+	public void setObjectTitle(String o) {
+		this.objectTitle = BaseResult.staticSetObjectTitle(siteRequest_, o);
 	}
-	public static String staticSetTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSetObjectTitle(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BaseResult titleInit() {
-		Wrap<String> titleWrap = new Wrap<String>().var("title");
-		if(title == null) {
-			_title(titleWrap);
-			Optional.ofNullable(titleWrap.getO()).ifPresent(o -> {
-				setTitle(o);
+	protected BaseResult objectTitleInit() {
+		Wrap<String> objectTitleWrap = new Wrap<String>().var("objectTitle");
+		if(objectTitle == null) {
+			_objectTitle(objectTitleWrap);
+			Optional.ofNullable(objectTitleWrap.getO()).ifPresent(o -> {
+				setObjectTitle(o);
 			});
 		}
 		return (BaseResult)this;
 	}
 
-	public static String staticSearchTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchObjectTitle(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrTitle(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrObjectTitle(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqTitle(SiteRequest siteRequest_, String o) {
-		return BaseResult.staticSearchTitle(siteRequest_, BaseResult.staticSetTitle(siteRequest_, o)).toString();
+	public static String staticSearchFqObjectTitle(SiteRequest siteRequest_, String o) {
+		return BaseResult.staticSearchObjectTitle(siteRequest_, BaseResult.staticSetObjectTitle(siteRequest_, o)).toString();
 	}
 
-	public String sqlTitle() {
-		return title;
+	public String sqlObjectTitle() {
+		return objectTitle;
 	}
 
 	/////////////////
@@ -1134,7 +1134,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 				classSimpleNameInit();
 				classCanonicalNamesInit();
 				savesInit();
-				titleInit();
+				objectTitleInit();
 				displayPageInit();
 				editPageInit();
 				userPageInit();
@@ -1210,8 +1210,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return oBaseResult.classCanonicalNames;
 			case "saves":
 				return oBaseResult.saves;
-			case "title":
-				return oBaseResult.title;
+			case "objectTitle":
+				return oBaseResult.objectTitle;
 			case "displayPage":
 				return oBaseResult.displayPage;
 			case "editPage":
@@ -1279,8 +1279,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSetClassCanonicalNames(siteRequest_, o);
 		case "saves":
 			return BaseResult.staticSetSaves(siteRequest_, o);
-		case "title":
-			return BaseResult.staticSetTitle(siteRequest_, o);
+		case "objectTitle":
+			return BaseResult.staticSetObjectTitle(siteRequest_, o);
 		case "displayPage":
 			return BaseResult.staticSetDisplayPage(siteRequest_, o);
 		case "editPage":
@@ -1323,8 +1323,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchClassCanonicalNames(siteRequest_, (String)o);
 		case "saves":
 			return BaseResult.staticSearchSaves(siteRequest_, (String)o);
-		case "title":
-			return BaseResult.staticSearchTitle(siteRequest_, (String)o);
+		case "objectTitle":
+			return BaseResult.staticSearchObjectTitle(siteRequest_, (String)o);
 		case "displayPage":
 			return BaseResult.staticSearchDisplayPage(siteRequest_, (String)o);
 		case "editPage":
@@ -1367,8 +1367,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchStrClassCanonicalNames(siteRequest_, (String)o);
 		case "saves":
 			return BaseResult.staticSearchStrSaves(siteRequest_, (String)o);
-		case "title":
-			return BaseResult.staticSearchStrTitle(siteRequest_, (String)o);
+		case "objectTitle":
+			return BaseResult.staticSearchStrObjectTitle(siteRequest_, (String)o);
 		case "displayPage":
 			return BaseResult.staticSearchStrDisplayPage(siteRequest_, (String)o);
 		case "editPage":
@@ -1411,8 +1411,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return BaseResult.staticSearchFqClassCanonicalNames(siteRequest_, o);
 		case "saves":
 			return BaseResult.staticSearchFqSaves(siteRequest_, o);
-		case "title":
-			return BaseResult.staticSearchFqTitle(siteRequest_, o);
+		case "objectTitle":
+			return BaseResult.staticSearchFqObjectTitle(siteRequest_, o);
 		case "displayPage":
 			return BaseResult.staticSearchFqDisplayPage(siteRequest_, o);
 		case "editPage":
@@ -1469,11 +1469,11 @@ public abstract class BaseResultGen<DEV> extends Object {
 				}
 				saves.add("archived");
 				return val;
-			} else if("title".equals(varLower)) {
+			} else if("objecttitle".equals(varLower)) {
 				if(val instanceof String) {
-					setTitle((String)val);
+					setObjectTitle((String)val);
 				}
-				saves.add("title");
+				saves.add("objectTitle");
 				return val;
 			} else if("displaypage".equals(varLower)) {
 				if(val instanceof String) {
@@ -1552,10 +1552,10 @@ public abstract class BaseResultGen<DEV> extends Object {
 				}
 			}
 
-			if(saves.contains("title")) {
-				String title = (String)doc.get("title_docvalues_string");
-				if(title != null)
-					oBaseResult.setTitle(title);
+			if(saves.contains("objectTitle")) {
+				String objectTitle = (String)doc.get("objectTitle_docvalues_string");
+				if(objectTitle != null)
+					oBaseResult.setObjectTitle(objectTitle);
 			}
 
 			if(saves.contains("displayPage")) {
@@ -1622,8 +1622,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				l.add(BaseResult.staticSearchSaves(siteRequest_, o));
 			}
 		}
-		if(title != null) {
-			doc.put("title_docvalues_string", title);
+		if(objectTitle != null) {
+			doc.put("objectTitle_docvalues_string", objectTitle);
 		}
 		if(displayPage != null) {
 			doc.put("displayPage_docvalues_string", displayPage);
@@ -1668,8 +1668,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "classCanonicalNames_docvalues_strings";
 			case "saves":
 				return "saves_docvalues_strings";
-			case "title":
-				return "title_docvalues_string";
+			case "objectTitle":
+				return "objectTitle_docvalues_string";
 			case "displayPage":
 				return "displayPage_docvalues_string";
 			case "editPage":
@@ -1699,8 +1699,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "classCanonicalNames_docvalues_strings";
 			case "saves":
 				return "saves_docvalues_strings";
-			case "title":
-				return "title_docvalues_string";
+			case "objectTitle":
+				return "objectTitle_docvalues_string";
 			case "displayPage":
 				return "displayPage_docvalues_string";
 			case "editPage":
@@ -1736,8 +1736,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				return "classCanonicalNames";
 			case "saves_docvalues_strings":
 				return "saves";
-			case "title_docvalues_string":
-				return "title";
+			case "objectTitle_docvalues_string":
+				return "objectTitle";
 			case "displayPage_docvalues_string":
 				return "displayPage";
 			case "editPage_docvalues_string":
@@ -1799,7 +1799,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 		Optional.ofNullable((List<?>)doc.get("saves_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
 			oBaseResult.addSaves(BaseResult.staticSetSaves(siteRequest, v.toString()));
 		});
-		oBaseResult.setTitle(Optional.ofNullable(doc.get("title_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBaseResult.setObjectTitle(Optional.ofNullable(doc.get("objectTitle_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setDisplayPage(Optional.ofNullable(doc.get("displayPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setEditPage(Optional.ofNullable(doc.get("editPage_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oBaseResult.setUserPage(Optional.ofNullable(doc.get("userPage_docvalues_string")).map(v -> v.toString()).orElse(null));
@@ -1835,8 +1835,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 				apiRequest.addVars("classCanonicalNames");
 			if(!Objects.equals(saves, original.getSaves()))
 				apiRequest.addVars("saves");
-			if(!Objects.equals(title, original.getTitle()))
-				apiRequest.addVars("title");
+			if(!Objects.equals(objectTitle, original.getObjectTitle()))
+				apiRequest.addVars("objectTitle");
 			if(!Objects.equals(displayPage, original.getDisplayPage()))
 				apiRequest.addVars("displayPage");
 			if(!Objects.equals(editPage, original.getEditPage()))
@@ -1867,7 +1867,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 		sb.append(Optional.ofNullable(classSimpleName).map(v -> "classSimpleName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(classCanonicalNames).map(v -> "classCanonicalNames: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(saves).map(v -> "saves: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(title).map(v -> "title: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(objectTitle).map(v -> "objectTitle: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(displayPage).map(v -> "displayPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(editPage).map(v -> "editPage: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(userPage).map(v -> "userPage: \"" + v + "\"\n" ).orElse(""));
@@ -1888,7 +1888,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public static final String VAR_classSimpleName = "classSimpleName";
 	public static final String VAR_classCanonicalNames = "classCanonicalNames";
 	public static final String VAR_saves = "saves";
-	public static final String VAR_title = "title";
+	public static final String VAR_objectTitle = "objectTitle";
 	public static final String VAR_displayPage = "displayPage";
 	public static final String VAR_editPage = "editPage";
 	public static final String VAR_userPage = "userPage";
@@ -1937,7 +1937,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_classSimpleName = "object type";
 	public static final String DISPLAY_NAME_classCanonicalNames = "";
 	public static final String DISPLAY_NAME_saves = "";
-	public static final String DISPLAY_NAME_title = "title";
+	public static final String DISPLAY_NAME_objectTitle = "title";
 	public static final String DISPLAY_NAME_displayPage = "";
 	public static final String DISPLAY_NAME_editPage = "edit";
 	public static final String DISPLAY_NAME_userPage = "user";
@@ -1951,7 +1951,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 	}
 
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	public String nameForClass() {
@@ -2003,8 +2003,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return DISPLAY_NAME_classCanonicalNames;
 		case VAR_saves:
 			return DISPLAY_NAME_saves;
-		case VAR_title:
-			return DISPLAY_NAME_title;
+		case VAR_objectTitle:
+			return DISPLAY_NAME_objectTitle;
 		case VAR_displayPage:
 			return DISPLAY_NAME_displayPage;
 		case VAR_editPage:
@@ -2042,7 +2042,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return "All the inherited canonical names of this Java class";
 		case VAR_saves:
 			return "A list of fields that are saved for this record in the database";
-		case VAR_title:
+		case VAR_objectTitle:
 			return "The title of this page. ";
 		case VAR_editPage:
 			return "Edit this";
@@ -2079,7 +2079,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 			return "List";
 		case VAR_saves:
 			return "List";
-		case VAR_title:
+		case VAR_objectTitle:
 			return "String";
 		case VAR_displayPage:
 			return "String";

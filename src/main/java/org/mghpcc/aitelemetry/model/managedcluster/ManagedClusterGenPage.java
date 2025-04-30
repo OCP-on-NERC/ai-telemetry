@@ -499,9 +499,11 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("");
+      c.o("managed clusters");
     else if(searchListManagedCluster_ == null || resultCount == 0)
-      c.o("");
+      c.o("no managed cluster found");
+    else
+      c.o("managed clusters");
   }
 
   @Override

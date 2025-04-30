@@ -193,7 +193,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			response200Search(listBareMetalResourceClass.getRequest(), listBareMetalResourceClass.getResponse(), json);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -292,7 +292,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = JsonObject.mapFrom(listBareMetalResourceClass.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -665,7 +665,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1032,7 +1032,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1330,7 +1330,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1601,7 +1601,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2147,7 +2147,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "", name);
+						String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));

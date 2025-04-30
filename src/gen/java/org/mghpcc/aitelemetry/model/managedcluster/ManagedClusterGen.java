@@ -45,13 +45,7 @@ import org.computate.search.response.solr.SolrResponse;
 
 /**
  * <ol>
-<h3>TODO: </h3> * </ol>
- * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
- * <li>You should add a class comment <b>"ApiTag.enUS: ..."</b> to specify a group name for ManagedCluster objects in the OpenAPI specification. 
- * It can be as simple as "ApiTag.enUS: ManagedCluster". 
- * The OpenAPI spec for this tag can then be automatically generated. 
- * </li>
  * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ManagedClusterGen into the class ManagedCluster. 
  * </li><li>You can add a class comment "Rows: 100" if you wish the ManagedCluster API to return more or less than 10 records by default. 
  * In this case, the API will return 100 records from the API instead of 10 by default. 
@@ -104,6 +98,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
+ * <p>This class contains a comment <b>"ApiTag: managed clusters"</b>, which groups all of the OpenAPIs for ManagedCluster objects under the tag "managed clusters". 
+ * </p>
  * <h2>ApiUri.enUS: /en-us/api/managed-cluster</h2>
  * <p>This class contains a comment <b>"ApiUri: /en-us/api/managed-cluster"</b>, which defines the base API URI for ManagedCluster objects as "/en-us/api/managed-cluster" in the OpenAPI spec. 
  * </p>
@@ -158,7 +154,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>AName.enUS: null</h2>
+ * <h2>AName.enUS: a managed cluster</h2>
+ * <p>This class contains a comment <b>"AName.enUS: a managed cluster"</b>, which identifies the language context to describe a ManagedCluster as "a managed cluster". 
+ * </p>
  * <p>
  * Delete the class ManagedCluster in Solr: 
  * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.managedcluster.ManagedCluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
@@ -177,9 +175,26 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(ManagedCluster.class);
 
 	public static final String Description_enUS = "An OpenShift managed cluster";
+	public static final String AName_enUS = "a managed cluster";
+	public static final String This_enUS = "this ";
+	public static final String ThisName_enUS = "this managed cluster";
+	public static final String A_enUS = "a ";
+	public static final String TheName_enUS = "the managed cluster";
+	public static final String SingularName_enUS = "managed cluster";
+	public static final String PluralName_enUS = "managed clusters";
+	public static final String NameActual_enUS = "current managed cluster";
+	public static final String AllName_enUS = "all managed clusters";
+	public static final String SearchAllNameBy_enUS = "search managed clusters by ";
+	public static final String Title_enUS = "managed clusters";
+	public static final String ThePluralName_enUS = "the managed clusters";
+	public static final String NoNameFound_enUS = "no managed cluster found";
 	public static final String ApiUri_enUS = "/en-us/api/managed-cluster";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/managed-cluster";
 	public static final String ApiUriEditPage_enUS = "/en-us/edit/managed-cluster/{id}";
+	public static final String OfName_enUS = "of managed cluster";
+	public static final String ANameAdjective_enUS = "a managed cluster";
+	public static final String NameAdjectiveSingular_enUS = "managed cluster";
+	public static final String NameAdjectivePlural_enUS = "managed clusters";
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/managed-cluster";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/managed-cluster";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/managed-cluster";
@@ -927,7 +942,7 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String classNameAdjectiveSingularForClass() {
-		return null;
+		return ManagedCluster.NameAdjectiveSingular_enUS;
 	}
 
 	@Override
