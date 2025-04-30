@@ -1,4 +1,4 @@
-package org.mghpcc.aitelemetry.model.node;
+package org.mghpcc.aitelemetry.model.baremetalresourceclass;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -103,105 +103,41 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.node.AiNodePage;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AiNodeEnUSGenApiService {
+public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceImpl implements BareMetalResourceClassEnUSGenApiService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AiNodeEnUSGenApiServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(BareMetalResourceClassEnUSGenApiServiceImpl.class);
 
 	// Search //
 
 	@Override
-	public void searchAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void searchBareMetalResourceClass(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200SearchAiNode(listAiNode).onSuccess(response -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, false).onSuccess(listBareMetalResourceClass -> {
+							response200SearchBareMetalResourceClass(listBareMetalResourceClass).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchAiNode succeeded. "));
+								LOG.debug(String.format("searchBareMetalResourceClass succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchAiNode failed. "), ex);
+								LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchAiNode failed. "), ex);
+							LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("searchAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchAiNode failed. ", ex2));
+					LOG.error(String.format("searchBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -216,27 +152,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("searchAiNode failed. "), ex);
+				LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200SearchAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200SearchBareMetalResourceClass(SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			List<String> fls = listAiNode.getRequest().getFields();
+			SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+			List<String> fls = listBareMetalResourceClass.getRequest().getFields();
 			JsonObject json = new JsonObject();
 			JsonArray l = new JsonArray();
-			listAiNode.getList().stream().forEach(o -> {
+			listBareMetalResourceClass.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
 				if(fls.size() > 0) {
 					Set<String> fieldNames = new HashSet<String>();
 					for(String fieldName : json2.fieldNames()) {
-						String v = AiNode.varIndexedAiNode(fieldName);
+						String v = BareMetalResourceClass.varIndexedBareMetalResourceClass(fieldName);
 						if(v != null)
-							fieldNames.add(AiNode.varIndexedAiNode(fieldName));
+							fieldNames.add(BareMetalResourceClass.varIndexedBareMetalResourceClass(fieldName));
 					}
 					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
 						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -254,10 +190,10 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				l.add(json2);
 			});
 			json.put("list", l);
-			response200Search(listAiNode.getRequest(), listAiNode.getResponse(), json);
+			response200Search(listBareMetalResourceClass.getRequest(), listBareMetalResourceClass.getResponse(), json);
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -265,12 +201,12 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchAiNode failed. "), ex);
+			LOG.error(String.format("response200SearchBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchBareMetalResourceClass(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -299,7 +235,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchAiNode(pivotFields2, pivotArray2);
+					responsePivotSearchBareMetalResourceClass(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -308,91 +244,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// GET //
 
 	@Override
-	public void getAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void getBareMetalResourceClass(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200GETAiNode(listAiNode).onSuccess(response -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, false).onSuccess(listBareMetalResourceClass -> {
+							response200GETBareMetalResourceClass(listBareMetalResourceClass).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("getAiNode succeeded. "));
+								LOG.debug(String.format("getBareMetalResourceClass succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("getAiNode failed. "), ex);
+								LOG.error(String.format("getBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("getAiNode failed. "), ex);
+							LOG.error(String.format("getBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("getAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("getAiNode failed. ", ex2));
+					LOG.error(String.format("getBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -407,20 +279,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("getAiNode failed. "), ex);
+				LOG.error(String.format("getBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200GETAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200GETBareMetalResourceClass(SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			JsonObject json = JsonObject.mapFrom(listAiNode.getList().stream().findFirst().orElse(null));
+			SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+			JsonObject json = JsonObject.mapFrom(listBareMetalResourceClass.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -428,7 +300,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200GETAiNode failed. "), ex);
+			LOG.error(String.format("response200GETBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -437,114 +309,50 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// PATCH //
 
 	@Override
-	public void patchAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("patchAiNode started. "));
-		Boolean classPublicRead = false;
+	public void patchBareMetalResourceClass(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("patchBareMetalResourceClass started. "));
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PATCH"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("PATCH")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PATCH$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("PATCH");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalResourceClass.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalResourceClass.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalResourceClass.first());
+								apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
+								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
-								listPATCHAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200PATCHAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("patchAiNode succeeded. "));
+								listPATCHBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
+									response200PATCHBareMetalResourceClass(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("patchBareMetalResourceClass succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("patchAiNode failed. "), ex);
+										LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("patchAiNode failed. "), ex);
+									LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("patchAiNode failed. "), ex);
+								LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("patchAiNode failed. "), ex);
+							LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("patchAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("patchAiNode failed. ", ex2));
+					LOG.error(String.format("patchBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -559,68 +367,68 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("patchAiNode failed. "), ex);
+				LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPATCHAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listPATCHBareMetalResourceClass(ApiRequest apiRequest, SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+		listBareMetalResourceClass.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			BareMetalResourceClass o2 = jsonObject.mapTo(BareMetalResourceClass.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				patchAiNodeFuture(o2, false).onSuccess(a -> {
+				patchBareMetalResourceClassFuture(o2, false).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listPATCHAiNode failed. "), ex);
+					LOG.error(String.format("listPATCHBareMetalResourceClass failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listBareMetalResourceClass.next().onSuccess(next -> {
 				if(next) {
-					listPATCHAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listPATCHBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPATCHAiNode failed. "), ex);
+						LOG.error(String.format("listPATCHBareMetalResourceClass failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPATCHAiNode failed. "), ex);
+				LOG.error(String.format("listPATCHBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listPATCHAiNode failed. "), ex);
+			LOG.error(String.format("listPATCHBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void patchAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void patchBareMetalResourceClassFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalResourceClass o = listBareMetalResourceClass.first();
+						if(o != null && listBareMetalResourceClass.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -632,12 +440,12 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
-							AiNode o2 = jsonObject.mapTo(AiNode.class);
+							BareMetalResourceClass o2 = jsonObject.mapTo(BareMetalResourceClass.class);
 							o2.setSiteRequest_(siteRequest);
-							patchAiNodeFuture(o2, false).onSuccess(o3 -> {
+							patchBareMetalResourceClassFuture(o2, false).onSuccess(o3 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -646,46 +454,46 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("patchAiNode failed. "), ex);
+						LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("patchAiNode failed. "), ex);
+					LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("patchAiNode failed. "), ex);
+				LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("patchAiNode failed. "), ex);
+			LOG.error(String.format("patchBareMetalResourceClass failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> patchAiNodeFuture(AiNode o, Boolean inheritPrimaryKey) {
+	public Future<BareMetalResourceClass> patchBareMetalResourceClassFuture(BareMetalResourceClass o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<BareMetalResourceClass> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlPATCHAiNode(o, inheritPrimaryKey).onSuccess(aiNode -> {
-						persistAiNode(aiNode, true).onSuccess(c -> {
-							relateAiNode(aiNode).onSuccess(d -> {
-								indexAiNode(aiNode).onSuccess(o2 -> {
+				varsBareMetalResourceClass(siteRequest).onSuccess(a -> {
+					sqlPATCHBareMetalResourceClass(o, inheritPrimaryKey).onSuccess(bareMetalResourceClass -> {
+						persistBareMetalResourceClass(bareMetalResourceClass, true).onSuccess(c -> {
+							relateBareMetalResourceClass(bareMetalResourceClass).onSuccess(d -> {
+								indexBareMetalResourceClass(bareMetalResourceClass).onSuccess(o2 -> {
 									if(apiRequest != null) {
 										apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 										if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-											o2.apiRequestAiNode();
+											o2.apiRequestBareMetalResourceClass();
 											if(apiRequest.getVars().size() > 0)
-												eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+												eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 										}
 									}
-									promise1.complete(aiNode);
+									promise1.complete(bareMetalResourceClass);
 								}).onFailure(ex -> {
 									promise1.fail(ex);
 								});
@@ -707,28 +515,28 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(aiNode).onSuccess(a -> {
-					promise2.complete(aiNode);
+			}).compose(bareMetalResourceClass -> {
+				Promise<BareMetalResourceClass> promise2 = Promise.promise();
+				refreshBareMetalResourceClass(bareMetalResourceClass).onSuccess(a -> {
+					promise2.complete(bareMetalResourceClass);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(bareMetalResourceClass -> {
+				promise.complete(bareMetalResourceClass);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("patchAiNodeFuture failed. "), ex);
+			LOG.error(String.format("patchBareMetalResourceClassFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPATCHAiNode(AiNode o, Boolean inheritPrimaryKey) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> sqlPATCHBareMetalResourceClass(BareMetalResourceClass o, Boolean inheritPrimaryKey) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -736,153 +544,81 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiNode SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalResourceClass SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
 			Set<String> methodNames = jsonObject.fieldNames();
-			AiNode o2 = new AiNode();
+			BareMetalResourceClass o2 = new BareMetalResourceClass();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
-					case "setClusterName":
-							o2.setClusterName(jsonObject.getString(entityVar));
+					case "setName":
+							o2.setName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_clusterName + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_name + "=$" + num);
 							num++;
-							bParams.add(o2.sqlClusterName());
+							bParams.add(o2.sqlName());
 						break;
-					case "setNodeName":
-							o2.setNodeName(jsonObject.getString(entityVar));
+					case "setCount":
+							o2.setCount(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_nodeName + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_count + "=$" + num);
 							num++;
-							bParams.add(o2.sqlNodeName());
+							bParams.add(o2.sqlCount());
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_created + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
-						break;
-					case "setNodeId":
-							o2.setNodeId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_nodeId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNodeId());
-						break;
-					case "setDescription":
-							o2.setDescription(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_description + "=$" + num);
-							num++;
-							bParams.add(o2.sqlDescription());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_archived + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
-						break;
-					case "setLocation":
-							o2.setLocation(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_location + "=$" + num);
-							num++;
-							bParams.add(o2.sqlLocation());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_sessionId + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
-						break;
-					case "setGpuDevicesTotal":
-							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_gpuDevicesTotal + "=$" + num);
-							num++;
-							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_userKey + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
-						break;
-					case "setId":
-							o2.setId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_id + "=$" + num);
-							num++;
-							bParams.add(o2.sqlId());
-						break;
-					case "setNgsildTenant":
-							o2.setNgsildTenant(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildTenant());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_objectTitle + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
-						break;
-					case "setNgsildPath":
-							o2.setNgsildPath(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildPath + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildPath());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_displayPage + "=$" + num);
+							bSql.append(BareMetalResourceClass.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
-						break;
-					case "setNgsildContext":
-							o2.setNgsildContext(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildContext());
-						break;
-					case "setNgsildData":
-							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_ngsildData + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNgsildData());
 						break;
 				}
 			}
@@ -896,40 +632,40 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-						LOG.error(String.format("relateAiNode failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalResourceClass failed", ex);
+						LOG.error(String.format("relateBareMetalResourceClass failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					AiNode o3 = new AiNode();
+					BareMetalResourceClass o3 = new BareMetalResourceClass();
 					o3.setSiteRequest_(o.getSiteRequest_());
 					o3.setPk(pk);
 					promise.complete(o3);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+					LOG.error(String.format("sqlPATCHBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+				LOG.error(String.format("sqlPATCHBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPATCHAiNode failed. "), ex);
+			LOG.error(String.format("sqlPATCHBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200PATCHAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PATCHBareMetalResourceClass(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -937,7 +673,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PATCHAiNode failed. "), ex);
+			LOG.error(String.format("response200PATCHBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -946,75 +682,17 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// POST //
 
 	@Override
-	public void postAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("postAiNode started. "));
-		Boolean classPublicRead = false;
+	public void postBareMetalResourceClass(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("postBareMetalResourceClass started. "));
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "POST"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("POST")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-POST$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("POST");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+						eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
@@ -1033,28 +711,22 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						params.put("query", query);
 						JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 						JsonObject json = new JsonObject().put("context", context);
-						eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiNodeFuture")).onSuccess(a -> {
+						eventBus.request(BareMetalResourceClass.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalResourceClassFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
 							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-							LOG.debug(String.format("postAiNode succeeded. "));
+							LOG.debug(String.format("postBareMetalResourceClass succeeded. "));
 						}).onFailure(ex -> {
-							LOG.error(String.format("postAiNode failed. "), ex);
+							LOG.error(String.format("postBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("postAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiNode failed. ", ex2));
+					LOG.error(String.format("postBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1069,15 +741,15 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
 	@Override
-	public void postAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void postBareMetalResourceClassFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1090,13 +762,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-				postAiNodeFuture(siteRequest, false).onSuccess(o -> {
+				postBareMetalResourceClassFuture(siteRequest, false).onSuccess(o -> {
 					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
 				}).onFailure(ex -> {
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Throwable ex) {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
@@ -1104,7 +776,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiNode failed. ", ex2));
+					LOG.error(String.format("postBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1119,26 +791,26 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiNode failed. "), ex);
+				LOG.error(String.format("postBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<AiNode> postAiNodeFuture(SiteRequest siteRequest, Boolean nodeId) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> postBareMetalResourceClassFuture(SiteRequest siteRequest, Boolean name) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 
 		try {
 			pgPool.withTransaction(sqlConnection -> {
-				Promise<AiNode> promise1 = Promise.promise();
+				Promise<BareMetalResourceClass> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					createAiNode(siteRequest).onSuccess(aiNode -> {
-						sqlPOSTAiNode(aiNode, nodeId).onSuccess(b -> {
-							persistAiNode(aiNode, false).onSuccess(c -> {
-								relateAiNode(aiNode).onSuccess(d -> {
-									indexAiNode(aiNode).onSuccess(o2 -> {
-										promise1.complete(aiNode);
+				varsBareMetalResourceClass(siteRequest).onSuccess(a -> {
+					createBareMetalResourceClass(siteRequest).onSuccess(bareMetalResourceClass -> {
+						sqlPOSTBareMetalResourceClass(bareMetalResourceClass, name).onSuccess(b -> {
+							persistBareMetalResourceClass(bareMetalResourceClass, false).onSuccess(c -> {
+								relateBareMetalResourceClass(bareMetalResourceClass).onSuccess(d -> {
+									indexBareMetalResourceClass(bareMetalResourceClass).onSuccess(o2 -> {
+										promise1.complete(bareMetalResourceClass);
 									}).onFailure(ex -> {
 										promise1.fail(ex);
 									});
@@ -1163,50 +835,50 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(aiNode).onSuccess(a -> {
+			}).compose(bareMetalResourceClass -> {
+				Promise<BareMetalResourceClass> promise2 = Promise.promise();
+				refreshBareMetalResourceClass(bareMetalResourceClass).onSuccess(a -> {
 					try {
 						ApiRequest apiRequest = siteRequest.getApiRequest_();
 						if(apiRequest != null) {
 							apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-							aiNode.apiRequestAiNode();
-							eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+							bareMetalResourceClass.apiRequestBareMetalResourceClass();
+							eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 						}
-						promise2.complete(aiNode);
+						promise2.complete(bareMetalResourceClass);
 					} catch(Exception ex) {
-						LOG.error(String.format("postAiNodeFuture failed. "), ex);
+						LOG.error(String.format("postBareMetalResourceClassFuture failed. "), ex);
 						promise.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
+			}).onSuccess(bareMetalResourceClass -> {
 				try {
 					ApiRequest apiRequest = siteRequest.getApiRequest_();
 					if(apiRequest != null) {
 						apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-						aiNode.apiRequestAiNode();
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+						bareMetalResourceClass.apiRequestBareMetalResourceClass();
+						eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 					}
-					promise.complete(aiNode);
+					promise.complete(bareMetalResourceClass);
 				} catch(Exception ex) {
-					LOG.error(String.format("postAiNodeFuture failed. "), ex);
+					LOG.error(String.format("postBareMetalResourceClassFuture failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("postAiNodeFuture failed. "), ex);
+			LOG.error(String.format("postBareMetalResourceClassFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> sqlPOSTAiNode(AiNode o, Boolean inheritPrimaryKey) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> sqlPOSTBareMetalResourceClass(BareMetalResourceClass o, Boolean inheritPrimaryKey) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1214,11 +886,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiNode SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE BareMetalResourceClass SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			BareMetalResourceClass o2 = new BareMetalResourceClass();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1244,158 +916,77 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case AiNode.VAR_clusterName:
-						o2.setClusterName(jsonObject.getString(entityVar));
+					case BareMetalResourceClass.VAR_name:
+						o2.setName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_clusterName + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_name + "=$" + num);
 						num++;
-						bParams.add(o2.sqlClusterName());
+						bParams.add(o2.sqlName());
 						break;
-					case AiNode.VAR_nodeName:
-						o2.setNodeName(jsonObject.getString(entityVar));
+					case BareMetalResourceClass.VAR_count:
+						o2.setCount(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_nodeName + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_count + "=$" + num);
 						num++;
-						bParams.add(o2.sqlNodeName());
+						bParams.add(o2.sqlCount());
 						break;
-					case AiNode.VAR_created:
+					case BareMetalResourceClass.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_created + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case AiNode.VAR_nodeId:
-						o2.setNodeId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_nodeId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeId());
-						break;
-					case AiNode.VAR_description:
-						o2.setDescription(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_description + "=$" + num);
-						num++;
-						bParams.add(o2.sqlDescription());
-						break;
-					case AiNode.VAR_archived:
+					case BareMetalResourceClass.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_archived + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
 						break;
-					case AiNode.VAR_location:
-						o2.setLocation(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_location + "=$" + num);
-						num++;
-						bParams.add(o2.sqlLocation());
-						break;
-					case AiNode.VAR_sessionId:
+					case BareMetalResourceClass.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_sessionId + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case AiNode.VAR_gpuDevicesTotal:
-						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_gpuDevicesTotal + "=$" + num);
-						num++;
-						bParams.add(o2.sqlGpuDevicesTotal());
-						break;
-					case AiNode.VAR_userKey:
+					case BareMetalResourceClass.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_userKey + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiNode.VAR_id:
-						o2.setId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_id + "=$" + num);
-						num++;
-						bParams.add(o2.sqlId());
-						break;
-					case AiNode.VAR_ngsildTenant:
-						o2.setNgsildTenant(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildTenant());
-						break;
-					case AiNode.VAR_objectTitle:
+					case BareMetalResourceClass.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_objectTitle + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case AiNode.VAR_ngsildPath:
-						o2.setNgsildPath(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildPath + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildPath());
-						break;
-					case AiNode.VAR_displayPage:
+					case BareMetalResourceClass.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_displayPage + "=$" + num);
+						bSql.append(BareMetalResourceClass.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
-						break;
-					case AiNode.VAR_ngsildContext:
-						o2.setNgsildContext(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildContext());
-						break;
-					case AiNode.VAR_ngsildData:
-						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_ngsildData + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNgsildData());
 						break;
 					}
 				}
@@ -1410,8 +1001,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-						LOG.error(String.format("relateAiNode failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value BareMetalResourceClass failed", ex);
+						LOG.error(String.format("relateBareMetalResourceClass failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
@@ -1420,28 +1011,28 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete(o2);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+					LOG.error(String.format("sqlPOSTBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+				LOG.error(String.format("sqlPOSTBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPOSTAiNode failed. "), ex);
+			LOG.error(String.format("sqlPOSTBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200POSTAiNode(AiNode o) {
+	public Future<ServiceResponse> response200POSTBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1449,7 +1040,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200POSTAiNode failed. "), ex);
+			LOG.error(String.format("response200POSTBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1458,113 +1049,49 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// DELETE //
 
 	@Override
-	public void deleteAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deleteAiNode started. "));
-		Boolean classPublicRead = false;
+	public void deleteBareMetalResourceClass(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deleteBareMetalResourceClass started. "));
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("DELETE")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("DELETE");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalResourceClass.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalResourceClass.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalResourceClass.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200DELETEAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deleteAiNode succeeded. "));
+								listDELETEBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
+									response200DELETEBareMetalResourceClass(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deleteBareMetalResourceClass succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deleteAiNode failed. "), ex);
+										LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deleteAiNode failed. "), ex);
+									LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deleteAiNode failed. "), ex);
+								LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deleteAiNode failed. "), ex);
+							LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("deleteAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deleteAiNode failed. ", ex2));
+					LOG.error(String.format("deleteBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1579,68 +1106,68 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("deleteAiNode failed. "), ex);
+				LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listDELETEBareMetalResourceClass(ApiRequest apiRequest, SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+		listBareMetalResourceClass.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			BareMetalResourceClass o2 = jsonObject.mapTo(BareMetalResourceClass.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deleteAiNodeFuture(o).onSuccess(a -> {
+				deleteBareMetalResourceClassFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEAiNode failed. "), ex);
+					LOG.error(String.format("listDELETEBareMetalResourceClass failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listBareMetalResourceClass.next().onSuccess(next -> {
 				if(next) {
-					listDELETEAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listDELETEBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEAiNode failed. "), ex);
+						LOG.error(String.format("listDELETEBareMetalResourceClass failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEAiNode failed. "), ex);
+				LOG.error(String.format("listDELETEBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEAiNode failed. "), ex);
+			LOG.error(String.format("listDELETEBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deleteAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void deleteBareMetalResourceClassFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalResourceClass o = listBareMetalResourceClass.first();
+						if(o != null && listBareMetalResourceClass.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -1652,9 +1179,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-							deleteAiNodeFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+							deleteBareMetalResourceClassFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -1663,42 +1190,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deleteAiNode failed. "), ex);
+						LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deleteAiNode failed. "), ex);
+					LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deleteAiNode failed. "), ex);
+				LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deleteAiNode failed. "), ex);
+			LOG.error(String.format("deleteBareMetalResourceClass failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> deleteAiNodeFuture(AiNode o) {
+	public Future<BareMetalResourceClass> deleteBareMetalResourceClassFuture(BareMetalResourceClass o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<BareMetalResourceClass> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlDELETEAiNode(o).onSuccess(aiNode -> {
-						relateAiNode(o).onSuccess(d -> {
-							unindexAiNode(o).onSuccess(o2 -> {
+				varsBareMetalResourceClass(siteRequest).onSuccess(a -> {
+					sqlDELETEBareMetalResourceClass(o).onSuccess(bareMetalResourceClass -> {
+						relateBareMetalResourceClass(o).onSuccess(d -> {
+							unindexBareMetalResourceClass(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiNode();
+										o2.apiRequestBareMetalResourceClass();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -1720,27 +1247,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(o).onSuccess(a -> {
+			}).compose(bareMetalResourceClass -> {
+				Promise<BareMetalResourceClass> promise2 = Promise.promise();
+				refreshBareMetalResourceClass(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(bareMetalResourceClass -> {
+				promise.complete(bareMetalResourceClass);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deleteAiNodeFuture failed. "), ex);
+			LOG.error(String.format("deleteBareMetalResourceClassFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEAiNode(AiNode o) {
+	public Future<Void> sqlDELETEBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1749,11 +1276,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiNode ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalResourceClass ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			BareMetalResourceClass o2 = new BareMetalResourceClass();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1774,8 +1301,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-					LOG.error(String.format("unrelateAiNode failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalResourceClass failed", ex);
+					LOG.error(String.format("unrelateBareMetalResourceClass failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -1783,27 +1310,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+					LOG.error(String.format("sqlDELETEBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+				LOG.error(String.format("sqlDELETEBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEAiNode failed. "), ex);
+			LOG.error(String.format("sqlDELETEBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEBareMetalResourceClass(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1811,7 +1338,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEAiNode failed. "), ex);
+			LOG.error(String.format("response200DELETEBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1820,68 +1347,10 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// PUTImport //
 
 	@Override
-	public void putimportAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("putimportAiNode started. "));
-		Boolean classPublicRead = false;
+	public void putimportBareMetalResourceClass(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("putimportBareMetalResourceClass started. "));
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "PUT"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("PUT")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PUT$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("PUT");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
 						JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
 						apiRequest.setRows(Long.valueOf(jsonArray.size()));
@@ -1889,36 +1358,30 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
-						varsAiNode(siteRequest).onSuccess(d -> {
-							listPUTImportAiNode(apiRequest, siteRequest).onSuccess(e -> {
-								response200PUTImportAiNode(siteRequest).onSuccess(response -> {
-									LOG.debug(String.format("putimportAiNode succeeded. "));
+						eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
+						varsBareMetalResourceClass(siteRequest).onSuccess(d -> {
+							listPUTImportBareMetalResourceClass(apiRequest, siteRequest).onSuccess(e -> {
+								response200PUTImportBareMetalResourceClass(siteRequest).onSuccess(response -> {
+									LOG.debug(String.format("putimportBareMetalResourceClass succeeded. "));
 									eventHandler.handle(Future.succeededFuture(response));
 								}).onFailure(ex -> {
-									LOG.error(String.format("putimportAiNode failed. "), ex);
+									LOG.error(String.format("putimportBareMetalResourceClass failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportAiNode failed. "), ex);
+								LOG.error(String.format("putimportBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportAiNode failed. "), ex);
+							LOG.error(String.format("putimportBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("putimportAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiNode failed. ", ex2));
+					LOG.error(String.format("putimportBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1933,13 +1396,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiNode failed. "), ex);
+				LOG.error(String.format("putimportBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPUTImportAiNode(ApiRequest apiRequest, SiteRequest siteRequest) {
+	public Future<Void> listPUTImportBareMetalResourceClass(ApiRequest apiRequest, SiteRequest siteRequest) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
 		JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1964,10 +1427,10 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAiNodeFuture")).onSuccess(a -> {
+					eventBus.request(BareMetalResourceClass.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportBareMetalResourceClassFuture")).onSuccess(a -> {
 						promise1.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+						LOG.error(String.format("listPUTImportBareMetalResourceClass failed. "), ex);
 						promise1.fail(ex);
 					});
 				}));
@@ -1976,19 +1439,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 				promise.complete();
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+				LOG.error(String.format("listPUTImportBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("listPUTImportAiNode failed. "), ex);
+			LOG.error(String.format("listPUTImportBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
 	@Override
-	public void putimportAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void putimportBareMetalResourceClassFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
@@ -1998,19 +1461,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String nodeId = Optional.ofNullable(body.getString(AiNode.VAR_nodeId)).orElse(body.getString(AiNode.VAR_solrId));
+				String name = Optional.ofNullable(body.getString(BareMetalResourceClass.VAR_name)).orElse(body.getString(BareMetalResourceClass.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 				pgPool.getConnection().onSuccess(sqlConnection -> {
-					String sqlQuery = String.format("select * from %s WHERE nodeId=$1", AiNode.CLASS_SIMPLE_NAME);
+					String sqlQuery = String.format("select * from %s WHERE name=$1", BareMetalResourceClass.CLASS_SIMPLE_NAME);
 					sqlConnection.preparedQuery(sqlQuery)
-							.execute(Tuple.tuple(Arrays.asList(nodeId))
+							.execute(Tuple.tuple(Arrays.asList(name))
 							).onSuccess(result -> {
 						sqlConnection.close().onSuccess(a -> {
 							try {
 								if(result.size() >= 1) {
-									AiNode o = new AiNode();
+									BareMetalResourceClass o = new BareMetalResourceClass();
 									o.setSiteRequest_(siteRequest);
 									for(Row definition : result.value()) {
 										for(Integer i = 0; i < definition.size(); i++) {
@@ -2019,11 +1482,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 												Object columnValue = definition.getValue(i);
 												o.persistForClass(columnName, columnValue);
 											} catch(Exception e) {
-												LOG.error(String.format("persistAiNode failed. "), e);
+												LOG.error(String.format("persistBareMetalResourceClass failed. "), e);
 											}
 										}
 									}
-									AiNode o2 = new AiNode();
+									BareMetalResourceClass o2 = new BareMetalResourceClass();
 									o2.setSiteRequest_(siteRequest);
 									JsonObject body2 = new JsonObject();
 									for(String f : body.fieldNames()) {
@@ -2054,56 +1517,56 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 										} else {
 											o2.persistForClass(f, bodyVal);
 											o2.relateForClass(f, bodyVal);
-											if(!StringUtils.containsAny(f, "nodeId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
 									}
 									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 										if(!body.fieldNames().contains(f)) {
-											if(!StringUtils.containsAny(f, "nodeId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "name", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.putNull("set" + StringUtils.capitalize(f));
 										}
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getNodeId());
+										apiRequest.setId(o.getName());
 										apiRequest.setPk(o.getPk());
 									}
 									siteRequest.setJsonObject(body2);
-									patchAiNodeFuture(o, true).onSuccess(b -> {
-										LOG.debug("Import AiNode {} succeeded, modified AiNode. ", body.getValue(AiNode.VAR_nodeId));
+									patchBareMetalResourceClassFuture(o, true).onSuccess(b -> {
+										LOG.debug("Import BareMetalResourceClass {} succeeded, modified BareMetalResourceClass. ", body.getValue(BareMetalResourceClass.VAR_name));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
-										LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+										LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 										eventHandler.handle(Future.failedFuture(ex));
 									});
 								} else {
-									postAiNodeFuture(siteRequest, true).onSuccess(b -> {
-										LOG.debug("Import AiNode {} succeeded, created new AiNode. ", body.getValue(AiNode.VAR_nodeId));
+									postBareMetalResourceClassFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import BareMetalResourceClass {} succeeded, created new BareMetalResourceClass. ", body.getValue(BareMetalResourceClass.VAR_name));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
-										LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+										LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 										eventHandler.handle(Future.failedFuture(ex));
 									});
 								}
 							} catch(Exception ex) {
-								LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+								LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+							LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
 						});
 					}).onFailure(ex -> {
-						LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+						LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
 					});
 				}).onFailure(ex -> {
-					LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+					LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("putimportAiNodeFuture failed. "), ex);
+				LOG.error(String.format("putimportBareMetalResourceClassFuture failed. "), ex);
 				eventHandler.handle(Future.failedFuture(ex));
 			}
 		}).onFailure(ex -> {
@@ -2111,7 +1574,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiNode failed. ", ex2));
+					LOG.error(String.format("putimportBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2126,19 +1589,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiNode failed. "), ex);
+				LOG.error(String.format("putimportBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200PUTImportAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PUTImportBareMetalResourceClass(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2146,7 +1609,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PUTImportAiNode failed. "), ex);
+			LOG.error(String.format("response200PUTImportBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -2155,93 +1618,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// SearchPage //
 
 	@Override
-	public void searchpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
-			serviceRequest.setUser(user.principal());
-		Boolean classPublicRead = false;
+	public void searchpageBareMetalResourceClass(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200SearchPageAiNode(listAiNode).onSuccess(response -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, false).onSuccess(listBareMetalResourceClass -> {
+							response200SearchPageBareMetalResourceClass(listBareMetalResourceClass).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchpageAiNode succeeded. "));
+								LOG.debug(String.format("searchpageBareMetalResourceClass succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchpageAiNode failed. "), ex);
+								LOG.error(String.format("searchpageBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchpageAiNode failed. "), ex);
+							LOG.error(String.format("searchpageBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("searchpageAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiNode failed. ", ex2));
+					LOG.error(String.format("searchpageBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2256,62 +1653,38 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageAiNode failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiNode failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("searchpageAiNode failed. "), ex);
+				LOG.error(String.format("searchpageBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void searchpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
+	public void searchpageBareMetalResourceClassPageInit(BareMetalResourceClassPage page, SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 	}
 
-	public String templateSearchPageAiNode(ServiceRequest serviceRequest) {
-		return "en-us/search/ai-node/AiNodeSearchPage.htm";
+	public String templateSearchPageBareMetalResourceClass(ServiceRequest serviceRequest) {
+		return "en-us/search/bare-metal-resource-class/BareMetalResourceClassSearchPage.htm";
 	}
-	public Future<ServiceResponse> response200SearchPageAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200SearchPageBareMetalResourceClass(SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateSearchPageAiNode(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateSearchPageBareMetalResourceClass(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
+			BareMetalResourceClassPage page = new BareMetalResourceClassPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
+			if(listBareMetalResourceClass.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalResourceClass.get(0).getPk());
+			page.setSearchListBareMetalResourceClass_(listBareMetalResourceClass);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalResourceClassPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2319,19 +1692,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200SearchPageAiNode failed. "), ex);
+					LOG.error(String.format("response200SearchPageBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchPageAiNode failed. "), ex);
+			LOG.error(String.format("response200SearchPageBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchPageBareMetalResourceClass(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2360,7 +1733,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchPageAiNode(pivotFields2, pivotArray2);
+					responsePivotSearchPageBareMetalResourceClass(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2369,91 +1742,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// EditPage //
 
 	@Override
-	public void editpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void editpageBareMetalResourceClass(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200EditPageAiNode(listAiNode).onSuccess(response -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, false).onSuccess(listBareMetalResourceClass -> {
+							response200EditPageBareMetalResourceClass(listBareMetalResourceClass).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("editpageAiNode succeeded. "));
+								LOG.debug(String.format("editpageBareMetalResourceClass succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("editpageAiNode failed. "), ex);
+								LOG.error(String.format("editpageBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("editpageAiNode failed. "), ex);
+							LOG.error(String.format("editpageBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("editpageAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("editpageAiNode failed. ", ex2));
+					LOG.error(String.format("editpageBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2468,38 +1777,38 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("editpageAiNode failed. "), ex);
+				LOG.error(String.format("editpageBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void editpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
+	public void editpageBareMetalResourceClassPageInit(BareMetalResourceClassPage page, SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 	}
 
-	public String templateEditPageAiNode(ServiceRequest serviceRequest) {
-		return "en-us/edit/ai-node/AiNodeEditPage.htm";
+	public String templateEditPageBareMetalResourceClass(ServiceRequest serviceRequest) {
+		return "en-us/edit/bare-metal-resource-class/BareMetalResourceClassEditPage.htm";
 	}
-	public Future<ServiceResponse> response200EditPageAiNode(SearchList<AiNode> listAiNode) {
+	public Future<ServiceResponse> response200EditPageBareMetalResourceClass(SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateEditPageAiNode(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateEditPageBareMetalResourceClass(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
+			BareMetalResourceClassPage page = new BareMetalResourceClassPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
+			if(listBareMetalResourceClass.size() >= 1)
+				siteRequest.setRequestPk(listBareMetalResourceClass.get(0).getPk());
+			page.setSearchListBareMetalResourceClass_(listBareMetalResourceClass);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
+			page.promiseDeepBareMetalResourceClassPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2507,19 +1816,19 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200EditPageAiNode failed. "), ex);
+					LOG.error(String.format("response200EditPageBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200EditPageAiNode failed. "), ex);
+			LOG.error(String.format("response200EditPageBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotEditPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotEditPageBareMetalResourceClass(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2548,195 +1857,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotEditPageAiNode(pivotFields2, pivotArray2);
-				}
-			}
-		}
-	}
-
-	// UserPage //
-
-	@Override
-	public void userpageAiNode(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
-		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("GET")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("GET");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
-							response200UserPageAiNode(listAiNode).onSuccess(response -> {
-								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("userpageAiNode succeeded. "));
-							}).onFailure(ex -> {
-								LOG.error(String.format("userpageAiNode failed. "), ex);
-								error(siteRequest, eventHandler, ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(String.format("userpageAiNode failed. "), ex);
-							error(siteRequest, eventHandler, ex);
-						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("userpageAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
-		}).onFailure(ex -> {
-			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
-				try {
-					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
-				} catch(Exception ex2) {
-					LOG.error(String.format("userpageAiNode failed. ", ex2));
-					error(null, eventHandler, ex2);
-				}
-			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
-				eventHandler.handle(Future.succeededFuture(
-					new ServiceResponse(401, "UNAUTHORIZED",
-						Buffer.buffer().appendString(
-							new JsonObject()
-								.put("errorCode", "401")
-								.put("errorMessage", "SSO Resource Permission check returned DENY")
-								.encodePrettily()
-							), MultiMap.caseInsensitiveMultiMap()
-							)
-					));
-			} else {
-				LOG.error(String.format("userpageAiNode failed. "), ex);
-				error(null, eventHandler, ex);
-			}
-		});
-	}
-
-	public void userpageAiNodePageInit(AiNodePage page, SearchList<AiNode> listAiNode) {
-	}
-
-	public String templateUserPageAiNode(ServiceRequest serviceRequest) {
-		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
-	}
-	public Future<ServiceResponse> response200UserPageAiNode(SearchList<AiNode> listAiNode) {
-		Promise<ServiceResponse> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateUserPageAiNode(siteRequest.getServiceRequest());
-			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
-			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
-			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiNodePage page = new AiNodePage();
-			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
-			siteRequest.setRequestHeaders(requestHeaders);
-
-			if(listAiNode.size() >= 1)
-				siteRequest.setRequestPk(listAiNode.get(0).getPk());
-			page.setSearchListAiNode_(listAiNode);
-			page.setSiteRequest_(siteRequest);
-			page.setServiceRequest(siteRequest.getServiceRequest());
-			page.setWebClient(webClient);
-			page.setVertx(vertx);
-			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
-				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
-					ctx.mergeIn(JsonObject.mapFrom(page));
-					String renderedTemplate = jinjava.render(template, ctx.getMap());
-					Buffer buffer = Buffer.buffer(renderedTemplate);
-					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
-				} catch(Exception ex) {
-					LOG.error(String.format("response200UserPageAiNode failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				promise.fail(ex);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("response200UserPageAiNode failed. "), ex);
-			promise.fail(ex);
-		}
-		return promise.future();
-	}
-	public void responsePivotUserPageAiNode(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
-		if(pivots != null) {
-			for(SolrResponse.Pivot pivotField : pivots) {
-				String entityIndexed = pivotField.getField();
-				String entityVar = StringUtils.substringBefore(entityIndexed, "_docvalues_");
-				JsonObject pivotJson = new JsonObject();
-				pivotArray.add(pivotJson);
-				pivotJson.put("field", entityVar);
-				pivotJson.put("value", pivotField.getValue());
-				pivotJson.put("count", pivotField.getCount());
-				Collection<SolrResponse.PivotRange> pivotRanges = pivotField.getRanges().values();
-				List<SolrResponse.Pivot> pivotFields2 = pivotField.getPivotList();
-				if(pivotRanges != null) {
-					JsonObject rangeJson = new JsonObject();
-					pivotJson.put("ranges", rangeJson);
-					for(SolrResponse.PivotRange rangeFacet : pivotRanges) {
-						JsonObject rangeFacetJson = new JsonObject();
-						String rangeFacetVar = StringUtils.substringBefore(rangeFacet.getName(), "_docvalues_");
-						rangeJson.put(rangeFacetVar, rangeFacetJson);
-						JsonObject rangeFacetCountsObject = new JsonObject();
-						rangeFacetJson.put("counts", rangeFacetCountsObject);
-						rangeFacet.getCounts().forEach((value, count) -> {
-							rangeFacetCountsObject.put(value, count);
-						});
-					}
-				}
-				if(pivotFields2 != null) {
-					JsonArray pivotArray2 = new JsonArray();
-					pivotJson.put("pivot", pivotArray2);
-					responsePivotUserPageAiNode(pivotFields2, pivotArray2);
+					responsePivotEditPageBareMetalResourceClass(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2745,113 +1866,49 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 	// DELETEFilter //
 
 	@Override
-	public void deletefilterAiNode(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deletefilterAiNode started. "));
-		Boolean classPublicRead = false;
+	public void deletefilterBareMetalResourceClass(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterBareMetalResourceClass started. "));
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiNode.CLASS_SIMPLE_NAME, "PUT"));
-			if(nodeId != null)
-				form.add("permission", String.format("%s-%s#%s", AiNode.CLASS_SIMPLE_NAME, nodeId, "DELETE"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-
-					if(!scopes.contains("DELETE")) {
-						//
-						List<String> fqs = new ArrayList<>();
-						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
-									return mPermission.find() ? mPermission.group(1) : null;
-								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
-								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
-						}
-						JsonArray fq = query.getJsonArray("fq");
-						if(fq == null) {
-							fq = new JsonArray();
-							query.put("fq", fq);
-						}
-						if(fqs.size() > 0) {
-							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-							scopes.add("DELETE");
-						}
-					}
-
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
-						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+						searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiNode.getRequest().getRows());
-								apiRequest.setNumFound(listAiNode.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listBareMetalResourceClass.getRequest().getRows());
+								apiRequest.setNumFound(listBareMetalResourceClass.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listBareMetalResourceClass.first());
+								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(e -> {
-									response200DELETEFilterAiNode(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deletefilterAiNode succeeded. "));
+								listDELETEFilterBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
+									response200DELETEFilterBareMetalResourceClass(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterBareMetalResourceClass succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deletefilterAiNode failed. "), ex);
+										LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deletefilterAiNode failed. "), ex);
+									LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deletefilterAiNode failed. "), ex);
+								LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deletefilterAiNode failed. "), ex);
+							LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("deletefilterAiNode failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deletefilterAiNode failed. ", ex2));
+					LOG.error(String.format("deletefilterBareMetalResourceClass failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2866,68 +1923,68 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							)
 					));
 			} else {
-				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEFilterAiNode(ApiRequest apiRequest, SearchList<AiNode> listAiNode) {
+	public Future<Void> listDELETEFilterBareMetalResourceClass(ApiRequest apiRequest, SearchList<BareMetalResourceClass> listBareMetalResourceClass) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiNode.getSiteRequest_(SiteRequest.class);
-		listAiNode.getList().forEach(o -> {
+		SiteRequest siteRequest = listBareMetalResourceClass.getSiteRequest_(SiteRequest.class);
+		listBareMetalResourceClass.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiNode o2 = jsonObject.mapTo(AiNode.class);
+			BareMetalResourceClass o2 = jsonObject.mapTo(BareMetalResourceClass.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deletefilterAiNodeFuture(o).onSuccess(a -> {
+				deletefilterBareMetalResourceClassFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+					LOG.error(String.format("listDELETEFilterBareMetalResourceClass failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiNode.next().onSuccess(next -> {
+			listBareMetalResourceClass.next().onSuccess(next -> {
 				if(next) {
-					listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(b -> {
+					listDELETEFilterBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+						LOG.error(String.format("listDELETEFilterBareMetalResourceClass failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+				LOG.error(String.format("listDELETEFilterBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("listDELETEFilterBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deletefilterAiNodeFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		Boolean classPublicRead = false;
+	public void deletefilterBareMetalResourceClassFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
 				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
+				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
-						AiNode o = listAiNode.first();
-						if(o != null && listAiNode.getResponse().getResponse().getNumFound() == 1) {
+						BareMetalResourceClass o = listBareMetalResourceClass.first();
+						if(o != null && listBareMetalResourceClass.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -2939,9 +1996,9 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
-							deletefilterAiNodeFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
+							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+							deletefilterBareMetalResourceClassFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -2950,42 +2007,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deletefilterAiNode failed. "), ex);
+						LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deletefilterAiNode failed. "), ex);
+					LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deletefilterAiNode failed. "), ex);
+				LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deletefilterAiNode failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalResourceClass failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiNode> deletefilterAiNodeFuture(AiNode o) {
+	public Future<BareMetalResourceClass> deletefilterBareMetalResourceClassFuture(BareMetalResourceClass o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiNode> promise = Promise.promise();
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiNode> promise1 = Promise.promise();
+			Promise<BareMetalResourceClass> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiNode(siteRequest).onSuccess(a -> {
-					sqlDELETEFilterAiNode(o).onSuccess(aiNode -> {
-						relateAiNode(o).onSuccess(d -> {
-							unindexAiNode(o).onSuccess(o2 -> {
+				varsBareMetalResourceClass(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterBareMetalResourceClass(o).onSuccess(bareMetalResourceClass -> {
+						relateBareMetalResourceClass(o).onSuccess(d -> {
+							unindexBareMetalResourceClass(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiNode();
+										o2.apiRequestBareMetalResourceClass();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -3007,27 +2064,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiNode -> {
-				Promise<AiNode> promise2 = Promise.promise();
-				refreshAiNode(o).onSuccess(a -> {
+			}).compose(bareMetalResourceClass -> {
+				Promise<BareMetalResourceClass> promise2 = Promise.promise();
+				refreshBareMetalResourceClass(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiNode -> {
-				promise.complete(aiNode);
+			}).onSuccess(bareMetalResourceClass -> {
+				promise.complete(bareMetalResourceClass);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deletefilterAiNodeFuture failed. "), ex);
+			LOG.error(String.format("deletefilterBareMetalResourceClassFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEFilterAiNode(AiNode o) {
+	public Future<Void> sqlDELETEFilterBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -3036,11 +2093,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiNode ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM BareMetalResourceClass ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiNode o2 = new AiNode();
+			BareMetalResourceClass o2 = new BareMetalResourceClass();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -3061,8 +2118,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiNode failed", ex);
-					LOG.error(String.format("unrelateAiNode failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value BareMetalResourceClass failed", ex);
+					LOG.error(String.format("unrelateBareMetalResourceClass failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -3070,27 +2127,27 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+					LOG.error(String.format("sqlDELETEFilterBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+				LOG.error(String.format("sqlDELETEFilterBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("sqlDELETEFilterBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEFilterAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEFilterBareMetalResourceClass(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+						String m = String.format("%s %s not found", "", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3098,7 +2155,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEFilterAiNode failed. "), ex);
+			LOG.error(String.format("response200DELETEFilterBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3106,78 +2163,78 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	// General //
 
-	public Future<AiNode> createAiNode(SiteRequest siteRequest) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> createBareMetalResourceClass(SiteRequest siteRequest) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 		try {
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
 			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-			sqlConnection.preparedQuery("INSERT INTO AiNode(created, userKey) VALUES($1, $2) RETURNING pk")
+			sqlConnection.preparedQuery("INSERT INTO BareMetalResourceClass(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
 				Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
 				Long pk = createLine.getLong(0);
-				AiNode o = new AiNode();
+				BareMetalResourceClass o = new BareMetalResourceClass();
 				o.setPk(pk);
 				o.setSiteRequest_(siteRequest);
 				promise.complete(o);
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error("createAiNode failed. ", ex2);
+				LOG.error("createBareMetalResourceClass failed. ", ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("createAiNode failed. "), ex);
+			LOG.error(String.format("createBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public void searchAiNodeQ(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalResourceClassQ(SearchList<BareMetalResourceClass> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
 		if(!"*".equals(entityVar)) {
 		}
 	}
 
-	public String searchAiNodeFq(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public String searchBareMetalResourceClassFq(SearchList<BareMetalResourceClass> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		if(StringUtils.startsWith(valueIndexed, "[")) {
 			String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
 			if(fqs.length != 2)
 				throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-			String fq1 = fqs[0].equals("*") ? fqs[0] : AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-			String fq2 = fqs[1].equals("*") ? fqs[1] : AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+			String fq1 = fqs[0].equals("*") ? fqs[0] : BareMetalResourceClass.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+			String fq2 = fqs[1].equals("*") ? fqs[1] : BareMetalResourceClass.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
 			 return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
 		} else {
-			return varIndexed + ":" + SearchTool.escapeQueryChars(AiNode.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+			return varIndexed + ":" + SearchTool.escapeQueryChars(BareMetalResourceClass.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
 		}
 	}
 
-	public void searchAiNodeSort(SearchList<AiNode> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchBareMetalResourceClassSort(SearchList<BareMetalResourceClass> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		searchList.sort(varIndexed, valueIndexed);
 	}
 
-	public void searchAiNodeRows(SearchList<AiNode> searchList, Long valueRows) {
+	public void searchBareMetalResourceClassRows(SearchList<BareMetalResourceClass> searchList, Long valueRows) {
 			searchList.rows(valueRows != null ? valueRows : 10L);
 	}
 
-	public void searchAiNodeStart(SearchList<AiNode> searchList, Long valueStart) {
+	public void searchBareMetalResourceClassStart(SearchList<BareMetalResourceClass> searchList, Long valueStart) {
 		searchList.start(valueStart);
 	}
 
-	public void searchAiNodeVar(SearchList<AiNode> searchList, String var, String value) {
+	public void searchBareMetalResourceClassVar(SearchList<BareMetalResourceClass> searchList, String var, String value) {
 		searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
 	}
 
-	public void searchAiNodeUri(SearchList<AiNode> searchList) {
+	public void searchBareMetalResourceClassUri(SearchList<BareMetalResourceClass> searchList) {
 	}
 
-	public Future<ServiceResponse> varsAiNode(SiteRequest siteRequest) {
+	public Future<ServiceResponse> varsBareMetalResourceClass(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -3195,25 +2252,25 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						siteRequest.getRequestVars().put(entityVar, valueIndexed);
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchAiNode failed. "), ex);
+					LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				}
 			});
 			promise.complete();
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiNode failed. "), ex);
+			LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<SearchList<AiNode>> searchAiNodeList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
-		Promise<SearchList<AiNode>> promise = Promise.promise();
+	public Future<SearchList<BareMetalResourceClass>> searchBareMetalResourceClassList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
+		Promise<SearchList<BareMetalResourceClass>> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
 			String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
 			String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-			SearchList<AiNode> searchList = new SearchList<AiNode>();
+			SearchList<BareMetalResourceClass> searchList = new SearchList<BareMetalResourceClass>();
 			String facetRange = null;
 			Date facetRangeStart = null;
 			Date facetRangeEnd = null;
@@ -3223,18 +2280,18 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			searchList.setPopulate(populate);
 			searchList.setStore(store);
 			searchList.q("*:*");
-			searchList.setC(AiNode.class);
+			searchList.setC(BareMetalResourceClass.class);
 			searchList.setSiteRequest_(siteRequest);
 			searchList.facetMinCount(1);
 			if(entityList != null) {
 				for(String v : entityList) {
-					searchList.fl(AiNode.varIndexedAiNode(v));
+					searchList.fl(BareMetalResourceClass.varIndexedBareMetalResourceClass(v));
 				}
 			}
 
-			String nodeId = serviceRequest.getParams().getJsonObject("path").getString("nodeId");
-			if(nodeId != null) {
-				searchList.fq("nodeId_docvalues_string:" + SearchTool.escapeQueryChars(nodeId));
+			String name = serviceRequest.getParams().getJsonObject("path").getString("name");
+			if(name != null) {
+				searchList.fq("name_docvalues_string:" + SearchTool.escapeQueryChars(name));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -3257,7 +2314,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							String[] varsIndexed = new String[entityVars.length];
 							for(Integer i = 0; i < entityVars.length; i++) {
 								entityVar = entityVars[i];
-								varsIndexed[i] = AiNode.varIndexedAiNode(entityVar);
+								varsIndexed[i] = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
 							}
 							searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
 						}
@@ -3269,8 +2326,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								while(mQ.find()) {
 									entityVar = mQ.group(1).trim();
 									valueIndexed = mQ.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
-									String entityQ = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
+									String entityQ = searchBareMetalResourceClassFq(searchList, entityVar, valueIndexed, varIndexed);
 									mQ.appendReplacement(sb, entityQ);
 								}
 								if(!sb.isEmpty()) {
@@ -3283,8 +2340,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								while(mFq.find()) {
 									entityVar = mFq.group(1).trim();
 									valueIndexed = mFq.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
-									String entityFq = searchAiNodeFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
+									String entityFq = searchBareMetalResourceClassFq(searchList, entityVar, valueIndexed, varIndexed);
 									mFq.appendReplacement(sb, entityFq);
 								}
 								if(!sb.isEmpty()) {
@@ -3294,14 +2351,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							} else if(paramName.equals("sort")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
 								valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-								varIndexed = AiNode.varIndexedAiNode(entityVar);
-								searchAiNodeSort(searchList, entityVar, valueIndexed, varIndexed);
+								varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
+								searchBareMetalResourceClassSort(searchList, entityVar, valueIndexed, varIndexed);
 							} else if(paramName.equals("start")) {
 								valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiNodeStart(searchList, valueStart);
+								searchBareMetalResourceClassStart(searchList, valueStart);
 							} else if(paramName.equals("rows")) {
 								valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiNodeRows(searchList, valueRows);
+								searchBareMetalResourceClassRows(searchList, valueRows);
 							} else if(paramName.equals("stats")) {
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
@@ -3309,7 +2366,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
 									searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									statsField = entityVar;
 									statsFieldIndexed = varIndexed;
@@ -3335,25 +2392,25 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
-									varIndexed = AiNode.varIndexedAiNode(entityVar);
+									varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
 									searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									facetRange = entityVar;
 								}
 							} else if(paramName.equals("facet.field")) {
 								entityVar = (String)paramObject;
-								varIndexed = AiNode.varIndexedAiNode(entityVar);
+								varIndexed = BareMetalResourceClass.varIndexedBareMetalResourceClass(entityVar);
 								if(varIndexed != null)
 									searchList.facetField(varIndexed);
 							} else if(paramName.equals("var")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
 								valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-								searchAiNodeVar(searchList, entityVar, valueIndexed);
+								searchBareMetalResourceClassVar(searchList, entityVar, valueIndexed);
 							} else if(paramName.equals("cursorMark")) {
 								valueCursorMark = (String)paramObject;
 								searchList.cursorMark((String)paramObject);
 							}
 						}
-						searchAiNodeUri(searchList);
+						searchBareMetalResourceClassUri(searchList);
 					}
 				} catch(Exception e) {
 					ExceptionUtils.rethrow(e);
@@ -3368,7 +2425,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			String facetRangeGap2 = facetRangeGap;
 			String statsField2 = statsField;
 			String statsFieldIndexed2 = statsFieldIndexed;
-			searchAiNode2(siteRequest, populate, store, modify, searchList);
+			searchBareMetalResourceClass2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
 				if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
 					StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3404,32 +2461,32 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					searchList.query().onSuccess(b -> {
 						promise.complete(searchList);
 					}).onFailure(ex -> {
-						LOG.error(String.format("searchAiNode failed. "), ex);
+						LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete(searchList);
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("searchAiNode failed. "), ex);
+				LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiNode failed. "), ex);
+			LOG.error(String.format("searchBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void searchAiNode2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<AiNode> searchList) {
+	public void searchBareMetalResourceClass2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<BareMetalResourceClass> searchList) {
 	}
 
-	public Future<Void> persistAiNode(AiNode o, Boolean patch) {
+	public Future<Void> persistBareMetalResourceClass(BareMetalResourceClass o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT * FROM AiNode WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT * FROM BareMetalResourceClass WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3442,7 +2499,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								try {
 									o.persistForClass(columnName, columnValue);
 								} catch(Exception e) {
-									LOG.error(String.format("persistAiNode failed. "), e);
+									LOG.error(String.format("persistBareMetalResourceClass failed. "), e);
 								}
 							}
 						}
@@ -3450,42 +2507,42 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					o.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("persistAiNode failed. "), ex);
+						LOG.error(String.format("persistBareMetalResourceClass failed. "), ex);
 						promise.fail(ex);
 					});
 				} catch(Exception ex) {
-					LOG.error(String.format("persistAiNode failed. "), ex);
+					LOG.error(String.format("persistBareMetalResourceClass failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("persistAiNode failed. "), ex2);
+				LOG.error(String.format("persistBareMetalResourceClass failed. "), ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("persistAiNode failed. "), ex);
+			LOG.error(String.format("persistBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> relateAiNode(AiNode o) {
+	public Future<Void> relateBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<Void> promise = Promise.promise();
 			promise.complete();
 		return promise.future();
 	}
 
 	public String searchVar(String varIndexed) {
-		return AiNode.searchVarAiNode(varIndexed);
+		return BareMetalResourceClass.searchVarBareMetalResourceClass(varIndexed);
 	}
 
 	@Override
 	public String getClassApiAddress() {
-		return AiNode.CLASS_API_ADDRESS_AiNode;
+		return BareMetalResourceClass.CLASS_API_ADDRESS_BareMetalResourceClass;
 	}
 
-	public Future<AiNode> indexAiNode(AiNode o) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> indexBareMetalResourceClass(BareMetalResourceClass o) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3494,7 +2551,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			json.put("add", add);
 			JsonObject doc = new JsonObject();
 			add.put("doc", doc);
-			o.indexAiNode(doc);
+			o.indexBareMetalResourceClass(doc);
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3511,18 +2568,18 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
-				LOG.error(String.format("indexAiNode failed. "), new RuntimeException(ex));
+				LOG.error(String.format("indexBareMetalResourceClass failed. "), new RuntimeException(ex));
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("indexAiNode failed. "), ex);
+			LOG.error(String.format("indexBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiNode> unindexAiNode(AiNode o) {
-		Promise<AiNode> promise = Promise.promise();
+	public Future<BareMetalResourceClass> unindexBareMetalResourceClass(BareMetalResourceClass o) {
+		Promise<BareMetalResourceClass> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3530,7 +2587,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(%s:%s)", AiNode.VAR_solrId, o.obtainForClass(AiNode.VAR_solrId));
+				String query = String.format("filter(%s:%s)", BareMetalResourceClass.VAR_solrId, o.obtainForClass(BareMetalResourceClass.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -3548,21 +2605,21 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
-					LOG.error(String.format("unindexAiNode failed. "), new RuntimeException(ex));
+					LOG.error(String.format("unindexBareMetalResourceClass failed. "), new RuntimeException(ex));
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("unindexAiNode failed. "), ex);
+				LOG.error(String.format("unindexBareMetalResourceClass failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("unindexAiNode failed. "), ex);
+			LOG.error(String.format("unindexBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> refreshAiNode(AiNode o) {
+	public Future<Void> refreshBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<Void> promise = Promise.promise();
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
@@ -3598,7 +2655,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAiNodeFuture")).onSuccess(c -> {
+					eventBus.request(BareMetalResourceClass.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchBareMetalResourceClassFuture")).onSuccess(c -> {
 						JsonObject responseMessage = (JsonObject)c.body();
 						Integer statusCode = responseMessage.getInteger("statusCode");
 						if(statusCode.equals(200))
@@ -3617,7 +2674,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				promise.complete();
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("refreshAiNode failed. "), ex);
+			LOG.error(String.format("refreshBareMetalResourceClass failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3630,26 +2687,17 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
 			SiteRequest siteRequest2 = (SiteRequest)siteRequest;
 			String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-			AiNode page = new AiNode();
+			BareMetalResourceClass page = new BareMetalResourceClass();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(AiNode.VAR_clusterName, AiNode.staticSetClusterName(siteRequest2, (String)result.get(AiNode.VAR_clusterName)));
-			page.persistForClass(AiNode.VAR_nodeName, AiNode.staticSetNodeName(siteRequest2, (String)result.get(AiNode.VAR_nodeName)));
-			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created)));
-			page.persistForClass(AiNode.VAR_nodeId, AiNode.staticSetNodeId(siteRequest2, (String)result.get(AiNode.VAR_nodeId)));
-			page.persistForClass(AiNode.VAR_description, AiNode.staticSetDescription(siteRequest2, (String)result.get(AiNode.VAR_description)));
-			page.persistForClass(AiNode.VAR_archived, AiNode.staticSetArchived(siteRequest2, (String)result.get(AiNode.VAR_archived)));
-			page.persistForClass(AiNode.VAR_location, AiNode.staticSetLocation(siteRequest2, (String)result.get(AiNode.VAR_location)));
-			page.persistForClass(AiNode.VAR_sessionId, AiNode.staticSetSessionId(siteRequest2, (String)result.get(AiNode.VAR_sessionId)));
-			page.persistForClass(AiNode.VAR_gpuDevicesTotal, AiNode.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiNode.VAR_gpuDevicesTotal)));
-			page.persistForClass(AiNode.VAR_userKey, AiNode.staticSetUserKey(siteRequest2, (String)result.get(AiNode.VAR_userKey)));
-			page.persistForClass(AiNode.VAR_id, AiNode.staticSetId(siteRequest2, (String)result.get(AiNode.VAR_id)));
-			page.persistForClass(AiNode.VAR_ngsildTenant, AiNode.staticSetNgsildTenant(siteRequest2, (String)result.get(AiNode.VAR_ngsildTenant)));
-			page.persistForClass(AiNode.VAR_objectTitle, AiNode.staticSetObjectTitle(siteRequest2, (String)result.get(AiNode.VAR_objectTitle)));
-			page.persistForClass(AiNode.VAR_ngsildPath, AiNode.staticSetNgsildPath(siteRequest2, (String)result.get(AiNode.VAR_ngsildPath)));
-			page.persistForClass(AiNode.VAR_displayPage, AiNode.staticSetDisplayPage(siteRequest2, (String)result.get(AiNode.VAR_displayPage)));
-			page.persistForClass(AiNode.VAR_ngsildContext, AiNode.staticSetNgsildContext(siteRequest2, (String)result.get(AiNode.VAR_ngsildContext)));
-			page.persistForClass(AiNode.VAR_ngsildData, AiNode.staticSetNgsildData(siteRequest2, (String)result.get(AiNode.VAR_ngsildData)));
+			page.persistForClass(BareMetalResourceClass.VAR_name, BareMetalResourceClass.staticSetName(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_name)));
+			page.persistForClass(BareMetalResourceClass.VAR_count, BareMetalResourceClass.staticSetCount(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_count)));
+			page.persistForClass(BareMetalResourceClass.VAR_created, BareMetalResourceClass.staticSetCreated(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_created)));
+			page.persistForClass(BareMetalResourceClass.VAR_archived, BareMetalResourceClass.staticSetArchived(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_archived)));
+			page.persistForClass(BareMetalResourceClass.VAR_sessionId, BareMetalResourceClass.staticSetSessionId(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_sessionId)));
+			page.persistForClass(BareMetalResourceClass.VAR_userKey, BareMetalResourceClass.staticSetUserKey(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_userKey)));
+			page.persistForClass(BareMetalResourceClass.VAR_objectTitle, BareMetalResourceClass.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_objectTitle)));
+			page.persistForClass(BareMetalResourceClass.VAR_displayPage, BareMetalResourceClass.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_displayPage)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {
