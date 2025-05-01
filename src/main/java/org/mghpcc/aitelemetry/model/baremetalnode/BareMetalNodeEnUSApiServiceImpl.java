@@ -106,6 +106,7 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 								String nodeName = oldBareMetalNode.getNodeName();
 
 								JsonObject pageParams = new JsonObject();
+								pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());
 								pageParams.put("query", new JsonObject()

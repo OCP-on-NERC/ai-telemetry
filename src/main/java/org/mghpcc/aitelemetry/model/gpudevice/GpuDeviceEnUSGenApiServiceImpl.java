@@ -532,6 +532,11 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 					try {
 						GpuDevice o = listGpuDevice.first();
@@ -1511,6 +1516,11 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 					try {
 						GpuDevice o = listGpuDevice.first();
@@ -2630,6 +2640,11 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchGpuDeviceList(siteRequest, false, true, true).onSuccess(listGpuDevice -> {
 					try {
 						GpuDevice o = listGpuDevice.first();

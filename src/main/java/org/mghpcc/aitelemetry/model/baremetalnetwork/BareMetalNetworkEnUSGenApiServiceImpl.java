@@ -532,6 +532,11 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
 						BareMetalNetwork o = listBareMetalNetwork.first();
@@ -1885,6 +1890,11 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
 						BareMetalNetwork o = listBareMetalNetwork.first();
@@ -2844,6 +2854,11 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalNetworkList(siteRequest, false, true, true).onSuccess(listBareMetalNetwork -> {
 					try {
 						BareMetalNetwork o = listBareMetalNetwork.first();

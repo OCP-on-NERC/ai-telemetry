@@ -549,6 +549,11 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
 						BareMetalOrder o = listBareMetalOrder.first();
@@ -1536,6 +1541,11 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
 						BareMetalOrder o = listBareMetalOrder.first();
@@ -2388,6 +2398,11 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 					try {
 						BareMetalOrder o = listBareMetalOrder.first();
