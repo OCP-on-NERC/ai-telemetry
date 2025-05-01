@@ -15,6 +15,8 @@ ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS userLastName text;
 ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS userFullName text;
 ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS seeArchived boolean;
 ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS displayName text;
+ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS siteTheme text;
+ALTER TABLE SiteUser ADD COLUMN IF NOT EXISTS webComponentsTheme text;
 
 CREATE TABLE IF NOT EXISTS AiCluster();
 ALTER TABLE AiCluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -106,19 +108,6 @@ ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS projectName text;
 ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS projectId text UNIQUE;
 ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS description text;
 
-CREATE TABLE IF NOT EXISTS ClusterOrder();
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS id text UNIQUE;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS templateId text;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS state text;
-ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS clusterId text;
-
 CREATE TABLE IF NOT EXISTS ClusterTemplate();
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
@@ -131,6 +120,17 @@ ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text UNIQUE;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
+
+CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
 
 CREATE TABLE IF NOT EXISTS ManagedCluster();
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -145,16 +145,18 @@ ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS apiUrl text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS consoleUrl text;
 
-CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
+CREATE TABLE IF NOT EXISTS ClusterOrder();
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS id text UNIQUE;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS templateId text;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS state text;
+ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS clusterId text;
 
 CREATE TABLE IF NOT EXISTS ClusterRequest();
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS pk bigserial primary key;

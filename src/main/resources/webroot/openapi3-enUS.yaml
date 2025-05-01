@@ -18007,6 +18007,10 @@ components:
                     type: boolean
                   displayName:
                     type: string
+                  siteTheme:
+                    type: string
+                  webComponentsTheme:
+                    type: string
     PATCHSiteUserRequest:
       allOf:
         - type: object
@@ -18083,6 +18087,20 @@ components:
             removeDisplayName:
               type: string
             removeAllDisplayName:
+              type: string
+            setSiteTheme:
+              type: string
+              nullable: true
+            removeSiteTheme:
+              type: string
+            removeAllSiteTheme:
+              type: string
+            setWebComponentsTheme:
+              type: string
+              nullable: true
+            removeWebComponentsTheme:
+              type: string
+            removeAllWebComponentsTheme:
               type: string
     PATCHSiteUserResponse:
       allOf:
@@ -18161,6 +18179,20 @@ components:
               type: string
             removeAllDisplayName:
               type: string
+            setSiteTheme:
+              type: string
+              nullable: true
+            removeSiteTheme:
+              type: string
+            removeAllSiteTheme:
+              type: string
+            setWebComponentsTheme:
+              type: string
+              nullable: true
+            removeWebComponentsTheme:
+              type: string
+            removeAllWebComponentsTheme:
+              type: string
     POSTSiteUserRequest:
       allOf:
         - type: object
@@ -18185,6 +18217,10 @@ components:
               type: boolean
             displayName:
               type: string
+            siteTheme:
+              type: string
+            webComponentsTheme:
+              type: string
     POSTSiteUserResponse:
       allOf:
         - type: object
@@ -18208,6 +18244,10 @@ components:
             seeArchived:
               type: boolean
             displayName:
+              type: string
+            siteTheme:
+              type: string
+            webComponentsTheme:
               type: string
     EditPageSiteUserResponse:
       allOf:
