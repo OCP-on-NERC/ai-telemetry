@@ -1,5 +1,7 @@
 package org.mghpcc.aitelemetry.model.clusterorder;
 
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -530,13 +532,9 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -677,12 +675,34 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 							bParams.add(o2.sqlId());
 						break;
 					case "setTemplateId":
-							o2.setTemplateId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(ClusterOrder.VAR_templateId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlTemplateId());
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("ClusterTemplate");
+									}
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, pk2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeTemplateId":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(ClusterOrder.class, pk).setToNull(ClusterOrder.VAR_templateId, ClusterTemplate.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
@@ -916,6 +936,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1089,13 +1110,23 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 						bParams.add(o2.sqlId());
 						break;
 					case ClusterOrder.VAR_templateId:
-						o2.setTemplateId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(ClusterOrder.VAR_templateId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlTemplateId());
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("ClusterTemplate");
+									}
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, pk2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case ClusterOrder.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
@@ -1378,13 +1409,9 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -1510,6 +1537,25 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case ClusterOrder.VAR_templateId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("ClusterTemplate");
+									}
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -1711,6 +1757,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -2342,13 +2389,9 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -2474,6 +2517,25 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case ClusterOrder.VAR_templateId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
+									if(!pks.contains(pk2)) {
+										pks.add(pk2);
+										classes.add("ClusterTemplate");
+									}
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -2896,7 +2958,33 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 
 	public Future<Void> relateClusterOrder(ClusterOrder o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT id as pk1, 'templateId' from ClusterTemplate where id=$1")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getTemplateId())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateClusterOrder failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateClusterOrder failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateClusterOrder failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 
@@ -3001,6 +3089,41 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 				for(int i=0; i < pks.size(); i++) {
 					Long pk2 = pks.get(i);
 					String classSimpleName2 = classes.get(i);
+
+					if("ClusterTemplate".equals(classSimpleName2) && pk2 != null) {
+						SearchList<ClusterTemplate> searchList2 = new SearchList<ClusterTemplate>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(ClusterTemplate.class);
+						searchList2.fq("pk_docvalues_long:" + pk2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								ClusterTemplate o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-ClusterTemplate", json, new DeliveryOptions().addHeader("action", "patchClusterTemplateFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
 				}
 
 				CompositeFuture.all(futures).onSuccess(b -> {

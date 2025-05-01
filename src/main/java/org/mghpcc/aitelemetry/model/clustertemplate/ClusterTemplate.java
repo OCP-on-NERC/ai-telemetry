@@ -48,6 +48,8 @@ public class ClusterTemplate extends ClusterTemplateGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * Facet: true
+	 * VarName: true
+	 * VarId: true
 	 **/
 	protected void _id(Wrap<String> w) {}
 
@@ -61,8 +63,6 @@ public class ClusterTemplate extends ClusterTemplateGen<BaseModel> {
 	 * HtmCell: 2
 	 * HtmColumn: 1
 	 * Facet: true
-	 * VarName: true
-	 * VarId: true
 	 **/
 	protected void _title(Wrap<String> w) {}
 

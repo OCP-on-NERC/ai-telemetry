@@ -61,6 +61,7 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmCell: 2
 	 * HtmColumn: 1
 	 * Facet: true
+	 * Relate: ClusterTemplate.id
 	 **/
 	protected void _templateId(Wrap<String> w) {}
 

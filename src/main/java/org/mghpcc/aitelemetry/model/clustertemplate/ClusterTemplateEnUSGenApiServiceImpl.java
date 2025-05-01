@@ -192,8 +192,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 			json.put("list", l);
 			response200Search(listClusterTemplate.getRequest(), listClusterTemplate.getResponse(), json);
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -291,8 +291,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 			SiteRequest siteRequest = listClusterTemplate.getSiteRequest_(SiteRequest.class);
 			JsonObject json = JsonObject.mapFrom(listClusterTemplate.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -323,7 +323,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterTemplate.first());
-								apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getId().toString()).orElse(null));
 								apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 								eventBus.publish("websocketClusterTemplate", JsonObject.mapFrom(apiRequest).toString());
 
@@ -422,13 +422,9 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
 						ClusterTemplate o = listClusterTemplate.first();
@@ -444,7 +440,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							ClusterTemplate o2 = jsonObject.mapTo(ClusterTemplate.class);
@@ -684,8 +680,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -772,6 +768,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -816,7 +813,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		});
 	}
 
-	public Future<ClusterTemplate> postClusterTemplateFuture(SiteRequest siteRequest, Boolean title) {
+	public Future<ClusterTemplate> postClusterTemplateFuture(SiteRequest siteRequest, Boolean id) {
 		Promise<ClusterTemplate> promise = Promise.promise();
 
 		try {
@@ -825,7 +822,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 				siteRequest.setSqlConnection(sqlConnection);
 				varsClusterTemplate(siteRequest).onSuccess(a -> {
 					createClusterTemplate(siteRequest).onSuccess(clusterTemplate -> {
-						sqlPOSTClusterTemplate(clusterTemplate, title).onSuccess(b -> {
+						sqlPOSTClusterTemplate(clusterTemplate, id).onSuccess(b -> {
 							persistClusterTemplate(clusterTemplate, false).onSuccess(c -> {
 								relateClusterTemplate(clusterTemplate).onSuccess(d -> {
 									indexClusterTemplate(clusterTemplate).onSuccess(o2 -> {
@@ -1068,8 +1065,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1198,13 +1195,9 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
 						ClusterTemplate o = listClusterTemplate.first();
@@ -1220,7 +1213,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							deleteClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -1370,8 +1363,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1495,20 +1488,21 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String title = Optional.ofNullable(body.getString(ClusterTemplate.VAR_title)).orElse(body.getString(ClusterTemplate.VAR_solrId));
+				String id = Optional.ofNullable(body.getString(ClusterTemplate.VAR_id)).orElse(body.getString(ClusterTemplate.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 				pgPool.getConnection().onSuccess(sqlConnection -> {
-					String sqlQuery = String.format("select * from %s WHERE title=$1", ClusterTemplate.CLASS_SIMPLE_NAME);
+					String sqlQuery = String.format("select * from %s WHERE id=$1", ClusterTemplate.CLASS_SIMPLE_NAME);
 					sqlConnection.preparedQuery(sqlQuery)
-							.execute(Tuple.tuple(Arrays.asList(title))
+							.execute(Tuple.tuple(Arrays.asList(id))
 							).onSuccess(result -> {
 						sqlConnection.close().onSuccess(a -> {
 							try {
@@ -1557,24 +1551,24 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 										} else {
 											o2.persistForClass(f, bodyVal);
 											o2.relateForClass(f, bodyVal);
-											if(!StringUtils.containsAny(f, "title", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
 									}
 									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 										if(!body.fieldNames().contains(f)) {
-											if(!StringUtils.containsAny(f, "title", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "id", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.putNull("set" + StringUtils.capitalize(f));
 										}
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getTitle());
+										apiRequest.setId(o.getId());
 										apiRequest.setPk(o.getPk());
 									}
 									siteRequest.setJsonObject(body2);
 									patchClusterTemplateFuture(o, true).onSuccess(b -> {
-										LOG.debug("Import ClusterTemplate {} succeeded, modified ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_title));
+										LOG.debug("Import ClusterTemplate {} succeeded, modified ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_id));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
 										LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
@@ -1582,7 +1576,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 									});
 								} else {
 									postClusterTemplateFuture(siteRequest, true).onSuccess(b -> {
-										LOG.debug("Import ClusterTemplate {} succeeded, created new ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_title));
+										LOG.debug("Import ClusterTemplate {} succeeded, created new ClusterTemplate. ", body.getValue(ClusterTemplate.VAR_id));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
 										LOG.error(String.format("putimportClusterTemplateFuture failed. "), ex);
@@ -1640,8 +1634,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1785,36 +1779,6 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 	public void editpageClusterTemplate(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-			MultiMap form = MultiMap.caseInsensitiveMultiMap();
-			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
-			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
-			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, "PUT"));
-			if(title != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterTemplate.CLASS_SIMPLE_NAME, title, "GET"));
-			webClient.post(
-					config.getInteger(ComputateConfigKeys.AUTH_PORT)
-					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
-					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
-					)
-					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
-					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
-					.sendForm(form)
-					.expecting(HttpResponseExpectation.SC_OK)
-			.onComplete(authorizationDecisionResponse -> {
-				try {
-					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
-					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
-						List<String> scopes2 = siteRequest.getScopes();
 						searchClusterTemplateList(siteRequest, false, true, false).onSuccess(listClusterTemplate -> {
 							response200EditPageClusterTemplate(listClusterTemplate).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -1827,12 +1791,6 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							LOG.error(String.format("editpageClusterTemplate failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
-					}
-				} catch(Exception ex) {
-					LOG.error(String.format("editpageClusterTemplate failed. "), ex);
-					error(null, eventHandler, ex);
-				}
-			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -2054,13 +2012,9 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
-				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
-					scopes.stream().map(v -> v.toString()).forEach(scope -> {
-						siteRequest.addScopes(scope);
-					});
-				});
 				searchClusterTemplateList(siteRequest, false, true, true).onSuccess(listClusterTemplate -> {
 					try {
 						ClusterTemplate o = listClusterTemplate.first();
@@ -2076,7 +2030,7 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getTitle().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getId().toString()).orElse(null));
 							apiRequest.setPk(Optional.ofNullable(listClusterTemplate.first()).map(o2 -> o2.getPk()).orElse(null));
 							deletefilterClusterTemplateFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2226,8 +2180,8 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String title = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("title");
-						String m = String.format("%s %s not found", "cluster template", title);
+				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+						String m = String.format("%s %s not found", "cluster template", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2369,9 +2323,9 @@ public class ClusterTemplateEnUSGenApiServiceImpl extends BaseApiServiceImpl imp
 				}
 			}
 
-			String title = serviceRequest.getParams().getJsonObject("path").getString("title");
-			if(title != null) {
-				searchList.fq("title_docvalues_string:" + SearchTool.escapeQueryChars(title));
+			String id = serviceRequest.getParams().getJsonObject("path").getString("id");
+			if(id != null) {
+				searchList.fq("id_docvalues_string:" + SearchTool.escapeQueryChars(id));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {

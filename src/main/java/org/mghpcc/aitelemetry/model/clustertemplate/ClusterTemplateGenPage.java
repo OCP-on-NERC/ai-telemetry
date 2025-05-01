@@ -470,7 +470,7 @@ public class ClusterTemplateGenPage extends ClusterTemplateGenPageGen<PageLayout
    * Initialized: false
   **/
   protected void _result(Wrap<ClusterTemplate> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("title")).orElse(null) != null)
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("id")).orElse(null) != null)
       w.o(searchListClusterTemplate_.get(0));
   }
 
