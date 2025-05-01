@@ -201,7 +201,7 @@ public class SitePage extends SitePageGen<BaseResult> {
 	 * VarId: true
 	 */
 	protected void _pageId(Wrap<String> w) {
-		toId(title);
+		toId(objectTitle);
 	}
 
 	/**

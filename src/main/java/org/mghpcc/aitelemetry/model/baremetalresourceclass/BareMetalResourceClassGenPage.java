@@ -499,9 +499,11 @@ public class BareMetalResourceClassGenPage extends BareMetalResourceClassGenPage
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("");
+      c.o("bare metal resource classes");
     else if(searchListBareMetalResourceClass_ == null || resultCount == 0)
-      c.o("");
+      c.o("no bare metal resource class found");
+    else
+      c.o("bare metal resource classes");
   }
 
   @Override

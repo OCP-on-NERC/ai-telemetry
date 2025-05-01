@@ -1671,7 +1671,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
 				if(locationColors != null) {
 					locationColors.stream().forEach( v -> {
-						oAiCluster.locationColors.add(v);
+						oAiCluster.locationColors.add(AiCluster.staticSetLocationColors(siteRequest_, v));
 					});
 				}
 			}
@@ -1680,7 +1680,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
 				if(locationTitles != null) {
 					locationTitles.stream().forEach( v -> {
-						oAiCluster.locationTitles.add(v);
+						oAiCluster.locationTitles.add(AiCluster.staticSetLocationTitles(siteRequest_, v));
 					});
 				}
 			}
@@ -1689,7 +1689,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
 				if(locationLinks != null) {
 					locationLinks.stream().forEach( v -> {
-						oAiCluster.locationLinks.add(v);
+						oAiCluster.locationLinks.add(AiCluster.staticSetLocationLinks(siteRequest_, v));
 					});
 				}
 			}

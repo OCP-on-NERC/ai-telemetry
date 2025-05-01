@@ -1431,7 +1431,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
 				if(locationColors != null) {
 					locationColors.stream().forEach( v -> {
-						oGpuSlice.locationColors.add(v);
+						oGpuSlice.locationColors.add(GpuSlice.staticSetLocationColors(siteRequest_, v));
 					});
 				}
 			}
@@ -1440,7 +1440,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
 				if(locationTitles != null) {
 					locationTitles.stream().forEach( v -> {
-						oGpuSlice.locationTitles.add(v);
+						oGpuSlice.locationTitles.add(GpuSlice.staticSetLocationTitles(siteRequest_, v));
 					});
 				}
 			}
@@ -1449,7 +1449,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
 				if(locationLinks != null) {
 					locationLinks.stream().forEach( v -> {
-						oGpuSlice.locationLinks.add(v);
+						oGpuSlice.locationLinks.add(GpuSlice.staticSetLocationLinks(siteRequest_, v));
 					});
 				}
 			}

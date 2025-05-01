@@ -1673,7 +1673,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
 				if(locationColors != null) {
 					locationColors.stream().forEach( v -> {
-						oAiNode.locationColors.add(v);
+						oAiNode.locationColors.add(AiNode.staticSetLocationColors(siteRequest_, v));
 					});
 				}
 			}
@@ -1682,7 +1682,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
 				if(locationTitles != null) {
 					locationTitles.stream().forEach( v -> {
-						oAiNode.locationTitles.add(v);
+						oAiNode.locationTitles.add(AiNode.staticSetLocationTitles(siteRequest_, v));
 					});
 				}
 			}
@@ -1691,7 +1691,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
 				if(locationLinks != null) {
 					locationLinks.stream().forEach( v -> {
-						oAiNode.locationLinks.add(v);
+						oAiNode.locationLinks.add(AiNode.staticSetLocationLinks(siteRequest_, v));
 					});
 				}
 			}

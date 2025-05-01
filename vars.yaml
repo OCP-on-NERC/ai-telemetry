@@ -575,6 +575,8 @@ ENABLE_ROLE_ADMIN: true
 ENABLE_ROLE_SUPER_ADMIN: true
 # Enable an OpenID Connect Authentication. 
 ENABLE_OPENID_CONNECT: true
+# Enable awesome effects in the site. 
+ENABLE_AWESOME_EFFECTS: false
 # Write API code into the project. 
 WRITE_API: true
 # Write code comments into generated code. 

@@ -2256,7 +2256,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 
 	@Override
 	public String titleForClass() {
-		return title;
+		return objectTitle;
 	}
 
 	@Override
