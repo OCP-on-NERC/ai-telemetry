@@ -532,6 +532,11 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -1375,6 +1380,11 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -2334,6 +2344,11 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();

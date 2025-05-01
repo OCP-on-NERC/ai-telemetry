@@ -423,6 +423,11 @@ public class SitePageEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchSitePageList(siteRequest, false, true, true).onSuccess(listSitePage -> {
 					try {
 						SitePage o = listSitePage.first();

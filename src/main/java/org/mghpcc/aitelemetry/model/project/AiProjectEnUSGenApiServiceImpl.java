@@ -616,6 +616,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
 					try {
 						AiProject o = listAiProject.first();
@@ -1515,6 +1520,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
 					try {
 						AiProject o = listAiProject.first();
@@ -2800,6 +2810,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
 					try {
 						AiProject o = listAiProject.first();

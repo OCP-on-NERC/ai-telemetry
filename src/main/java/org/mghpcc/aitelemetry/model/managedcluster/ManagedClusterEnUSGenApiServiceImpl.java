@@ -532,6 +532,11 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchManagedClusterList(siteRequest, false, true, true).onSuccess(listManagedCluster -> {
 					try {
 						ManagedCluster o = listManagedCluster.first();
@@ -1375,6 +1380,11 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchManagedClusterList(siteRequest, false, true, true).onSuccess(listManagedCluster -> {
 					try {
 						ManagedCluster o = listManagedCluster.first();
@@ -2334,6 +2344,11 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchManagedClusterList(siteRequest, false, true, true).onSuccess(listManagedCluster -> {
 					try {
 						ManagedCluster o = listManagedCluster.first();
