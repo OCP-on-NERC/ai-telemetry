@@ -424,6 +424,11 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
 						BareMetalResourceClass o = listBareMetalResourceClass.first();
@@ -1161,6 +1166,11 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
 						BareMetalResourceClass o = listBareMetalResourceClass.first();
@@ -2012,6 +2022,11 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
 					try {
 						BareMetalResourceClass o = listBareMetalResourceClass.first();

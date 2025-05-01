@@ -441,6 +441,11 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			try {
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchSiteUserList(siteRequest, false, true, true).onSuccess(listSiteUser -> {
 					try {
 						SiteUser o = listSiteUser.first();
