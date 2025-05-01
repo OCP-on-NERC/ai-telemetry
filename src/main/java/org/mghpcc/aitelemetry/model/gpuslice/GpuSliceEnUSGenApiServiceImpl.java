@@ -530,7 +530,6 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
@@ -944,7 +943,6 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1443,7 +1441,6 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {
@@ -1772,7 +1769,6 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -2564,7 +2560,6 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchGpuSliceList(siteRequest, false, true, true).onSuccess(listGpuSlice -> {

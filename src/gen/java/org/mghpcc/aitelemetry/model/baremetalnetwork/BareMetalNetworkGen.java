@@ -3270,7 +3270,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 				List<String> availabilityZones = (List<String>)doc.get("availabilityZones_docvalues_strings");
 				if(availabilityZones != null) {
 					availabilityZones.stream().forEach( v -> {
-						oBareMetalNetwork.availabilityZones.add(v);
+						oBareMetalNetwork.availabilityZones.add(BareMetalNetwork.staticSetAvailabilityZones(siteRequest_, v));
 					});
 				}
 			}
@@ -3339,7 +3339,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 				List<String> subnetIds = (List<String>)doc.get("subnetIds_docvalues_strings");
 				if(subnetIds != null) {
 					subnetIds.stream().forEach( v -> {
-						oBareMetalNetwork.subnetIds.add(v);
+						oBareMetalNetwork.subnetIds.add(BareMetalNetwork.staticSetSubnetIds(siteRequest_, v));
 					});
 				}
 			}
@@ -3348,7 +3348,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 				List<String> tags = (List<String>)doc.get("tags_docvalues_strings");
 				if(tags != null) {
 					tags.stream().forEach( v -> {
-						oBareMetalNetwork.tags.add(v);
+						oBareMetalNetwork.tags.add(BareMetalNetwork.staticSetTags(siteRequest_, v));
 					});
 				}
 			}

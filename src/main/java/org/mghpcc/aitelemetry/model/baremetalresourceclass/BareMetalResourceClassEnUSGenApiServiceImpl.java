@@ -422,7 +422,6 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
@@ -752,7 +751,6 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1161,7 +1159,6 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {
@@ -1454,7 +1451,6 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1745,6 +1741,36 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 	public void editpageBareMetalResourceClass(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
+			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			if(name != null)
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "GET"));
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
+				try {
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					{
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
 						searchBareMetalResourceClassList(siteRequest, false, true, false).onSuccess(listBareMetalResourceClass -> {
 							response200EditPageBareMetalResourceClass(listBareMetalResourceClass).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -1757,6 +1783,12 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 							LOG.error(String.format("editpageBareMetalResourceClass failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("editpageBareMetalResourceClass failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -1978,7 +2010,6 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
 				searchBareMetalResourceClassList(siteRequest, false, true, true).onSuccess(listBareMetalResourceClass -> {

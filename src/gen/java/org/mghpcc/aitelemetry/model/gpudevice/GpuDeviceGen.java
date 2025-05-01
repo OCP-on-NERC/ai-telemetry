@@ -1768,7 +1768,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
 				if(locationColors != null) {
 					locationColors.stream().forEach( v -> {
-						oGpuDevice.locationColors.add(v);
+						oGpuDevice.locationColors.add(GpuDevice.staticSetLocationColors(siteRequest_, v));
 					});
 				}
 			}
@@ -1777,7 +1777,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
 				if(locationTitles != null) {
 					locationTitles.stream().forEach( v -> {
-						oGpuDevice.locationTitles.add(v);
+						oGpuDevice.locationTitles.add(GpuDevice.staticSetLocationTitles(siteRequest_, v));
 					});
 				}
 			}
@@ -1786,7 +1786,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
 				if(locationLinks != null) {
 					locationLinks.stream().forEach( v -> {
-						oGpuDevice.locationLinks.add(v);
+						oGpuDevice.locationLinks.add(GpuDevice.staticSetLocationLinks(siteRequest_, v));
 					});
 				}
 			}

@@ -106,19 +106,6 @@ ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS projectName text;
 ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS projectId text UNIQUE;
 ALTER TABLE AiProject ADD COLUMN IF NOT EXISTS description text;
 
-CREATE TABLE IF NOT EXISTS ClusterTemplate();
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text UNIQUE;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
-
 CREATE TABLE IF NOT EXISTS ClusterOrder();
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS created timestamp with time zone;
@@ -131,6 +118,19 @@ ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS id text UNIQUE;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS templateId text;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS clusterId text;
+
+CREATE TABLE IF NOT EXISTS ClusterTemplate();
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text UNIQUE;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
 
 CREATE TABLE IF NOT EXISTS ManagedCluster();
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;

@@ -1771,7 +1771,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 				List<String> classCanonicalNames = (List<String>)doc.get("classCanonicalNames_docvalues_strings");
 				if(classCanonicalNames != null) {
 					classCanonicalNames.stream().forEach( v -> {
-						oBaseModel.classCanonicalNames.add(v);
+						oBaseModel.classCanonicalNames.add(BaseModel.staticSetClassCanonicalNames(siteRequest_, v));
 					});
 				}
 			}
@@ -1792,7 +1792,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 				List<String> saves = (List<String>)doc.get("saves_docvalues_strings");
 				if(saves != null) {
 					saves.stream().forEach( v -> {
-						oBaseModel.saves.add(v);
+						oBaseModel.saves.add(BaseModel.staticSetSaves(siteRequest_, v));
 					});
 				}
 			}
