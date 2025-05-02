@@ -33,10 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
+import org.computate.vertx.search.list.SearchList;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClass;
+import io.vertx.core.json.JsonArray;
+import org.computate.vertx.serialize.vertx.JsonArrayDeserializer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
-import io.vertx.core.json.JsonArray;
 
 /**
  * <ol>
@@ -113,6 +116,118 @@ import io.vertx.core.json.JsonArray;
 public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	protected static final Logger LOG = LoggerFactory.getLogger(BareMetalOrderPage.class);
 
+	/////////////////////////
+	// resourceClassSearch //
+	/////////////////////////
+
+
+	/**	 The entity resourceClassSearch
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonIgnore
+	@JsonInclude(Include.NON_NULL)
+	protected SearchList<BareMetalResourceClass> resourceClassSearch;
+
+	/**	<br> The entity resourceClassSearch
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderPage&fq=entiteVar_enUS_indexed_string:resourceClassSearch">Find the entity resourceClassSearch in Solr</a>
+	 * <br>
+	 * @param promise is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _resourceClassSearch(Promise<SearchList<BareMetalResourceClass>> promise);
+
+	public SearchList<BareMetalResourceClass> getResourceClassSearch() {
+		return resourceClassSearch;
+	}
+
+	public void setResourceClassSearch(SearchList<BareMetalResourceClass> resourceClassSearch) {
+		this.resourceClassSearch = resourceClassSearch;
+	}
+	public static SearchList<BareMetalResourceClass> staticSetResourceClassSearch(SiteRequest siteRequest_, String o) {
+		return null;
+	}
+	protected Future<SearchList<BareMetalResourceClass>> resourceClassSearchPromise() {
+		Promise<SearchList<BareMetalResourceClass>> promise = Promise.promise();
+		Promise<SearchList<BareMetalResourceClass>> promise2 = Promise.promise();
+		_resourceClassSearch(promise2);
+		promise2.future().onSuccess(o -> {
+			if(o != null && resourceClassSearch == null) {
+				o.promiseDeepForClass(siteRequest_).onSuccess(a -> {
+					setResourceClassSearch(o);
+					promise.complete(o);
+				}).onFailure(ex -> {
+					promise.fail(ex);
+				});
+			} else {
+				promise.complete(o);
+			}
+		}).onFailure(ex -> {
+			promise.fail(ex);
+		});
+		return promise.future();
+	}
+
+	/////////////////////
+	// resourceClasses //
+	/////////////////////
+
+
+	/**	 The entity resourceClasses
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonDeserialize(using = JsonArrayDeserializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected JsonArray resourceClasses;
+
+	/**	<br> The entity resourceClasses
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderPage&fq=entiteVar_enUS_indexed_string:resourceClasses">Find the entity resourceClasses in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _resourceClasses(Wrap<JsonArray> w);
+
+	public JsonArray getResourceClasses() {
+		return resourceClasses;
+	}
+
+	public void setResourceClasses(JsonArray resourceClasses) {
+		this.resourceClasses = resourceClasses;
+	}
+	@JsonIgnore
+	public void setResourceClasses(String o) {
+		this.resourceClasses = BareMetalOrderPage.staticSetResourceClasses(siteRequest_, o);
+	}
+	public static JsonArray staticSetResourceClasses(SiteRequest siteRequest_, String o) {
+		if(o != null) {
+				return new JsonArray(o);
+		}
+		return null;
+	}
+	protected BareMetalOrderPage resourceClassesInit() {
+		Wrap<JsonArray> resourceClassesWrap = new Wrap<JsonArray>().var("resourceClasses");
+		if(resourceClasses == null) {
+			_resourceClasses(resourceClassesWrap);
+			Optional.ofNullable(resourceClassesWrap.getO()).ifPresent(o -> {
+				setResourceClasses(o);
+			});
+		}
+		return (BareMetalOrderPage)this;
+	}
+
+	public static String staticSearchResourceClasses(SiteRequest siteRequest_, JsonArray o) {
+		return o.toString();
+	}
+
+	public static String staticSearchStrResourceClasses(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqResourceClasses(SiteRequest siteRequest_, String o) {
+		return BareMetalOrderPage.staticSearchResourceClasses(siteRequest_, BareMetalOrderPage.staticSetResourceClasses(siteRequest_, o)).toString();
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -147,6 +262,23 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 				promise2.fail(ex);
 			}
 			return promise2.future();
+		}).compose(a -> {
+			Promise<Void> promise2 = Promise.promise();
+			resourceClassSearchPromise().onSuccess(resourceClassSearch -> {
+				promise2.complete();
+			}).onFailure(ex -> {
+				promise2.fail(ex);
+			});
+			return promise2.future();
+		}).compose(a -> {
+			Promise<Void> promise2 = Promise.promise();
+			try {
+				resourceClassesInit();
+				promise2.complete();
+			} catch(Exception ex) {
+				promise2.fail(ex);
+			}
+			return promise2.future();
 		}).onSuccess(a -> {
 			promise.complete();
 		}).onFailure(ex -> {
@@ -165,6 +297,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 
 	public void siteRequestBareMetalOrderPage(SiteRequest siteRequest_) {
 			super.siteRequestBareMetalOrderGenPage(siteRequest_);
+		if(resourceClassSearch != null)
+			resourceClassSearch.setSiteRequest_(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
@@ -195,6 +329,10 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	public Object obtainBareMetalOrderPage(String var) {
 		BareMetalOrderPage oBareMetalOrderPage = (BareMetalOrderPage)this;
 		switch(var) {
+			case "resourceClassSearch":
+				return oBareMetalOrderPage.resourceClassSearch;
+			case "resourceClasses":
+				return oBareMetalOrderPage.resourceClasses;
 			default:
 				return super.obtainBareMetalOrderGenPage(var);
 		}
@@ -234,6 +372,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 	public static Object staticSetBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
+		case "resourceClasses":
+			return BareMetalOrderPage.staticSetResourceClasses(siteRequest_, o);
 			default:
 				return BareMetalOrderGenPage.staticSetBareMetalOrderGenPage(entityVar,  siteRequest_, o);
 		}
@@ -248,6 +388,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 	public static Object staticSearchBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "resourceClasses":
+			return BareMetalOrderPage.staticSearchResourceClasses(siteRequest_, (JsonArray)o);
 			default:
 				return BareMetalOrderGenPage.staticSearchBareMetalOrderGenPage(entityVar,  siteRequest_, o);
 		}
@@ -262,6 +404,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 	public static String staticSearchStrBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "resourceClasses":
+			return BareMetalOrderPage.staticSearchStrResourceClasses(siteRequest_, (String)o);
 			default:
 				return BareMetalOrderGenPage.staticSearchStrBareMetalOrderGenPage(entityVar,  siteRequest_, o);
 		}
@@ -276,6 +420,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 	public static String staticSearchFqBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
+		case "resourceClasses":
+			return BareMetalOrderPage.staticSearchFqResourceClasses(siteRequest_, o);
 			default:
 				return BareMetalOrderGenPage.staticSearchFqBareMetalOrderGenPage(entityVar,  siteRequest_, o);
 		}
@@ -293,7 +439,11 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalOrderPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderPage";
+	public static final String VAR_resourceClassSearch = "resourceClassSearch";
+	public static final String VAR_resourceClasses = "resourceClasses";
 
+	public static final String DISPLAY_NAME_resourceClassSearch = "";
+	public static final String DISPLAY_NAME_resourceClasses = "";
 
 	@Override
 	public String idForClass() {
@@ -345,6 +495,10 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 	public static String displayNameBareMetalOrderPage(String var) {
 		switch(var) {
+		case VAR_resourceClassSearch:
+			return DISPLAY_NAME_resourceClassSearch;
+		case VAR_resourceClasses:
+			return DISPLAY_NAME_resourceClasses;
 		default:
 			return BareMetalOrderGenPage.displayNameBareMetalOrderGenPage(var);
 		}
@@ -359,6 +513,10 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 
 	public static String classSimpleNameBareMetalOrderPage(String var) {
 		switch(var) {
+		case VAR_resourceClassSearch:
+			return "SearchList";
+		case VAR_resourceClasses:
+			return "JsonArray";
 			default:
 				return BareMetalOrderGenPage.classSimpleNameBareMetalOrderGenPage(var);
 		}

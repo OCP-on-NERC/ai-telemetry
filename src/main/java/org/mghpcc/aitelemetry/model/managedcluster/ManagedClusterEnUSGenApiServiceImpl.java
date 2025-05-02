@@ -684,14 +684,6 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlState());
 						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(ManagedCluster.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
-						break;
 					case "setApiUrl":
 							o2.setApiUrl(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -699,6 +691,14 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
 							num++;
 							bParams.add(o2.sqlApiUrl());
+						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(ManagedCluster.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
 						break;
 					case "setConsoleUrl":
 							o2.setConsoleUrl(jsonObject.getString(entityVar));
@@ -1097,15 +1097,6 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlState());
 						break;
-					case ManagedCluster.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(ManagedCluster.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
-						break;
 					case ManagedCluster.VAR_apiUrl:
 						o2.setApiUrl(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1114,6 +1105,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
 						num++;
 						bParams.add(o2.sqlApiUrl());
+						break;
+					case ManagedCluster.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ManagedCluster.VAR_created + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreated());
 						break;
 					case ManagedCluster.VAR_consoleUrl:
 						o2.setConsoleUrl(jsonObject.getString(entityVar));
@@ -3060,8 +3060,8 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 			page.persistForClass(ManagedCluster.VAR_id, ManagedCluster.staticSetId(siteRequest2, (String)result.get(ManagedCluster.VAR_id)));
 			page.persistForClass(ManagedCluster.VAR_state, ManagedCluster.staticSetState(siteRequest2, (String)result.get(ManagedCluster.VAR_state)));
-			page.persistForClass(ManagedCluster.VAR_created, ManagedCluster.staticSetCreated(siteRequest2, (String)result.get(ManagedCluster.VAR_created)));
 			page.persistForClass(ManagedCluster.VAR_apiUrl, ManagedCluster.staticSetApiUrl(siteRequest2, (String)result.get(ManagedCluster.VAR_apiUrl)));
+			page.persistForClass(ManagedCluster.VAR_created, ManagedCluster.staticSetCreated(siteRequest2, (String)result.get(ManagedCluster.VAR_created)));
 			page.persistForClass(ManagedCluster.VAR_consoleUrl, ManagedCluster.staticSetConsoleUrl(siteRequest2, (String)result.get(ManagedCluster.VAR_consoleUrl)));
 			page.persistForClass(ManagedCluster.VAR_archived, ManagedCluster.staticSetArchived(siteRequest2, (String)result.get(ManagedCluster.VAR_archived)));
 			page.persistForClass(ManagedCluster.VAR_sessionId, ManagedCluster.staticSetSessionId(siteRequest2, (String)result.get(ManagedCluster.VAR_sessionId)));
