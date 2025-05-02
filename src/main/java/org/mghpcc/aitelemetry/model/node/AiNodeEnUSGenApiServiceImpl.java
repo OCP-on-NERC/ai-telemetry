@@ -768,14 +768,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlNodeName());
 						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
-						break;
 					case "setNodeId":
 							o2.setNodeId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -783,6 +775,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							bSql.append(AiNode.VAR_nodeId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNodeId());
+						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiNode.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
 						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
@@ -808,14 +808,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlLocation());
 						break;
-					case "setSessionId":
-							o2.setSessionId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_sessionId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlSessionId());
-						break;
 					case "setGpuDevicesTotal":
 							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -824,13 +816,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
-					case "setUserKey":
-							o2.setUserKey(jsonObject.getString(entityVar));
+					case "setSessionId":
+							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_userKey + "=$" + num);
+							bSql.append(AiNode.VAR_sessionId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlUserKey());
+							bParams.add(o2.sqlSessionId());
 						break;
 					case "setId":
 							o2.setId(jsonObject.getString(entityVar));
@@ -840,6 +832,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlId());
 						break;
+					case "setUserKey":
+							o2.setUserKey(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiNode.VAR_userKey + "=$" + num);
+							num++;
+							bParams.add(o2.sqlUserKey());
+						break;
 					case "setNgsildTenant":
 							o2.setNgsildTenant(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -847,14 +847,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNgsildTenant());
-						break;
-					case "setObjectTitle":
-							o2.setObjectTitle(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_objectTitle + "=$" + num);
-							num++;
-							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setNgsildPath":
 							o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -864,13 +856,13 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlNgsildPath());
 						break;
-					case "setDisplayPage":
-							o2.setDisplayPage(jsonObject.getString(entityVar));
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiNode.VAR_displayPage + "=$" + num);
+							bSql.append(AiNode.VAR_objectTitle + "=$" + num);
 							num++;
-							bParams.add(o2.sqlDisplayPage());
+							bParams.add(o2.sqlObjectTitle());
 						break;
 					case "setNgsildContext":
 							o2.setNgsildContext(jsonObject.getString(entityVar));
@@ -879,6 +871,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNgsildContext());
+						break;
+					case "setDisplayPage":
+							o2.setDisplayPage(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiNode.VAR_displayPage + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDisplayPage());
 						break;
 					case "setNgsildData":
 							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
@@ -1265,15 +1265,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlNodeName());
 						break;
-					case AiNode.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
-						break;
 					case AiNode.VAR_nodeId:
 						o2.setNodeId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1282,6 +1273,15 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						bSql.append(AiNode.VAR_nodeId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNodeId());
+						break;
+					case AiNode.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiNode.VAR_created + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreated());
 						break;
 					case AiNode.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
@@ -1310,15 +1310,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlLocation());
 						break;
-					case AiNode.VAR_sessionId:
-						o2.setSessionId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_sessionId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlSessionId());
-						break;
 					case AiNode.VAR_gpuDevicesTotal:
 						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1328,14 +1319,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlGpuDevicesTotal());
 						break;
-					case AiNode.VAR_userKey:
-						o2.setUserKey(jsonObject.getString(entityVar));
+					case AiNode.VAR_sessionId:
+						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_userKey + "=$" + num);
+						bSql.append(AiNode.VAR_sessionId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlUserKey());
+						bParams.add(o2.sqlSessionId());
 						break;
 					case AiNode.VAR_id:
 						o2.setId(jsonObject.getString(entityVar));
@@ -1346,6 +1337,15 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlId());
 						break;
+					case AiNode.VAR_userKey:
+						o2.setUserKey(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiNode.VAR_userKey + "=$" + num);
+						num++;
+						bParams.add(o2.sqlUserKey());
+						break;
 					case AiNode.VAR_ngsildTenant:
 						o2.setNgsildTenant(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1354,15 +1354,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						bSql.append(AiNode.VAR_ngsildTenant + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNgsildTenant());
-						break;
-					case AiNode.VAR_objectTitle:
-						o2.setObjectTitle(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_objectTitle + "=$" + num);
-						num++;
-						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiNode.VAR_ngsildPath:
 						o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -1373,14 +1364,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						num++;
 						bParams.add(o2.sqlNgsildPath());
 						break;
-					case AiNode.VAR_displayPage:
-						o2.setDisplayPage(jsonObject.getString(entityVar));
+					case AiNode.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiNode.VAR_displayPage + "=$" + num);
+						bSql.append(AiNode.VAR_objectTitle + "=$" + num);
 						num++;
-						bParams.add(o2.sqlDisplayPage());
+						bParams.add(o2.sqlObjectTitle());
 						break;
 					case AiNode.VAR_ngsildContext:
 						o2.setNgsildContext(jsonObject.getString(entityVar));
@@ -1390,6 +1381,15 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						bSql.append(AiNode.VAR_ngsildContext + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNgsildContext());
+						break;
+					case AiNode.VAR_displayPage:
+						o2.setDisplayPage(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiNode.VAR_displayPage + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDisplayPage());
 						break;
 					case AiNode.VAR_ngsildData:
 						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
@@ -3645,20 +3645,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 			page.persistForClass(AiNode.VAR_clusterName, AiNode.staticSetClusterName(siteRequest2, (String)result.get(AiNode.VAR_clusterName)));
 			page.persistForClass(AiNode.VAR_nodeName, AiNode.staticSetNodeName(siteRequest2, (String)result.get(AiNode.VAR_nodeName)));
-			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created)));
 			page.persistForClass(AiNode.VAR_nodeId, AiNode.staticSetNodeId(siteRequest2, (String)result.get(AiNode.VAR_nodeId)));
+			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created)));
 			page.persistForClass(AiNode.VAR_description, AiNode.staticSetDescription(siteRequest2, (String)result.get(AiNode.VAR_description)));
 			page.persistForClass(AiNode.VAR_archived, AiNode.staticSetArchived(siteRequest2, (String)result.get(AiNode.VAR_archived)));
 			page.persistForClass(AiNode.VAR_location, AiNode.staticSetLocation(siteRequest2, (String)result.get(AiNode.VAR_location)));
-			page.persistForClass(AiNode.VAR_sessionId, AiNode.staticSetSessionId(siteRequest2, (String)result.get(AiNode.VAR_sessionId)));
 			page.persistForClass(AiNode.VAR_gpuDevicesTotal, AiNode.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(AiNode.VAR_gpuDevicesTotal)));
-			page.persistForClass(AiNode.VAR_userKey, AiNode.staticSetUserKey(siteRequest2, (String)result.get(AiNode.VAR_userKey)));
+			page.persistForClass(AiNode.VAR_sessionId, AiNode.staticSetSessionId(siteRequest2, (String)result.get(AiNode.VAR_sessionId)));
 			page.persistForClass(AiNode.VAR_id, AiNode.staticSetId(siteRequest2, (String)result.get(AiNode.VAR_id)));
+			page.persistForClass(AiNode.VAR_userKey, AiNode.staticSetUserKey(siteRequest2, (String)result.get(AiNode.VAR_userKey)));
 			page.persistForClass(AiNode.VAR_ngsildTenant, AiNode.staticSetNgsildTenant(siteRequest2, (String)result.get(AiNode.VAR_ngsildTenant)));
-			page.persistForClass(AiNode.VAR_objectTitle, AiNode.staticSetObjectTitle(siteRequest2, (String)result.get(AiNode.VAR_objectTitle)));
 			page.persistForClass(AiNode.VAR_ngsildPath, AiNode.staticSetNgsildPath(siteRequest2, (String)result.get(AiNode.VAR_ngsildPath)));
-			page.persistForClass(AiNode.VAR_displayPage, AiNode.staticSetDisplayPage(siteRequest2, (String)result.get(AiNode.VAR_displayPage)));
+			page.persistForClass(AiNode.VAR_objectTitle, AiNode.staticSetObjectTitle(siteRequest2, (String)result.get(AiNode.VAR_objectTitle)));
 			page.persistForClass(AiNode.VAR_ngsildContext, AiNode.staticSetNgsildContext(siteRequest2, (String)result.get(AiNode.VAR_ngsildContext)));
+			page.persistForClass(AiNode.VAR_displayPage, AiNode.staticSetDisplayPage(siteRequest2, (String)result.get(AiNode.VAR_displayPage)));
 			page.persistForClass(AiNode.VAR_ngsildData, AiNode.staticSetNgsildData(siteRequest2, (String)result.get(AiNode.VAR_ngsildData)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {

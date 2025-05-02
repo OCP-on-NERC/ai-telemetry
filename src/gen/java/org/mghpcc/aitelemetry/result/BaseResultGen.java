@@ -1538,7 +1538,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 				List<String> classCanonicalNames = (List<String>)doc.get("classCanonicalNames_docvalues_strings");
 				if(classCanonicalNames != null) {
 					classCanonicalNames.stream().forEach( v -> {
-						oBaseResult.classCanonicalNames.add(v);
+						oBaseResult.classCanonicalNames.add(BaseResult.staticSetClassCanonicalNames(siteRequest_, v));
 					});
 				}
 			}
@@ -1547,7 +1547,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 				List<String> saves = (List<String>)doc.get("saves_docvalues_strings");
 				if(saves != null) {
 					saves.stream().forEach( v -> {
-						oBaseResult.saves.add(v);
+						oBaseResult.saves.add(BaseResult.staticSetSaves(siteRequest_, v));
 					});
 				}
 			}

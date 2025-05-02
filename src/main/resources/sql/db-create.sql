@@ -134,17 +134,6 @@ ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS apiUrl text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS consoleUrl text;
 
-CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
-
 CREATE TABLE IF NOT EXISTS ClusterTemplate();
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
@@ -157,6 +146,17 @@ ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text UNIQUE;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
+
+CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
 
 CREATE TABLE IF NOT EXISTS ClusterRequest();
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -203,7 +203,6 @@ ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isPortSecurityEnabled bool
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isRouterExternal boolean;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isShared boolean;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isVlanQueing boolean;
-ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isVlanTransparent boolean;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS l2Adjacency boolean;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationCloud text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationProjectDomainId text;
@@ -212,6 +211,7 @@ ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationProjectId text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationProjectName text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationRegionName text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationZone text;
+ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS isVlanTransparent boolean;
 
 CREATE TABLE IF NOT EXISTS BareMetalNode();
 ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS pk bigserial primary key;
