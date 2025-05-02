@@ -198,6 +198,20 @@ public class PageLayout extends PageLayoutGen<Object> {
 	}
 
 	/**
+	 * Description: The user's web components theme
+	 */
+	protected void _userWebComponentsTheme(Wrap<String> w) {
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getWebComponentsTheme()).orElse("glossy"));
+	}
+
+	/**
+	 * Description: The user's siteTheme
+	 */
+	protected void _userSiteTheme(Wrap<String> w) {
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteTheme()).orElse("light"));
+	}
+
+	/**
 	 * Description: The logout URL
 	 */
 	protected void _logoutUrl(Wrap<String> w) {

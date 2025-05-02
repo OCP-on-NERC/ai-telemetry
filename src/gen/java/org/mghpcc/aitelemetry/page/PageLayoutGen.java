@@ -1294,6 +1294,110 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		return PageLayout.staticSearchUserEmail(siteRequest_, PageLayout.staticSetUserEmail(siteRequest_, o)).toString();
 	}
 
+	////////////////////////////
+	// userWebComponentsTheme //
+	////////////////////////////
+
+
+	/**	 The entity userWebComponentsTheme
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String userWebComponentsTheme;
+
+	/**	<br> The entity userWebComponentsTheme
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.PageLayout&fq=entiteVar_enUS_indexed_string:userWebComponentsTheme">Find the entity userWebComponentsTheme in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _userWebComponentsTheme(Wrap<String> w);
+
+	public String getUserWebComponentsTheme() {
+		return userWebComponentsTheme;
+	}
+	public void setUserWebComponentsTheme(String o) {
+		this.userWebComponentsTheme = PageLayout.staticSetUserWebComponentsTheme(siteRequest_, o);
+	}
+	public static String staticSetUserWebComponentsTheme(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected PageLayout userWebComponentsThemeInit() {
+		Wrap<String> userWebComponentsThemeWrap = new Wrap<String>().var("userWebComponentsTheme");
+		if(userWebComponentsTheme == null) {
+			_userWebComponentsTheme(userWebComponentsThemeWrap);
+			Optional.ofNullable(userWebComponentsThemeWrap.getO()).ifPresent(o -> {
+				setUserWebComponentsTheme(o);
+			});
+		}
+		return (PageLayout)this;
+	}
+
+	public static String staticSearchUserWebComponentsTheme(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrUserWebComponentsTheme(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqUserWebComponentsTheme(SiteRequest siteRequest_, String o) {
+		return PageLayout.staticSearchUserWebComponentsTheme(siteRequest_, PageLayout.staticSetUserWebComponentsTheme(siteRequest_, o)).toString();
+	}
+
+	///////////////////
+	// userSiteTheme //
+	///////////////////
+
+
+	/**	 The entity userSiteTheme
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String userSiteTheme;
+
+	/**	<br> The entity userSiteTheme
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.page.PageLayout&fq=entiteVar_enUS_indexed_string:userSiteTheme">Find the entity userSiteTheme in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _userSiteTheme(Wrap<String> w);
+
+	public String getUserSiteTheme() {
+		return userSiteTheme;
+	}
+	public void setUserSiteTheme(String o) {
+		this.userSiteTheme = PageLayout.staticSetUserSiteTheme(siteRequest_, o);
+	}
+	public static String staticSetUserSiteTheme(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected PageLayout userSiteThemeInit() {
+		Wrap<String> userSiteThemeWrap = new Wrap<String>().var("userSiteTheme");
+		if(userSiteTheme == null) {
+			_userSiteTheme(userSiteThemeWrap);
+			Optional.ofNullable(userSiteThemeWrap.getO()).ifPresent(o -> {
+				setUserSiteTheme(o);
+			});
+		}
+		return (PageLayout)this;
+	}
+
+	public static String staticSearchUserSiteTheme(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrUserSiteTheme(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqUserSiteTheme(SiteRequest siteRequest_, String o) {
+		return PageLayout.staticSearchUserSiteTheme(siteRequest_, PageLayout.staticSetUserSiteTheme(siteRequest_, o)).toString();
+	}
+
 	///////////////
 	// logoutUrl //
 	///////////////
@@ -4151,6 +4255,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				userNameInit();
 				userIdInit();
 				userEmailInit();
+				userWebComponentsThemeInit();
+				userSiteThemeInit();
 				logoutUrlInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -4327,6 +4433,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 				return oPageLayout.userId;
 			case "userEmail":
 				return oPageLayout.userEmail;
+			case "userWebComponentsTheme":
+				return oPageLayout.userWebComponentsTheme;
+			case "userSiteTheme":
+				return oPageLayout.userSiteTheme;
 			case "logoutUrl":
 				return oPageLayout.logoutUrl;
 			case "promiseBefore":
@@ -4498,6 +4608,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSetUserId(siteRequest_, o);
 		case "userEmail":
 			return PageLayout.staticSetUserEmail(siteRequest_, o);
+		case "userWebComponentsTheme":
+			return PageLayout.staticSetUserWebComponentsTheme(siteRequest_, o);
+		case "userSiteTheme":
+			return PageLayout.staticSetUserSiteTheme(siteRequest_, o);
 		case "logoutUrl":
 			return PageLayout.staticSetLogoutUrl(siteRequest_, o);
 		case "classSimpleName":
@@ -4632,6 +4746,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchUserId(siteRequest_, (String)o);
 		case "userEmail":
 			return PageLayout.staticSearchUserEmail(siteRequest_, (String)o);
+		case "userWebComponentsTheme":
+			return PageLayout.staticSearchUserWebComponentsTheme(siteRequest_, (String)o);
+		case "userSiteTheme":
+			return PageLayout.staticSearchUserSiteTheme(siteRequest_, (String)o);
 		case "logoutUrl":
 			return PageLayout.staticSearchLogoutUrl(siteRequest_, (String)o);
 		case "classSimpleName":
@@ -4766,6 +4884,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchStrUserId(siteRequest_, (String)o);
 		case "userEmail":
 			return PageLayout.staticSearchStrUserEmail(siteRequest_, (String)o);
+		case "userWebComponentsTheme":
+			return PageLayout.staticSearchStrUserWebComponentsTheme(siteRequest_, (String)o);
+		case "userSiteTheme":
+			return PageLayout.staticSearchStrUserSiteTheme(siteRequest_, (String)o);
 		case "logoutUrl":
 			return PageLayout.staticSearchStrLogoutUrl(siteRequest_, (String)o);
 		case "classSimpleName":
@@ -4900,6 +5022,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return PageLayout.staticSearchFqUserId(siteRequest_, o);
 		case "userEmail":
 			return PageLayout.staticSearchFqUserEmail(siteRequest_, o);
+		case "userWebComponentsTheme":
+			return PageLayout.staticSearchFqUserWebComponentsTheme(siteRequest_, o);
+		case "userSiteTheme":
+			return PageLayout.staticSearchFqUserSiteTheme(siteRequest_, o);
 		case "logoutUrl":
 			return PageLayout.staticSearchFqLogoutUrl(siteRequest_, o);
 		case "classSimpleName":
@@ -5023,6 +5149,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String VAR_userName = "userName";
 	public static final String VAR_userId = "userId";
 	public static final String VAR_userEmail = "userEmail";
+	public static final String VAR_userWebComponentsTheme = "userWebComponentsTheme";
+	public static final String VAR_userSiteTheme = "userSiteTheme";
 	public static final String VAR_logoutUrl = "logoutUrl";
 	public static final String VAR_promiseBefore = "promiseBefore";
 	public static final String VAR_classSimpleName = "classSimpleName";
@@ -5095,6 +5223,8 @@ public abstract class PageLayoutGen<DEV> extends Object {
 	public static final String DISPLAY_NAME_userName = "";
 	public static final String DISPLAY_NAME_userId = "";
 	public static final String DISPLAY_NAME_userEmail = "";
+	public static final String DISPLAY_NAME_userWebComponentsTheme = "";
+	public static final String DISPLAY_NAME_userSiteTheme = "";
 	public static final String DISPLAY_NAME_logoutUrl = "";
 	public static final String DISPLAY_NAME_promiseBefore = "";
 	public static final String DISPLAY_NAME_classSimpleName = "";
@@ -5231,6 +5361,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return DISPLAY_NAME_userId;
 		case VAR_userEmail:
 			return DISPLAY_NAME_userEmail;
+		case VAR_userWebComponentsTheme:
+			return DISPLAY_NAME_userWebComponentsTheme;
+		case VAR_userSiteTheme:
+			return DISPLAY_NAME_userSiteTheme;
 		case VAR_logoutUrl:
 			return DISPLAY_NAME_logoutUrl;
 		case VAR_promiseBefore:
@@ -5366,6 +5500,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 			return "The current user's id";
 		case VAR_userEmail:
 			return "The current user's email";
+		case VAR_userWebComponentsTheme:
+			return "The user's web components theme";
+		case VAR_userSiteTheme:
+			return "The user's siteTheme";
 		case VAR_logoutUrl:
 			return "The logout URL";
 		case VAR_promiseBefore:
@@ -5452,6 +5590,10 @@ public abstract class PageLayoutGen<DEV> extends Object {
 		case VAR_userId:
 			return "String";
 		case VAR_userEmail:
+			return "String";
+		case VAR_userWebComponentsTheme:
+			return "String";
+		case VAR_userSiteTheme:
 			return "String";
 		case VAR_logoutUrl:
 			return "String";

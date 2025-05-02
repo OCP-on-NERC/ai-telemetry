@@ -200,7 +200,7 @@ WEB_COMPONENTS_CSS: |-
 WEB_COMPONENTS_JS: |-
   {{ '<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>' if WEB_COMPONENTS_PREFIX == 'sl-' else (query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['WEB_COMPONENTS_JS'] | b64decode | default('<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>')) }}
 # Site default theme, light or dark. 
-SITE_THEME: dark
+SITE_THEME: light
 # The site logo relative URI
 SITE_LOGO_URI: "/svg/logo-{{ SITE_THEME }}.svg"
 # The name of the repository containing the web static content. 
