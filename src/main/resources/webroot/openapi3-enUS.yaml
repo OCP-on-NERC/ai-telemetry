@@ -2653,6 +2653,10 @@ paths:
     get:
       operationId: editpageBareMetalResourceClass
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -4832,6 +4836,10 @@ paths:
     get:
       operationId: editpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -5038,6 +5046,10 @@ paths:
     get:
       operationId: userpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -5569,6 +5581,10 @@ paths:
     get:
       operationId: editpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -9881,6 +9897,10 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
+      security:
+        - openIdConnect:
+          - openid
+          - profile
       description: >+
       summary: >+
       tags:
@@ -11606,8 +11626,6 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
-                  isVlanTransparent:
-                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -11624,6 +11642,8 @@ components:
                     type: string
                   locationZone:
                     type: string
+                  isVlanTransparent:
+                    type: boolean
     PATCHBareMetalNetworkRequest:
       allOf:
         - type: object
@@ -11851,13 +11871,6 @@ components:
               type: boolean
             removeAllIsVlanQueing:
               type: boolean
-            setIsVlanTransparent:
-              type: boolean
-              nullable: true
-            removeIsVlanTransparent:
-              type: boolean
-            removeAllIsVlanTransparent:
-              type: boolean
             setL2Adjacency:
               type: boolean
               nullable: true
@@ -11914,6 +11927,13 @@ components:
               type: string
             removeAllLocationZone:
               type: string
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
     PATCHBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12141,13 +12161,6 @@ components:
               type: boolean
             removeAllIsVlanQueing:
               type: boolean
-            setIsVlanTransparent:
-              type: boolean
-              nullable: true
-            removeIsVlanTransparent:
-              type: boolean
-            removeAllIsVlanTransparent:
-              type: boolean
             setL2Adjacency:
               type: boolean
               nullable: true
@@ -12204,6 +12217,13 @@ components:
               type: string
             removeAllLocationZone:
               type: string
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
     POSTBareMetalNetworkRequest:
       allOf:
         - type: object
@@ -12270,8 +12290,6 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
-            isVlanTransparent:
-              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12288,6 +12306,8 @@ components:
               type: string
             locationZone:
               type: string
+            isVlanTransparent:
+              type: boolean
     POSTBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12354,8 +12374,6 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
-            isVlanTransparent:
-              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12372,6 +12390,8 @@ components:
               type: string
             locationZone:
               type: string
+            isVlanTransparent:
+              type: boolean
     DELETEFilterBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12438,8 +12458,6 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
-            isVlanTransparent:
-              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12456,6 +12474,8 @@ components:
               type: string
             locationZone:
               type: string
+            isVlanTransparent:
+              type: boolean
     PUTImportBareMetalNetworkRequest:
       allOf:
         - type: object
@@ -12527,8 +12547,6 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
-                  isVlanTransparent:
-                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -12545,6 +12563,8 @@ components:
                     type: string
                   locationZone:
                     type: string
+                  isVlanTransparent:
+                    type: boolean
     PUTImportBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12611,8 +12631,6 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
-                  isVlanTransparent:
-                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -12629,6 +12647,8 @@ components:
                     type: string
                   locationZone:
                     type: string
+                  isVlanTransparent:
+                    type: boolean
     GETBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12695,8 +12715,6 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
-            isVlanTransparent:
-              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12713,6 +12731,8 @@ components:
               type: string
             locationZone:
               type: string
+            isVlanTransparent:
+              type: boolean
     DELETEBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -12779,8 +12799,6 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
-            isVlanTransparent:
-              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12797,6 +12815,8 @@ components:
               type: string
             locationZone:
               type: string
+            isVlanTransparent:
+              type: boolean
     EditPageBareMetalNetworkResponse:
       allOf:
         - type: string
@@ -17369,6 +17389,8 @@ components:
                     type: string
                   h1:
                     type: string
+                  h2:
+                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17376,8 +17398,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  h2:
                     type: string
     PATCHSitePageRequest:
       allOf:
@@ -17502,6 +17522,13 @@ components:
               type: string
             removeAllH1:
               type: string
+            setH2:
+              type: string
+              nullable: true
+            removeH2:
+              type: string
+            removeAllH2:
+              type: string
             setPageImageUri:
               type: string
               nullable: true
@@ -17529,13 +17556,6 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
-              type: string
-            setH2:
-              type: string
-              nullable: true
-            removeH2:
-              type: string
-            removeAllH2:
               type: string
     PATCHSitePageResponse:
       allOf:
@@ -17660,6 +17680,13 @@ components:
               type: string
             removeAllH1:
               type: string
+            setH2:
+              type: string
+              nullable: true
+            removeH2:
+              type: string
+            removeAllH2:
+              type: string
             setPageImageUri:
               type: string
               nullable: true
@@ -17687,13 +17714,6 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
-              type: string
-            setH2:
-              type: string
-              nullable: true
-            removeH2:
-              type: string
-            removeAllH2:
               type: string
     POSTSitePageRequest:
       allOf:
@@ -17733,6 +17753,8 @@ components:
               type: string
             h1:
               type: string
+            h2:
+              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17740,8 +17762,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            h2:
               type: string
     POSTSitePageResponse:
       allOf:
@@ -17781,6 +17801,8 @@ components:
               type: string
             h1:
               type: string
+            h2:
+              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17788,8 +17810,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            h2:
               type: string
     PUTImportSitePageRequest:
       allOf:
@@ -17834,6 +17854,8 @@ components:
                     type: string
                   h1:
                     type: string
+                  h2:
+                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17841,8 +17863,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  h2:
                     type: string
     PUTImportSitePageResponse:
       allOf:
@@ -17882,6 +17902,8 @@ components:
                     type: string
                   h1:
                     type: string
+                  h2:
+                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17889,8 +17911,6 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
-                    type: string
-                  h2:
                     type: string
     GETSitePageResponse:
       allOf:
@@ -17930,6 +17950,8 @@ components:
               type: string
             h1:
               type: string
+            h2:
+              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17937,8 +17959,6 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
-              type: string
-            h2:
               type: string
     EditPageSitePageResponse:
       allOf:

@@ -784,14 +784,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlProjectId());
 						break;
-					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiProject.VAR_archived + "=$" + num);
-							num++;
-							bParams.add(o2.sqlArchived());
-						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -799,6 +791,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(AiProject.VAR_description + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDescription());
+						break;
+					case "setArchived":
+							o2.setArchived(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(AiProject.VAR_archived + "=$" + num);
+							num++;
+							bParams.add(o2.sqlArchived());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -1227,15 +1227,6 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlProjectId());
 						break;
-					case AiProject.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiProject.VAR_archived + "=$" + num);
-						num++;
-						bParams.add(o2.sqlArchived());
-						break;
 					case AiProject.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1244,6 +1235,15 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(AiProject.VAR_description + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDescription());
+						break;
+					case AiProject.VAR_archived:
+						o2.setArchived(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(AiProject.VAR_archived + "=$" + num);
+						num++;
+						bParams.add(o2.sqlArchived());
 						break;
 					case AiProject.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -3530,8 +3530,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(AiProject.VAR_projectName, AiProject.staticSetProjectName(siteRequest2, (String)result.get(AiProject.VAR_projectName)));
 			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created)));
 			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
-			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
 			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
+			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
 			page.persistForClass(AiProject.VAR_sessionId, AiProject.staticSetSessionId(siteRequest2, (String)result.get(AiProject.VAR_sessionId)));
 			page.persistForClass(AiProject.VAR_userKey, AiProject.staticSetUserKey(siteRequest2, (String)result.get(AiProject.VAR_userKey)));
 			page.persistForClass(AiProject.VAR_objectTitle, AiProject.staticSetObjectTitle(siteRequest2, (String)result.get(AiProject.VAR_objectTitle)));

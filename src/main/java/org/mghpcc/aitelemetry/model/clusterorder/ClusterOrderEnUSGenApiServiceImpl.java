@@ -532,9 +532,13 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -936,7 +940,6 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1409,9 +1412,13 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
@@ -1757,7 +1764,6 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -2389,9 +2395,13 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
-				siteRequest.addScopes("GET");
 				siteRequest.setJsonObject(body);
 				serviceRequest.getParams().getJsonObject("query").put("rows", 1);
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				searchClusterOrderList(siteRequest, false, true, true).onSuccess(listClusterOrder -> {
 					try {
 						ClusterOrder o = listClusterOrder.first();
