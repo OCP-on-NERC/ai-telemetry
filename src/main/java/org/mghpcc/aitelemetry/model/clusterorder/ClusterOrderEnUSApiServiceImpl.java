@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.computate.vertx.config.ComputateConfigKeys;
@@ -24,6 +25,7 @@ import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
+import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrder;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
 import io.vertx.kafka.client.producer.KafkaProducer;
@@ -207,4 +209,44 @@ public class ClusterOrderEnUSApiServiceImpl extends ClusterOrderEnUSGenApiServic
 		}
 		return promise.future();
     }
+
+	@Override
+	public Future<ClusterOrder> sqlPOSTClusterOrder(ClusterOrder o, Boolean inheritPrimaryKey) {
+		Promise<ClusterOrder> promise = Promise.promise();
+		try {		
+			Integer fulfillmentApiPort = Integer.parseInt(config.getString(ConfigKeys.FULFILLMENT_API_PORT));
+			String fulfillmentApiHostName = config.getString(ConfigKeys.FULFILLMENT_API_HOST_NAME);
+			Boolean fulfillmentApiSsl = Boolean.parseBoolean(config.getString(ConfigKeys.FULFILLMENT_API_SSL));
+			String fulfillmentApiUri = String.format("/api/fulfillment/v1/cluster_orders");
+			String accessToken = config.getString(ConfigKeys.FULFILLMENT_API_OPENSHIFT_TOKEN);
+
+			JsonObject orderJson = o.getSiteRequest_().getJsonObject();
+			String templateId = orderJson.getString("templateId");
+
+			JsonObject spec = new JsonObject();
+			spec.put("templateId", templateId);
+			JsonObject body = new JsonObject();
+			body.put("spec", spec);
+
+			webClient.post(fulfillmentApiPort, fulfillmentApiHostName, fulfillmentApiUri).ssl(fulfillmentApiSsl)
+					.putHeader("Authorization", String.format("Bearer %s", accessToken))
+					.sendJsonObject(body)
+					.expecting(HttpResponseExpectation.SC_OK)
+				.	onSuccess(clusterOrderResponse -> {
+				orderJson.put("id", clusterOrderResponse.bodyAsJsonObject().getString("id"));
+				super.sqlPOSTClusterOrder(o, inheritPrimaryKey).onSuccess(o2 -> {
+					promise.complete(o2);
+				}).onFailure(ex -> {
+					LOG.error(String.format("sqlPOSTClusterOrder fail"), ex);
+					promise.fail(ex);
+				});
+			}).onFailure(ex -> {
+				LOG.error(String.format("POST to fulfillment service cluster order endpoint failed. "), ex);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("sqlPOSTClusterOrder failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
 }

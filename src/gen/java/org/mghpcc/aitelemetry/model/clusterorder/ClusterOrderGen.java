@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import java.lang.String;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -568,6 +569,12 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	public Object relateClusterOrder(String var, Object val) {
 		ClusterOrder oClusterOrder = (ClusterOrder)this;
 		switch(var) {
+			case "templateId":
+				if(oClusterOrder.getTemplateId() == null)
+					oClusterOrder.setTemplateId(Optional.ofNullable(val).map(v -> v.toString()).orElse(null));
+				if(!saves.contains("templateId"))
+					saves.add("templateId");
+				return val;
 			default:
 				return super.relateBaseModel(var, val);
 		}
@@ -729,11 +736,9 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 					oClusterOrder.setId(id);
 			}
 
-			if(saves.contains("templateId")) {
-				String templateId = (String)doc.get("templateId_docvalues_string");
-				if(templateId != null)
-					oClusterOrder.setTemplateId(templateId);
-			}
+			String templateId = (String)doc.get("templateId_docvalues_string");
+			if(templateId != null)
+				oClusterOrder.setTemplateId(templateId);
 
 			if(saves.contains("state")) {
 				String state = (String)doc.get("state_docvalues_string");

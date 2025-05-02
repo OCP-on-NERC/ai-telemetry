@@ -2653,10 +2653,6 @@ paths:
     get:
       operationId: editpageBareMetalResourceClass
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -4836,10 +4832,6 @@ paths:
     get:
       operationId: editpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -5046,10 +5038,6 @@ paths:
     get:
       operationId: userpageClusterRequest
       x-vertx-event-bus: ai-telemetry-enUS-ClusterRequest
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -5471,7 +5459,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportClusterTemplateResponse'
-  /en-us/api/cluster-template/{title}:
+  /en-us/api/cluster-template/{id}:
     get:
       operationId: getClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
@@ -5488,7 +5476,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: title
+        - name: id
           in: path
           description: >+
           required: true
@@ -5521,7 +5509,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: title
+        - name: id
           in: path
           description: >+
           required: true
@@ -5581,10 +5569,6 @@ paths:
     get:
       operationId: editpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -9897,10 +9881,6 @@ paths:
     get:
       operationId: editpageSitePage
       x-vertx-event-bus: ai-telemetry-enUS-SitePage
-      security:
-        - openIdConnect:
-          - openid
-          - profile
       description: >+
       summary: >+
       tags:
@@ -17389,8 +17369,6 @@ components:
                     type: string
                   h1:
                     type: string
-                  h2:
-                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17398,6 +17376,8 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
+                    type: string
+                  h2:
                     type: string
     PATCHSitePageRequest:
       allOf:
@@ -17522,13 +17502,6 @@ components:
               type: string
             removeAllH1:
               type: string
-            setH2:
-              type: string
-              nullable: true
-            removeH2:
-              type: string
-            removeAllH2:
-              type: string
             setPageImageUri:
               type: string
               nullable: true
@@ -17556,6 +17529,13 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
+              type: string
+            setH2:
+              type: string
+              nullable: true
+            removeH2:
+              type: string
+            removeAllH2:
               type: string
     PATCHSitePageResponse:
       allOf:
@@ -17680,13 +17660,6 @@ components:
               type: string
             removeAllH1:
               type: string
-            setH2:
-              type: string
-              nullable: true
-            removeH2:
-              type: string
-            removeAllH2:
-              type: string
             setPageImageUri:
               type: string
               nullable: true
@@ -17714,6 +17687,13 @@ components:
             removePageImageType:
               type: string
             removeAllPageImageType:
+              type: string
+            setH2:
+              type: string
+              nullable: true
+            removeH2:
+              type: string
+            removeAllH2:
               type: string
     POSTSitePageRequest:
       allOf:
@@ -17753,8 +17733,6 @@ components:
               type: string
             h1:
               type: string
-            h2:
-              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17762,6 +17740,8 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
+              type: string
+            h2:
               type: string
     POSTSitePageResponse:
       allOf:
@@ -17801,8 +17781,6 @@ components:
               type: string
             h1:
               type: string
-            h2:
-              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17810,6 +17788,8 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
+              type: string
+            h2:
               type: string
     PUTImportSitePageRequest:
       allOf:
@@ -17854,8 +17834,6 @@ components:
                     type: string
                   h1:
                     type: string
-                  h2:
-                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17863,6 +17841,8 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
+                    type: string
+                  h2:
                     type: string
     PUTImportSitePageResponse:
       allOf:
@@ -17902,8 +17882,6 @@ components:
                     type: string
                   h1:
                     type: string
-                  h2:
-                    type: string
                   pageImageUri:
                     type: string
                   pageImageWidth:
@@ -17911,6 +17889,8 @@ components:
                   pageImageHeight:
                     type: string
                   pageImageType:
+                    type: string
+                  h2:
                     type: string
     GETSitePageResponse:
       allOf:
@@ -17950,8 +17930,6 @@ components:
               type: string
             h1:
               type: string
-            h2:
-              type: string
             pageImageUri:
               type: string
             pageImageWidth:
@@ -17959,6 +17937,8 @@ components:
             pageImageHeight:
               type: string
             pageImageType:
+              type: string
+            h2:
               type: string
     EditPageSitePageResponse:
       allOf:

@@ -39,12 +39,6 @@ public class BareMetalOrderEnUSApiServiceImpl extends BareMetalOrderEnUSGenApiSe
 		    	Boolean esiApiSsl = Boolean.parseBoolean(config.getString(ConfigKeys.ESI_API_SSL));
 		    	String esiApiUri = String.format("/api/v1/baremetal-order/fulfill");
 
-                // curl -X POST http://localhost:8081/api/v1/baremetal-order/fulfill \
-                //   -H "Content-Type: application/json" \
-                //   -d '{"order_id": "123_xyz",
-                //        "network_id": "provisioning",
-                //        "nodes": [{"resource_class": "fc430", "number": 1}]
-                //   }'
                 String solrId = bareMetalOrder.getSolrId();
                 String networkId = bareMetalOrder.getNetworkId();
                 JsonArray nodes = new JsonArray();

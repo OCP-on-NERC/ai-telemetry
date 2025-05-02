@@ -199,7 +199,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/cluster-template";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/cluster-template";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/cluster-template";
-	public static final String GET_enUS_OpenApiUri = "/en-us/api/cluster-template/{title}";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/cluster-template/{id}";
 	public static final String GET_enUS_StringFormatUri = "/en-us/api/cluster-template/%s";
 	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/cluster-template/%s";
 	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/cluster-template";
@@ -208,7 +208,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	public static final String POST_enUS_OpenApiUri = "/en-us/api/cluster-template";
 	public static final String POST_enUS_StringFormatUri = "/en-us/api/cluster-template";
 	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/cluster-template";
-	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/cluster-template/{title}";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/cluster-template/{id}";
 	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/cluster-template/%s";
 	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/cluster-template/%s";
 	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/cluster-template-import";
@@ -940,7 +940,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 
 	@Override
 	public String idForClass() {
-		return title;
+		return id;
 	}
 
 	@Override
@@ -950,7 +950,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 
 	@Override
 	public String nameForClass() {
-		return title;
+		return id;
 	}
 
 	@Override
