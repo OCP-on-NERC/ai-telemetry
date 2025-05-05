@@ -25,4 +25,7 @@ public class ConfigKeys extends ComputateConfigKeys {
     public static final String ESI_API_OPENSHIFT_TOKEN = "ESI_API_OPENSHIFT_TOKEN";
     public static final String KAFKA_TOPIC_FULFILL_OFFER = "KAFKA_TOPIC_FULFILL_OFFER";
     public static final String KAFKA_TOPIC_ORDER_LOOP = "KAFKA_TOPIC_ORDER_LOOP";
+    public static final String IMPORT_LIMIT = "IMPORT_LIMIT";
+    public static final String IMPORT_OFFSET = "IMPORT_OFFSET";
+    public static final String IMPORT_CLEANUP_DELAY_SECONDS = "IMPORT_CLEANUP_DELAY_SECONDS";
 }
