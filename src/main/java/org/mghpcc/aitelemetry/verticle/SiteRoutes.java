@@ -73,7 +73,7 @@ public class SiteRoutes {
   public static Future<Void> kafkaConsumer(Vertx vertx, KafkaConsumer<String, String> consumer, JsonObject config) {
 	Promise<Void> promise = Promise.promise();
 	try {
-		String kafkaTopicFulfillOffer = config.getString(ConfigKeys.KAFKA_TOPIC_FULFILL_OFFER);
+		String kafkaTopicOrderStatus = config.getString(ConfigKeys.KAFKA_TOPIC_ORDER_STATUS);
 		consumer.handler(message -> {
 			try {
 				String topic = message.topic();
@@ -81,15 +81,14 @@ public class SiteRoutes {
 
 				JsonObject result = new JsonObject(message.value().toString());
 				String orderId = result.getString("order_id");
-				String offerId = result.getString("offer_id");
-				String leaseId = result.getString("lease_id");
+				String status = result.getString("status");
 
-				if(orderId != null || offerId != null || leaseId != null) {
+				if(orderId != null) {
 					JsonObject body = new JsonObject();
-					body.put("setOfferId", offerId);
-					body.put("setLeaseId", leaseId);
+					body.put("setStatus", status);
 		
 					JsonObject pageParams = new JsonObject();
+					pageParams.put("scopes", new JsonArray().add("GET").add("PATCH"));
 					pageParams.put("body", body);
 					pageParams.put("path", new JsonObject());
 					pageParams.put("cookie", new JsonObject());
@@ -106,20 +105,20 @@ public class SiteRoutes {
 							.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 							.addHeader("action", String.format("patch%sFuture", BareMetalOrder.CLASS_SIMPLE_NAME))
 							).onSuccess(message2 -> {
-						LOG.info(String.format("Imported %s %s", BareMetalOrder.SingularName_enUS, orderId));
+						LOG.info(String.format("Updated %s %s", BareMetalOrder.SingularName_enUS, orderId));
 					}).onFailure(ex -> {
-						LOG.error(String.format("Failed to import %s %s", BareMetalOrder.SingularName_enUS, orderId), ex);
+						LOG.error(String.format("Failed to update %s %s", BareMetalOrder.SingularName_enUS, orderId), ex);
 					});
 				}
 			} catch(Exception ex) {
 				LOG.error(String.format("Failed to import %s", BareMetalOrder.SingularName_enUS), ex);
 			}
 		});
-		consumer.subscribe(kafkaTopicFulfillOffer).onSuccess(a -> {
-			LOG.info(String.format("Successfully subscribed to topic", kafkaTopicFulfillOffer));
+		consumer.subscribe(kafkaTopicOrderStatus).onSuccess(a -> {
+			LOG.info(String.format("Successfully subscribed to topic", kafkaTopicOrderStatus));
 			promise.complete();
 		}).onFailure(ex -> {
-			LOG.error(String.format("Failed to subscribe to topic", kafkaTopicFulfillOffer), ex);
+			LOG.error(String.format("Failed to subscribe to topic", kafkaTopicOrderStatus), ex);
 			promise.fail(ex);
 		});
 	} catch(Exception ex) {

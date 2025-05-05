@@ -11566,8 +11566,6 @@ components:
                 properties:
                   id:
                     type: string
-                  name:
-                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -11626,6 +11624,8 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
+                  isVlanTransparent:
+                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -11642,8 +11642,8 @@ components:
                     type: string
                   locationZone:
                     type: string
-                  isVlanTransparent:
-                    type: boolean
+                  name:
+                    type: string
     PATCHBareMetalNetworkRequest:
       allOf:
         - type: object
@@ -11655,13 +11655,6 @@ components:
               type: string
             removeAllId:
               type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
-              type: string
             setDescription:
               type: string
               nullable: true
@@ -11871,6 +11864,13 @@ components:
               type: boolean
             removeAllIsVlanQueing:
               type: boolean
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
             setL2Adjacency:
               type: boolean
               nullable: true
@@ -11927,13 +11927,13 @@ components:
               type: string
             removeAllLocationZone:
               type: string
-            setIsVlanTransparent:
-              type: boolean
+            setName:
+              type: string
               nullable: true
-            removeIsVlanTransparent:
-              type: boolean
-            removeAllIsVlanTransparent:
-              type: boolean
+            removeName:
+              type: string
+            removeAllName:
+              type: string
     PATCHBareMetalNetworkResponse:
       allOf:
         - type: object
@@ -11945,13 +11945,6 @@ components:
               type: string
             removeAllId:
               type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
-              type: string
             setDescription:
               type: string
               nullable: true
@@ -12161,6 +12154,13 @@ components:
               type: boolean
             removeAllIsVlanQueing:
               type: boolean
+            setIsVlanTransparent:
+              type: boolean
+              nullable: true
+            removeIsVlanTransparent:
+              type: boolean
+            removeAllIsVlanTransparent:
+              type: boolean
             setL2Adjacency:
               type: boolean
               nullable: true
@@ -12217,21 +12217,19 @@ components:
               type: string
             removeAllLocationZone:
               type: string
-            setIsVlanTransparent:
-              type: boolean
+            setName:
+              type: string
               nullable: true
-            removeIsVlanTransparent:
-              type: boolean
-            removeAllIsVlanTransparent:
-              type: boolean
+            removeName:
+              type: string
+            removeAllName:
+              type: string
     POSTBareMetalNetworkRequest:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            name:
-              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12290,6 +12288,8 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
+            isVlanTransparent:
+              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12306,16 +12306,14 @@ components:
               type: string
             locationZone:
               type: string
-            isVlanTransparent:
-              type: boolean
+            name:
+              type: string
     POSTBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            name:
-              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12374,6 +12372,8 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
+            isVlanTransparent:
+              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12390,16 +12390,14 @@ components:
               type: string
             locationZone:
               type: string
-            isVlanTransparent:
-              type: boolean
+            name:
+              type: string
     DELETEFilterBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            name:
-              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12458,6 +12456,8 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
+            isVlanTransparent:
+              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12474,8 +12474,8 @@ components:
               type: string
             locationZone:
               type: string
-            isVlanTransparent:
-              type: boolean
+            name:
+              type: string
     PUTImportBareMetalNetworkRequest:
       allOf:
         - type: object
@@ -12487,8 +12487,6 @@ components:
                 properties:
                   id:
                     type: string
-                  name:
-                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -12547,6 +12545,8 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
+                  isVlanTransparent:
+                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -12563,16 +12563,14 @@ components:
                     type: string
                   locationZone:
                     type: string
-                  isVlanTransparent:
-                    type: boolean
+                  name:
+                    type: string
     PUTImportBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
                   id:
                     type: string
-                  name:
-                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -12631,6 +12629,8 @@ components:
                     type: boolean
                   isVlanQueing:
                     type: boolean
+                  isVlanTransparent:
+                    type: boolean
                   l2Adjacency:
                     type: boolean
                   locationCloud:
@@ -12647,16 +12647,14 @@ components:
                     type: string
                   locationZone:
                     type: string
-                  isVlanTransparent:
-                    type: boolean
+                  name:
+                    type: string
     GETBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            name:
-              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12715,6 +12713,8 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
+            isVlanTransparent:
+              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12731,16 +12731,14 @@ components:
               type: string
             locationZone:
               type: string
-            isVlanTransparent:
-              type: boolean
+            name:
+              type: string
     DELETEBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
             id:
               type: string
-            name:
-              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12799,6 +12797,8 @@ components:
               type: boolean
             isVlanQueing:
               type: boolean
+            isVlanTransparent:
+              type: boolean
             l2Adjacency:
               type: boolean
             locationCloud:
@@ -12815,8 +12815,8 @@ components:
               type: string
             locationZone:
               type: string
-            isVlanTransparent:
-              type: boolean
+            name:
+              type: string
     EditPageBareMetalNetworkResponse:
       allOf:
         - type: string
@@ -13364,9 +13364,7 @@ components:
                     type: string
                   numberOfLenovoSd665nv3H100:
                     type: string
-                  offerId:
-                    type: string
-                  leaseId:
+                  status:
                     type: string
     PATCHBareMetalOrderRequest:
       allOf:
@@ -13442,19 +13440,12 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
-            setOfferId:
+            setStatus:
               type: string
               nullable: true
-            removeOfferId:
+            removeStatus:
               type: string
-            removeAllOfferId:
-              type: string
-            setLeaseId:
-              type: string
-              nullable: true
-            removeLeaseId:
-              type: string
-            removeAllLeaseId:
+            removeAllStatus:
               type: string
     PATCHBareMetalOrderResponse:
       allOf:
@@ -13530,19 +13521,12 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
-            setOfferId:
+            setStatus:
               type: string
               nullable: true
-            removeOfferId:
+            removeStatus:
               type: string
-            removeAllOfferId:
-              type: string
-            setLeaseId:
-              type: string
-              nullable: true
-            removeLeaseId:
-              type: string
-            removeAllLeaseId:
+            removeAllStatus:
               type: string
     POSTBareMetalOrderRequest:
       allOf:
@@ -13568,9 +13552,7 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
-            offerId:
-              type: string
-            leaseId:
+            status:
               type: string
     POSTBareMetalOrderResponse:
       allOf:
@@ -13596,9 +13578,7 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
-            offerId:
-              type: string
-            leaseId:
+            status:
               type: string
     DELETEFilterBareMetalOrderResponse:
       allOf:
@@ -13624,9 +13604,7 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
-            offerId:
-              type: string
-            leaseId:
+            status:
               type: string
     GETBareMetalOrderResponse:
       allOf:
@@ -13652,9 +13630,7 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
-            offerId:
-              type: string
-            leaseId:
+            status:
               type: string
     DELETEBareMetalOrderResponse:
       allOf:
@@ -13680,9 +13656,7 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
-            offerId:
-              type: string
-            leaseId:
+            status:
               type: string
     EditPageBareMetalOrderResponse:
       allOf:
@@ -14839,8 +14813,6 @@ components:
                     type: string
                   title:
                     type: string
-                  description:
-                    type: string
                   parameters:
                     type: array
                     items:
@@ -14850,6 +14822,8 @@ components:
                         - type: string
                         - type: boolean
                   objectSuggest:
+                    type: string
+                  description:
                     type: string
     PATCHClusterTemplateRequest:
       allOf:
@@ -14869,13 +14843,6 @@ components:
               type: string
             removeAllTitle:
               type: string
-            setDescription:
-              type: string
-              nullable: true
-            removeDescription:
-              type: string
-            removeAllDescription:
-              type: string
             setParameters:
               type: array
               nullable: true
@@ -14907,6 +14874,13 @@ components:
             removeObjectSuggest:
               type: string
             removeAllObjectSuggest:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
               type: string
     PATCHClusterTemplateResponse:
       allOf:
@@ -14926,13 +14900,6 @@ components:
               type: string
             removeAllTitle:
               type: string
-            setDescription:
-              type: string
-              nullable: true
-            removeDescription:
-              type: string
-            removeAllDescription:
-              type: string
             setParameters:
               type: array
               nullable: true
@@ -14965,6 +14932,13 @@ components:
               type: string
             removeAllObjectSuggest:
               type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
     POSTClusterTemplateRequest:
       allOf:
         - type: object
@@ -14972,8 +14946,6 @@ components:
             id:
               type: string
             title:
-              type: string
-            description:
               type: string
             parameters:
               type: array
@@ -14984,6 +14956,8 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
+              type: string
+            description:
               type: string
     POSTClusterTemplateResponse:
       allOf:
@@ -14993,8 +14967,6 @@ components:
               type: string
             title:
               type: string
-            description:
-              type: string
             parameters:
               type: array
               items:
@@ -15004,6 +14976,8 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
+              type: string
+            description:
               type: string
     DELETEFilterClusterTemplateResponse:
       allOf:
@@ -15013,8 +14987,6 @@ components:
               type: string
             title:
               type: string
-            description:
-              type: string
             parameters:
               type: array
               items:
@@ -15024,6 +14996,8 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
+              type: string
+            description:
               type: string
     PUTImportClusterTemplateRequest:
       allOf:
@@ -15038,8 +15012,6 @@ components:
                     type: string
                   title:
                     type: string
-                  description:
-                    type: string
                   parameters:
                     type: array
                     items:
@@ -15049,6 +15021,8 @@ components:
                         - type: string
                         - type: boolean
                   objectSuggest:
+                    type: string
+                  description:
                     type: string
     PUTImportClusterTemplateResponse:
       allOf:
@@ -15058,8 +15032,6 @@ components:
                     type: string
                   title:
                     type: string
-                  description:
-                    type: string
                   parameters:
                     type: array
                     items:
@@ -15070,6 +15042,8 @@ components:
                         - type: boolean
                   objectSuggest:
                     type: string
+                  description:
+                    type: string
     GETClusterTemplateResponse:
       allOf:
         - type: object
@@ -15077,8 +15051,6 @@ components:
             id:
               type: string
             title:
-              type: string
-            description:
               type: string
             parameters:
               type: array
@@ -15089,6 +15061,8 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
+              type: string
+            description:
               type: string
     DELETEClusterTemplateResponse:
       allOf:
@@ -15098,8 +15072,6 @@ components:
               type: string
             title:
               type: string
-            description:
-              type: string
             parameters:
               type: array
               items:
@@ -15109,6 +15081,8 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
+              type: string
+            description:
               type: string
     EditPageClusterTemplateResponse:
       allOf:
