@@ -83,7 +83,7 @@ public class ManagedClusterEnUSApiServiceImpl extends ManagedClusterEnUSGenApiSe
 					.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 					.addHeader("action", String.format("putimport%sFuture", classSimpleName))
 					).onSuccess(message -> {
-				LOG.info("Imported managed clusters");
+				LOG.info("Imported tenant clusters");
 				promise.complete();
 			}).onFailure(ex -> {
 				LOG.error(String.format(importDataFail, classSimpleName), ex);
@@ -104,6 +104,7 @@ public class ManagedClusterEnUSApiServiceImpl extends ManagedClusterEnUSGenApiSe
 			searchList.q("*:*");
 			searchList.setC(ManagedCluster.class);
 			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", ManagedCluster.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.rows(100);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldManagedClusters -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
@@ -115,6 +116,7 @@ public class ManagedClusterEnUSApiServiceImpl extends ManagedClusterEnUSGenApiSe
 								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
+								pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 								pageParams.put("body", body);
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());
@@ -131,7 +133,7 @@ public class ManagedClusterEnUSApiServiceImpl extends ManagedClusterEnUSGenApiSe
 										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 										.addHeader("action", String.format("patch%sFuture", classSimpleName))
 										).onSuccess(message -> {
-									LOG.info(String.format("Deleted %s managed cluster", clusterTitle));
+									LOG.info(String.format("Deleted %s tenant cluster", clusterTitle));
 									promise1.complete(oldManagedClusters);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);

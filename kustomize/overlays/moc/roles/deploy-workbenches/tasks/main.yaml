@@ -11,6 +11,12 @@
     DATABASE_DATABASE: "{{ SITE_SHORT_NAME }}{{ WORKBENCH_VARS.USER_NAME | replace('-', '') | replace('_', '') }}"
     SOLR_COLLECTION: '{{ SITE_SHORT_NAME }}-{{ WORKBENCH_VARS.USER_NAME }}'
     SOLR_COLLECTION_COMPUTATE: 'computate-{{ WORKBENCH_VARS.USER_NAME }}'
+  tags:
+    - deploy-notebooks
+    - deploy-rolebindings
+    - deploy-configmaps
+    - deploy-vars
+    - create-database
   loop_control:
     loop_var: WORKBENCH_VARS
     index_var: WORKBENCH_INDEX

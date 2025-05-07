@@ -105,6 +105,7 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 			searchList.q("*:*");
 			searchList.setC(ClusterTemplate.class);
 			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", ClusterTemplate.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.rows(100);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldClusterTemplates -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
@@ -116,6 +117,7 @@ public class ClusterTemplateEnUSApiServiceImpl extends ClusterTemplateEnUSGenApi
 								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
+								pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 								pageParams.put("body", body);
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());

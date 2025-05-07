@@ -189,6 +189,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current bare metal order";
 	public static final String AllName_enUS = "all bare metal orders";
 	public static final String SearchAllNameBy_enUS = "search bare metal orders by ";
+	public static final String SearchAllName_enUS = "search bare metal orders";
 	public static final String Title_enUS = "bare metal orders";
 	public static final String ThePluralName_enUS = "the bare metal orders";
 	public static final String NoNameFound_enUS = "no bare metal order found";
@@ -1670,12 +1671,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_networkSearch = "";
 	public static final String DISPLAY_NAME_network = "";
 	public static final String DISPLAY_NAME_networkName = "bare metal network name";
-	public static final String DISPLAY_NAME_numberOfFc430 = "number of fc430";
-	public static final String DISPLAY_NAME_numberOfFc830 = "number of fc830";
-	public static final String DISPLAY_NAME_numberOfR730xd = "number of r730xd";
-	public static final String DISPLAY_NAME_numberOfWhiteboxFlax1 = "number of whitebox-flax-1";
-	public static final String DISPLAY_NAME_numberOfLenovoSd650nv2A100 = "number of lenovo-sd650nv2-a100";
-	public static final String DISPLAY_NAME_numberOfLenovoSd665nv3H100 = "number of lenovo-sd665nv3-h100";
+	public static final String DISPLAY_NAME_numberOfFc430 = "number of fc430 ({{ max }} available)";
+	public static final String DISPLAY_NAME_numberOfFc830 = "number of fc830 ({{ max }} available)";
+	public static final String DISPLAY_NAME_numberOfR730xd = "number of r730xd ({{ max }} available)";
+	public static final String DISPLAY_NAME_numberOfWhiteboxFlax1 = "number of whitebox-flax-1 ({{ max }} available)";
+	public static final String DISPLAY_NAME_numberOfLenovoSd650nv2A100 = "number of lenovo-sd650nv2-a100 ({{ max }} available)";
+	public static final String DISPLAY_NAME_numberOfLenovoSd665nv3H100 = "number of lenovo-sd665nv3-h100 ({{ max }} available)";
 	public static final String DISPLAY_NAME_status = "order status";
 
 	@Override
@@ -1845,7 +1846,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 4;
 		case VAR_status:
-			return 5;
+			return 8;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1892,6 +1893,18 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 
 	public static Integer maxBareMetalOrder(String var) {
 		switch(var) {
+		case VAR_numberOfFc430:
+			return 100;
+		case VAR_numberOfFc830:
+			return 100;
+		case VAR_numberOfR730xd:
+			return 100;
+		case VAR_numberOfWhiteboxFlax1:
+			return 100;
+		case VAR_numberOfLenovoSd650nv2A100:
+			return 100;
+		case VAR_numberOfLenovoSd665nv3H100:
+			return 100;
 			default:
 				return BaseModel.maxBaseModel(var);
 		}
@@ -1899,6 +1912,18 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 
 	public static Integer minBareMetalOrder(String var) {
 		switch(var) {
+		case VAR_numberOfFc430:
+			return 0;
+		case VAR_numberOfFc830:
+			return 0;
+		case VAR_numberOfR730xd:
+			return 0;
+		case VAR_numberOfWhiteboxFlax1:
+			return 0;
+		case VAR_numberOfLenovoSd650nv2A100:
+			return 0;
+		case VAR_numberOfLenovoSd665nv3H100:
+			return 0;
 			default:
 				return BaseModel.minBaseModel(var);
 		}

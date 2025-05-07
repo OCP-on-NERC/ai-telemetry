@@ -201,6 +201,7 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current AI node";
 	public static final String AllName_enUS = "all AI nodes";
 	public static final String SearchAllNameBy_enUS = "search AI nodes by ";
+	public static final String SearchAllName_enUS = "search AI nodes";
 	public static final String Title_enUS = "AI nodes";
 	public static final String ThePluralName_enUS = "the AI nodes";
 	public static final String NoNameFound_enUS = "no AI node found";

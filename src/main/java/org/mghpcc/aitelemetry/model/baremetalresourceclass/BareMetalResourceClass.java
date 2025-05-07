@@ -11,7 +11,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/bare-metal-resource-class
- * EditPageUri: /en-us/edit/bare-metal-resource-class/{id}
+ * EditPageUri: /en-us/edit/bare-metal-resource-class/{name}
  * ApiUri: /en-us/api/bare-metal-resource-class
  * ApiMethod:
  *   Search:
@@ -24,10 +24,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  * PublicRead: true
  * AuthGroup:
  *   Admin:
- *     POST:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:

@@ -229,7 +229,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			response200Search(listManagedCluster.getRequest(), listManagedCluster.getResponse(), json);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -364,7 +364,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(listManagedCluster.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -684,14 +684,6 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlState());
 						break;
-					case "setApiUrl":
-							o2.setApiUrl(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
-							num++;
-							bParams.add(o2.sqlApiUrl());
-						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -699,6 +691,14 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(ManagedCluster.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
+						break;
+					case "setApiUrl":
+							o2.setApiUrl(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
+							num++;
+							bParams.add(o2.sqlApiUrl());
 						break;
 					case "setConsoleUrl":
 							o2.setConsoleUrl(jsonObject.getString(entityVar));
@@ -793,7 +793,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1097,15 +1097,6 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlState());
 						break;
-					case ManagedCluster.VAR_apiUrl:
-						o2.setApiUrl(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
-						num++;
-						bParams.add(o2.sqlApiUrl());
-						break;
 					case ManagedCluster.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1114,6 +1105,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(ManagedCluster.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
+						break;
+					case ManagedCluster.VAR_apiUrl:
+						o2.setApiUrl(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(ManagedCluster.VAR_apiUrl + "=$" + num);
+						num++;
+						bParams.add(o2.sqlApiUrl());
 						break;
 					case ManagedCluster.VAR_consoleUrl:
 						o2.setConsoleUrl(jsonObject.getString(entityVar));
@@ -1213,7 +1213,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1551,7 +1551,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1857,7 +1857,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2515,7 +2515,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "managed cluster", id);
+						String m = String.format("%s %s not found", "tenant cluster", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3060,8 +3060,8 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 			page.persistForClass(ManagedCluster.VAR_id, ManagedCluster.staticSetId(siteRequest2, (String)result.get(ManagedCluster.VAR_id)));
 			page.persistForClass(ManagedCluster.VAR_state, ManagedCluster.staticSetState(siteRequest2, (String)result.get(ManagedCluster.VAR_state)));
-			page.persistForClass(ManagedCluster.VAR_apiUrl, ManagedCluster.staticSetApiUrl(siteRequest2, (String)result.get(ManagedCluster.VAR_apiUrl)));
 			page.persistForClass(ManagedCluster.VAR_created, ManagedCluster.staticSetCreated(siteRequest2, (String)result.get(ManagedCluster.VAR_created)));
+			page.persistForClass(ManagedCluster.VAR_apiUrl, ManagedCluster.staticSetApiUrl(siteRequest2, (String)result.get(ManagedCluster.VAR_apiUrl)));
 			page.persistForClass(ManagedCluster.VAR_consoleUrl, ManagedCluster.staticSetConsoleUrl(siteRequest2, (String)result.get(ManagedCluster.VAR_consoleUrl)));
 			page.persistForClass(ManagedCluster.VAR_archived, ManagedCluster.staticSetArchived(siteRequest2, (String)result.get(ManagedCluster.VAR_archived)));
 			page.persistForClass(ManagedCluster.VAR_sessionId, ManagedCluster.staticSetSessionId(siteRequest2, (String)result.get(ManagedCluster.VAR_sessionId)));

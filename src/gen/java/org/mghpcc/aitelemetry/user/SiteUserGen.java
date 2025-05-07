@@ -175,6 +175,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current site user";
 	public static final String AllName_enUS = "all site users";
 	public static final String SearchAllNameBy_enUS = "search site users by ";
+	public static final String SearchAllName_enUS = "search site users";
 	public static final String Title_enUS = "site users";
 	public static final String ThePluralName_enUS = "the site users";
 	public static final String NoNameFound_enUS = "no site user found";

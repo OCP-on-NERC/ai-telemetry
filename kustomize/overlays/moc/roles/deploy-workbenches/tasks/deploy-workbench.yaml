@@ -21,6 +21,8 @@
     state: present
     definition: "{{ lookup('template', 'configmap.yaml') }}"
     validate_certs: false
+  tags:
+    - deploy-configmaps
 - name: "Create a Notebook for {{ WORKBENCH_NAME }}"
   kubernetes.core.k8s:
     state: present

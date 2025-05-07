@@ -12,7 +12,7 @@ import io.vertx.core.json.JsonArray;
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/cluster-template
- * EditPageUri: /en-us/edit/cluster-template/{title}
+ * EditPageUri: /en-us/edit/cluster-template/{id}
  * ApiUri: /en-us/api/cluster-template
  * ApiMethod:
  *   Search:
@@ -25,10 +25,7 @@ import io.vertx.core.json.JsonArray;
  * PublicRead: true
  * AuthGroup:
  *   Admin:
- *     POST:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:

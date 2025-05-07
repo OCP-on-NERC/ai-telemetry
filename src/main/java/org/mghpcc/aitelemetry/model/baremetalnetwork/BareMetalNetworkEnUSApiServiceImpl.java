@@ -142,6 +142,7 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 			searchList.q("*:*");
 			searchList.setC(BareMetalNetwork.class);
 			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNetwork.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.rows(100);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalNetworks -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
@@ -153,6 +154,7 @@ public class BareMetalNetworkEnUSApiServiceImpl extends BareMetalNetworkEnUSGenA
 								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
+								pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 								pageParams.put("body", body);
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());

@@ -211,6 +211,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current AI cluster";
 	public static final String AllName_enUS = "all AI clusters";
 	public static final String SearchAllNameBy_enUS = "search AI clusters by ";
+	public static final String SearchAllName_enUS = "search AI clusters";
 	public static final String Title_enUS = "AI clusters";
 	public static final String ThePluralName_enUS = "the AI clusters";
 	public static final String NoNameFound_enUS = "no AI cluster found";

@@ -2649,7 +2649,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEBareMetalResourceClassResponse'
-  /en-us/edit/bare-metal-resource-class/{id}:
+  /en-us/edit/bare-metal-resource-class/{name}:
     get:
       operationId: editpageBareMetalResourceClass
       x-vertx-event-bus: ai-telemetry-enUS-BareMetalResourceClass
@@ -2670,7 +2670,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: id
+        - name: name
           in: path
           description: >+
           required: true
@@ -5577,7 +5577,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEClusterTemplateResponse'
-  /en-us/edit/cluster-template/{title}:
+  /en-us/edit/cluster-template/{id}:
     get:
       operationId: editpageClusterTemplate
       x-vertx-event-bus: ai-telemetry-enUS-ClusterTemplate
@@ -5598,7 +5598,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: title
+        - name: id
           in: path
           description: >+
           required: true
@@ -7312,7 +7312,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7491,7 +7491,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7548,7 +7548,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7582,7 +7582,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7653,7 +7653,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7711,7 +7711,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7744,7 +7744,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7821,7 +7821,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7855,7 +7855,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - managed clusters
+        - tenant clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -11566,6 +11566,8 @@ components:
                 properties:
                   id:
                     type: string
+                  name:
+                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -11641,8 +11643,6 @@ components:
                   locationRegionName:
                     type: string
                   locationZone:
-                    type: string
-                  name:
                     type: string
     PATCHBareMetalNetworkRequest:
       allOf:
@@ -11655,6 +11655,13 @@ components:
               type: string
             removeAllId:
               type: string
+            setName:
+              type: string
+              nullable: true
+            removeName:
+              type: string
+            removeAllName:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -11926,13 +11933,6 @@ components:
             removeLocationZone:
               type: string
             removeAllLocationZone:
-              type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
               type: string
     PATCHBareMetalNetworkResponse:
       allOf:
@@ -11945,6 +11945,13 @@ components:
               type: string
             removeAllId:
               type: string
+            setName:
+              type: string
+              nullable: true
+            removeName:
+              type: string
+            removeAllName:
+              type: string
             setDescription:
               type: string
               nullable: true
@@ -12217,18 +12224,13 @@ components:
               type: string
             removeAllLocationZone:
               type: string
-            setName:
-              type: string
-              nullable: true
-            removeName:
-              type: string
-            removeAllName:
-              type: string
     POSTBareMetalNetworkRequest:
       allOf:
         - type: object
           properties:
             id:
+              type: string
+            name:
               type: string
             description:
               type: string
@@ -12305,8 +12307,6 @@ components:
             locationRegionName:
               type: string
             locationZone:
-              type: string
-            name:
               type: string
     POSTBareMetalNetworkResponse:
       allOf:
@@ -12314,6 +12314,8 @@ components:
           properties:
             id:
               type: string
+            name:
+              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12389,8 +12391,6 @@ components:
             locationRegionName:
               type: string
             locationZone:
-              type: string
-            name:
               type: string
     DELETEFilterBareMetalNetworkResponse:
       allOf:
@@ -12398,6 +12398,8 @@ components:
           properties:
             id:
               type: string
+            name:
+              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12473,8 +12475,6 @@ components:
             locationRegionName:
               type: string
             locationZone:
-              type: string
-            name:
               type: string
     PUTImportBareMetalNetworkRequest:
       allOf:
@@ -12487,6 +12487,8 @@ components:
                 properties:
                   id:
                     type: string
+                  name:
+                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -12562,8 +12564,6 @@ components:
                   locationRegionName:
                     type: string
                   locationZone:
-                    type: string
-                  name:
                     type: string
     PUTImportBareMetalNetworkResponse:
       allOf:
@@ -12571,6 +12571,8 @@ components:
           properties:
                   id:
                     type: string
+                  name:
+                    type: string
                   description:
                     type: string
                   availabilityZoneHints:
@@ -12647,13 +12649,13 @@ components:
                     type: string
                   locationZone:
                     type: string
-                  name:
-                    type: string
     GETBareMetalNetworkResponse:
       allOf:
         - type: object
           properties:
             id:
+              type: string
+            name:
               type: string
             description:
               type: string
@@ -12730,8 +12732,6 @@ components:
             locationRegionName:
               type: string
             locationZone:
-              type: string
-            name:
               type: string
     DELETEBareMetalNetworkResponse:
       allOf:
@@ -12739,6 +12739,8 @@ components:
           properties:
             id:
               type: string
+            name:
+              type: string
             description:
               type: string
             availabilityZoneHints:
@@ -12814,8 +12816,6 @@ components:
             locationRegionName:
               type: string
             locationZone:
-              type: string
-            name:
               type: string
     EditPageBareMetalNetworkResponse:
       allOf:
@@ -14813,6 +14813,8 @@ components:
                     type: string
                   title:
                     type: string
+                  description:
+                    type: string
                   parameters:
                     type: array
                     items:
@@ -14822,8 +14824,6 @@ components:
                         - type: string
                         - type: boolean
                   objectSuggest:
-                    type: string
-                  description:
                     type: string
     PATCHClusterTemplateRequest:
       allOf:
@@ -14843,6 +14843,13 @@ components:
               type: string
             removeAllTitle:
               type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
             setParameters:
               type: array
               nullable: true
@@ -14874,13 +14881,6 @@ components:
             removeObjectSuggest:
               type: string
             removeAllObjectSuggest:
-              type: string
-            setDescription:
-              type: string
-              nullable: true
-            removeDescription:
-              type: string
-            removeAllDescription:
               type: string
     PATCHClusterTemplateResponse:
       allOf:
@@ -14900,6 +14900,13 @@ components:
               type: string
             removeAllTitle:
               type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
             setParameters:
               type: array
               nullable: true
@@ -14932,13 +14939,6 @@ components:
               type: string
             removeAllObjectSuggest:
               type: string
-            setDescription:
-              type: string
-              nullable: true
-            removeDescription:
-              type: string
-            removeAllDescription:
-              type: string
     POSTClusterTemplateRequest:
       allOf:
         - type: object
@@ -14946,6 +14946,8 @@ components:
             id:
               type: string
             title:
+              type: string
+            description:
               type: string
             parameters:
               type: array
@@ -14956,8 +14958,6 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
-              type: string
-            description:
               type: string
     POSTClusterTemplateResponse:
       allOf:
@@ -14967,6 +14967,8 @@ components:
               type: string
             title:
               type: string
+            description:
+              type: string
             parameters:
               type: array
               items:
@@ -14976,8 +14978,6 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
-              type: string
-            description:
               type: string
     DELETEFilterClusterTemplateResponse:
       allOf:
@@ -14987,6 +14987,8 @@ components:
               type: string
             title:
               type: string
+            description:
+              type: string
             parameters:
               type: array
               items:
@@ -14996,8 +14998,6 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
-              type: string
-            description:
               type: string
     PUTImportClusterTemplateRequest:
       allOf:
@@ -15012,6 +15012,8 @@ components:
                     type: string
                   title:
                     type: string
+                  description:
+                    type: string
                   parameters:
                     type: array
                     items:
@@ -15021,8 +15023,6 @@ components:
                         - type: string
                         - type: boolean
                   objectSuggest:
-                    type: string
-                  description:
                     type: string
     PUTImportClusterTemplateResponse:
       allOf:
@@ -15032,6 +15032,8 @@ components:
                     type: string
                   title:
                     type: string
+                  description:
+                    type: string
                   parameters:
                     type: array
                     items:
@@ -15042,8 +15044,6 @@ components:
                         - type: boolean
                   objectSuggest:
                     type: string
-                  description:
-                    type: string
     GETClusterTemplateResponse:
       allOf:
         - type: object
@@ -15051,6 +15051,8 @@ components:
             id:
               type: string
             title:
+              type: string
+            description:
               type: string
             parameters:
               type: array
@@ -15061,8 +15063,6 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
-              type: string
-            description:
               type: string
     DELETEClusterTemplateResponse:
       allOf:
@@ -15072,6 +15072,8 @@ components:
               type: string
             title:
               type: string
+            description:
+              type: string
             parameters:
               type: array
               items:
@@ -15081,8 +15083,6 @@ components:
                   - type: string
                   - type: boolean
             objectSuggest:
-              type: string
-            description:
               type: string
     EditPageClusterTemplateResponse:
       allOf:

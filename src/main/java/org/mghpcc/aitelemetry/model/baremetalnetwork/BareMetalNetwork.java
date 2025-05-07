@@ -31,7 +31,11 @@ import io.vertx.core.json.JsonArray;
  *   Admin:
  *     GET:
  *   SuperAdmin:
+ *     POST:
+ *     PATCH:
  *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  */
 public class BareMetalNetwork extends BareMetalNetworkGen<BaseModel> {
 

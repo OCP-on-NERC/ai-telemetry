@@ -175,7 +175,7 @@ import org.computate.search.response.solr.SolrResponse;
 public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(ClusterOrder.class);
 
-	public static final String Description_enUS = "An OpenShift cluster order";
+	public static final String Description_enUS = "Manage your own Red Hat OpenShift cluster in the cloud. ";
 	public static final String AName_enUS = "a cluster order";
 	public static final String This_enUS = "this ";
 	public static final String ThisName_enUS = "this cluster order";
@@ -186,6 +186,7 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current cluster order";
 	public static final String AllName_enUS = "all cluster orders";
 	public static final String SearchAllNameBy_enUS = "search cluster orders by ";
+	public static final String SearchAllName_enUS = "search cluster orders";
 	public static final String Title_enUS = "cluster orders";
 	public static final String ThePluralName_enUS = "the cluster orders";
 	public static final String NoNameFound_enUS = "no cluster order found";

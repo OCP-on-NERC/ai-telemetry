@@ -182,6 +182,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	public static final String NameActual_enUS = "current article";
 	public static final String AllName_enUS = "all articles";
 	public static final String SearchAllNameBy_enUS = "search articles by ";
+	public static final String SearchAllName_enUS = "search articles";
 	public static final String Title_enUS = "articles";
 	public static final String ThePluralName_enUS = "the articles";
 	public static final String NoNameFound_enUS = "no article found";

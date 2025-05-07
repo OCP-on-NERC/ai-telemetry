@@ -200,6 +200,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current GPU slice";
 	public static final String AllName_enUS = "all GPU slices";
 	public static final String SearchAllNameBy_enUS = "search GPU slices by ";
+	public static final String SearchAllName_enUS = "search GPU slices";
 	public static final String Title_enUS = "GPU slices";
 	public static final String ThePluralName_enUS = "the GPU slices";
 	public static final String NoNameFound_enUS = "no GPU slice found";

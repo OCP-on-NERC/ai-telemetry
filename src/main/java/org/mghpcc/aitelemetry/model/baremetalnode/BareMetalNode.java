@@ -28,7 +28,11 @@ import io.vertx.core.json.JsonArray;
  *   Admin:
  *     GET:
  *   SuperAdmin:
+ *     POST:
+ *     PATCH:
  *     GET:
+ *     DELETE:
+ *     SuperAdmin:
  * Val.nodeESI: node
  */
 public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
