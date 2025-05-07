@@ -97,6 +97,7 @@ import io.vertx.core.WorkerExecutor;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBusOptions;
+import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpHeaders;
@@ -107,6 +108,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.shareddata.SharedData;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.cluster.NodeInfo;
 import io.opentelemetry.api.trace.Tracer;
@@ -144,6 +146,8 @@ import io.vertx.ext.web.impl.RoutingContextImpl;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.kafka.client.consumer.KafkaConsumer;
+import io.netty.handler.codec.mqtt.MqttQoS;
 import io.vertx.mqtt.MqttClient;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgBuilder;
@@ -240,6 +244,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 	private AuthorizationProvider authorizationProvider;
 
 	private KafkaProducer<String, String> kafkaProducer;
+	private KafkaConsumer<String, String> kafkaConsumer;
 
 	private MqttClient mqttClient;
 
@@ -879,10 +884,15 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			if(Boolean.valueOf(config().getString(ConfigKeys.ENABLE_KAFKA))) {
 				Map<String, String> kafkaConfig = new HashMap<>();
 				kafkaConfig.put("bootstrap.servers", config().getString(ConfigKeys.KAFKA_BROKERS));
-				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-				kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				kafkaConfig.put("acks", "1");
 				kafkaConfig.put("security.protocol", "SSL");
+				kafkaConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+				kafkaConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+				kafkaConfig.put("group.id", config().getString(ConfigKeys.KAFKA_GROUP));
+				kafkaConfig.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+				kafkaConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+				kafkaConfig.put("auto.offset.reset", "earliest");
+				kafkaConfig.put("enable.auto.commit", "true");
 				Optional.ofNullable(config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_TYPE)).ifPresent(keystoreType -> {
 					kafkaConfig.put("ssl.keystore.type", keystoreType);
 					kafkaConfig.put("ssl.keystore.location", config().getString(ConfigKeys.KAFKA_SSL_KEYSTORE_LOCATION));
@@ -895,8 +905,15 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				});
 
 				kafkaProducer = KafkaProducer.createShared(vertx, config().getString(ConfigKeys.SITE_NAME), kafkaConfig);
-				LOG.info("The Kafka producer was initialized successfully. ");
-				promise.complete(kafkaProducer);
+							
+				// use consumer for interacting with Apache Kafka
+				kafkaConsumer = KafkaConsumer.create(vertx, kafkaConfig);
+				SiteRoutes.kafkaConsumer(vertx, kafkaConsumer, config()).onSuccess(a -> {
+					LOG.info("The Kafka producer was initialized successfully. ");
+					promise.complete(kafkaProducer);
+				}).onFailure(ex -> {
+					promise.fail(ex);
+				});
 			} else {
 				LOG.info("The Kafka producer was initialized successfully. ");
 				promise.complete(null);
@@ -908,6 +925,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 
 		return promise.future();
 	}
+
 	/**
 	 **/
 	public Future<MqttClient> configureMqtt() {
@@ -1214,7 +1232,8 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 				if(StringUtils.startsWith(siteBaseUrl, "https://"))
 					sessionHandler.setCookieSecureFlag(true);
 		
-				RouterBuilder.create(vertx, "webroot/openapi3-enUS.yaml").onSuccess(routerBuilder -> {
+				String siteSrc = config().getString(ComputateConfigKeys.SITE_SRC);
+				RouterBuilder.create(vertx, Path.of(siteSrc, "src/main/resources/webroot/openapi3-enUS.yaml").toAbsolutePath().toString()).onSuccess(routerBuilder -> {
 					routerBuilder.rootHandler(sessionHandler);
 					routerBuilder.rootHandler(BodyHandler.create());
 

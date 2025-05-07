@@ -811,13 +811,13 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlObjectTitle());
 						break;
-					case "setOfferId":
-							o2.setOfferId(jsonObject.getString(entityVar));
+					case "setStatus":
+							o2.setStatus(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_offerId + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_status + "=$" + num);
 							num++;
-							bParams.add(o2.sqlOfferId());
+							bParams.add(o2.sqlStatus());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -826,14 +826,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
-						break;
-					case "setLeaseId":
-							o2.setLeaseId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_leaseId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlLeaseId());
 						break;
 				}
 			}
@@ -1298,14 +1290,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case BareMetalOrder.VAR_offerId:
-						o2.setOfferId(jsonObject.getString(entityVar));
+					case BareMetalOrder.VAR_status:
+						o2.setStatus(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(BareMetalOrder.VAR_offerId + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_status + "=$" + num);
 						num++;
-						bParams.add(o2.sqlOfferId());
+						bParams.add(o2.sqlStatus());
 						break;
 					case BareMetalOrder.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1315,15 +1307,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
-						break;
-					case BareMetalOrder.VAR_leaseId:
-						o2.setLeaseId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalOrder.VAR_leaseId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlLeaseId());
 						break;
 					}
 				}
@@ -3210,9 +3193,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100, BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100, BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100)));
 			page.persistForClass(BareMetalOrder.VAR_objectTitle, BareMetalOrder.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalOrder.VAR_objectTitle)));
-			page.persistForClass(BareMetalOrder.VAR_offerId, BareMetalOrder.staticSetOfferId(siteRequest2, (String)result.get(BareMetalOrder.VAR_offerId)));
+			page.persistForClass(BareMetalOrder.VAR_status, BareMetalOrder.staticSetStatus(siteRequest2, (String)result.get(BareMetalOrder.VAR_status)));
 			page.persistForClass(BareMetalOrder.VAR_displayPage, BareMetalOrder.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalOrder.VAR_displayPage)));
-			page.persistForClass(BareMetalOrder.VAR_leaseId, BareMetalOrder.staticSetLeaseId(siteRequest2, (String)result.get(BareMetalOrder.VAR_leaseId)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

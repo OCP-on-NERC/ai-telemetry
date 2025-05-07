@@ -869,116 +869,60 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		return numberOfLenovoSd665nv3H100;
 	}
 
-	/////////////
-	// offerId //
-	/////////////
+	////////////
+	// status //
+	////////////
 
 
-	/**	 The entity offerId
+	/**	 The entity status
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String offerId;
+	protected String status;
 
-	/**	<br> The entity offerId
+	/**	<br> The entity status
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:offerId">Find the entity offerId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:status">Find the entity status in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _offerId(Wrap<String> w);
+	protected abstract void _status(Wrap<String> w);
 
-	public String getOfferId() {
-		return offerId;
+	public String getStatus() {
+		return status;
 	}
-	public void setOfferId(String o) {
-		this.offerId = BareMetalOrder.staticSetOfferId(siteRequest_, o);
+	public void setStatus(String o) {
+		this.status = BareMetalOrder.staticSetStatus(siteRequest_, o);
 	}
-	public static String staticSetOfferId(SiteRequest siteRequest_, String o) {
+	public static String staticSetStatus(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected BareMetalOrder offerIdInit() {
-		Wrap<String> offerIdWrap = new Wrap<String>().var("offerId");
-		if(offerId == null) {
-			_offerId(offerIdWrap);
-			Optional.ofNullable(offerIdWrap.getO()).ifPresent(o -> {
-				setOfferId(o);
+	protected BareMetalOrder statusInit() {
+		Wrap<String> statusWrap = new Wrap<String>().var("status");
+		if(status == null) {
+			_status(statusWrap);
+			Optional.ofNullable(statusWrap.getO()).ifPresent(o -> {
+				setStatus(o);
 			});
 		}
 		return (BareMetalOrder)this;
 	}
 
-	public static String staticSearchOfferId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStatus(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrOfferId(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrStatus(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqOfferId(SiteRequest siteRequest_, String o) {
-		return BareMetalOrder.staticSearchOfferId(siteRequest_, BareMetalOrder.staticSetOfferId(siteRequest_, o)).toString();
+	public static String staticSearchFqStatus(SiteRequest siteRequest_, String o) {
+		return BareMetalOrder.staticSearchStatus(siteRequest_, BareMetalOrder.staticSetStatus(siteRequest_, o)).toString();
 	}
 
-	public String sqlOfferId() {
-		return offerId;
-	}
-
-	/////////////
-	// leaseId //
-	/////////////
-
-
-	/**	 The entity leaseId
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String leaseId;
-
-	/**	<br> The entity leaseId
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:leaseId">Find the entity leaseId in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _leaseId(Wrap<String> w);
-
-	public String getLeaseId() {
-		return leaseId;
-	}
-	public void setLeaseId(String o) {
-		this.leaseId = BareMetalOrder.staticSetLeaseId(siteRequest_, o);
-	}
-	public static String staticSetLeaseId(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected BareMetalOrder leaseIdInit() {
-		Wrap<String> leaseIdWrap = new Wrap<String>().var("leaseId");
-		if(leaseId == null) {
-			_leaseId(leaseIdWrap);
-			Optional.ofNullable(leaseIdWrap.getO()).ifPresent(o -> {
-				setLeaseId(o);
-			});
-		}
-		return (BareMetalOrder)this;
-	}
-
-	public static String staticSearchLeaseId(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrLeaseId(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqLeaseId(SiteRequest siteRequest_, String o) {
-		return BareMetalOrder.staticSearchLeaseId(siteRequest_, BareMetalOrder.staticSetLeaseId(siteRequest_, o)).toString();
-	}
-
-	public String sqlLeaseId() {
-		return leaseId;
+	public String sqlStatus() {
+		return status;
 	}
 
 	//////////////
@@ -1036,8 +980,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				numberOfWhiteboxFlax1Init();
 				numberOfLenovoSd650nv2A100Init();
 				numberOfLenovoSd665nv3H100Init();
-				offerIdInit();
-				leaseIdInit();
+				statusInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -1115,10 +1058,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return oBareMetalOrder.numberOfLenovoSd650nv2A100;
 			case "numberOfLenovoSd665nv3H100":
 				return oBareMetalOrder.numberOfLenovoSd665nv3H100;
-			case "offerId":
-				return oBareMetalOrder.offerId;
-			case "leaseId":
-				return oBareMetalOrder.leaseId;
+			case "status":
+				return oBareMetalOrder.status;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1182,10 +1123,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest_, o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest_, o);
-		case "offerId":
-			return BareMetalOrder.staticSetOfferId(siteRequest_, o);
-		case "leaseId":
-			return BareMetalOrder.staticSetLeaseId(siteRequest_, o);
+		case "status":
+			return BareMetalOrder.staticSetStatus(siteRequest_, o);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1218,10 +1157,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchNumberOfLenovoSd650nv2A100(siteRequest_, (Integer)o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchNumberOfLenovoSd665nv3H100(siteRequest_, (Integer)o);
-		case "offerId":
-			return BareMetalOrder.staticSearchOfferId(siteRequest_, (String)o);
-		case "leaseId":
-			return BareMetalOrder.staticSearchLeaseId(siteRequest_, (String)o);
+		case "status":
+			return BareMetalOrder.staticSearchStatus(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1254,10 +1191,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchStrNumberOfLenovoSd650nv2A100(siteRequest_, (Integer)o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchStrNumberOfLenovoSd665nv3H100(siteRequest_, (Integer)o);
-		case "offerId":
-			return BareMetalOrder.staticSearchStrOfferId(siteRequest_, (String)o);
-		case "leaseId":
-			return BareMetalOrder.staticSearchStrLeaseId(siteRequest_, (String)o);
+		case "status":
+			return BareMetalOrder.staticSearchStrStatus(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1290,10 +1225,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchFqNumberOfLenovoSd650nv2A100(siteRequest_, o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchFqNumberOfLenovoSd665nv3H100(siteRequest_, o);
-		case "offerId":
-			return BareMetalOrder.staticSearchFqOfferId(siteRequest_, o);
-		case "leaseId":
-			return BareMetalOrder.staticSearchFqLeaseId(siteRequest_, o);
+		case "status":
+			return BareMetalOrder.staticSearchFqStatus(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1380,17 +1313,11 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				}
 				saves.add("numberOfLenovoSd665nv3H100");
 				return val;
-			} else if("offerid".equals(varLower)) {
+			} else if("status".equals(varLower)) {
 				if(val instanceof String) {
-					setOfferId((String)val);
+					setStatus((String)val);
 				}
-				saves.add("offerId");
-				return val;
-			} else if("leaseid".equals(varLower)) {
-				if(val instanceof String) {
-					setLeaseId((String)val);
-				}
-				saves.add("leaseId");
+				saves.add("status");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -1461,16 +1388,10 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 					oBareMetalOrder.setNumberOfLenovoSd665nv3H100(numberOfLenovoSd665nv3H100);
 			}
 
-			if(saves.contains("offerId")) {
-				String offerId = (String)doc.get("offerId_docvalues_string");
-				if(offerId != null)
-					oBareMetalOrder.setOfferId(offerId);
-			}
-
-			if(saves.contains("leaseId")) {
-				String leaseId = (String)doc.get("leaseId_docvalues_string");
-				if(leaseId != null)
-					oBareMetalOrder.setLeaseId(leaseId);
+			if(saves.contains("status")) {
+				String status = (String)doc.get("status_docvalues_string");
+				if(status != null)
+					oBareMetalOrder.setStatus(status);
 			}
 		}
 
@@ -1505,11 +1426,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		if(numberOfLenovoSd665nv3H100 != null) {
 			doc.put("numberOfLenovoSd665nv3H100_docvalues_int", numberOfLenovoSd665nv3H100);
 		}
-		if(offerId != null) {
-			doc.put("offerId_docvalues_string", offerId);
-		}
-		if(leaseId != null) {
-			doc.put("leaseId_docvalues_string", leaseId);
+		if(status != null) {
+			doc.put("status_docvalues_string", status);
 		}
 		super.indexBaseModel(doc);
 
@@ -1535,10 +1453,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100_docvalues_int";
 			case "numberOfLenovoSd665nv3H100":
 				return "numberOfLenovoSd665nv3H100_docvalues_int";
-			case "offerId":
-				return "offerId_docvalues_string";
-			case "leaseId":
-				return "leaseId_docvalues_string";
+			case "status":
+				return "status_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1564,10 +1480,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100_docvalues_int";
 			case "numberOfLenovoSd665nv3H100":
 				return "numberOfLenovoSd665nv3H100_docvalues_int";
-			case "offerId":
-				return "offerId_docvalues_string";
-			case "leaseId":
-				return "leaseId_docvalues_string";
+			case "status":
+				return "status_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1593,10 +1507,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100";
 			case "numberOfLenovoSd665nv3H100_docvalues_int":
 				return "numberOfLenovoSd665nv3H100";
-			case "offerId_docvalues_string":
-				return "offerId";
-			case "leaseId_docvalues_string":
-				return "leaseId";
+			case "status_docvalues_string":
+				return "status";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1636,8 +1548,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		oBareMetalOrder.setNumberOfWhiteboxFlax1(Optional.ofNullable(doc.get("numberOfWhiteboxFlax1_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oBareMetalOrder.setNumberOfLenovoSd650nv2A100(Optional.ofNullable(doc.get("numberOfLenovoSd650nv2A100_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oBareMetalOrder.setNumberOfLenovoSd665nv3H100(Optional.ofNullable(doc.get("numberOfLenovoSd665nv3H100_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oBareMetalOrder.setOfferId(Optional.ofNullable(doc.get("offerId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oBareMetalOrder.setLeaseId(Optional.ofNullable(doc.get("leaseId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBareMetalOrder.setStatus(Optional.ofNullable(doc.get("status_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1669,10 +1580,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				apiRequest.addVars("numberOfLenovoSd650nv2A100");
 			if(!Objects.equals(numberOfLenovoSd665nv3H100, original.getNumberOfLenovoSd665nv3H100()))
 				apiRequest.addVars("numberOfLenovoSd665nv3H100");
-			if(!Objects.equals(offerId, original.getOfferId()))
-				apiRequest.addVars("offerId");
-			if(!Objects.equals(leaseId, original.getLeaseId()))
-				apiRequest.addVars("leaseId");
+			if(!Objects.equals(status, original.getStatus()))
+				apiRequest.addVars("status");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1693,8 +1602,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(numberOfWhiteboxFlax1).map(v -> "numberOfWhiteboxFlax1: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(numberOfLenovoSd650nv2A100).map(v -> "numberOfLenovoSd650nv2A100: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(numberOfLenovoSd665nv3H100).map(v -> "numberOfLenovoSd665nv3H100: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(offerId).map(v -> "offerId: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(leaseId).map(v -> "leaseId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(status).map(v -> "status: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -1715,8 +1623,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String VAR_numberOfWhiteboxFlax1 = "numberOfWhiteboxFlax1";
 	public static final String VAR_numberOfLenovoSd650nv2A100 = "numberOfLenovoSd650nv2A100";
 	public static final String VAR_numberOfLenovoSd665nv3H100 = "numberOfLenovoSd665nv3H100";
-	public static final String VAR_offerId = "offerId";
-	public static final String VAR_leaseId = "leaseId";
+	public static final String VAR_status = "status";
 
 	public static List<String> varsQForClass() {
 		return BareMetalOrder.varsQBareMetalOrder(new ArrayList<String>());
@@ -1739,8 +1646,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		vars.add(VAR_numberOfWhiteboxFlax1);
 		vars.add(VAR_numberOfLenovoSd650nv2A100);
 		vars.add(VAR_numberOfLenovoSd665nv3H100);
-		vars.add(VAR_offerId);
-		vars.add(VAR_leaseId);
+		vars.add(VAR_status);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1770,8 +1676,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_numberOfWhiteboxFlax1 = "number of whitebox-flax-1";
 	public static final String DISPLAY_NAME_numberOfLenovoSd650nv2A100 = "number of lenovo-sd650nv2-a100";
 	public static final String DISPLAY_NAME_numberOfLenovoSd665nv3H100 = "number of lenovo-sd665nv3-h100";
-	public static final String DISPLAY_NAME_offerId = "offer ID";
-	public static final String DISPLAY_NAME_leaseId = "lease ID";
+	public static final String DISPLAY_NAME_status = "order status";
 
 	@Override
 	public String idForClass() {
@@ -1845,10 +1750,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_numberOfLenovoSd650nv2A100;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return DISPLAY_NAME_numberOfLenovoSd665nv3H100;
-		case VAR_offerId:
-			return DISPLAY_NAME_offerId;
-		case VAR_leaseId:
-			return DISPLAY_NAME_leaseId;
+		case VAR_status:
+			return DISPLAY_NAME_status;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1874,10 +1777,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return "The number of lenovo-sd650nv2-a100 nodes to request for this order. ";
 		case VAR_numberOfLenovoSd665nv3H100:
 			return "The number of lenovo-sd665nv3-h100 nodes to request for this order. ";
-		case VAR_offerId:
-			return "The offer ID of a bare metal fulfillment";
-		case VAR_leaseId:
-			return "The lease ID of a bare metal fulfillment";
+		case VAR_status:
+			return "The order status of a bare metal fulfillment";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1907,9 +1808,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return "Integer";
 		case VAR_numberOfLenovoSd665nv3H100:
 			return "Integer";
-		case VAR_offerId:
-			return "String";
-		case VAR_leaseId:
+		case VAR_status:
 			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
@@ -1945,9 +1844,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return 4;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 4;
-		case VAR_offerId:
-			return 5;
-		case VAR_leaseId:
+		case VAR_status:
 			return 5;
 			default:
 				return BaseModel.htmRowBaseModel(var);
@@ -1972,10 +1869,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return 4;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 5;
-		case VAR_offerId:
+		case VAR_status:
 			return 0;
-		case VAR_leaseId:
-			return 1;
 			default:
 				return BaseModel.htmCellBaseModel(var);
 		}
