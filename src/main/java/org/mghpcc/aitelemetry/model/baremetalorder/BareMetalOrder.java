@@ -263,8 +263,9 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * HidePOST: true
 	 * HidePATCH: true
 	 * HtmRowTitleOpen: status
-	 * HtmRow: 8
+	 * HtmRow: 5
 	 * HtmCell: 0
+	 * HtmColumn: 1
 	 * Facet: true
 	 **/
 	protected void _status(Wrap<String> w) {}

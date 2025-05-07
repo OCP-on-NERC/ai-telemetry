@@ -1822,6 +1822,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return 1;
 		case VAR_networkName:
 			return 2;
+		case VAR_status:
+			return 1;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}
@@ -1846,7 +1848,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 4;
 		case VAR_status:
-			return 8;
+			return 5;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
