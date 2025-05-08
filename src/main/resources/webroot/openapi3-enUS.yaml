@@ -12850,7 +12850,13 @@ components:
                         - type: string
                         - type: boolean
                   networkInfo:
-                    type: string
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
                   nodeId:
                     type: string
                   nodeIsMaintenance:
@@ -12901,12 +12907,30 @@ components:
                   - type: string
                   - type: boolean
             setNetworkInfo:
-              type: string
+              type: array
               nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             removeNetworkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             removeAllNetworkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             setNodeId:
               type: string
               nullable: true
@@ -13004,12 +13028,30 @@ components:
                   - type: string
                   - type: boolean
             setNetworkInfo:
-              type: string
+              type: array
               nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             removeNetworkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             removeAllNetworkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             setNodeId:
               type: string
               nullable: true
@@ -13090,7 +13132,13 @@ components:
                   - type: string
                   - type: boolean
             networkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             nodeId:
               type: string
             nodeIsMaintenance:
@@ -13124,7 +13172,13 @@ components:
                   - type: string
                   - type: boolean
             networkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             nodeId:
               type: string
             nodeIsMaintenance:
@@ -13158,7 +13212,13 @@ components:
                   - type: string
                   - type: boolean
             networkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             nodeId:
               type: string
             nodeIsMaintenance:
@@ -13197,7 +13257,13 @@ components:
                         - type: string
                         - type: boolean
                   networkInfo:
-                    type: string
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
                   nodeId:
                     type: string
                   nodeIsMaintenance:
@@ -13231,7 +13297,13 @@ components:
                         - type: string
                         - type: boolean
                   networkInfo:
-                    type: string
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
                   nodeId:
                     type: string
                   nodeIsMaintenance:
@@ -13265,7 +13337,13 @@ components:
                   - type: string
                   - type: boolean
             networkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             nodeId:
               type: string
             nodeIsMaintenance:
@@ -13299,7 +13377,13 @@ components:
                   - type: string
                   - type: boolean
             networkInfo:
-              type: string
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
             nodeId:
               type: string
             nodeIsMaintenance:
