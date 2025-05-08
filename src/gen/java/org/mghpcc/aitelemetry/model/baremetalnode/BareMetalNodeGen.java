@@ -1579,8 +1579,6 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 
 	public static Integer htmColumnBareMetalNode(String var) {
 		switch(var) {
-		case VAR_networkInfo:
-			return 4;
 		case VAR_nodeName:
 			return 0;
 		case VAR_nodePowerState:

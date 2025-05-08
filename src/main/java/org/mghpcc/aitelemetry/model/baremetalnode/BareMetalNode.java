@@ -58,7 +58,6 @@ public class BareMetalNode extends BareMetalNodeGen<BaseModel> {
      * DisplayName: network info
      * HtmRow: 3
      * HtmCell: 1
-     * HtmColumn: 4
      * Facet: true
      * Multiline: true
      * Val.ESI: network_info
