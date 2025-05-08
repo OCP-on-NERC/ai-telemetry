@@ -54,7 +54,7 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 			JsonObject body = new JsonObject();
 			String nodeName = result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeNameESI_enUS);
 			body.put(BareMetalNode.VAR_leaseInfo, result.getJsonArray(BareMetalNode.leaseInfoESI_enUS));
-			body.put(BareMetalNode.VAR_networkInfo, result.getString(BareMetalNode.networkInfoESI_enUS));
+			body.put(BareMetalNode.VAR_networkInfo, result.getJsonArray(BareMetalNode.networkInfoESI_enUS));
 			body.put(BareMetalNode.VAR_nodeId, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeIdESI_enUS));
 			body.put(BareMetalNode.VAR_nodeIsMaintenance, result.getJsonObject(BareMetalNode.nodeESI_enUS).getBoolean(BareMetalNode.nodeIsMaintenanceESI_enUS));
 			body.put(BareMetalNode.VAR_nodeLinks, result.getJsonObject(BareMetalNode.nodeESI_enUS).getJsonArray(BareMetalNode.nodeLinksESI_enUS));
