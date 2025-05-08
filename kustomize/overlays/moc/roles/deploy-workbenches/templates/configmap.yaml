@@ -25,6 +25,7 @@ data:
   KAFKA_TOPIC_FULFILL_OFFER: "esi-fulfill-offer-task-{{ USER_NAME }}"
   KAFKA_TOPIC_ORDER_LOOP: "esi-fulfill-order-loop-{{ USER_NAME }}"
   KAFKA_TOPIC_ORDER_STATUS: "esi-fulfill-order-status-{{ USER_NAME }}"
+  KAFKA_GROUP: "esi-fulfill-group-{{ USER_NAME }}"
   KAFKA_GROUP_FULFILL: "esi-fulfill-group-{{ USER_NAME }}"
 
   ESI_API_OPENSHIFT_SECRET: "{{ ESI_API_OPENSHIFT_SECRET }}"
