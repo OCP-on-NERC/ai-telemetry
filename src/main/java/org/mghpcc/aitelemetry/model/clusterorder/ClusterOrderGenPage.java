@@ -523,7 +523,7 @@ public class ClusterOrderGenPage extends ClusterOrderGenPageGen<PageLayout> {
 
   @Override
   protected void _pageDescription(Wrap<String> c) {
-      c.o("An OpenShift cluster order");
+      c.o("Manage your own Red Hat OpenShift cluster in the cloud. ");
   }
 
   @Override

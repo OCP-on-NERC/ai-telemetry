@@ -190,6 +190,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current cluster request";
 	public static final String AllName_enUS = "all cluster requests";
 	public static final String SearchAllNameBy_enUS = "search cluster requests by ";
+	public static final String SearchAllName_enUS = "search cluster requests";
 	public static final String Title_enUS = "cluster requests";
 	public static final String ThePluralName_enUS = "the cluster requests";
 	public static final String NoNameFound_enUS = "no cluster request found";

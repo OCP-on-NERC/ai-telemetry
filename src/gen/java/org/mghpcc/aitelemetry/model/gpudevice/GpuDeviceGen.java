@@ -201,6 +201,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current GPU device";
 	public static final String AllName_enUS = "all GPU devices";
 	public static final String SearchAllNameBy_enUS = "search GPU devices by ";
+	public static final String SearchAllName_enUS = "search GPU devices";
 	public static final String Title_enUS = "GPU devices";
 	public static final String ThePluralName_enUS = "the GPU devices";
 	public static final String NoNameFound_enUS = "no GPU device found";

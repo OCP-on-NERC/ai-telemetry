@@ -499,11 +499,11 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("managed clusters");
+      c.o("tenant clusters");
     else if(searchListManagedCluster_ == null || resultCount == 0)
-      c.o("no managed cluster found");
+      c.o("no tenant cluster found");
     else
-      c.o("managed clusters");
+      c.o("tenant clusters");
   }
 
   @Override
@@ -523,7 +523,7 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
 
   @Override
   protected void _pageDescription(Wrap<String> c) {
-      c.o("An OpenShift managed cluster");
+      c.o("An OpenShift tenant cluster");
   }
 
   @Override

@@ -198,6 +198,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current bare metal network";
 	public static final String AllName_enUS = "all bare metal networks";
 	public static final String SearchAllNameBy_enUS = "search bare metal networks by ";
+	public static final String SearchAllName_enUS = "search bare metal networks";
 	public static final String Title_enUS = "bare metal networks";
 	public static final String ThePluralName_enUS = "the bare metal networks";
 	public static final String NoNameFound_enUS = "no bare metal network found";

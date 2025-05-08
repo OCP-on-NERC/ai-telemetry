@@ -185,12 +185,13 @@ public abstract class BareMetalResourceClassGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current bare metal resource class";
 	public static final String AllName_enUS = "all bare metal resource classes";
 	public static final String SearchAllNameBy_enUS = "search bare metal resource classes by ";
+	public static final String SearchAllName_enUS = "search bare metal resource classes";
 	public static final String Title_enUS = "bare metal resource classes";
 	public static final String ThePluralName_enUS = "the bare metal resource classes";
 	public static final String NoNameFound_enUS = "no bare metal resource class found";
 	public static final String ApiUri_enUS = "/en-us/api/bare-metal-resource-class";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/bare-metal-resource-class";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/bare-metal-resource-class/{id}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/bare-metal-resource-class/{name}";
 	public static final String OfName_enUS = "of bare metal resource class";
 	public static final String ANameAdjective_enUS = "a bare metal resource class";
 	public static final String NameAdjectiveSingular_enUS = "bare metal resource class";
@@ -216,7 +217,7 @@ public abstract class BareMetalResourceClassGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/bare-metal-resource-class";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/bare-metal-resource-class";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/bare-metal-resource-class";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/bare-metal-resource-class/{id}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/bare-metal-resource-class/{name}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/bare-metal-resource-class/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/bare-metal-resource-class/%s";
 	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/bare-metal-resource-class";

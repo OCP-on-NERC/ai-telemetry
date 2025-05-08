@@ -5,8 +5,8 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 
 /**
  * Order: 8
- * Description: An OpenShift managed cluster
- * AName: a managed cluster
+ * Description: An OpenShift tenant cluster
+ * AName: a tenant cluster
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/managed-cluster
@@ -24,6 +24,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  *   Admin:
  *     POST:
  *     GET:
+ *     PATCH:
  *     DELETE:
  *     Admin:
  *   SuperAdmin:

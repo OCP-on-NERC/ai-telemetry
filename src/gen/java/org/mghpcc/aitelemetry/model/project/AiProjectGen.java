@@ -188,6 +188,7 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current AI project";
 	public static final String AllName_enUS = "all AI projects";
 	public static final String SearchAllNameBy_enUS = "search AI projects by ";
+	public static final String SearchAllName_enUS = "search AI projects";
 	public static final String Title_enUS = "AI projects";
 	public static final String ThePluralName_enUS = "the AI projects";
 	public static final String NoNameFound_enUS = "no AI project found";

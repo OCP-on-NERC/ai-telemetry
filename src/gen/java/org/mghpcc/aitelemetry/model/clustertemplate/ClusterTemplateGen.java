@@ -186,12 +186,13 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current cluster template";
 	public static final String AllName_enUS = "all cluster templates";
 	public static final String SearchAllNameBy_enUS = "search cluster templates by ";
+	public static final String SearchAllName_enUS = "search cluster templates";
 	public static final String Title_enUS = "cluster templates";
 	public static final String ThePluralName_enUS = "the cluster templates";
 	public static final String NoNameFound_enUS = "no cluster template found";
 	public static final String ApiUri_enUS = "/en-us/api/cluster-template";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/cluster-template";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster-template/{title}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster-template/{id}";
 	public static final String OfName_enUS = "of cluster template";
 	public static final String ANameAdjective_enUS = "a cluster template";
 	public static final String NameAdjectiveSingular_enUS = "cluster template";
@@ -217,7 +218,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/cluster-template";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/cluster-template";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/cluster-template";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/cluster-template/{title}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/cluster-template/{id}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/cluster-template/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/cluster-template/%s";
 	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/cluster-template";

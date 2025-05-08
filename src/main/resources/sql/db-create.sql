@@ -118,8 +118,19 @@ ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS objectTitle text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS displayPage text;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text UNIQUE;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
 ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
+
+CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
+ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
 
 CREATE TABLE IF NOT EXISTS ClusterOrder();
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -147,17 +158,6 @@ ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS apiUrl text;
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS consoleUrl text;
 
-CREATE TABLE IF NOT EXISTS BareMetalResourceClass();
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS name text UNIQUE;
-ALTER TABLE BareMetalResourceClass ADD COLUMN IF NOT EXISTS count text;
-
 CREATE TABLE IF NOT EXISTS ClusterRequest();
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS pk bigserial primary key;
 ALTER TABLE ClusterRequest ADD COLUMN IF NOT EXISTS created timestamp with time zone;
@@ -179,6 +179,7 @@ ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS userKey bigint;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS objectTitle text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS displayPage text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS id text UNIQUE;
+ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS name text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS availabilityZoneHints jsonb;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS availabilityZones text[];
@@ -211,7 +212,6 @@ ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationProjectId text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationProjectName text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationRegionName text;
 ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS locationZone text;
-ALTER TABLE BareMetalNetwork ADD COLUMN IF NOT EXISTS name text;
 
 CREATE TABLE IF NOT EXISTS BareMetalNode();
 ALTER TABLE BareMetalNode ADD COLUMN IF NOT EXISTS pk bigserial primary key;

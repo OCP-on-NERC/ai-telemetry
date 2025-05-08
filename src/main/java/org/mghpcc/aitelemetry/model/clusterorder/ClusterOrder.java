@@ -5,7 +5,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 
 /**
  * Order: 8
- * Description: An OpenShift cluster order
+ * Description: Manage your own Red Hat OpenShift cluster in the cloud. 
  * AName: a cluster order
  * Icon: <i class="fa-regular fa-server"></i>
  * 
@@ -24,6 +24,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  *   Admin:
  *     POST:
  *     GET:
+ *     PATCH:
  *     DELETE:
  *     Admin:
  *   SuperAdmin:

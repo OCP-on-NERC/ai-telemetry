@@ -162,7 +162,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 *   tailspin: Tailspin—Like a bird in flight, guiding you from there to here.
 	 */
 	protected void _webComponentsTheme(Wrap<String> w) {
-		w.o("glossy");
+		w.o("tailspin");
 	}
 
 	/**

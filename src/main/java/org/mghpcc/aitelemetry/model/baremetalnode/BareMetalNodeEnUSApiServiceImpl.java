@@ -96,6 +96,7 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 			searchList.q("*:*");
 			searchList.setC(BareMetalNode.class);
 			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalNode.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.rows(100);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalNodes -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();

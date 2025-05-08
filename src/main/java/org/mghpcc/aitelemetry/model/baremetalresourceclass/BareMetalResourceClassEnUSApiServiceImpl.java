@@ -110,6 +110,7 @@ public class BareMetalResourceClassEnUSApiServiceImpl extends BareMetalResourceC
 			searchList.q("*:*");
 			searchList.setC(BareMetalResourceClass.class);
 			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", BareMetalResourceClass.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.rows(100);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(oldBareMetalResourceClasses -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
@@ -121,6 +122,7 @@ public class BareMetalResourceClassEnUSApiServiceImpl extends BareMetalResourceC
 								JsonObject body = new JsonObject().put("setArchived", true);
 
 								JsonObject pageParams = new JsonObject();
+								pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 								pageParams.put("body", body);
 								pageParams.put("path", new JsonObject());
 								pageParams.put("cookie", new JsonObject());

@@ -70,8 +70,8 @@ public class ClusterOrderEnUSApiServiceImpl extends ClusterOrderEnUSGenApiServic
 			JsonObject body = new JsonObject();
 			body.put(ClusterOrder.VAR_id, result.getString(ClusterOrder.VAR_id));
 			body.put(ClusterOrder.VAR_templateId, result.getJsonObject("spec").getString(ClusterOrder.VAR_templateId));
-			body.put(ClusterOrder.VAR_state, result.getJsonObject("status").getString(ClusterOrder.VAR_state));
-			body.put(ClusterOrder.VAR_clusterId, result.getJsonObject("status").getString(ClusterOrder.VAR_clusterId));
+			body.put(ClusterOrder.VAR_state, Optional.ofNullable(result.getJsonObject("status")).map(status -> status.getString(ClusterOrder.VAR_state)).orElse(null));
+			body.put(ClusterOrder.VAR_clusterId, Optional.ofNullable(result.getJsonObject("status")).map(status -> status.getString(ClusterOrder.VAR_clusterId)).orElse(null));
 
 			JsonObject pageParams = new JsonObject();
 			pageParams.put("body", body);
@@ -107,6 +107,7 @@ public class ClusterOrderEnUSApiServiceImpl extends ClusterOrderEnUSGenApiServic
 				searchList.q("*:*");
 				searchList.setC(ClusterOrder.class);
 				searchList.fq(String.format("modified_docvalues_date:[* TO %s]", ClusterOrder.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+				searchList.rows(100);
 				searchList.promiseDeepForClass(siteRequest).onSuccess(oldClusterOrders -> {
 					try {
 						List<Future<?>> futures = new ArrayList<>();
@@ -118,6 +119,7 @@ public class ClusterOrderEnUSApiServiceImpl extends ClusterOrderEnUSGenApiServic
 									JsonObject body = new JsonObject().put("setArchived", true);
 
 									JsonObject pageParams = new JsonObject();
+									pageParams.put("scopes", new JsonArray().add("GET").add("DELETE"));
 									pageParams.put("body", body);
 									pageParams.put("path", new JsonObject());
 									pageParams.put("cookie", new JsonObject());

@@ -41,6 +41,8 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * HtmRowTitle: primary key, ID, created, modified, archive details
 	 * HtmRow: 1
 	 * HtmCell: 1
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: primary key
 	 * Description: The primary key of this object in the database
 	 * Facet: true
@@ -55,6 +57,8 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * VarCreated: true
 	 * HtmRow: 1
 	 * HtmCell: 3
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: created
 	 * FormatHtm: MMM d, yyyy h:mm:ss a
 	 * Description: A created timestamp for this record in the database
@@ -69,6 +73,8 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * VarModified: true
 	 * HtmRow: 1
 	 * HtmCell: 4
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: modified
 	 * Description: A modified timestamp for this record in the database
 	 * Facet: true
@@ -84,6 +90,8 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	 * Facet: true
 	 * HtmRow: 2
 	 * HtmCell: 1
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: archive
 	 * Description: For archiving this record
 	 */
@@ -205,7 +213,6 @@ public class BaseModel extends BaseModelGen<Object> implements ComputateBaseMode
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
-	 * HtmColumn: 99
 	 * Facet: true
 	 * DisplayName: manage
 	 * Description: Manage this

@@ -189,6 +189,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	public static final String NameActual_enUS = "current bare metal node";
 	public static final String AllName_enUS = "all bare metal nodes";
 	public static final String SearchAllNameBy_enUS = "search bare metal nodes by ";
+	public static final String SearchAllName_enUS = "search bare metal nodes";
 	public static final String Title_enUS = "bare metal nodes";
 	public static final String ThePluralName_enUS = "the bare metal nodes";
 	public static final String NoNameFound_enUS = "no bare metal node found";

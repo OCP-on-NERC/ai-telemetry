@@ -43,6 +43,8 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 * VarCreated: true
 	 * HtmRow: 1
 	 * HtmCell: 2
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * HtmRowTitle: primary key, ID, created, modified, archive details
 	 * DisplayName.enUS: created
 	 * FormatHtm: MMM d, yyyy h:mm:ss a
@@ -60,6 +62,8 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 * VarModified: true
 	 * HtmRow: 1
 	 * HtmCell: 3
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: modified
 	 * Description: A modified timestamp for this record in the database
 	 * Facet: true
@@ -74,6 +78,8 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 * Persist: true
 	 * HtmRow: 2
 	 * HtmCell: 1
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * DisplayName.enUS: archived
 	 * Description: For archiving this record
 	 */

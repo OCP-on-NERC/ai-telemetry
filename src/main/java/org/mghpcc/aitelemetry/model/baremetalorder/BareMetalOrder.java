@@ -131,12 +131,19 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of fc430
+	 * DisplayName: number of fc430 ({{ max }} available)
 	 * Description: The number of fc430 nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 0
 	 * HtmRowTitleOpen: node details
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: fc430
 	 **/
 	protected void _numberOfFc430(Wrap<Integer> w) {
 		w.o(0);
@@ -146,11 +153,18 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of fc830
+	 * DisplayName: number of fc830 ({{ max }} available)
 	 * Description: The number of fc830 nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 1
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: fc830
 	 **/
 	protected void _numberOfFc830(Wrap<Integer> w) {
 		w.o(0);
@@ -160,11 +174,18 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of r730xd
+	 * DisplayName: number of r730xd ({{ max }} available)
 	 * Description: The number of r730xd nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 2
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: r730xd
 	 **/
 	protected void _numberOfR730xd(Wrap<Integer> w) {
 		w.o(0);
@@ -174,11 +195,18 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of whitebox-flax-1
+	 * DisplayName: number of whitebox-flax-1 ({{ max }} available)
 	 * Description: The number of whitebox-flax-1 nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 3
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: whitebox-flax-1
 	 **/
 	protected void _numberOfWhiteboxFlax1(Wrap<Integer> w) {
 		w.o(0);
@@ -188,11 +216,18 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of lenovo-sd650nv2-a100
+	 * DisplayName: number of lenovo-sd650nv2-a100 ({{ max }} available)
 	 * Description: The number of lenovo-sd650nv2-a100 nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 4
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: lenovo-sd650nv2-a100
 	 **/
 	protected void _numberOfLenovoSd650nv2A100(Wrap<Integer> w) {
 		w.o(0);
@@ -202,11 +237,18 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
-	 * DisplayName: number of lenovo-sd665nv3-h100
+	 * DisplayName: number of lenovo-sd665nv3-h100 ({{ max }} available)
 	 * Description: The number of lenovo-sd665nv3-h100 nodes to request for this order. 
 	 * HtmRow: 4
 	 * HtmCell: 5
 	 * Facet: true
+	 * Min: 0
+	 * Max: 100
+	 * SearchMax:
+	 *   VarJsonArray: resourceClasses
+	 *   VarValue: name
+	 *   Var: count
+	 *   Value: lenovo-sd665nv3-h100
 	 **/
 	protected void _numberOfLenovoSd665nv3H100(Wrap<Integer> w) {
 		w.o(0);
@@ -218,9 +260,12 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: order status
 	 * Description: The order status of a bare metal fulfillment
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * HtmRowTitleOpen: status
 	 * HtmRow: 5
 	 * HtmCell: 0
+	 * HtmColumn: 1
 	 * Facet: true
 	 **/
 	protected void _status(Wrap<String> w) {}
