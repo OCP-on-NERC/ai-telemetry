@@ -13448,6 +13448,12 @@ components:
                     type: string
                   numberOfLenovoSd665nv3H100:
                     type: string
+                  image:
+                    type: string
+                  sshPublicKey:
+                    type: string
+                  floatingIp:
+                    type: boolean
                   status:
                     type: string
     PATCHBareMetalOrderRequest:
@@ -13524,6 +13530,27 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
+            setImage:
+              type: string
+              nullable: true
+            removeImage:
+              type: string
+            removeAllImage:
+              type: string
+            setSshPublicKey:
+              type: string
+              nullable: true
+            removeSshPublicKey:
+              type: string
+            removeAllSshPublicKey:
+              type: string
+            setFloatingIp:
+              type: boolean
+              nullable: true
+            removeFloatingIp:
+              type: boolean
+            removeAllFloatingIp:
+              type: boolean
             setStatus:
               type: string
               nullable: true
@@ -13605,6 +13632,27 @@ components:
               type: string
             removeAllNumberOfLenovoSd665nv3H100:
               type: string
+            setImage:
+              type: string
+              nullable: true
+            removeImage:
+              type: string
+            removeAllImage:
+              type: string
+            setSshPublicKey:
+              type: string
+              nullable: true
+            removeSshPublicKey:
+              type: string
+            removeAllSshPublicKey:
+              type: string
+            setFloatingIp:
+              type: boolean
+              nullable: true
+            removeFloatingIp:
+              type: boolean
+            removeAllFloatingIp:
+              type: boolean
             setStatus:
               type: string
               nullable: true
@@ -13636,6 +13684,12 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            image:
+              type: string
+            sshPublicKey:
+              type: string
+            floatingIp:
+              type: boolean
             status:
               type: string
     POSTBareMetalOrderResponse:
@@ -13662,6 +13716,12 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            image:
+              type: string
+            sshPublicKey:
+              type: string
+            floatingIp:
+              type: boolean
             status:
               type: string
     DELETEFilterBareMetalOrderResponse:
@@ -13688,6 +13748,12 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            image:
+              type: string
+            sshPublicKey:
+              type: string
+            floatingIp:
+              type: boolean
             status:
               type: string
     GETBareMetalOrderResponse:
@@ -13714,6 +13780,12 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            image:
+              type: string
+            sshPublicKey:
+              type: string
+            floatingIp:
+              type: boolean
             status:
               type: string
     DELETEBareMetalOrderResponse:
@@ -13740,6 +13812,12 @@ components:
               type: string
             numberOfLenovoSd665nv3H100:
               type: string
+            image:
+              type: string
+            sshPublicKey:
+              type: string
+            floatingIp:
+              type: boolean
             status:
               type: string
     EditPageBareMetalOrderResponse:

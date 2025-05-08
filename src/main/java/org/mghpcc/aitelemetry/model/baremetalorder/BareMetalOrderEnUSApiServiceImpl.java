@@ -42,6 +42,7 @@ public class BareMetalOrderEnUSApiServiceImpl extends BareMetalOrderEnUSGenApiSe
                 String solrId = bareMetalOrder.getSolrId();
                 String networkId = bareMetalOrder.getNetworkId();
                 JsonArray nodes = new JsonArray();
+                JsonObject body = new JsonObject();
 
                 Optional.ofNullable(bareMetalOrder.getNumberOfFc430()).filter(v -> v > 0).ifPresent(v -> {
                     nodes.add(new JsonObject().put("resource_class", "fc430").put("number", v));
@@ -61,8 +62,16 @@ public class BareMetalOrderEnUSApiServiceImpl extends BareMetalOrderEnUSGenApiSe
                 Optional.ofNullable(bareMetalOrder.getNumberOfWhiteboxFlax1()).filter(v -> v > 0).ifPresent(v -> {
                     nodes.add(new JsonObject().put("resource_class", "whitebox-flax-1").put("number", v));
                 });
+                Optional.ofNullable(bareMetalOrder.getFloatingIp()).ifPresent(floatingIp -> {
+                    body.put("create_floating_ip", floatingIp);
+                });
+                Optional.ofNullable(bareMetalOrder.getImage()).ifPresent(image -> {
+                    body.put("image", image);
+                });
+                Optional.ofNullable(bareMetalOrder.getSshPublicKey()).ifPresent(sshPublicKey -> {
+                    body.put("ssh_keys", new JsonArray().add(sshPublicKey));
+                });
 
-                JsonObject body = new JsonObject();
                 body.put("order_id", solrId);
                 body.put("network_id", networkId);
                 body.put("nodes", nodes);

@@ -258,12 +258,59 @@ public class BareMetalOrder extends BareMetalOrderGen<BaseModel> {
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
+	 * DisplayName: image
+	 * Description: The operating system image of a bare metal fulfillment
+	 * HtmRowTitleOpen: operating system image
+	 * HtmRow: 5
+	 * HtmCell: 0
+	 * Facet: true
+	 * Option:
+	 *   centos9-stream: CentOS 9 Stream Linux
+	 *   fedora40: Fedora 40 Linux
+	 *   ubuntu-22.04: Ubuntu 22.04 Linux
+	 **/
+	protected void _image(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: SSH public key
+	 * Description: The SSH public key of the user, not the private SSH key! 
+	 * HtmRowTitleOpen: credentials
+	 * HtmRow: 6
+	 * HtmCell: 0
+	 * Facet: true
+	 * Multiline: true
+	 **/
+	protected void _sshPublicKey(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: floating IP
+	 * Description: The floating IP of a bare metal fulfillment
+	 * HtmRowTitleOpen: networking
+	 * HtmRow: 7
+	 * HtmCell: 0
+	 * Facet: true
+	 * Default: false
+	 **/
+	protected void _floatingIp(Wrap<Boolean> w) {
+		w.o(false);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
 	 * DisplayName: order status
 	 * Description: The order status of a bare metal fulfillment
 	 * HidePOST: true
 	 * HidePATCH: true
 	 * HtmRowTitleOpen: status
-	 * HtmRow: 5
+	 * HtmRow: 8
 	 * HtmCell: 0
 	 * HtmColumn: 1
 	 * Facet: true

@@ -6,6 +6,7 @@ import java.lang.String;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import java.lang.Integer;
+import java.lang.Boolean;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
