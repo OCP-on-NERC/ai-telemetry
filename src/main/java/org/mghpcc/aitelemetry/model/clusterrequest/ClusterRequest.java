@@ -7,7 +7,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 /**
  * Order: 9
  * Description: An OpenShift cluster request
- * AName: a cluster request
+ * AName: an OpenShift cluster request
  * Icon: <i class="fa-regular fa-server"></i>
  *
  * SearchPageUri: /en-us/search/cluster-request

@@ -238,7 +238,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			response200Search(listClusterRequest.getRequest(), listClusterRequest.getResponse(), json);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -378,7 +378,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(listClusterRequest.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -848,7 +848,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1284,7 +1284,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1665,7 +1665,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1870,7 +1870,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 											JsonArray bodyVals = (JsonArray)bodyVal;
 											Object valsObj = o.obtainForClass(f);
 											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-											if(bodyVals.size() == vals.size()) {
+											if(vals != null && bodyVals.size() == vals.size()) {
 												Boolean match = true;
 												for(Object val : vals) {
 													if(val != null) {
@@ -1886,7 +1886,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 												vals.clear();
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											} else {
-												vals.clear();
+												if(vals != null)
+													vals.clear();
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
 										} else {
@@ -1976,7 +1977,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2852,7 +2853,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "cluster request", name);
+						String m = String.format("%s %s not found", "OpenShift cluster request", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));

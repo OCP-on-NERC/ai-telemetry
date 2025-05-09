@@ -103,7 +103,7 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: cluster requests"</b>, which groups all of the OpenAPIs for ClusterRequest objects under the tag "cluster requests". 
+ * <p>This class contains a comment <b>"ApiTag: OpenShift cluster requests"</b>, which groups all of the OpenAPIs for ClusterRequest objects under the tag "OpenShift cluster requests". 
  * </p>
  * <h2>ApiUri.enUS: /en-us/api/cluster-request</h2>
  * <p>This class contains a comment <b>"ApiUri: /en-us/api/cluster-request"</b>, which defines the base API URI for ClusterRequest objects as "/en-us/api/cluster-request" in the OpenAPI spec. 
@@ -159,8 +159,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>AName.enUS: a cluster request</h2>
- * <p>This class contains a comment <b>"AName.enUS: a cluster request"</b>, which identifies the language context to describe a ClusterRequest as "a cluster request". 
+ * <h2>AName.enUS: an OpenShift cluster request</h2>
+ * <p>This class contains a comment <b>"AName.enUS: an OpenShift cluster request"</b>, which identifies the language context to describe a ClusterRequest as "an OpenShift cluster request". 
  * </p>
  * <p>
  * Delete the class ClusterRequest in Solr: 
@@ -180,27 +180,27 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(ClusterRequest.class);
 
 	public static final String Description_enUS = "An OpenShift cluster request";
-	public static final String AName_enUS = "a cluster request";
+	public static final String AName_enUS = "an OpenShift cluster request";
 	public static final String This_enUS = "this ";
-	public static final String ThisName_enUS = "this cluster request";
+	public static final String ThisName_enUS = "this OpenShift cluster request";
 	public static final String A_enUS = "a ";
-	public static final String TheName_enUS = "the cluster request";
-	public static final String SingularName_enUS = "cluster request";
-	public static final String PluralName_enUS = "cluster requests";
-	public static final String NameActual_enUS = "current cluster request";
-	public static final String AllName_enUS = "all cluster requests";
-	public static final String SearchAllNameBy_enUS = "search cluster requests by ";
-	public static final String SearchAllName_enUS = "search cluster requests";
-	public static final String Title_enUS = "cluster requests";
-	public static final String ThePluralName_enUS = "the cluster requests";
-	public static final String NoNameFound_enUS = "no cluster request found";
+	public static final String TheName_enUS = "theOpenShift cluster request";
+	public static final String SingularName_enUS = "OpenShift cluster request";
+	public static final String PluralName_enUS = "OpenShift cluster requests";
+	public static final String NameActual_enUS = "current OpenShift cluster request";
+	public static final String AllName_enUS = "all OpenShift cluster requests";
+	public static final String SearchAllNameBy_enUS = "search OpenShift cluster requests by ";
+	public static final String SearchAllName_enUS = "search OpenShift cluster requests";
+	public static final String Title_enUS = "OpenShift cluster requests";
+	public static final String ThePluralName_enUS = "the OpenShift cluster requests";
+	public static final String NoNameFound_enUS = "no OpenShift cluster request found";
 	public static final String ApiUri_enUS = "/en-us/api/cluster-request";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/cluster-request";
 	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster-request/{name}";
-	public static final String OfName_enUS = "of cluster request";
-	public static final String ANameAdjective_enUS = "a cluster request";
-	public static final String NameAdjectiveSingular_enUS = "cluster request";
-	public static final String NameAdjectivePlural_enUS = "cluster requests";
+	public static final String OfName_enUS = "of OpenShift cluster request";
+	public static final String ANameAdjective_enUS = "an OpenShift cluster request";
+	public static final String NameAdjectiveSingular_enUS = "OpenShift cluster request";
+	public static final String NameAdjectivePlural_enUS = "OpenShift cluster requests";
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/cluster-request";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/cluster-request";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/cluster-request";

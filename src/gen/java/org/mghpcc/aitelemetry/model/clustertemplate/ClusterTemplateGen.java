@@ -99,7 +99,7 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: cluster templates"</b>, which groups all of the OpenAPIs for ClusterTemplate objects under the tag "cluster templates". 
+ * <p>This class contains a comment <b>"ApiTag: OpenShift cluster templates"</b>, which groups all of the OpenAPIs for ClusterTemplate objects under the tag "OpenShift cluster templates". 
  * </p>
  * <h2>ApiUri.enUS: /en-us/api/cluster-template</h2>
  * <p>This class contains a comment <b>"ApiUri: /en-us/api/cluster-template"</b>, which defines the base API URI for ClusterTemplate objects as "/en-us/api/cluster-template" in the OpenAPI spec. 
@@ -155,8 +155,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>AName.enUS: a cluster template</h2>
- * <p>This class contains a comment <b>"AName.enUS: a cluster template"</b>, which identifies the language context to describe a ClusterTemplate as "a cluster template". 
+ * <h2>AName.enUS: an OpenShift cluster template</h2>
+ * <p>This class contains a comment <b>"AName.enUS: an OpenShift cluster template"</b>, which identifies the language context to describe a ClusterTemplate as "an OpenShift cluster template". 
  * </p>
  * <p>
  * Delete the class ClusterTemplate in Solr: 
@@ -176,27 +176,27 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(ClusterTemplate.class);
 
 	public static final String Description_enUS = "An OpenShift cluster template";
-	public static final String AName_enUS = "a cluster template";
+	public static final String AName_enUS = "an OpenShift cluster template";
 	public static final String This_enUS = "this ";
-	public static final String ThisName_enUS = "this cluster template";
+	public static final String ThisName_enUS = "this OpenShift cluster template";
 	public static final String A_enUS = "a ";
-	public static final String TheName_enUS = "the cluster template";
-	public static final String SingularName_enUS = "cluster template";
-	public static final String PluralName_enUS = "cluster templates";
-	public static final String NameActual_enUS = "current cluster template";
-	public static final String AllName_enUS = "all cluster templates";
-	public static final String SearchAllNameBy_enUS = "search cluster templates by ";
-	public static final String SearchAllName_enUS = "search cluster templates";
-	public static final String Title_enUS = "cluster templates";
-	public static final String ThePluralName_enUS = "the cluster templates";
-	public static final String NoNameFound_enUS = "no cluster template found";
+	public static final String TheName_enUS = "theOpenShift cluster template";
+	public static final String SingularName_enUS = "OpenShift cluster template";
+	public static final String PluralName_enUS = "OpenShift cluster templates";
+	public static final String NameActual_enUS = "current OpenShift cluster template";
+	public static final String AllName_enUS = "all OpenShift cluster templates";
+	public static final String SearchAllNameBy_enUS = "search OpenShift cluster templates by ";
+	public static final String SearchAllName_enUS = "search OpenShift cluster templates";
+	public static final String Title_enUS = "OpenShift cluster templates";
+	public static final String ThePluralName_enUS = "the OpenShift cluster templates";
+	public static final String NoNameFound_enUS = "no OpenShift cluster template found";
 	public static final String ApiUri_enUS = "/en-us/api/cluster-template";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/cluster-template";
 	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster-template/{id}";
-	public static final String OfName_enUS = "of cluster template";
-	public static final String ANameAdjective_enUS = "a cluster template";
-	public static final String NameAdjectiveSingular_enUS = "cluster template";
-	public static final String NameAdjectivePlural_enUS = "cluster templates";
+	public static final String OfName_enUS = "of OpenShift cluster template";
+	public static final String ANameAdjective_enUS = "an OpenShift cluster template";
+	public static final String NameAdjectiveSingular_enUS = "OpenShift cluster template";
+	public static final String NameAdjectivePlural_enUS = "OpenShift cluster templates";
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/cluster-template";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/cluster-template";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/cluster-template";
@@ -775,7 +775,7 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 			doc.put("description_docvalues_string", description);
 		}
 		if(parameters != null) {
-			doc.put("parameters_docvalues_string", parameters.toString());
+			doc.put("parameters_docvalues_string", parameters.encode());
 		}
 		super.indexBaseModel(doc);
 

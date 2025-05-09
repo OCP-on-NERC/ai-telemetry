@@ -499,11 +499,11 @@ public class ClusterRequestGenPage extends ClusterRequestGenPageGen<PageLayout> 
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("cluster requests");
+      c.o("OpenShift cluster requests");
     else if(searchListClusterRequest_ == null || resultCount == 0)
-      c.o("no cluster request found");
+      c.o("no OpenShift cluster request found");
     else
-      c.o("cluster requests");
+      c.o("OpenShift cluster requests");
   }
 
   @Override

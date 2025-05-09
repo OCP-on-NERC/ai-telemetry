@@ -499,11 +499,11 @@ public class ClusterTemplateGenPage extends ClusterTemplateGenPageGen<PageLayout
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("cluster templates");
+      c.o("OpenShift cluster templates");
     else if(searchListClusterTemplate_ == null || resultCount == 0)
-      c.o("no cluster template found");
+      c.o("no OpenShift cluster template found");
     else
-      c.o("cluster templates");
+      c.o("OpenShift cluster templates");
   }
 
   @Override
