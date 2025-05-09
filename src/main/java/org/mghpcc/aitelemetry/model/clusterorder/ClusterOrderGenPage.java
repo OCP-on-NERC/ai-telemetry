@@ -499,11 +499,11 @@ public class ClusterOrderGenPage extends ClusterOrderGenPageGen<PageLayout> {
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("cluster orders");
+      c.o("OpenShift cluster orders");
     else if(searchListClusterOrder_ == null || resultCount == 0)
-      c.o("no cluster order found");
+      c.o("no OpenShift cluster order found");
     else
-      c.o("cluster orders");
+      c.o("OpenShift cluster orders");
   }
 
   @Override

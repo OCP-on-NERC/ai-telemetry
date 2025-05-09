@@ -6,7 +6,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 /**
  * Order: 8
  * Description: Manage your own Red Hat OpenShift cluster in the cloud. 
- * AName: a cluster order
+ * AName: an OpenShift cluster order
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/cluster-order

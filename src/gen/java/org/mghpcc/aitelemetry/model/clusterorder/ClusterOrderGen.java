@@ -99,7 +99,7 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: cluster orders"</b>, which groups all of the OpenAPIs for ClusterOrder objects under the tag "cluster orders". 
+ * <p>This class contains a comment <b>"ApiTag: OpenShift cluster orders"</b>, which groups all of the OpenAPIs for ClusterOrder objects under the tag "OpenShift cluster orders". 
  * </p>
  * <h2>ApiUri.enUS: /en-us/api/cluster-order</h2>
  * <p>This class contains a comment <b>"ApiUri: /en-us/api/cluster-order"</b>, which defines the base API URI for ClusterOrder objects as "/en-us/api/cluster-order" in the OpenAPI spec. 
@@ -155,8 +155,8 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>AName.enUS: a cluster order</h2>
- * <p>This class contains a comment <b>"AName.enUS: a cluster order"</b>, which identifies the language context to describe a ClusterOrder as "a cluster order". 
+ * <h2>AName.enUS: an OpenShift cluster order</h2>
+ * <p>This class contains a comment <b>"AName.enUS: an OpenShift cluster order"</b>, which identifies the language context to describe a ClusterOrder as "an OpenShift cluster order". 
  * </p>
  * <p>
  * Delete the class ClusterOrder in Solr: 
@@ -176,27 +176,27 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	protected static final Logger LOG = LoggerFactory.getLogger(ClusterOrder.class);
 
 	public static final String Description_enUS = "Manage your own Red Hat OpenShift cluster in the cloud. ";
-	public static final String AName_enUS = "a cluster order";
+	public static final String AName_enUS = "an OpenShift cluster order";
 	public static final String This_enUS = "this ";
-	public static final String ThisName_enUS = "this cluster order";
+	public static final String ThisName_enUS = "this OpenShift cluster order";
 	public static final String A_enUS = "a ";
-	public static final String TheName_enUS = "the cluster order";
-	public static final String SingularName_enUS = "cluster order";
-	public static final String PluralName_enUS = "cluster orders";
-	public static final String NameActual_enUS = "current cluster order";
-	public static final String AllName_enUS = "all cluster orders";
-	public static final String SearchAllNameBy_enUS = "search cluster orders by ";
-	public static final String SearchAllName_enUS = "search cluster orders";
-	public static final String Title_enUS = "cluster orders";
-	public static final String ThePluralName_enUS = "the cluster orders";
-	public static final String NoNameFound_enUS = "no cluster order found";
+	public static final String TheName_enUS = "theOpenShift cluster order";
+	public static final String SingularName_enUS = "OpenShift cluster order";
+	public static final String PluralName_enUS = "OpenShift cluster orders";
+	public static final String NameActual_enUS = "current OpenShift cluster order";
+	public static final String AllName_enUS = "all OpenShift cluster orders";
+	public static final String SearchAllNameBy_enUS = "search OpenShift cluster orders by ";
+	public static final String SearchAllName_enUS = "search OpenShift cluster orders";
+	public static final String Title_enUS = "OpenShift cluster orders";
+	public static final String ThePluralName_enUS = "the OpenShift cluster orders";
+	public static final String NoNameFound_enUS = "no OpenShift cluster order found";
 	public static final String ApiUri_enUS = "/en-us/api/cluster-order";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/cluster-order";
 	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster-order/{id}";
-	public static final String OfName_enUS = "of cluster order";
-	public static final String ANameAdjective_enUS = "a cluster order";
-	public static final String NameAdjectiveSingular_enUS = "cluster order";
-	public static final String NameAdjectivePlural_enUS = "cluster orders";
+	public static final String OfName_enUS = "of OpenShift cluster order";
+	public static final String ANameAdjective_enUS = "an OpenShift cluster order";
+	public static final String NameAdjectiveSingular_enUS = "OpenShift cluster order";
+	public static final String NameAdjectivePlural_enUS = "OpenShift cluster orders";
 	public static final String Search_enUS_OpenApiUri = "/en-us/api/cluster-order";
 	public static final String Search_enUS_StringFormatUri = "/en-us/api/cluster-order";
 	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/cluster-order";
