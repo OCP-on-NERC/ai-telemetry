@@ -811,13 +811,13 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlObjectTitle());
 						break;
-					case "setStatus":
-							o2.setStatus(jsonObject.getString(entityVar));
+					case "setImage":
+							o2.setImage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_status + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_image + "=$" + num);
 							num++;
-							bParams.add(o2.sqlStatus());
+							bParams.add(o2.sqlImage());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -826,6 +826,30 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
+						break;
+					case "setSshPublicKey":
+							o2.setSshPublicKey(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_sshPublicKey + "=$" + num);
+							num++;
+							bParams.add(o2.sqlSshPublicKey());
+						break;
+					case "setFloatingIp":
+							o2.setFloatingIp(jsonObject.getBoolean(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_floatingIp + "=$" + num);
+							num++;
+							bParams.add(o2.sqlFloatingIp());
+						break;
+					case "setStatus":
+							o2.setStatus(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_status + "=$" + num);
+							num++;
+							bParams.add(o2.sqlStatus());
 						break;
 				}
 			}
@@ -1290,14 +1314,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case BareMetalOrder.VAR_status:
-						o2.setStatus(jsonObject.getString(entityVar));
+					case BareMetalOrder.VAR_image:
+						o2.setImage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(BareMetalOrder.VAR_status + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_image + "=$" + num);
 						num++;
-						bParams.add(o2.sqlStatus());
+						bParams.add(o2.sqlImage());
 						break;
 					case BareMetalOrder.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1307,6 +1331,33 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
+						break;
+					case BareMetalOrder.VAR_sshPublicKey:
+						o2.setSshPublicKey(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_sshPublicKey + "=$" + num);
+						num++;
+						bParams.add(o2.sqlSshPublicKey());
+						break;
+					case BareMetalOrder.VAR_floatingIp:
+						o2.setFloatingIp(jsonObject.getBoolean(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_floatingIp + "=$" + num);
+						num++;
+						bParams.add(o2.sqlFloatingIp());
+						break;
+					case BareMetalOrder.VAR_status:
+						o2.setStatus(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_status + "=$" + num);
+						num++;
+						bParams.add(o2.sqlStatus());
 						break;
 					}
 				}
@@ -3193,8 +3244,11 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100, BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100, BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100)));
 			page.persistForClass(BareMetalOrder.VAR_objectTitle, BareMetalOrder.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalOrder.VAR_objectTitle)));
-			page.persistForClass(BareMetalOrder.VAR_status, BareMetalOrder.staticSetStatus(siteRequest2, (String)result.get(BareMetalOrder.VAR_status)));
+			page.persistForClass(BareMetalOrder.VAR_image, BareMetalOrder.staticSetImage(siteRequest2, (String)result.get(BareMetalOrder.VAR_image)));
 			page.persistForClass(BareMetalOrder.VAR_displayPage, BareMetalOrder.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalOrder.VAR_displayPage)));
+			page.persistForClass(BareMetalOrder.VAR_sshPublicKey, BareMetalOrder.staticSetSshPublicKey(siteRequest2, (String)result.get(BareMetalOrder.VAR_sshPublicKey)));
+			page.persistForClass(BareMetalOrder.VAR_floatingIp, BareMetalOrder.staticSetFloatingIp(siteRequest2, (String)result.get(BareMetalOrder.VAR_floatingIp)));
+			page.persistForClass(BareMetalOrder.VAR_status, BareMetalOrder.staticSetStatus(siteRequest2, (String)result.get(BareMetalOrder.VAR_status)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

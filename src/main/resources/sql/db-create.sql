@@ -247,4 +247,7 @@ ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS numberOfR730xd integer;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS numberOfWhiteboxFlax1 integer;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS numberOfLenovoSd650nv2A100 integer;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS numberOfLenovoSd665nv3H100 integer;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS image text;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS sshPublicKey text;
+ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS floatingIp boolean;
 ALTER TABLE BareMetalOrder ADD COLUMN IF NOT EXISTS status text;

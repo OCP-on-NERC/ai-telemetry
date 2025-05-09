@@ -40,6 +40,7 @@ import java.lang.String;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import org.computate.vertx.search.list.SearchList;
 import java.lang.Integer;
+import java.lang.Boolean;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -870,6 +871,176 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		return numberOfLenovoSd665nv3H100;
 	}
 
+	///////////
+	// image //
+	///////////
+
+
+	/**	 The entity image
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String image;
+
+	/**	<br> The entity image
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:image">Find the entity image in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _image(Wrap<String> w);
+
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String o) {
+		this.image = BareMetalOrder.staticSetImage(siteRequest_, o);
+	}
+	public static String staticSetImage(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BareMetalOrder imageInit() {
+		Wrap<String> imageWrap = new Wrap<String>().var("image");
+		if(image == null) {
+			_image(imageWrap);
+			Optional.ofNullable(imageWrap.getO()).ifPresent(o -> {
+				setImage(o);
+			});
+		}
+		return (BareMetalOrder)this;
+	}
+
+	public static String staticSearchImage(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrImage(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqImage(SiteRequest siteRequest_, String o) {
+		return BareMetalOrder.staticSearchImage(siteRequest_, BareMetalOrder.staticSetImage(siteRequest_, o)).toString();
+	}
+
+	public String sqlImage() {
+		return image;
+	}
+
+	//////////////////
+	// sshPublicKey //
+	//////////////////
+
+
+	/**	 The entity sshPublicKey
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String sshPublicKey;
+
+	/**	<br> The entity sshPublicKey
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:sshPublicKey">Find the entity sshPublicKey in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _sshPublicKey(Wrap<String> w);
+
+	public String getSshPublicKey() {
+		return sshPublicKey;
+	}
+	public void setSshPublicKey(String o) {
+		this.sshPublicKey = BareMetalOrder.staticSetSshPublicKey(siteRequest_, o);
+	}
+	public static String staticSetSshPublicKey(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected BareMetalOrder sshPublicKeyInit() {
+		Wrap<String> sshPublicKeyWrap = new Wrap<String>().var("sshPublicKey");
+		if(sshPublicKey == null) {
+			_sshPublicKey(sshPublicKeyWrap);
+			Optional.ofNullable(sshPublicKeyWrap.getO()).ifPresent(o -> {
+				setSshPublicKey(o);
+			});
+		}
+		return (BareMetalOrder)this;
+	}
+
+	public static String staticSearchSshPublicKey(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrSshPublicKey(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqSshPublicKey(SiteRequest siteRequest_, String o) {
+		return BareMetalOrder.staticSearchSshPublicKey(siteRequest_, BareMetalOrder.staticSetSshPublicKey(siteRequest_, o)).toString();
+	}
+
+	public String sqlSshPublicKey() {
+		return sshPublicKey;
+	}
+
+	////////////////
+	// floatingIp //
+	////////////////
+
+
+	/**	 The entity floatingIp
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected Boolean floatingIp;
+
+	/**	<br> The entity floatingIp
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder&fq=entiteVar_enUS_indexed_string:floatingIp">Find the entity floatingIp in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _floatingIp(Wrap<Boolean> w);
+
+	public Boolean getFloatingIp() {
+		return floatingIp;
+	}
+
+	public void setFloatingIp(Boolean floatingIp) {
+		this.floatingIp = floatingIp;
+	}
+	@JsonIgnore
+	public void setFloatingIp(String o) {
+		this.floatingIp = BareMetalOrder.staticSetFloatingIp(siteRequest_, o);
+	}
+	public static Boolean staticSetFloatingIp(SiteRequest siteRequest_, String o) {
+		return Boolean.parseBoolean(o);
+	}
+	protected BareMetalOrder floatingIpInit() {
+		Wrap<Boolean> floatingIpWrap = new Wrap<Boolean>().var("floatingIp");
+		if(floatingIp == null) {
+			setFloatingIp("false");
+		}
+		return (BareMetalOrder)this;
+	}
+
+	public static Boolean staticSearchFloatingIp(SiteRequest siteRequest_, Boolean o) {
+		return o;
+	}
+
+	public static String staticSearchStrFloatingIp(SiteRequest siteRequest_, Boolean o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqFloatingIp(SiteRequest siteRequest_, String o) {
+		return BareMetalOrder.staticSearchFloatingIp(siteRequest_, BareMetalOrder.staticSetFloatingIp(siteRequest_, o)).toString();
+	}
+
+	public Boolean sqlFloatingIp() {
+		return floatingIp;
+	}
+
 	////////////
 	// status //
 	////////////
@@ -981,6 +1152,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				numberOfWhiteboxFlax1Init();
 				numberOfLenovoSd650nv2A100Init();
 				numberOfLenovoSd665nv3H100Init();
+				imageInit();
+				sshPublicKeyInit();
+				floatingIpInit();
 				statusInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -1059,6 +1233,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return oBareMetalOrder.numberOfLenovoSd650nv2A100;
 			case "numberOfLenovoSd665nv3H100":
 				return oBareMetalOrder.numberOfLenovoSd665nv3H100;
+			case "image":
+				return oBareMetalOrder.image;
+			case "sshPublicKey":
+				return oBareMetalOrder.sshPublicKey;
+			case "floatingIp":
+				return oBareMetalOrder.floatingIp;
 			case "status":
 				return oBareMetalOrder.status;
 			default:
@@ -1124,6 +1304,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest_, o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest_, o);
+		case "image":
+			return BareMetalOrder.staticSetImage(siteRequest_, o);
+		case "sshPublicKey":
+			return BareMetalOrder.staticSetSshPublicKey(siteRequest_, o);
+		case "floatingIp":
+			return BareMetalOrder.staticSetFloatingIp(siteRequest_, o);
 		case "status":
 			return BareMetalOrder.staticSetStatus(siteRequest_, o);
 			default:
@@ -1158,6 +1344,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchNumberOfLenovoSd650nv2A100(siteRequest_, (Integer)o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchNumberOfLenovoSd665nv3H100(siteRequest_, (Integer)o);
+		case "image":
+			return BareMetalOrder.staticSearchImage(siteRequest_, (String)o);
+		case "sshPublicKey":
+			return BareMetalOrder.staticSearchSshPublicKey(siteRequest_, (String)o);
+		case "floatingIp":
+			return BareMetalOrder.staticSearchFloatingIp(siteRequest_, (Boolean)o);
 		case "status":
 			return BareMetalOrder.staticSearchStatus(siteRequest_, (String)o);
 			default:
@@ -1192,6 +1384,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchStrNumberOfLenovoSd650nv2A100(siteRequest_, (Integer)o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchStrNumberOfLenovoSd665nv3H100(siteRequest_, (Integer)o);
+		case "image":
+			return BareMetalOrder.staticSearchStrImage(siteRequest_, (String)o);
+		case "sshPublicKey":
+			return BareMetalOrder.staticSearchStrSshPublicKey(siteRequest_, (String)o);
+		case "floatingIp":
+			return BareMetalOrder.staticSearchStrFloatingIp(siteRequest_, (Boolean)o);
 		case "status":
 			return BareMetalOrder.staticSearchStrStatus(siteRequest_, (String)o);
 			default:
@@ -1226,6 +1424,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return BareMetalOrder.staticSearchFqNumberOfLenovoSd650nv2A100(siteRequest_, o);
 		case "numberOfLenovoSd665nv3H100":
 			return BareMetalOrder.staticSearchFqNumberOfLenovoSd665nv3H100(siteRequest_, o);
+		case "image":
+			return BareMetalOrder.staticSearchFqImage(siteRequest_, o);
+		case "sshPublicKey":
+			return BareMetalOrder.staticSearchFqSshPublicKey(siteRequest_, o);
+		case "floatingIp":
+			return BareMetalOrder.staticSearchFqFloatingIp(siteRequest_, o);
 		case "status":
 			return BareMetalOrder.staticSearchFqStatus(siteRequest_, o);
 			default:
@@ -1314,6 +1518,26 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				}
 				saves.add("numberOfLenovoSd665nv3H100");
 				return val;
+			} else if("image".equals(varLower)) {
+				if(val instanceof String) {
+					setImage((String)val);
+				}
+				saves.add("image");
+				return val;
+			} else if("sshpublickey".equals(varLower)) {
+				if(val instanceof String) {
+					setSshPublicKey((String)val);
+				}
+				saves.add("sshPublicKey");
+				return val;
+			} else if("floatingip".equals(varLower)) {
+				if(val instanceof Boolean) {
+					setFloatingIp((Boolean)val);
+				} else {
+					setFloatingIp(val == null ? null : val.toString());
+				}
+				saves.add("floatingIp");
+				return val;
 			} else if("status".equals(varLower)) {
 				if(val instanceof String) {
 					setStatus((String)val);
@@ -1389,6 +1613,24 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 					oBareMetalOrder.setNumberOfLenovoSd665nv3H100(numberOfLenovoSd665nv3H100);
 			}
 
+			if(saves.contains("image")) {
+				String image = (String)doc.get("image_docvalues_string");
+				if(image != null)
+					oBareMetalOrder.setImage(image);
+			}
+
+			if(saves.contains("sshPublicKey")) {
+				String sshPublicKey = (String)doc.get("sshPublicKey_docvalues_string");
+				if(sshPublicKey != null)
+					oBareMetalOrder.setSshPublicKey(sshPublicKey);
+			}
+
+			if(saves.contains("floatingIp")) {
+				Boolean floatingIp = (Boolean)doc.get("floatingIp_docvalues_boolean");
+				if(floatingIp != null)
+					oBareMetalOrder.setFloatingIp(floatingIp);
+			}
+
 			if(saves.contains("status")) {
 				String status = (String)doc.get("status_docvalues_string");
 				if(status != null)
@@ -1427,6 +1669,15 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		if(numberOfLenovoSd665nv3H100 != null) {
 			doc.put("numberOfLenovoSd665nv3H100_docvalues_int", numberOfLenovoSd665nv3H100);
 		}
+		if(image != null) {
+			doc.put("image_docvalues_string", image);
+		}
+		if(sshPublicKey != null) {
+			doc.put("sshPublicKey_docvalues_string", sshPublicKey);
+		}
+		if(floatingIp != null) {
+			doc.put("floatingIp_docvalues_boolean", floatingIp);
+		}
 		if(status != null) {
 			doc.put("status_docvalues_string", status);
 		}
@@ -1454,6 +1705,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100_docvalues_int";
 			case "numberOfLenovoSd665nv3H100":
 				return "numberOfLenovoSd665nv3H100_docvalues_int";
+			case "image":
+				return "image_docvalues_string";
+			case "sshPublicKey":
+				return "sshPublicKey_docvalues_string";
+			case "floatingIp":
+				return "floatingIp_docvalues_boolean";
 			case "status":
 				return "status_docvalues_string";
 			default:
@@ -1481,6 +1738,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100_docvalues_int";
 			case "numberOfLenovoSd665nv3H100":
 				return "numberOfLenovoSd665nv3H100_docvalues_int";
+			case "image":
+				return "image_docvalues_string";
+			case "sshPublicKey":
+				return "sshPublicKey_docvalues_string";
+			case "floatingIp":
+				return "floatingIp_docvalues_boolean";
 			case "status":
 				return "status_docvalues_string";
 			default:
@@ -1508,6 +1771,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				return "numberOfLenovoSd650nv2A100";
 			case "numberOfLenovoSd665nv3H100_docvalues_int":
 				return "numberOfLenovoSd665nv3H100";
+			case "image_docvalues_string":
+				return "image";
+			case "sshPublicKey_docvalues_string":
+				return "sshPublicKey";
+			case "floatingIp_docvalues_boolean":
+				return "floatingIp";
 			case "status_docvalues_string":
 				return "status";
 			default:
@@ -1549,6 +1818,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		oBareMetalOrder.setNumberOfWhiteboxFlax1(Optional.ofNullable(doc.get("numberOfWhiteboxFlax1_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oBareMetalOrder.setNumberOfLenovoSd650nv2A100(Optional.ofNullable(doc.get("numberOfLenovoSd650nv2A100_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oBareMetalOrder.setNumberOfLenovoSd665nv3H100(Optional.ofNullable(doc.get("numberOfLenovoSd665nv3H100_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oBareMetalOrder.setImage(Optional.ofNullable(doc.get("image_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBareMetalOrder.setSshPublicKey(Optional.ofNullable(doc.get("sshPublicKey_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oBareMetalOrder.setFloatingIp(Optional.ofNullable(doc.get("floatingIp_docvalues_boolean")).map(v -> v.toString()).orElse(null));
 		oBareMetalOrder.setStatus(Optional.ofNullable(doc.get("status_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
@@ -1581,6 +1853,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 				apiRequest.addVars("numberOfLenovoSd650nv2A100");
 			if(!Objects.equals(numberOfLenovoSd665nv3H100, original.getNumberOfLenovoSd665nv3H100()))
 				apiRequest.addVars("numberOfLenovoSd665nv3H100");
+			if(!Objects.equals(image, original.getImage()))
+				apiRequest.addVars("image");
+			if(!Objects.equals(sshPublicKey, original.getSshPublicKey()))
+				apiRequest.addVars("sshPublicKey");
+			if(!Objects.equals(floatingIp, original.getFloatingIp()))
+				apiRequest.addVars("floatingIp");
 			if(!Objects.equals(status, original.getStatus()))
 				apiRequest.addVars("status");
 			super.apiRequestBaseModel();
@@ -1603,6 +1881,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(numberOfWhiteboxFlax1).map(v -> "numberOfWhiteboxFlax1: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(numberOfLenovoSd650nv2A100).map(v -> "numberOfLenovoSd650nv2A100: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(numberOfLenovoSd665nv3H100).map(v -> "numberOfLenovoSd665nv3H100: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(image).map(v -> "image: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(sshPublicKey).map(v -> "sshPublicKey: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(floatingIp).map(v -> "floatingIp: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(status).map(v -> "status: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
@@ -1624,6 +1905,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String VAR_numberOfWhiteboxFlax1 = "numberOfWhiteboxFlax1";
 	public static final String VAR_numberOfLenovoSd650nv2A100 = "numberOfLenovoSd650nv2A100";
 	public static final String VAR_numberOfLenovoSd665nv3H100 = "numberOfLenovoSd665nv3H100";
+	public static final String VAR_image = "image";
+	public static final String VAR_sshPublicKey = "sshPublicKey";
+	public static final String VAR_floatingIp = "floatingIp";
 	public static final String VAR_status = "status";
 
 	public static List<String> varsQForClass() {
@@ -1647,6 +1931,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 		vars.add(VAR_numberOfWhiteboxFlax1);
 		vars.add(VAR_numberOfLenovoSd650nv2A100);
 		vars.add(VAR_numberOfLenovoSd665nv3H100);
+		vars.add(VAR_image);
+		vars.add(VAR_sshPublicKey);
+		vars.add(VAR_floatingIp);
 		vars.add(VAR_status);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
@@ -1677,6 +1964,9 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_numberOfWhiteboxFlax1 = "number of whitebox-flax-1 ({{ max }} available)";
 	public static final String DISPLAY_NAME_numberOfLenovoSd650nv2A100 = "number of lenovo-sd650nv2-a100 ({{ max }} available)";
 	public static final String DISPLAY_NAME_numberOfLenovoSd665nv3H100 = "number of lenovo-sd665nv3-h100 ({{ max }} available)";
+	public static final String DISPLAY_NAME_image = "image";
+	public static final String DISPLAY_NAME_sshPublicKey = "SSH public key";
+	public static final String DISPLAY_NAME_floatingIp = "floating IP";
 	public static final String DISPLAY_NAME_status = "order status";
 
 	@Override
@@ -1751,6 +2041,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_numberOfLenovoSd650nv2A100;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return DISPLAY_NAME_numberOfLenovoSd665nv3H100;
+		case VAR_image:
+			return DISPLAY_NAME_image;
+		case VAR_sshPublicKey:
+			return DISPLAY_NAME_sshPublicKey;
+		case VAR_floatingIp:
+			return DISPLAY_NAME_floatingIp;
 		case VAR_status:
 			return DISPLAY_NAME_status;
 		default:
@@ -1778,6 +2074,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return "The number of lenovo-sd650nv2-a100 nodes to request for this order. ";
 		case VAR_numberOfLenovoSd665nv3H100:
 			return "The number of lenovo-sd665nv3-h100 nodes to request for this order. ";
+		case VAR_image:
+			return "The operating system image of a bare metal fulfillment";
+		case VAR_sshPublicKey:
+			return "The SSH public key of the user, not the private SSH key! ";
+		case VAR_floatingIp:
+			return "The floating IP of a bare metal fulfillment";
 		case VAR_status:
 			return "The order status of a bare metal fulfillment";
 			default:
@@ -1809,6 +2111,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return "Integer";
 		case VAR_numberOfLenovoSd665nv3H100:
 			return "Integer";
+		case VAR_image:
+			return "String";
+		case VAR_sshPublicKey:
+			return "String";
+		case VAR_floatingIp:
+			return "Boolean";
 		case VAR_status:
 			return "String";
 			default:
@@ -1847,8 +2155,14 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return 4;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 4;
-		case VAR_status:
+		case VAR_image:
 			return 5;
+		case VAR_sshPublicKey:
+			return 6;
+		case VAR_floatingIp:
+			return 7;
+		case VAR_status:
+			return 8;
 			default:
 				return BaseModel.htmRowBaseModel(var);
 		}
@@ -1872,6 +2186,12 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 			return 4;
 		case VAR_numberOfLenovoSd665nv3H100:
 			return 5;
+		case VAR_image:
+			return 0;
+		case VAR_sshPublicKey:
+			return 0;
+		case VAR_floatingIp:
+			return 0;
 		case VAR_status:
 			return 0;
 			default:
