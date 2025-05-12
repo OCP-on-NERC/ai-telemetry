@@ -6,7 +6,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 /**
  * Order: 8
  * Description: Manage your own Red Hat OpenShift cluster in the cloud. 
- * AName: a cluster order
+ * AName: an OpenShift cluster order
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/cluster-order
@@ -46,6 +46,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 0
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 * VarId: true
 	 * VarName: true
@@ -75,6 +77,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 3
 	 * HtmColumn: 2
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 **/
 	protected void _state(Wrap<String> w) {}
@@ -88,6 +92,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * HtmColumn: 3
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 **/
 	protected void _clusterId(Wrap<String> w) {}

@@ -231,7 +231,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			response200Search(listClusterOrder.getRequest(), listClusterOrder.getResponse(), json);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -366,7 +366,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = JsonObject.mapFrom(listClusterOrder.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -817,7 +817,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1247,7 +1247,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1604,7 +1604,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1804,7 +1804,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 											JsonArray bodyVals = (JsonArray)bodyVal;
 											Object valsObj = o.obtainForClass(f);
 											Collection<?> vals = valsObj instanceof JsonArray ? ((JsonArray)valsObj).getList() : (Collection<?>)valsObj;
-											if(bodyVals.size() == vals.size()) {
+											if(vals != null && bodyVals.size() == vals.size()) {
 												Boolean match = true;
 												for(Object val : vals) {
 													if(val != null) {
@@ -1820,7 +1820,8 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 												vals.clear();
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											} else {
-												vals.clear();
+												if(vals != null)
+													vals.clear();
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 											}
 										} else {
@@ -1910,7 +1911,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2587,7 +2588,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "cluster order", id);
+						String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));

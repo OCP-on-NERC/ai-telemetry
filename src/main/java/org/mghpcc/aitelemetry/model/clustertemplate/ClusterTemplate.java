@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonArray;
 /**
  * Order: 8
  * Description: An OpenShift cluster template
- * AName: a cluster template
+ * AName: an OpenShift cluster template
  * Icon: <i class="fa-regular fa-server"></i>
  * 
  * SearchPageUri: /en-us/search/cluster-template
