@@ -46,6 +46,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 0
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 * VarId: true
 	 * VarName: true
@@ -75,6 +77,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 3
 	 * HtmColumn: 2
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 **/
 	protected void _state(Wrap<String> w) {}
@@ -88,6 +92,8 @@ public class ClusterOrder extends ClusterOrderGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 4
 	 * HtmColumn: 3
+	 * HidePOST: true
+	 * HidePATCH: true
 	 * Facet: true
 	 **/
 	protected void _clusterId(Wrap<String> w) {}

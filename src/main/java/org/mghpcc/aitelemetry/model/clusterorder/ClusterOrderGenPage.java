@@ -60,17 +60,17 @@ public class ClusterOrderGenPage extends ClusterOrderGenPageGen<PageLayout> {
   @Override
   protected void _pageResponse(Wrap<String> w) {
     if(searchListClusterOrder_ != null)
-      w.o(JsonObject.mapFrom(searchListClusterOrder_.getResponse()).toString());
+      w.o(Optional.ofNullable(searchListClusterOrder_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListClusterOrder_.getResponse().getStats());
+    w.o(Optional.ofNullable(searchListClusterOrder_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListClusterOrder_.getResponse().getFacetCounts());
+    w.o(Optional.ofNullable(searchListClusterOrder_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
@@ -78,7 +78,7 @@ public class ClusterOrderGenPage extends ClusterOrderGenPageGen<PageLayout> {
     JsonArray pages = new JsonArray();
     Long start = searchListClusterOrder_.getStart().longValue();
     Long rows = searchListClusterOrder_.getRows().longValue();
-    Long foundNum = searchListClusterOrder_.getResponse().getResponse().getNumFound().longValue();
+    Long foundNum = Optional.ofNullable(searchListClusterOrder_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListClusterOrder_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -231,7 +231,7 @@ public class ClusterOrderGenPage extends ClusterOrderGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListClusterOrder_.getResponse().getResponse().getNumFound().longValue();
+    Long num = Optional.ofNullable(searchListClusterOrder_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListClusterOrder_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
