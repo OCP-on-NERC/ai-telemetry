@@ -627,6 +627,8 @@ IMPORT_DATA_PERIOD_ManagedCluster: 30 seconds
 # ESI API #
 ###########
 
+# Enable thin UI
+ENABLE_THIN_UI: "{{ lookup('env', 'ENABLE_THIN_UI') | default('false', true) | bool }}"
 # The Auth openshift secret with the admin credentials. 
 ESI_API_OPENSHIFT_SECRET: "{{ lookup('env', 'ESI_API_OPENSHIFT_SECRET') | default('fulfillment-api', true) }}"
 # The Auth admin username. 
