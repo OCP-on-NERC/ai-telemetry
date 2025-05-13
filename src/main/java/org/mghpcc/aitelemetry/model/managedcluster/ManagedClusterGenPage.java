@@ -60,17 +60,17 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
   @Override
   protected void _pageResponse(Wrap<String> w) {
     if(searchListManagedCluster_ != null)
-      w.o(JsonObject.mapFrom(searchListManagedCluster_.getResponse()).toString());
+      w.o(Optional.ofNullable(searchListManagedCluster_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListManagedCluster_.getResponse().getStats());
+    w.o(Optional.ofNullable(searchListManagedCluster_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListManagedCluster_.getResponse().getFacetCounts());
+    w.o(Optional.ofNullable(searchListManagedCluster_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
@@ -78,7 +78,7 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
     JsonArray pages = new JsonArray();
     Long start = searchListManagedCluster_.getStart().longValue();
     Long rows = searchListManagedCluster_.getRows().longValue();
-    Long foundNum = searchListManagedCluster_.getResponse().getResponse().getNumFound().longValue();
+    Long foundNum = Optional.ofNullable(searchListManagedCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListManagedCluster_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -231,7 +231,7 @@ public class ManagedClusterGenPage extends ManagedClusterGenPageGen<PageLayout> 
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListManagedCluster_.getResponse().getResponse().getNumFound().longValue();
+    Long num = Optional.ofNullable(searchListManagedCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListManagedCluster_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
