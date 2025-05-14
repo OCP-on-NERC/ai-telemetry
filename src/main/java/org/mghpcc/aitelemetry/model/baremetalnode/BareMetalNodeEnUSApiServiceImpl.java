@@ -2,22 +2,32 @@ package org.mghpcc.aitelemetry.model.baremetalnode;
 
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.http.HttpResponseExpectation;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.api.service.ServiceResponse;
 
 /**
  * Translate: false
@@ -197,4 +207,110 @@ public class BareMetalNodeEnUSApiServiceImpl extends BareMetalNodeEnUSGenApiServ
 		}
 		return promise.future();
     }
+
+	public static final String ESI_UTC_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
+	public static final DateTimeFormatter ESI_UTC_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(ESI_UTC_DATE_TIME_FORMAT, Locale.US);
+
+	@Override
+	public Future<SearchList<BareMetalNode>> searchBareMetalNodeList(SiteRequest siteRequest, Boolean populate,
+			Boolean store, Boolean modify) {
+		Promise<SearchList<BareMetalNode>> promise = Promise.promise();
+		if(BooleanUtils.toBoolean(config.getString(ConfigKeys.ENABLE_THIN_UI))) {
+			queryBareMetalNodes().onSuccess(array -> {
+				try {
+					SearchList<BareMetalNode> searchList = new SearchList<BareMetalNode>();
+					List<Future> futures = new ArrayList<>();
+					String requestId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString(BareMetalNode.VAR_nodeId);
+					array.stream().map(o -> (JsonObject)o).filter(result -> requestId == null || requestId.equals(result.getString(BareMetalNode.VAR_nodeId))).forEach(result -> {
+						JsonObject body = new JsonObject();
+						body.put(BareMetalNode.VAR_solrId, result.getString(BareMetalNode.nodeIdESI_enUS));
+						body.put(BareMetalNode.VAR_leaseInfo, result.getJsonArray(BareMetalNode.leaseInfoESI_enUS));
+						body.put(BareMetalNode.VAR_networkInfo, result.getJsonArray(BareMetalNode.networkInfoESI_enUS));
+						body.put(BareMetalNode.VAR_nodeId, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeIdESI_enUS));
+						body.put(BareMetalNode.VAR_nodeIsMaintenance, result.getJsonObject(BareMetalNode.nodeESI_enUS).getBoolean(BareMetalNode.nodeIsMaintenanceESI_enUS));
+						body.put(BareMetalNode.VAR_nodeLinks, result.getJsonObject(BareMetalNode.nodeESI_enUS).getJsonArray(BareMetalNode.nodeLinksESI_enUS));
+						body.put(BareMetalNode.VAR_nodeName, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeNameESI_enUS));
+						body.put(BareMetalNode.VAR_nodePowerState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodePowerStateESI_enUS));
+						body.put(BareMetalNode.VAR_nodeProvisionState, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeProvisionStateESI_enUS));
+						body.put(BareMetalNode.VAR_nodeResourceClass, result.getJsonObject(BareMetalNode.nodeESI_enUS).getString(BareMetalNode.nodeResourceClassESI_enUS));
+
+						BareMetalNode node = body.mapTo(BareMetalNode.class);
+						node.setSiteRequest_(siteRequest);
+						searchList.addList(node);
+
+						futures.add(Future.future(promise1 -> {
+							node.promiseDeepBareMetalNode().onSuccess(b -> {
+								promise1.complete();
+							}).onFailure(ex -> {
+								LOG.error(String.format("searchBareMetalNode failed. "), ex);
+								promise1.fail(ex);
+							});
+						}));
+					});
+					CompositeFuture.all(futures).onSuccess(a -> {
+						searchList.promiseDeepForClass(siteRequest).onSuccess(b -> {
+							promise.complete(searchList);
+						}).onFailure(ex -> {
+							LOG.error(String.format("searchBareMetalNode failed. "), ex);
+							promise.fail(ex);
+						});
+					});
+				} catch(Exception ex) {
+					LOG.error(String.format("searchBareMetalNode failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				LOG.error(String.format("searchBareMetalNode failed. "), ex);
+				promise.fail(ex);
+			});
+		} else {
+			super.searchBareMetalNodeList(siteRequest, populate, store, modify).onSuccess(listBareMetalNode -> {
+				promise.complete(listBareMetalNode);
+			}).onFailure(ex -> {
+				LOG.error(String.format("searchBareMetalNode failed. "), ex);
+				promise.fail(ex);
+			});
+		}
+		return promise.future();
+	}
+
+	@Override
+	public Future<ServiceResponse> response200SearchBareMetalNode(SearchList<BareMetalNode> listBareMetalNode) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			List<String> fls = listBareMetalNode.getRequest().getFields();
+			JsonObject json = new JsonObject();
+			JsonArray l = new JsonArray();
+			listBareMetalNode.getList().stream().forEach(o -> {
+				JsonObject json2 = JsonObject.mapFrom(o);
+				if(fls.size() > 0) {
+					Set<String> fieldNames = new HashSet<String>();
+					for(String fieldName : json2.fieldNames()) {
+						String v = BareMetalNode.varIndexedBareMetalNode(fieldName);
+						if(v != null)
+							fieldNames.add(BareMetalNode.varIndexedBareMetalNode(fieldName));
+					}
+					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
+						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
+						fieldNames.remove("pk_docvalues_long");
+						fieldNames.remove("created_docvalues_date");
+					}
+					else if(fls.size() >= 1) {
+						fieldNames.removeAll(fls);
+					}
+					for(String fieldName : fieldNames) {
+						if(!fls.contains(fieldName))
+							json2.remove(fieldName);
+					}
+				}
+				l.add(json2);
+			});
+			json.put("list", l);
+			promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
+		} catch(Exception ex) {
+			LOG.error(String.format("response200SearchBareMetalNode failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
 }

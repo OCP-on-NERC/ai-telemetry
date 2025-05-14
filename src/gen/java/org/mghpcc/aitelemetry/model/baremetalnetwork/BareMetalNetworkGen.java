@@ -3471,7 +3471,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			doc.put("description_docvalues_string", description);
 		}
 		if(availabilityZoneHints != null) {
-			doc.put("availabilityZoneHints_docvalues_string", availabilityZoneHints.toString());
+			doc.put("availabilityZoneHints_docvalues_string", availabilityZoneHints.encode());
 		}
 		if(availabilityZones != null) {
 			JsonArray l = new JsonArray();

@@ -29,4 +29,5 @@ public class ConfigKeys extends ComputateConfigKeys {
     public static final String IMPORT_LIMIT = "IMPORT_LIMIT";
     public static final String IMPORT_OFFSET = "IMPORT_OFFSET";
     public static final String IMPORT_CLEANUP_DELAY_SECONDS = "IMPORT_CLEANUP_DELAY_SECONDS";
+    public static final String ENABLE_THIN_UI = "ENABLE_THIN_UI";
 }
