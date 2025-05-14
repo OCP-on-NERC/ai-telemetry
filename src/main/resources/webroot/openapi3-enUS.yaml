@@ -3627,7 +3627,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3806,7 +3806,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3863,7 +3863,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3897,7 +3897,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3968,7 +3968,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4026,7 +4026,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4059,7 +4059,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4136,7 +4136,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4170,7 +4170,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster orders
+        - OpenShift cluster orders
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4346,7 +4346,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4521,7 +4521,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4574,7 +4574,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4608,7 +4608,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4679,7 +4679,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4733,7 +4733,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4766,7 +4766,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4843,7 +4843,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -4873,7 +4873,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5053,7 +5053,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster requests
+        - OpenShift cluster requests
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5083,7 +5083,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5262,7 +5262,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5319,7 +5319,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5353,7 +5353,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5424,7 +5424,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5478,7 +5478,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5511,7 +5511,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5588,7 +5588,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -5618,7 +5618,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - cluster templates
+        - OpenShift cluster templates
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -7810,6 +7810,40 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEManagedClusterResponse'
+  /en-us/download/kubeconfig/{id}:
+    get:
+      operationId: downloadManagedCluster
+      x-vertx-event-bus: ai-telemetry-enUS-ManagedCluster
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - tenant clusters
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/x-yaml; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DownloadManagedClusterResponse'
   /en-us/edit/managed-cluster/{id}:
     get:
       operationId: editpageManagedCluster
@@ -11315,6 +11349,11 @@ components:
         application/json; charset=utf-8:
           schema:
             $ref: '#/components/schemas/DELETEManagedClusterResponse'
+    DownloadManagedClusterResponse:
+      content:
+        application/x-yaml; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DownloadManagedClusterResponse'
     EditPageManagedClusterResponse:
       content:
         text/html; charset=utf-8:
@@ -16612,6 +16651,18 @@ components:
             consoleUrl:
               type: string
     DELETEManagedClusterResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            state:
+              type: string
+            apiUrl:
+              type: string
+            consoleUrl:
+              type: string
+    DownloadManagedClusterResponse:
       allOf:
         - type: object
           properties:

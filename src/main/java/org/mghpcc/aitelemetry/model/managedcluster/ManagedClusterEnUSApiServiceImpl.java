@@ -6,6 +6,7 @@ import io.vertx.ext.web.api.service.ServiceResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
@@ -316,6 +317,45 @@ public class ManagedClusterEnUSApiServiceImpl extends ManagedClusterEnUSGenApiSe
 			promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 		} catch(Exception ex) {
 			LOG.error(String.format("response200SearchManagedCluster failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
+	@Override
+	public Future<ServiceResponse> response200DownloadManagedCluster(SearchList<ManagedCluster> listManagedCluster) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = listManagedCluster.getSiteRequest_(SiteRequest.class);
+			ManagedCluster o = listManagedCluster.getList().stream().findFirst().orElse(null);
+			if(o == null) {
+				promise.complete(new ServiceResponse(403, "FORBIDDEN", Buffer.buffer(), null));
+			} else {
+				String uri = siteRequest.getServiceRequest().getExtra().getString("uri");
+				String clusterId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+
+				String accessToken = config.getString(ConfigKeys.FULFILLMENT_API_OPENSHIFT_TOKEN);
+				Integer fulfillmentApiPort = Integer.parseInt(config.getString(ConfigKeys.FULFILLMENT_API_PORT));
+				String fulfillmentApiHostName = config.getString(ConfigKeys.FULFILLMENT_API_HOST_NAME);
+				Boolean fulfillmentApiSsl = Boolean.parseBoolean(config.getString(ConfigKeys.FULFILLMENT_API_SSL));
+				String fulfillmentApiUri = String.format("/api/fulfillment/v1/clusters/%s/kubeconfig", clusterId);
+
+				webClient.get(fulfillmentApiPort, fulfillmentApiHostName, fulfillmentApiUri).ssl(fulfillmentApiSsl)
+						.putHeader("Authorization", String.format("Bearer %s", accessToken))
+						.send()
+						.expecting(HttpResponseExpectation.SC_OK)
+						.onSuccess(kubeconfigResponse -> {
+					MultiMap headers = MultiMap.caseInsensitiveMultiMap()
+							.add("Content-Type", "application/json")
+							.add("Content-Disposition", "attachment; filename=\"config-" + o.getId() + ".yaml\"");
+					promise.complete(new ServiceResponse(200, "OK", kubeconfigResponse.bodyAsBuffer(), headers));
+				}).onFailure(ex -> {
+					LOG.error(String.format("Querying fulfillment API clusters failed. ", ManagedCluster.CLASS_SIMPLE_NAME), ex);
+					promise.fail(ex);
+				});
+			}
+		} catch(Exception ex) {
+			LOG.error(String.format("response200DownloadManagedCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();

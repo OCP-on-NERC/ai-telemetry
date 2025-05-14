@@ -1872,6 +1872,113 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		return promise.future();
 	}
 
+	// Download //
+
+	@Override
+	public void downloadManagedCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		Boolean classPublicRead = false;
+		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
+			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			MultiMap form = MultiMap.caseInsensitiveMultiMap();
+			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
+			form.add("response_mode", "permissions");
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			if(id != null)
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+			webClient.post(
+					config.getInteger(ComputateConfigKeys.AUTH_PORT)
+					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
+					, config.getString(ComputateConfigKeys.AUTH_TOKEN_URI)
+					)
+					.ssl(config.getBoolean(ComputateConfigKeys.AUTH_SSL))
+					.putHeader("Authorization", String.format("Bearer %s", Optional.ofNullable(siteRequest.getUser()).map(u -> u.principal().getString("access_token")).orElse("")))
+					.sendForm(form)
+					.expecting(HttpResponseExpectation.SC_OK)
+			.onComplete(authorizationDecisionResponse -> {
+				try {
+					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
+					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					{
+						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
+						List<String> scopes2 = siteRequest.getScopes();
+						searchManagedClusterList(siteRequest, false, true, false).onSuccess(listManagedCluster -> {
+							response200DownloadManagedCluster(listManagedCluster).onSuccess(response -> {
+								eventHandler.handle(Future.succeededFuture(response));
+								LOG.debug(String.format("downloadManagedCluster succeeded. "));
+							}).onFailure(ex -> {
+								LOG.error(String.format("downloadManagedCluster failed. "), ex);
+								error(siteRequest, eventHandler, ex);
+							});
+						}).onFailure(ex -> {
+							LOG.error(String.format("downloadManagedCluster failed. "), ex);
+							error(siteRequest, eventHandler, ex);
+						});
+					}
+				} catch(Exception ex) {
+					LOG.error(String.format("downloadManagedCluster failed. "), ex);
+					error(null, eventHandler, ex);
+				}
+			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("downloadManagedCluster failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("downloadManagedCluster failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
+	}
+
+	public Future<ServiceResponse> response200DownloadManagedCluster(SearchList<ManagedCluster> listManagedCluster) {
+		Promise<ServiceResponse> promise = Promise.promise();
+		try {
+			SiteRequest siteRequest = listManagedCluster.getSiteRequest_(SiteRequest.class);
+			ManagedCluster o = listManagedCluster.getList().stream().findFirst().orElse(null);
+			if(o == null) {
+				promise.complete(new ServiceResponse(403, "FORBIDDEN", Buffer.buffer(), null));
+			} else {
+				String uri = siteRequest.getServiceRequest().getExtra().getString("uri");
+				String downloadPath = String.format("%s%s.x-yaml", config.getString(ConfigKeys.DOWNLOAD_PATH), uri);
+				vertx.fileSystem().readFile(downloadPath).onSuccess(buffer -> {
+					MultiMap headers = MultiMap.caseInsensitiveMultiMap()
+							.add("Content-Type", "application/x-yaml")
+							.add("Content-Disposition", "attachment; filename=\"" + o.getId() + ".x-yaml\"");
+					promise.complete(new ServiceResponse(200, "OK", buffer, headers));
+				}).onFailure(ex -> {
+					LOG.error(String.format("Failed to find download %s", downloadPath), ex);
+					promise.fail(ex);
+				});
+			}
+		} catch(Exception ex) {
+			LOG.error(String.format("response200DownloadManagedCluster failed. "), ex);
+			promise.fail(ex);
+		}
+		return promise.future();
+	}
+
 	// SearchPage //
 
 	@Override
