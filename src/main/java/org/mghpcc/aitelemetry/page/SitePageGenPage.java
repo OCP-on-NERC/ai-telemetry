@@ -62,17 +62,17 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
   @Override
   protected void _pageResponse(Wrap<String> w) {
     if(searchListSitePage_ != null)
-      w.o(JsonObject.mapFrom(searchListSitePage_.getResponse()).toString());
+      w.o(Optional.ofNullable(searchListSitePage_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListSitePage_.getResponse().getStats());
+    w.o(Optional.ofNullable(searchListSitePage_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListSitePage_.getResponse().getFacetCounts());
+    w.o(Optional.ofNullable(searchListSitePage_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
@@ -80,7 +80,7 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
     JsonArray pages = new JsonArray();
     Long start = searchListSitePage_.getStart().longValue();
     Long rows = searchListSitePage_.getRows().longValue();
-    Long foundNum = searchListSitePage_.getResponse().getResponse().getNumFound().longValue();
+    Long foundNum = Optional.ofNullable(searchListSitePage_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListSitePage_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -233,7 +233,7 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListSitePage_.getResponse().getResponse().getNumFound().longValue();
+    Long num = Optional.ofNullable(searchListSitePage_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListSitePage_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";

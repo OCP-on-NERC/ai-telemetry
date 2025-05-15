@@ -62,17 +62,17 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
   @Override
   protected void _pageResponse(Wrap<String> w) {
     if(searchListAiCluster_ != null)
-      w.o(JsonObject.mapFrom(searchListAiCluster_.getResponse()).toString());
+      w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListAiCluster_.getResponse().getStats());
+    w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListAiCluster_.getResponse().getFacetCounts());
+    w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
@@ -80,7 +80,7 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
     JsonArray pages = new JsonArray();
     Long start = searchListAiCluster_.getStart().longValue();
     Long rows = searchListAiCluster_.getRows().longValue();
-    Long foundNum = searchListAiCluster_.getResponse().getResponse().getNumFound().longValue();
+    Long foundNum = Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiCluster_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -233,7 +233,7 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListAiCluster_.getResponse().getResponse().getNumFound().longValue();
+    Long num = Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiCluster_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
