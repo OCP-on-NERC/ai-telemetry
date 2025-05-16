@@ -88,6 +88,9 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>ApiMethode: PUTImport</h2>
  * <p>This class contains a comment <b>"ApiMethod: PUTImport"</b>, which creates an API "PUTImport". 
  * </p>
+ * <h2>ApiMethode: Download</h2>
+ * <p>This class contains a comment <b>"ApiMethod: Download"</b>, which creates an API "Download". 
+ * </p>
  * <h2>ApiMethode: SearchPage</h2>
  * <p>This class contains a comment <b>"ApiMethod: SearchPage"</b>, which creates an API "SearchPage". 
  * </p>
@@ -214,6 +217,9 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/managed-cluster-import";
 	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/managed-cluster-import";
 	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/managed-cluster-import";
+	public static final String Download_enUS_OpenApiUri = "/en-us/download/kubeconfig/{id}";
+	public static final String Download_enUS_StringFormatUri = "/en-us/download/kubeconfig/%s";
+	public static final String Download_enUS_StringFormatUrl = "%s/en-us/download/kubeconfig/%s";
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/managed-cluster";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/managed-cluster";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/managed-cluster";
@@ -968,7 +974,7 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlDownloadForClass() {
-		return null;
+		return "%s/en-us/download/kubeconfig/%s";
 	}
 
 	public static String displayNameForClass(String var) {

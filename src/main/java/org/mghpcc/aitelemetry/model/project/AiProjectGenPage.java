@@ -60,17 +60,17 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
   @Override
   protected void _pageResponse(Wrap<String> w) {
     if(searchListAiProject_ != null)
-      w.o(JsonObject.mapFrom(searchListAiProject_.getResponse()).toString());
+      w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(searchListAiProject_.getResponse().getStats());
+    w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(searchListAiProject_.getResponse().getFacetCounts());
+    w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
@@ -78,7 +78,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
     JsonArray pages = new JsonArray();
     Long start = searchListAiProject_.getStart().longValue();
     Long rows = searchListAiProject_.getRows().longValue();
-    Long foundNum = searchListAiProject_.getResponse().getResponse().getNumFound().longValue();
+    Long foundNum = Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiProject_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -231,7 +231,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = searchListAiProject_.getResponse().getResponse().getNumFound().longValue();
+    Long num = Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiProject_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";

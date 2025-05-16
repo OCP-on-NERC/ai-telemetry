@@ -1548,7 +1548,7 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 			doc.put("ngsildContext_docvalues_string", ngsildContext);
 		}
 		if(ngsildData != null) {
-			doc.put("ngsildData_docvalues_string", ngsildData.toString());
+			doc.put("ngsildData_docvalues_string", ngsildData.encode());
 		}
 		super.indexBaseModel(doc);
 

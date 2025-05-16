@@ -11,6 +11,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  * 
  * SearchPageUri: /en-us/search/managed-cluster
  * EditPageUri: /en-us/edit/managed-cluster/{id}
+ * DownloadUri: /en-us/download/kubeconfig/{id}
  * ApiUri: /en-us/api/managed-cluster
  * ApiMethod:
  *   Search:
@@ -19,6 +20,10 @@ import org.mghpcc.aitelemetry.model.BaseModel;
  *   POST:
  *   DELETE:
  *   PUTImport:
+ *   Download:
+ *     ApiUri: /en-us/download/kubeconfig/{id}
+ *     ApiMediaType200: application/x-yaml
+ *     Role: User
  * 
  * AuthGroup:
  *   Admin:
