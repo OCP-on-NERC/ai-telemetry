@@ -158,16 +158,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -347,16 +347,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -487,16 +487,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -1010,16 +1010,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -1531,16 +1531,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -1907,16 +1907,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -2241,16 +2241,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -2452,16 +2452,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 									}).filter(v -> v != null).forEach(value -> {
 										fqs.add(String.format("%s:%s", "clusterName", value));
 									});
-							JsonObject params = siteRequest.getServiceRequest().getParams();
-							JsonObject query = params.getJsonObject("query");
-							if(query == null) {
-								query = new JsonObject();
-								params.put("query", query);
+							JsonObject authParams = siteRequest.getServiceRequest().getParams();
+							JsonObject authQuery = authParams.getJsonObject("query");
+							if(authQuery == null) {
+								authQuery = new JsonObject();
+								authParams.put("query", authQuery);
 							}
-							JsonArray fq = query.getJsonArray("fq");
+							JsonArray fq = authQuery.getJsonArray("fq");
 							if(fq == null) {
 								fq = new JsonArray();
-								query.put("fq", fq);
+								authQuery.put("fq", fq);
 							}
 							if(fqs.size() > 0) {
 								fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -2639,16 +2639,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 									}).filter(v -> v != null).forEach(value -> {
 										fqs.add(String.format("%s:%s", "clusterName", value));
 									});
-							JsonObject params = siteRequest.getServiceRequest().getParams();
-							JsonObject query = params.getJsonObject("query");
-							if(query == null) {
-								query = new JsonObject();
-								params.put("query", query);
+							JsonObject authParams = siteRequest.getServiceRequest().getParams();
+							JsonObject authQuery = authParams.getJsonObject("query");
+							if(authQuery == null) {
+								authQuery = new JsonObject();
+								authParams.put("query", authQuery);
 							}
-							JsonArray fq = query.getJsonArray("fq");
+							JsonArray fq = authQuery.getJsonArray("fq");
 							if(fq == null) {
 								fq = new JsonArray();
-								query.put("fq", fq);
+								authQuery.put("fq", fq);
 							}
 							if(fqs.size() > 0) {
 								fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
@@ -2838,16 +2838,16 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								}).filter(v -> v != null).forEach(value -> {
 									fqs.add(String.format("%s:%s", "clusterName", value));
 								});
-						JsonObject params = siteRequest.getServiceRequest().getParams();
-						JsonObject query = params.getJsonObject("query");
-						if(query == null) {
-							query = new JsonObject();
-							params.put("query", query);
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
-						JsonArray fq = query.getJsonArray("fq");
+						JsonArray fq = authQuery.getJsonArray("fq");
 						if(fq == null) {
 							fq = new JsonArray();
-							query.put("fq", fq);
+							authQuery.put("fq", fq);
 						}
 						if(fqs.size() > 0) {
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
