@@ -198,10 +198,10 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetWorkerVerticle(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, WorkerVerticle o) {
+		return staticSetWorkerVerticle(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetWorkerVerticle(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetWorkerVerticle(String entityVar, SiteRequest siteRequest_, String v, WorkerVerticle o) {
 		switch(entityVar) {
 			default:
 				return null;
@@ -312,6 +312,8 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 	}
 
 	public static String descriptionWorkerVerticle(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return null;

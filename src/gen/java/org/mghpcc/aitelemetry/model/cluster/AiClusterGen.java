@@ -1378,43 +1378,43 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiCluster(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiCluster o) {
+		return staticSetAiCluster(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiCluster(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiCluster(String entityVar, SiteRequest siteRequest_, String v, AiCluster o) {
 		switch(entityVar) {
 		case "clusterName":
-			return AiCluster.staticSetClusterName(siteRequest_, o);
+			return AiCluster.staticSetClusterName(siteRequest_, v);
 		case "description":
-			return AiCluster.staticSetDescription(siteRequest_, o);
+			return AiCluster.staticSetDescription(siteRequest_, v);
 		case "locationColors":
-			return AiCluster.staticSetLocationColors(siteRequest_, o);
+			return AiCluster.staticSetLocationColors(siteRequest_, v);
 		case "locationTitles":
-			return AiCluster.staticSetLocationTitles(siteRequest_, o);
+			return AiCluster.staticSetLocationTitles(siteRequest_, v);
 		case "locationLinks":
-			return AiCluster.staticSetLocationLinks(siteRequest_, o);
+			return AiCluster.staticSetLocationLinks(siteRequest_, v);
 		case "location":
-			return AiCluster.staticSetLocation(siteRequest_, o);
+			return AiCluster.staticSetLocation(siteRequest_, v);
 		case "id":
-			return AiCluster.staticSetId(siteRequest_, o);
+			return AiCluster.staticSetId(siteRequest_, v);
 		case "entityShortId":
-			return AiCluster.staticSetEntityShortId(siteRequest_, o);
+			return AiCluster.staticSetEntityShortId(siteRequest_, v);
 		case "ngsildTenant":
-			return AiCluster.staticSetNgsildTenant(siteRequest_, o);
+			return AiCluster.staticSetNgsildTenant(siteRequest_, v);
 		case "ngsildPath":
-			return AiCluster.staticSetNgsildPath(siteRequest_, o);
+			return AiCluster.staticSetNgsildPath(siteRequest_, v);
 		case "ngsildContext":
-			return AiCluster.staticSetNgsildContext(siteRequest_, o);
+			return AiCluster.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
-			return AiCluster.staticSetNgsildData(siteRequest_, o);
+			return AiCluster.staticSetNgsildData(siteRequest_, v);
 		case "aiNodesTotal":
-			return AiCluster.staticSetAiNodesTotal(siteRequest_, o);
+			return AiCluster.staticSetAiNodesTotal(siteRequest_, v);
 		case "gpuDevicesTotal":
-			return AiCluster.staticSetGpuDevicesTotal(siteRequest_, o);
+			return AiCluster.staticSetGpuDevicesTotal(siteRequest_, v);
 		case "grafanaUrl":
-			return AiCluster.staticSetGrafanaUrl(siteRequest_, o);
+			return AiCluster.staticSetGrafanaUrl(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -2213,6 +2213,8 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionAiCluster(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_clusterName:
 			return "The name of this cluster";

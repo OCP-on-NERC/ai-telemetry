@@ -193,7 +193,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			response200Search(listBareMetalResourceClass.getRequest(), listBareMetalResourceClass.getResponse(), json);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -292,7 +292,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = JsonObject.mapFrom(listBareMetalResourceClass.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -366,7 +366,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalResourceClass.first());
 								apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
@@ -493,7 +493,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							BareMetalResourceClass o2 = jsonObject.mapTo(BareMetalResourceClass.class);
 							o2.setSiteRequest_(siteRequest);
@@ -592,7 +592,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -717,7 +717,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -808,7 +808,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 						eventBus.request(BareMetalResourceClass.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalResourceClassFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(BareMetalResourceClass.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postBareMetalResourceClass succeeded. "));
 						}).onFailure(ex -> {
@@ -981,7 +981,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1131,7 +1131,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1204,7 +1204,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalResourceClass.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
@@ -1331,7 +1331,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteBareMetalResourceClassFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1423,7 +1423,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1481,7 +1481,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1728,8 +1728,8 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getName());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getName()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchBareMetalResourceClassFuture(o, true).onSuccess(b -> {
@@ -1800,7 +1800,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1885,7 +1885,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalResourceClassPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2045,7 +2045,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalResourceClassPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2157,7 +2157,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalResourceClass.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalResourceClass", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterBareMetalResourceClass(apiRequest, listBareMetalResourceClass).onSuccess(e -> {
@@ -2284,7 +2284,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalResourceClass.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterBareMetalResourceClassFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2376,7 +2376,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2434,7 +2434,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
-						String m = String.format("%s %s not found", "bare metal resource class", name);
+				String m = String.format("%s %s not found", "bare metal resource class", name);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2815,7 +2815,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 
 	public Future<Void> relateBareMetalResourceClass(BareMetalResourceClass o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -2911,14 +2911,14 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -2979,7 +2979,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 
 			page.persistForClass(BareMetalResourceClass.VAR_name, BareMetalResourceClass.staticSetName(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_name)));
 			page.persistForClass(BareMetalResourceClass.VAR_count, BareMetalResourceClass.staticSetCount(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_count)));
-			page.persistForClass(BareMetalResourceClass.VAR_created, BareMetalResourceClass.staticSetCreated(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_created)));
+			page.persistForClass(BareMetalResourceClass.VAR_created, BareMetalResourceClass.staticSetCreated(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(BareMetalResourceClass.VAR_archived, BareMetalResourceClass.staticSetArchived(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_archived)));
 			page.persistForClass(BareMetalResourceClass.VAR_sessionId, BareMetalResourceClass.staticSetSessionId(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_sessionId)));
 			page.persistForClass(BareMetalResourceClass.VAR_userKey, BareMetalResourceClass.staticSetUserKey(siteRequest2, (String)result.get(BareMetalResourceClass.VAR_userKey)));

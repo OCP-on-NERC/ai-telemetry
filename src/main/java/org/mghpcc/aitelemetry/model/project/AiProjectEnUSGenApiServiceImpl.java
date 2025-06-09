@@ -255,7 +255,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			response200Search(listAiProject.getRequest(), listAiProject.getResponse(), json);
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -416,7 +416,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(listAiProject.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -516,7 +516,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiProject.first());
 								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHAiProject(apiRequest, listAiProject).onSuccess(e -> {
@@ -643,7 +643,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiProject o2 = jsonObject.mapTo(AiProject.class);
 							o2.setSiteRequest_(siteRequest);
@@ -742,7 +742,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -883,7 +883,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1000,7 +1000,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						eventBus.request(AiProject.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiProjectFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(AiProject.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postAiProject succeeded. "));
 						}).onFailure(ex -> {
@@ -1173,7 +1173,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1341,7 +1341,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1440,7 +1440,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEAiProject(apiRequest, listAiProject).onSuccess(e -> {
@@ -1567,7 +1567,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteAiProjectFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1659,7 +1659,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1717,7 +1717,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1990,8 +1990,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getProjectId());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getProjectId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchAiProjectFuture(o, true).onSuccess(b -> {
@@ -2062,7 +2062,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2235,7 +2235,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2422,7 +2422,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2609,7 +2609,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2747,7 +2747,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterAiProject(apiRequest, listAiProject).onSuccess(e -> {
@@ -2874,7 +2874,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterAiProjectFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2966,7 +2966,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -3024,7 +3024,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-						String m = String.format("%s %s not found", "AI project", projectId);
+				String m = String.format("%s %s not found", "AI project", projectId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3407,7 +3407,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	public Future<Void> relateAiProject(AiProject o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3503,14 +3503,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3571,7 +3571,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 			page.persistForClass(AiProject.VAR_clusterName, AiProject.staticSetClusterName(siteRequest2, (String)result.get(AiProject.VAR_clusterName)));
 			page.persistForClass(AiProject.VAR_projectName, AiProject.staticSetProjectName(siteRequest2, (String)result.get(AiProject.VAR_projectName)));
-			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created)));
+			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
 			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
 			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));

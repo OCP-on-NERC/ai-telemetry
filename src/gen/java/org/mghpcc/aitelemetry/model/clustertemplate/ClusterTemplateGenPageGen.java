@@ -634,23 +634,23 @@ public abstract class ClusterTemplateGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterTemplateGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplateGenPage o) {
+		return staticSetClusterTemplateGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterTemplateGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterTemplateGenPage(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplateGenPage o) {
 		switch(entityVar) {
 		case "listClusterTemplate":
-			return ClusterTemplateGenPage.staticSetListClusterTemplate(siteRequest_, o);
+			return ClusterTemplateGenPage.staticSetListClusterTemplate(siteRequest_, v);
 		case "resultCount":
-			return ClusterTemplateGenPage.staticSetResultCount(siteRequest_, o);
+			return ClusterTemplateGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return ClusterTemplateGenPage.staticSetPk(siteRequest_, o);
+			return ClusterTemplateGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return ClusterTemplateGenPage.staticSetSolrId(siteRequest_, o);
+			return ClusterTemplateGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriClusterTemplate":
-			return ClusterTemplateGenPage.staticSetPageUriClusterTemplate(siteRequest_, o);
+			return ClusterTemplateGenPage.staticSetPageUriClusterTemplate(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class ClusterTemplateGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionClusterTemplateGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

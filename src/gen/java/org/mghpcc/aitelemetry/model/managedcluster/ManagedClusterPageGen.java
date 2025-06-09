@@ -229,13 +229,13 @@ public abstract class ManagedClusterPageGen<DEV> extends ManagedClusterGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetManagedClusterPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ManagedClusterPage o) {
+		return staticSetManagedClusterPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetManagedClusterPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetManagedClusterPage(String entityVar, SiteRequest siteRequest_, String v, ManagedClusterPage o) {
 		switch(entityVar) {
 			default:
-				return ManagedClusterGenPage.staticSetManagedClusterGenPage(entityVar,  siteRequest_, o);
+				return ManagedClusterGenPage.staticSetManagedClusterGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class ManagedClusterPageGen<DEV> extends ManagedClusterGenPage {
 	}
 
 	public static String descriptionManagedClusterPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return ManagedClusterGenPage.descriptionManagedClusterGenPage(var);

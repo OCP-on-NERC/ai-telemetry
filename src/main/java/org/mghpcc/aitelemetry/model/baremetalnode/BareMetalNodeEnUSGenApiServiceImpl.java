@@ -229,7 +229,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			response200Search(listBareMetalNode.getRequest(), listBareMetalNode.getResponse(), json);
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -364,7 +364,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = JsonObject.mapFrom(listBareMetalNode.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -438,7 +438,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalNode.first());
 								apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHBareMetalNode(apiRequest, listBareMetalNode).onSuccess(e -> {
@@ -565,7 +565,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							BareMetalNode o2 = jsonObject.mapTo(BareMetalNode.class);
 							o2.setSiteRequest_(siteRequest);
@@ -664,7 +664,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -845,7 +845,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -936,7 +936,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						eventBus.request(BareMetalNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalNodeFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(BareMetalNode.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postBareMetalNode succeeded. "));
 						}).onFailure(ex -> {
@@ -1109,7 +1109,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1322,7 +1322,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1395,7 +1395,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalNode.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEBareMetalNode(apiRequest, listBareMetalNode).onSuccess(e -> {
@@ -1522,7 +1522,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteBareMetalNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1614,7 +1614,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1672,7 +1672,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1919,8 +1919,8 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getNodeId());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getNodeId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchBareMetalNodeFuture(o, true).onSuccess(b -> {
@@ -1991,7 +1991,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2112,7 +2112,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalNodePage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2272,7 +2272,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalNodePage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2384,7 +2384,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalNode.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterBareMetalNode(apiRequest, listBareMetalNode).onSuccess(e -> {
@@ -2511,7 +2511,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterBareMetalNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2603,7 +2603,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2661,7 +2661,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "bare metal node", nodeId);
+				String m = String.format("%s %s not found", "bare metal node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3042,7 +3042,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 
 	public Future<Void> relateBareMetalNode(BareMetalNode o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3138,14 +3138,14 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3206,7 +3206,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 
 			page.persistForClass(BareMetalNode.VAR_leaseInfo, BareMetalNode.staticSetLeaseInfo(siteRequest2, (String)result.get(BareMetalNode.VAR_leaseInfo)));
 			page.persistForClass(BareMetalNode.VAR_networkInfo, BareMetalNode.staticSetNetworkInfo(siteRequest2, (String)result.get(BareMetalNode.VAR_networkInfo)));
-			page.persistForClass(BareMetalNode.VAR_created, BareMetalNode.staticSetCreated(siteRequest2, (String)result.get(BareMetalNode.VAR_created)));
+			page.persistForClass(BareMetalNode.VAR_created, BareMetalNode.staticSetCreated(siteRequest2, (String)result.get(BareMetalNode.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(BareMetalNode.VAR_nodeId, BareMetalNode.staticSetNodeId(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeId)));
 			page.persistForClass(BareMetalNode.VAR_nodeIsMaintenance, BareMetalNode.staticSetNodeIsMaintenance(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeIsMaintenance)));
 			page.persistForClass(BareMetalNode.VAR_archived, BareMetalNode.staticSetArchived(siteRequest2, (String)result.get(BareMetalNode.VAR_archived)));

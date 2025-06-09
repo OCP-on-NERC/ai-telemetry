@@ -634,23 +634,23 @@ public abstract class BareMetalResourceClassGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalResourceClassGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClassGenPage o) {
+		return staticSetBareMetalResourceClassGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalResourceClassGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalResourceClassGenPage(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClassGenPage o) {
 		switch(entityVar) {
 		case "listBareMetalResourceClass":
-			return BareMetalResourceClassGenPage.staticSetListBareMetalResourceClass(siteRequest_, o);
+			return BareMetalResourceClassGenPage.staticSetListBareMetalResourceClass(siteRequest_, v);
 		case "resultCount":
-			return BareMetalResourceClassGenPage.staticSetResultCount(siteRequest_, o);
+			return BareMetalResourceClassGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return BareMetalResourceClassGenPage.staticSetPk(siteRequest_, o);
+			return BareMetalResourceClassGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return BareMetalResourceClassGenPage.staticSetSolrId(siteRequest_, o);
+			return BareMetalResourceClassGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriBareMetalResourceClass":
-			return BareMetalResourceClassGenPage.staticSetPageUriBareMetalResourceClass(siteRequest_, o);
+			return BareMetalResourceClassGenPage.staticSetPageUriBareMetalResourceClass(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class BareMetalResourceClassGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionBareMetalResourceClassGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

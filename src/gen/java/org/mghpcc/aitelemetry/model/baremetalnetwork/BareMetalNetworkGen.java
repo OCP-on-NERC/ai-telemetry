@@ -600,21 +600,22 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setCreatedAt(String o) {
-		this.createdAt = BareMetalNetwork.staticSetCreatedAt(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.createdAt = BareMetalNetwork.staticSetCreatedAt(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setCreatedAt(Date o) {
 		this.createdAt = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetCreatedAt(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetCreatedAt(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BareMetalNetwork createdAtInit() {
 		Wrap<ZonedDateTime> createdAtWrap = new Wrap<ZonedDateTime>().var("createdAt");
@@ -632,11 +633,13 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchStrCreatedAt(SiteRequest siteRequest_, String o) {
-		return BareMetalNetwork.staticSearchCreatedAt(siteRequest_, BareMetalNetwork.staticSetCreatedAt(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BareMetalNetwork.staticSearchCreatedAt(siteRequest_, BareMetalNetwork.staticSetCreatedAt(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqCreatedAt(SiteRequest siteRequest_, String o) {
-		return BareMetalNetwork.staticSearchCreatedAt(siteRequest_, BareMetalNetwork.staticSetCreatedAt(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BareMetalNetwork.staticSearchCreatedAt(siteRequest_, BareMetalNetwork.staticSetCreatedAt(siteRequest_, o, zoneId)).toString();
 	}
 
 	public OffsetDateTime sqlCreatedAt() {
@@ -1440,21 +1443,22 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setUpdatedAt(String o) {
-		this.updatedAt = BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.updatedAt = BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setUpdatedAt(Date o) {
 		this.updatedAt = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetUpdatedAt(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetUpdatedAt(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BareMetalNetwork updatedAtInit() {
 		Wrap<ZonedDateTime> updatedAtWrap = new Wrap<ZonedDateTime>().var("updatedAt");
@@ -1472,11 +1476,13 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchStrUpdatedAt(SiteRequest siteRequest_, String o) {
-		return BareMetalNetwork.staticSearchUpdatedAt(siteRequest_, BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BareMetalNetwork.staticSearchUpdatedAt(siteRequest_, BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqUpdatedAt(SiteRequest siteRequest_, String o) {
-		return BareMetalNetwork.staticSearchUpdatedAt(siteRequest_, BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BareMetalNetwork.staticSearchUpdatedAt(siteRequest_, BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o, zoneId)).toString();
 	}
 
 	public OffsetDateTime sqlUpdatedAt() {
@@ -2633,81 +2639,79 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalNetwork(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetwork o) {
+		return staticSetBareMetalNetwork(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalNetwork(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalNetwork(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetwork o) {
 		switch(entityVar) {
 		case "id":
-			return BareMetalNetwork.staticSetId(siteRequest_, o);
+			return BareMetalNetwork.staticSetId(siteRequest_, v);
 		case "name":
-			return BareMetalNetwork.staticSetName(siteRequest_, o);
+			return BareMetalNetwork.staticSetName(siteRequest_, v);
 		case "description":
-			return BareMetalNetwork.staticSetDescription(siteRequest_, o);
+			return BareMetalNetwork.staticSetDescription(siteRequest_, v);
 		case "availabilityZoneHints":
-			return BareMetalNetwork.staticSetAvailabilityZoneHints(siteRequest_, o);
+			return BareMetalNetwork.staticSetAvailabilityZoneHints(siteRequest_, v);
 		case "availabilityZones":
-			return BareMetalNetwork.staticSetAvailabilityZones(siteRequest_, o);
+			return BareMetalNetwork.staticSetAvailabilityZones(siteRequest_, v);
 		case "createdAt":
-			return BareMetalNetwork.staticSetCreatedAt(siteRequest_, o);
 		case "dnsDomain":
-			return BareMetalNetwork.staticSetDnsDomain(siteRequest_, o);
+			return BareMetalNetwork.staticSetDnsDomain(siteRequest_, v);
 		case "mtu":
-			return BareMetalNetwork.staticSetMtu(siteRequest_, o);
+			return BareMetalNetwork.staticSetMtu(siteRequest_, v);
 		case "projectId":
-			return BareMetalNetwork.staticSetProjectId(siteRequest_, o);
+			return BareMetalNetwork.staticSetProjectId(siteRequest_, v);
 		case "providerNetworkType":
-			return BareMetalNetwork.staticSetProviderNetworkType(siteRequest_, o);
+			return BareMetalNetwork.staticSetProviderNetworkType(siteRequest_, v);
 		case "providerPhysicalNetwork":
-			return BareMetalNetwork.staticSetProviderPhysicalNetwork(siteRequest_, o);
+			return BareMetalNetwork.staticSetProviderPhysicalNetwork(siteRequest_, v);
 		case "providerSegmentationId":
-			return BareMetalNetwork.staticSetProviderSegmentationId(siteRequest_, o);
+			return BareMetalNetwork.staticSetProviderSegmentationId(siteRequest_, v);
 		case "qosPolicyId":
-			return BareMetalNetwork.staticSetQosPolicyId(siteRequest_, o);
+			return BareMetalNetwork.staticSetQosPolicyId(siteRequest_, v);
 		case "revisionNumber":
-			return BareMetalNetwork.staticSetRevisionNumber(siteRequest_, o);
+			return BareMetalNetwork.staticSetRevisionNumber(siteRequest_, v);
 		case "status":
-			return BareMetalNetwork.staticSetStatus(siteRequest_, o);
+			return BareMetalNetwork.staticSetStatus(siteRequest_, v);
 		case "subnetIds":
-			return BareMetalNetwork.staticSetSubnetIds(siteRequest_, o);
+			return BareMetalNetwork.staticSetSubnetIds(siteRequest_, v);
 		case "tags":
-			return BareMetalNetwork.staticSetTags(siteRequest_, o);
+			return BareMetalNetwork.staticSetTags(siteRequest_, v);
 		case "tenantId":
-			return BareMetalNetwork.staticSetTenantId(siteRequest_, o);
+			return BareMetalNetwork.staticSetTenantId(siteRequest_, v);
 		case "updatedAt":
-			return BareMetalNetwork.staticSetUpdatedAt(siteRequest_, o);
 		case "isAdminStateUp":
-			return BareMetalNetwork.staticSetIsAdminStateUp(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsAdminStateUp(siteRequest_, v);
 		case "isDefault":
-			return BareMetalNetwork.staticSetIsDefault(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsDefault(siteRequest_, v);
 		case "isPortSecurityEnabled":
-			return BareMetalNetwork.staticSetIsPortSecurityEnabled(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsPortSecurityEnabled(siteRequest_, v);
 		case "isRouterExternal":
-			return BareMetalNetwork.staticSetIsRouterExternal(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsRouterExternal(siteRequest_, v);
 		case "isShared":
-			return BareMetalNetwork.staticSetIsShared(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsShared(siteRequest_, v);
 		case "isVlanQueing":
-			return BareMetalNetwork.staticSetIsVlanQueing(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsVlanQueing(siteRequest_, v);
 		case "isVlanTransparent":
-			return BareMetalNetwork.staticSetIsVlanTransparent(siteRequest_, o);
+			return BareMetalNetwork.staticSetIsVlanTransparent(siteRequest_, v);
 		case "l2Adjacency":
-			return BareMetalNetwork.staticSetL2Adjacency(siteRequest_, o);
+			return BareMetalNetwork.staticSetL2Adjacency(siteRequest_, v);
 		case "locationCloud":
-			return BareMetalNetwork.staticSetLocationCloud(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationCloud(siteRequest_, v);
 		case "locationProjectDomainId":
-			return BareMetalNetwork.staticSetLocationProjectDomainId(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationProjectDomainId(siteRequest_, v);
 		case "locationProjectDomainName":
-			return BareMetalNetwork.staticSetLocationProjectDomainName(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationProjectDomainName(siteRequest_, v);
 		case "locationProjectId":
-			return BareMetalNetwork.staticSetLocationProjectId(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationProjectId(siteRequest_, v);
 		case "locationProjectName":
-			return BareMetalNetwork.staticSetLocationProjectName(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationProjectName(siteRequest_, v);
 		case "locationRegionName":
-			return BareMetalNetwork.staticSetLocationRegionName(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationRegionName(siteRequest_, v);
 		case "locationZone":
-			return BareMetalNetwork.staticSetLocationZone(siteRequest_, o);
+			return BareMetalNetwork.staticSetLocationZone(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -4263,6 +4267,8 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionBareMetalNetwork(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_id:
 			return "The ID of this bare metal network";

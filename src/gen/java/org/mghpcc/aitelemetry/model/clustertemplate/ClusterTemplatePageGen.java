@@ -229,13 +229,13 @@ public abstract class ClusterTemplatePageGen<DEV> extends ClusterTemplateGenPage
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterTemplatePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplatePage o) {
+		return staticSetClusterTemplatePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterTemplatePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterTemplatePage(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplatePage o) {
 		switch(entityVar) {
 			default:
-				return ClusterTemplateGenPage.staticSetClusterTemplateGenPage(entityVar,  siteRequest_, o);
+				return ClusterTemplateGenPage.staticSetClusterTemplateGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class ClusterTemplatePageGen<DEV> extends ClusterTemplateGenPage
 	}
 
 	public static String descriptionClusterTemplatePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return ClusterTemplateGenPage.descriptionClusterTemplateGenPage(var);

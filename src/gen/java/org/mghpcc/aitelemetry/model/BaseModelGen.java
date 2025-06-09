@@ -281,21 +281,22 @@ public abstract class BaseModelGen<DEV> extends Object {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setCreated(String o) {
-		this.created = BaseModel.staticSetCreated(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.created = BaseModel.staticSetCreated(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setCreated(Date o) {
 		this.created = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetCreated(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetCreated(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseModel createdInit() {
 		Wrap<ZonedDateTime> createdWrap = new Wrap<ZonedDateTime>().var("created");
@@ -313,11 +314,13 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	public static String staticSearchStrCreated(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchCreated(siteRequest_, BaseModel.staticSetCreated(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseModel.staticSearchCreated(siteRequest_, BaseModel.staticSetCreated(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqCreated(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchCreated(siteRequest_, BaseModel.staticSetCreated(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseModel.staticSearchCreated(siteRequest_, BaseModel.staticSetCreated(siteRequest_, o, zoneId)).toString();
 	}
 
 	public OffsetDateTime sqlCreated() {
@@ -361,21 +364,22 @@ public abstract class BaseModelGen<DEV> extends Object {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setModified(String o) {
-		this.modified = BaseModel.staticSetModified(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.modified = BaseModel.staticSetModified(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setModified(Date o) {
 		this.modified = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetModified(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetModified(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseModel modifiedInit() {
 		Wrap<ZonedDateTime> modifiedWrap = new Wrap<ZonedDateTime>().var("modified");
@@ -393,11 +397,13 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	public static String staticSearchStrModified(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchModified(siteRequest_, BaseModel.staticSetModified(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseModel.staticSearchModified(siteRequest_, BaseModel.staticSetModified(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqModified(SiteRequest siteRequest_, String o) {
-		return BaseModel.staticSearchModified(siteRequest_, BaseModel.staticSetModified(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseModel.staticSearchModified(siteRequest_, BaseModel.staticSetModified(siteRequest_, o, zoneId)).toString();
 	}
 
 	//////////////
@@ -1450,47 +1456,45 @@ public abstract class BaseModelGen<DEV> extends Object {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBaseModel(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BaseModel o) {
+		return staticSetBaseModel(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBaseModel(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBaseModel(String entityVar, SiteRequest siteRequest_, String v, BaseModel o) {
 		switch(entityVar) {
 		case "pk":
-			return BaseModel.staticSetPk(siteRequest_, o);
+			return BaseModel.staticSetPk(siteRequest_, v);
 		case "created":
-			return BaseModel.staticSetCreated(siteRequest_, o);
 		case "modified":
-			return BaseModel.staticSetModified(siteRequest_, o);
 		case "archived":
-			return BaseModel.staticSetArchived(siteRequest_, o);
+			return BaseModel.staticSetArchived(siteRequest_, v);
 		case "classCanonicalName":
-			return BaseModel.staticSetClassCanonicalName(siteRequest_, o);
+			return BaseModel.staticSetClassCanonicalName(siteRequest_, v);
 		case "classSimpleName":
-			return BaseModel.staticSetClassSimpleName(siteRequest_, o);
+			return BaseModel.staticSetClassSimpleName(siteRequest_, v);
 		case "classCanonicalNames":
-			return BaseModel.staticSetClassCanonicalNames(siteRequest_, o);
+			return BaseModel.staticSetClassCanonicalNames(siteRequest_, v);
 		case "sessionId":
-			return BaseModel.staticSetSessionId(siteRequest_, o);
+			return BaseModel.staticSetSessionId(siteRequest_, v);
 		case "userKey":
-			return BaseModel.staticSetUserKey(siteRequest_, o);
+			return BaseModel.staticSetUserKey(siteRequest_, v);
 		case "saves":
-			return BaseModel.staticSetSaves(siteRequest_, o);
+			return BaseModel.staticSetSaves(siteRequest_, v);
 		case "objectTitle":
-			return BaseModel.staticSetObjectTitle(siteRequest_, o);
+			return BaseModel.staticSetObjectTitle(siteRequest_, v);
 		case "displayPage":
-			return BaseModel.staticSetDisplayPage(siteRequest_, o);
+			return BaseModel.staticSetDisplayPage(siteRequest_, v);
 		case "editPage":
-			return BaseModel.staticSetEditPage(siteRequest_, o);
+			return BaseModel.staticSetEditPage(siteRequest_, v);
 		case "userPage":
-			return BaseModel.staticSetUserPage(siteRequest_, o);
+			return BaseModel.staticSetUserPage(siteRequest_, v);
 		case "download":
-			return BaseModel.staticSetDownload(siteRequest_, o);
+			return BaseModel.staticSetDownload(siteRequest_, v);
 		case "objectSuggest":
-			return BaseModel.staticSetObjectSuggest(siteRequest_, o);
+			return BaseModel.staticSetObjectSuggest(siteRequest_, v);
 		case "objectText":
-			return BaseModel.staticSetObjectText(siteRequest_, o);
+			return BaseModel.staticSetObjectText(siteRequest_, v);
 		case "solrId":
-			return BaseModel.staticSetSolrId(siteRequest_, o);
+			return BaseModel.staticSetSolrId(siteRequest_, v);
 			default:
 				return null;
 		}
@@ -2324,6 +2328,8 @@ public abstract class BaseModelGen<DEV> extends Object {
 	}
 
 	public static String descriptionBaseModel(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_siteRequest_:
 			return "The current request object";

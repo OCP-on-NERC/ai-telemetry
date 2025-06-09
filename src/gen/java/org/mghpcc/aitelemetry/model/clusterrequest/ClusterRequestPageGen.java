@@ -229,13 +229,13 @@ public abstract class ClusterRequestPageGen<DEV> extends ClusterRequestGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterRequestPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterRequestPage o) {
+		return staticSetClusterRequestPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterRequestPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterRequestPage(String entityVar, SiteRequest siteRequest_, String v, ClusterRequestPage o) {
 		switch(entityVar) {
 			default:
-				return ClusterRequestGenPage.staticSetClusterRequestGenPage(entityVar,  siteRequest_, o);
+				return ClusterRequestGenPage.staticSetClusterRequestGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class ClusterRequestPageGen<DEV> extends ClusterRequestGenPage {
 	}
 
 	public static String descriptionClusterRequestPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return ClusterRequestGenPage.descriptionClusterRequestGenPage(var);

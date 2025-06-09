@@ -147,9 +147,9 @@ ENABLE_WORKER_VERTICLE: true
 ###################
 
 # The number of Vert.x instances to run per pod. 
-SITE_INSTANCES: 1
+SITE_INSTANCES: 4
 # The number of Vert.x worker instances to run per pod. 
-WORKER_POOL_SIZE: 2
+WORKER_POOL_SIZE: 4
 # The max event loop execute time in seconds. 
 VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
 # The max worker execute time in seconds. 
@@ -660,3 +660,7 @@ ENABLE_IMPORT_DATA_BareMetalNetwork: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareM
 ENABLE_IMPORT_DATA_BareMetalNode: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalNode') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_BareMetalResourceClass: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalResourceClass') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_ManagedCluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalCluster') | default('true', true) | bool }}"
+
+ENABLE_FEATURE_OBSERVABILITY: "{{ lookup('env', 'ENABLE_FEATURE_OBSERVABILITY') | default('true', true) | bool }}"
+ENABLE_FEATURE_ORDER_BARE_METAL: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_BARE_METAL') | default('false', true) | bool }}"
+ENABLE_FEATURE_ORDER_CLUSTER: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_CLUSTER') | default('false', true) | bool }}"

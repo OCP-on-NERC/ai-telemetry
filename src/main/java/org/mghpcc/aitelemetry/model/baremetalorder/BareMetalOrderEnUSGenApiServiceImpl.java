@@ -153,10 +153,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
 							response200SearchBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -236,7 +232,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			response200Search(listBareMetalOrder.getRequest(), listBareMetalOrder.getResponse(), json);
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -321,10 +317,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
 							response200GETBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -376,7 +368,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(listBareMetalOrder.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -425,7 +417,9 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("PATCH")) {
+					scopes.add("GET");
+					scopes.add("PATCH");
+					if(authorizationDecisionResponse.failed() && !scopes.contains("PATCH")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
 							new ServiceResponse(403, "FORBIDDEN",
@@ -440,10 +434,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -455,7 +445,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalOrder.first());
 								apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
@@ -582,7 +572,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							BareMetalOrder o2 = jsonObject.mapTo(BareMetalOrder.class);
 							o2.setSiteRequest_(siteRequest);
@@ -681,7 +671,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -716,12 +706,13 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case "setNetworkId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("BareMetalNetwork");
 									}
-									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, pk2, val).onSuccess(a -> {
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, solrId2, val).onSuccess(a -> {
 										promise2.complete();
 									}).onFailure(ex -> {
 										promise2.fail(ex);
@@ -733,7 +724,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						});
 						break;
 					case "removeNetworkId":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
 							futures2.add(Future.future(promise2 -> {
 								sql(siteRequest).update(BareMetalOrder.class, pk).setToNull(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null).onSuccess(a -> {
 									promise2.complete();
@@ -908,7 +899,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -957,6 +948,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					scopes.add("GET");
+					scopes.add("PATCH");
 					if(authorizationDecisionResponse.failed() || !scopes.contains("POST")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -972,10 +965,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						ApiRequest apiRequest = new ApiRequest();
 						apiRequest.setRows(1L);
 						apiRequest.setNumFound(1L);
@@ -1004,7 +993,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						eventBus.request(BareMetalOrder.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postBareMetalOrderFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(BareMetalOrder.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postBareMetalOrder succeeded. "));
 						}).onFailure(ex -> {
@@ -1177,7 +1166,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1232,12 +1221,13 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case BareMetalOrder.VAR_networkId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("BareMetalNetwork");
 									}
-									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, pk2, val).onSuccess(a -> {
+									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, solrId2, val).onSuccess(a -> {
 										promise2.complete();
 									}).onFailure(ex -> {
 										promise2.fail(ex);
@@ -1427,7 +1417,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1476,6 +1466,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					scopes.add("GET");
+					scopes.add("PATCH");
 					if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -1491,10 +1483,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -1505,7 +1493,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalOrder.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
@@ -1632,7 +1620,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteBareMetalOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1724,7 +1712,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1744,9 +1732,10 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case BareMetalOrder.VAR_networkId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("BareMetalNetwork");
 									}
 									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null, null).onSuccess(a -> {
@@ -1801,7 +1790,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1852,10 +1841,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
 							response200SearchPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -1927,7 +1912,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2017,10 +2002,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
 							response200EditPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2092,7 +2073,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2182,10 +2163,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, false).onSuccess(listBareMetalOrder -> {
 							response200UserPageBareMetalOrder(listBareMetalOrder).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
@@ -2257,7 +2234,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepBareMetalOrderPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2345,6 +2322,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					scopes.add("GET");
+					scopes.add("PATCH");
 					if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -2360,10 +2339,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						if(!scopes2.contains("POST"))
-							scopes2.add("POST");
-						if(!scopes2.contains("PATCH"))
-							scopes2.add("PATCH");
 						searchBareMetalOrderList(siteRequest, false, true, true).onSuccess(listBareMetalOrder -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
@@ -2374,7 +2349,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listBareMetalOrder.first());
-								apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketBareMetalOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterBareMetalOrder(apiRequest, listBareMetalOrder).onSuccess(e -> {
@@ -2501,7 +2476,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listBareMetalOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterBareMetalOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2593,7 +2568,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2613,9 +2588,10 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case BareMetalOrder.VAR_networkId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_pk), BareMetalNetwork.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(BareMetalNetwork.varIndexedBareMetalNetwork(BareMetalNetwork.VAR_id), BareMetalNetwork.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("BareMetalNetwork");
 									}
 									sql(siteRequest).update(BareMetalOrder.class, pk).set(BareMetalOrder.VAR_networkId, BareMetalNetwork.class, null, null).onSuccess(a -> {
@@ -2670,7 +2646,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String pk = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("pk");
-						String m = String.format("%s %s not found", "bare metal order", pk);
+				String m = String.format("%s %s not found", "bare metal order", pk);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3056,33 +3032,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	public Future<Void> relateBareMetalOrder(BareMetalOrder o) {
 		Promise<Void> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = o.getSiteRequest_();
-			SqlConnection sqlConnection = siteRequest.getSqlConnection();
-			sqlConnection.preparedQuery("SELECT id as pk1, 'networkId' from BareMetalNetwork where id=$1")
-					.collecting(Collectors.toList())
-					.execute(Tuple.of(o.getNetworkId())
-					).onSuccess(result -> {
-				try {
-					if(result != null) {
-						for(Row definition : result.value()) {
-							o.relateForClass(definition.getString(1), definition.getValue(0));
-						}
-					}
-					promise.complete();
-				} catch(Exception ex) {
-					LOG.error(String.format("relateBareMetalOrder failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("relateBareMetalOrder failed. "), ex2);
-				promise.fail(ex2);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("relateBareMetalOrder failed. "), ex);
-			promise.fail(ex);
-		}
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3178,22 +3128,22 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 
-					if("BareMetalNetwork".equals(classSimpleName2) && pk2 != null) {
+					if("BareMetalNetwork".equals(classSimpleName2) && solrId2 != null) {
 						SearchList<BareMetalNetwork> searchList2 = new SearchList<BareMetalNetwork>();
 						searchList2.setStore(true);
 						searchList2.q("*:*");
 						searchList2.setC(BareMetalNetwork.class);
-						searchList2.fq("pk_docvalues_long:" + pk2);
+						searchList2.fq("solrId:" + solrId2);
 						searchList2.rows(1L);
 						futures.add(Future.future(promise2 -> {
 							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
@@ -3203,7 +3153,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 									params.put("body", new JsonObject());
 									params.put("cookie", new JsonObject());
 									params.put("path", new JsonObject());
-									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
 									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 									JsonObject json = new JsonObject().put("context", context);
 									eventBus.request("ai-telemetry-enUS-BareMetalNetwork", json, new DeliveryOptions().addHeader("action", "patchBareMetalNetworkFuture")).onSuccess(c -> {
@@ -3280,7 +3230,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
 			page.persistForClass(BareMetalOrder.VAR_description, BareMetalOrder.staticSetDescription(siteRequest2, (String)result.get(BareMetalOrder.VAR_description)));
-			page.persistForClass(BareMetalOrder.VAR_created, BareMetalOrder.staticSetCreated(siteRequest2, (String)result.get(BareMetalOrder.VAR_created)));
+			page.persistForClass(BareMetalOrder.VAR_created, BareMetalOrder.staticSetCreated(siteRequest2, (String)result.get(BareMetalOrder.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(BareMetalOrder.VAR_networkId, BareMetalOrder.staticSetNetworkId(siteRequest2, (String)result.get(BareMetalOrder.VAR_networkId)));
 			page.persistForClass(BareMetalOrder.VAR_archived, BareMetalOrder.staticSetArchived(siteRequest2, (String)result.get(BareMetalOrder.VAR_archived)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfFc430, BareMetalOrder.staticSetNumberOfFc430(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfFc430)));

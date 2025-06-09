@@ -460,17 +460,17 @@ public abstract class BareMetalResourceClassGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalResourceClass(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClass o) {
+		return staticSetBareMetalResourceClass(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalResourceClass(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalResourceClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClass o) {
 		switch(entityVar) {
 		case "name":
-			return BareMetalResourceClass.staticSetName(siteRequest_, o);
+			return BareMetalResourceClass.staticSetName(siteRequest_, v);
 		case "count":
-			return BareMetalResourceClass.staticSetCount(siteRequest_, o);
+			return BareMetalResourceClass.staticSetCount(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -796,6 +796,8 @@ public abstract class BareMetalResourceClassGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionBareMetalResourceClass(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_name:
 			return "The name of the resource class";

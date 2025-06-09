@@ -255,7 +255,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			response200Search(listAiCluster.getRequest(), listAiCluster.getResponse(), json);
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -416,7 +416,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(listAiCluster.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -516,7 +516,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiCluster.first());
 								apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiCluster", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHAiCluster(apiRequest, listAiCluster).onSuccess(e -> {
@@ -643,7 +643,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiCluster o2 = jsonObject.mapTo(AiCluster.class);
 							o2.setSiteRequest_(siteRequest);
@@ -742,7 +742,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -931,7 +931,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1048,7 +1048,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						eventBus.request(AiCluster.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiClusterFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(AiCluster.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postAiCluster succeeded. "));
 						}).onFailure(ex -> {
@@ -1221,7 +1221,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1443,7 +1443,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1542,7 +1542,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiCluster.first());
-								apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiCluster", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEAiCluster(apiRequest, listAiCluster).onSuccess(e -> {
@@ -1669,7 +1669,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteAiClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1761,7 +1761,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1819,7 +1819,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2092,8 +2092,8 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getClusterName());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getClusterName()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchAiClusterFuture(o, true).onSuccess(b -> {
@@ -2164,7 +2164,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2337,7 +2337,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2524,7 +2524,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2711,7 +2711,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.setVertx(vertx);
 			page.promiseDeepAiClusterPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2849,7 +2849,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiCluster.first());
-								apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiCluster", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterAiCluster(apiRequest, listAiCluster).onSuccess(e -> {
@@ -2976,7 +2976,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getClusterName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterAiClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -3068,7 +3068,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -3126,7 +3126,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String clusterName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterName");
-						String m = String.format("%s %s not found", "AI cluster", clusterName);
+				String m = String.format("%s %s not found", "AI cluster", clusterName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3507,7 +3507,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	public Future<Void> relateAiCluster(AiCluster o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3603,14 +3603,14 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3671,7 +3671,7 @@ public class AiClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 			page.persistForClass(AiCluster.VAR_clusterName, AiCluster.staticSetClusterName(siteRequest2, (String)result.get(AiCluster.VAR_clusterName)));
 			page.persistForClass(AiCluster.VAR_description, AiCluster.staticSetDescription(siteRequest2, (String)result.get(AiCluster.VAR_description)));
-			page.persistForClass(AiCluster.VAR_created, AiCluster.staticSetCreated(siteRequest2, (String)result.get(AiCluster.VAR_created)));
+			page.persistForClass(AiCluster.VAR_created, AiCluster.staticSetCreated(siteRequest2, (String)result.get(AiCluster.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(AiCluster.VAR_archived, AiCluster.staticSetArchived(siteRequest2, (String)result.get(AiCluster.VAR_archived)));
 			page.persistForClass(AiCluster.VAR_location, AiCluster.staticSetLocation(siteRequest2, (String)result.get(AiCluster.VAR_location)));
 			page.persistForClass(AiCluster.VAR_id, AiCluster.staticSetId(siteRequest2, (String)result.get(AiCluster.VAR_id)));

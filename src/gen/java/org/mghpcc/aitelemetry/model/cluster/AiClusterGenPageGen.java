@@ -634,23 +634,23 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiClusterGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiClusterGenPage o) {
+		return staticSetAiClusterGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiClusterGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiClusterGenPage(String entityVar, SiteRequest siteRequest_, String v, AiClusterGenPage o) {
 		switch(entityVar) {
 		case "listAiCluster":
-			return AiClusterGenPage.staticSetListAiCluster(siteRequest_, o);
+			return AiClusterGenPage.staticSetListAiCluster(siteRequest_, v);
 		case "resultCount":
-			return AiClusterGenPage.staticSetResultCount(siteRequest_, o);
+			return AiClusterGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return AiClusterGenPage.staticSetPk(siteRequest_, o);
+			return AiClusterGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return AiClusterGenPage.staticSetSolrId(siteRequest_, o);
+			return AiClusterGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriAiCluster":
-			return AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, o);
+			return AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionAiClusterGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

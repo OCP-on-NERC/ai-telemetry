@@ -43,6 +43,7 @@ import java.util.HashMap;
 import org.computate.search.tool.TimeTool;
 import org.computate.search.tool.SearchTool;
 import java.time.ZoneId;
+import io.vertx.pgclient.data.Point;
 
 
 /**
@@ -534,7 +535,7 @@ public class SiteUserGenPage extends SiteUserGenPageGen<PageLayout> {
 
   @Override
   protected void _classIcon(Wrap<String> c) {
-      c.o("<i class=\"fa-duotone fa-solid fa-user-gear\"></i>");
+      c.o("<i class=\"fa-duotone fa-regular fa-user-gear\"></i>");
   }
 
   protected void _pageUriSiteUser(Wrap<String> c) {

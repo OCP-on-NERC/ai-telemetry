@@ -634,23 +634,23 @@ public abstract class BareMetalNetworkGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalNetworkGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetworkGenPage o) {
+		return staticSetBareMetalNetworkGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalNetworkGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalNetworkGenPage(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetworkGenPage o) {
 		switch(entityVar) {
 		case "listBareMetalNetwork":
-			return BareMetalNetworkGenPage.staticSetListBareMetalNetwork(siteRequest_, o);
+			return BareMetalNetworkGenPage.staticSetListBareMetalNetwork(siteRequest_, v);
 		case "resultCount":
-			return BareMetalNetworkGenPage.staticSetResultCount(siteRequest_, o);
+			return BareMetalNetworkGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return BareMetalNetworkGenPage.staticSetPk(siteRequest_, o);
+			return BareMetalNetworkGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return BareMetalNetworkGenPage.staticSetSolrId(siteRequest_, o);
+			return BareMetalNetworkGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriBareMetalNetwork":
-			return BareMetalNetworkGenPage.staticSetPageUriBareMetalNetwork(siteRequest_, o);
+			return BareMetalNetworkGenPage.staticSetPageUriBareMetalNetwork(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class BareMetalNetworkGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionBareMetalNetworkGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

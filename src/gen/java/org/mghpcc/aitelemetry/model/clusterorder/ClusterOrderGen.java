@@ -585,21 +585,21 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterOrder(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterOrder o) {
+		return staticSetClusterOrder(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterOrder(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterOrder(String entityVar, SiteRequest siteRequest_, String v, ClusterOrder o) {
 		switch(entityVar) {
 		case "id":
-			return ClusterOrder.staticSetId(siteRequest_, o);
+			return ClusterOrder.staticSetId(siteRequest_, v);
 		case "templateId":
-			return ClusterOrder.staticSetTemplateId(siteRequest_, o);
+			return ClusterOrder.staticSetTemplateId(siteRequest_, v);
 		case "state":
-			return ClusterOrder.staticSetState(siteRequest_, o);
+			return ClusterOrder.staticSetState(siteRequest_, v);
 		case "clusterId":
-			return ClusterOrder.staticSetClusterId(siteRequest_, o);
+			return ClusterOrder.staticSetClusterId(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -995,6 +995,8 @@ public abstract class ClusterOrderGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionClusterOrder(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_id:
 			return "The ID of this order";
