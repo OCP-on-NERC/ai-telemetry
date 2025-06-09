@@ -178,18 +178,15 @@ import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
-import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.gpuslice.GpuSliceEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.gpuslice.GpuSlice;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.project.AiProject;
-import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrder;
 import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
+import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrder;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedCluster;
@@ -361,22 +358,18 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			apiGpuDevice.setVertx(vertx);
 			apiGpuDevice.setConfig(config);
 			apiGpuDevice.setWebClient(webClient);
-			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
-			apiGpuSlice.setVertx(vertx);
-			apiGpuSlice.setConfig(config);
-			apiGpuSlice.setWebClient(webClient);
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			apiAiProject.setVertx(vertx);
 			apiAiProject.setConfig(config);
 			apiAiProject.setWebClient(webClient);
-			ClusterOrderEnUSApiServiceImpl apiClusterOrder = new ClusterOrderEnUSApiServiceImpl();
-			apiClusterOrder.setVertx(vertx);
-			apiClusterOrder.setConfig(config);
-			apiClusterOrder.setWebClient(webClient);
 			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
 			apiClusterTemplate.setVertx(vertx);
 			apiClusterTemplate.setConfig(config);
 			apiClusterTemplate.setWebClient(webClient);
+			ClusterOrderEnUSApiServiceImpl apiClusterOrder = new ClusterOrderEnUSApiServiceImpl();
+			apiClusterOrder.setVertx(vertx);
+			apiClusterOrder.setConfig(config);
+			apiClusterOrder.setWebClient(webClient);
 			ManagedClusterEnUSApiServiceImpl apiManagedCluster = new ManagedClusterEnUSApiServiceImpl();
 			apiManagedCluster.setVertx(vertx);
 			apiManagedCluster.setConfig(config);
@@ -416,43 +409,39 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 								apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" })
 										.compose(q5 -> apiGpuDevice.authorizeGroupData(authToken, GpuDevice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin" }))
 										.onSuccess(q5 -> {
-									apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-											.compose(q6 -> apiGpuSlice.authorizeGroupData(authToken, GpuSlice.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+									apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "AiProjectAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+											.compose(q6 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+											.compose(q6 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin", "SuperAdmin" }))
 											.onSuccess(q6 -> {
-										apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "AiProjectAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
-												.compose(q7 -> apiAiProject.authorizeGroupData(authToken, AiProject.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin", "SuperAdmin" }))
+										apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" })
+												.compose(q7 -> apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 												.onSuccess(q7 -> {
 											apiClusterOrder.authorizeGroupData(authToken, ClusterOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "GET", "PATCH", "DELETE", "Admin" })
 													.compose(q8 -> apiClusterOrder.authorizeGroupData(authToken, ClusterOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 													.onSuccess(q8 -> {
-												apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" })
-														.compose(q9 -> apiClusterTemplate.authorizeGroupData(authToken, ClusterTemplate.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+												apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "GET", "PATCH", "DELETE", "Admin" })
+														.compose(q9 -> apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 														.onSuccess(q9 -> {
-													apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "GET", "PATCH", "DELETE", "Admin" })
-															.compose(q10 -> apiManagedCluster.authorizeGroupData(authToken, ManagedCluster.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+													apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" })
+															.compose(q10 -> apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 															.onSuccess(q10 -> {
-														apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" })
-																.compose(q11 -> apiBareMetalResourceClass.authorizeGroupData(authToken, BareMetalResourceClass.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+														apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "ClusterOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+																.compose(q11 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																.onSuccess(q11 -> {
-															apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "ClusterOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-																	.compose(q12 -> apiClusterRequest.authorizeGroupData(authToken, ClusterRequest.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+															apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkReader", new String[] { "GET" })
+																	.compose(q12 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+																	.compose(q12 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																	.onSuccess(q12 -> {
-																apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "BareMetalNetworkReader", new String[] { "GET" })
-																		.compose(q13 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
-																		.compose(q13 -> apiBareMetalNetwork.authorizeGroupData(authToken, BareMetalNetwork.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+																apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "BareMetalNodeReader", new String[] { "GET" })
+																		.compose(q13 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
+																		.compose(q13 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																		.onSuccess(q13 -> {
-																	apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "BareMetalNodeReader", new String[] { "GET" })
-																			.compose(q14 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "Admin", new String[] { "GET" }))
-																			.compose(q14 -> apiBareMetalNode.authorizeGroupData(authToken, BareMetalNode.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+																	apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "BareMetalOrderOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+																			.compose(q14 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
+																			.compose(q14 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
 																			.onSuccess(q14 -> {
-																		apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "BareMetalOrderOwner", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-																				.compose(q15 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" }))
-																				.compose(q15 -> apiBareMetalOrder.authorizeGroupData(authToken, BareMetalOrder.CLASS_SIMPLE_NAME, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
-																				.onSuccess(q15 -> {
-																			LOG.info("authorize data complete");
-																			promise.complete();
-																	}).onFailure(ex -> promise.fail(ex));
+																		LOG.info("authorize data complete");
+																		promise.complete();
 																}).onFailure(ex -> promise.fail(ex));
 															}).onFailure(ex -> promise.fail(ex));
 														}).onFailure(ex -> promise.fail(ex));
@@ -1473,7 +1462,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 		Promise<Void> promise = Promise.promise();
 		try {
 			List<Future<?>> futures = new ArrayList<>();
-			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","GpuSlice","AiProject","ClusterOrder","ClusterTemplate","ManagedCluster","BareMetalResourceClass","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
+			List<String> authResources = Arrays.asList("SitePage","AiCluster","AiNode","GpuDevice","AiProject","ClusterTemplate","ClusterOrder","ManagedCluster","BareMetalResourceClass","ClusterRequest","BareMetalNetwork","BareMetalNode","BareMetalOrder");
 			List<String> publicResources = Arrays.asList("SitePage","ClusterTemplate","BareMetalResourceClass");
 			SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
 			initializeApiService(apiSiteUser);
@@ -1497,21 +1486,17 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 			initializeApiService(apiGpuDevice);
 			registerApiService(GpuDeviceEnUSGenApiService.class, apiGpuDevice, GpuDevice.getClassApiAddress());
 
-			GpuSliceEnUSApiServiceImpl apiGpuSlice = new GpuSliceEnUSApiServiceImpl();
-			initializeApiService(apiGpuSlice);
-			registerApiService(GpuSliceEnUSGenApiService.class, apiGpuSlice, GpuSlice.getClassApiAddress());
-
 			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
 			initializeApiService(apiAiProject);
 			registerApiService(AiProjectEnUSGenApiService.class, apiAiProject, AiProject.getClassApiAddress());
 
-			ClusterOrderEnUSApiServiceImpl apiClusterOrder = new ClusterOrderEnUSApiServiceImpl();
-			initializeApiService(apiClusterOrder);
-			registerApiService(ClusterOrderEnUSGenApiService.class, apiClusterOrder, ClusterOrder.getClassApiAddress());
-
 			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
 			initializeApiService(apiClusterTemplate);
 			registerApiService(ClusterTemplateEnUSGenApiService.class, apiClusterTemplate, ClusterTemplate.getClassApiAddress());
+
+			ClusterOrderEnUSApiServiceImpl apiClusterOrder = new ClusterOrderEnUSApiServiceImpl();
+			initializeApiService(apiClusterOrder);
+			registerApiService(ClusterOrderEnUSGenApiService.class, apiClusterOrder, ClusterOrder.getClassApiAddress());
 
 			ManagedClusterEnUSApiServiceImpl apiManagedCluster = new ManagedClusterEnUSApiServiceImpl();
 			initializeApiService(apiManagedCluster);
@@ -1572,7 +1557,7 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
 					String pageTemplateUri = "/en-us/HomePage.htm";
 					Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 					String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config());
+					JsonObject ctx = ConfigKeys.getPageContext(config());
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					handler.response().putHeader("Content-Type", "text/html");

@@ -2354,7 +2354,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			page.setVertx(vertx);
 			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2541,7 +2541,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			page.setVertx(vertx);
 			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2728,7 +2728,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			page.setVertx(vertx);
 			page.promiseDeepAiNodePage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);

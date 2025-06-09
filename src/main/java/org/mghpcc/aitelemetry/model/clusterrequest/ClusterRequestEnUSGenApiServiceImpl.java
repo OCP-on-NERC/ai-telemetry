@@ -2137,7 +2137,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2298,7 +2298,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
@@ -2459,7 +2459,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setVertx(vertx);
 			page.promiseDeepClusterRequestPage(siteRequest).onSuccess(a -> {
 				try {
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);

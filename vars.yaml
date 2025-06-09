@@ -660,3 +660,7 @@ ENABLE_IMPORT_DATA_BareMetalNetwork: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareM
 ENABLE_IMPORT_DATA_BareMetalNode: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalNode') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_BareMetalResourceClass: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalResourceClass') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_ManagedCluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_BareMetalCluster') | default('true', true) | bool }}"
+
+ENABLE_FEATURE_OBSERVABILITY: "{{ lookup('env', 'ENABLE_FEATURE_OBSERVABILITY') | default('true', true) | bool }}"
+ENABLE_FEATURE_ORDER_BARE_METAL: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_BARE_METAL') | default('false', true) | bool }}"
+ENABLE_FEATURE_ORDER_CLUSTER: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_CLUSTER') | default('false', true) | bool }}"

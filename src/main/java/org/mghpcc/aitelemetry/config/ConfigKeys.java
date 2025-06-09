@@ -3,10 +3,25 @@ package org.mghpcc.aitelemetry.config;
 
 import org.computate.vertx.config.ComputateConfigKeys;
 
+import io.vertx.core.json.JsonObject;
+
 /**
  * Keyword: classSimpleNameConfigKeys
  */
 public class ConfigKeys extends ComputateConfigKeys {
+
+	public static JsonObject getPageContext(JsonObject config) {
+        JsonObject ctx = ComputateConfigKeys.getPageContext(config);
+        ctx.put(ENABLE_FEATURE_OBSERVABILITY, config.getString(ENABLE_FEATURE_OBSERVABILITY));
+        ctx.put(ENABLE_FEATURE_ORDER_BARE_METAL, config.getString(ENABLE_FEATURE_ORDER_BARE_METAL));
+        ctx.put(ENABLE_FEATURE_ORDER_CLUSTER, config.getString(ENABLE_FEATURE_ORDER_CLUSTER));
+        return ctx;
+    }
+
+    public static final String ENABLE_FEATURE_OBSERVABILITY = "ENABLE_FEATURE_OBSERVABILITY";
+    public static final String ENABLE_FEATURE_ORDER_BARE_METAL = "ENABLE_FEATURE_ORDER_BARE_METAL";
+    public static final String ENABLE_FEATURE_ORDER_CLUSTER = "ENABLE_FEATURE_ORDER_CLUSTER";
+
     public static final String PROM_KEYCLOAK_PROXY_PORT = "PROM_KEYCLOAK_PROXY_PORT";
     public static final String PROM_KEYCLOAK_PROXY_HOST_NAME = "PROM_KEYCLOAK_PROXY_HOST_NAME";
     public static final String PROM_KEYCLOAK_PROXY_SSL = "PROM_KEYCLOAK_PROXY_SSL";

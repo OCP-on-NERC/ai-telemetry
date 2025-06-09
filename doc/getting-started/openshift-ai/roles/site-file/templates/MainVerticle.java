@@ -1193,7 +1193,7 @@ public class MainVerticle extends AbstractVerticle {
 					String pageTemplateUri = "/en-us/HomePage.htm";
 					Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 					String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-					JsonObject ctx = ComputateConfigKeys.getPageContext(config());
+					JsonObject ctx = ConfigKeys.getPageContext(config());
 					String renderedTemplate = jinjava.render(template, ctx.getMap());
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					handler.response().putHeader("Content-Type", "text/html");
