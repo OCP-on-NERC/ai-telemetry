@@ -255,7 +255,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			response200Search(listAiNode.getRequest(), listAiNode.getResponse(), json);
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -416,7 +416,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = JsonObject.mapFrom(listAiNode.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -516,7 +516,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiNode.first());
 								apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHAiNode(apiRequest, listAiNode).onSuccess(e -> {
@@ -643,7 +643,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							AiNode o2 = jsonObject.mapTo(AiNode.class);
 							o2.setSiteRequest_(siteRequest);
@@ -742,7 +742,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -939,7 +939,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1056,7 +1056,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						eventBus.request(AiNode.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiNodeFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(AiNode.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postAiNode succeeded. "));
 						}).onFailure(ex -> {
@@ -1229,7 +1229,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1460,7 +1460,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1559,7 +1559,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEAiNode(apiRequest, listAiNode).onSuccess(e -> {
@@ -1686,7 +1686,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteAiNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1778,7 +1778,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1836,7 +1836,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2109,8 +2109,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getNodeId());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getNodeId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchAiNodeFuture(o, true).onSuccess(b -> {
@@ -2181,7 +2181,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2866,7 +2866,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listAiNode.first());
-								apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketAiNode", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterAiNode(apiRequest, listAiNode).onSuccess(e -> {
@@ -2993,7 +2993,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getNodeId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listAiNode.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterAiNodeFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -3085,7 +3085,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -3143,7 +3143,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String nodeId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("nodeId");
-						String m = String.format("%s %s not found", "AI node", nodeId);
+				String m = String.format("%s %s not found", "AI node", nodeId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3524,7 +3524,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 	public Future<Void> relateAiNode(AiNode o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3620,14 +3620,14 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3688,7 +3688,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 
 			page.persistForClass(AiNode.VAR_clusterName, AiNode.staticSetClusterName(siteRequest2, (String)result.get(AiNode.VAR_clusterName)));
 			page.persistForClass(AiNode.VAR_nodeName, AiNode.staticSetNodeName(siteRequest2, (String)result.get(AiNode.VAR_nodeName)));
-			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created)));
+			page.persistForClass(AiNode.VAR_created, AiNode.staticSetCreated(siteRequest2, (String)result.get(AiNode.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(AiNode.VAR_nodeId, AiNode.staticSetNodeId(siteRequest2, (String)result.get(AiNode.VAR_nodeId)));
 			page.persistForClass(AiNode.VAR_description, AiNode.staticSetDescription(siteRequest2, (String)result.get(AiNode.VAR_description)));
 			page.persistForClass(AiNode.VAR_archived, AiNode.staticSetArchived(siteRequest2, (String)result.get(AiNode.VAR_archived)));

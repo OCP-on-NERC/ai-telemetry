@@ -229,7 +229,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			response200Search(listGpuDevice.getRequest(), listGpuDevice.getResponse(), json);
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -364,7 +364,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(listGpuDevice.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -438,7 +438,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuDevice.first());
 								apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuDevice", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHGpuDevice(apiRequest, listGpuDevice).onSuccess(e -> {
@@ -565,7 +565,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							GpuDevice o2 = jsonObject.mapTo(GpuDevice.class);
 							o2.setSiteRequest_(siteRequest);
@@ -664,7 +664,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -869,7 +869,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -960,7 +960,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						eventBus.request(GpuDevice.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postGpuDeviceFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(GpuDevice.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postGpuDevice succeeded. "));
 						}).onFailure(ex -> {
@@ -1133,7 +1133,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1373,7 +1373,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1446,7 +1446,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuDevice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuDevice", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEGpuDevice(apiRequest, listGpuDevice).onSuccess(e -> {
@@ -1573,7 +1573,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1665,7 +1665,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1723,7 +1723,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1970,8 +1970,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getGpuDeviceId());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getGpuDeviceId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchGpuDeviceFuture(o, true).onSuccess(b -> {
@@ -2042,7 +2042,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2595,7 +2595,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuDevice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuDevice", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterGpuDevice(apiRequest, listGpuDevice).onSuccess(e -> {
@@ -2722,7 +2722,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2814,7 +2814,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2872,7 +2872,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-						String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3253,7 +3253,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	public Future<Void> relateGpuDevice(GpuDevice o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3349,14 +3349,14 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3417,7 +3417,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 			page.persistForClass(GpuDevice.VAR_clusterName, GpuDevice.staticSetClusterName(siteRequest2, (String)result.get(GpuDevice.VAR_clusterName)));
 			page.persistForClass(GpuDevice.VAR_nodeName, GpuDevice.staticSetNodeName(siteRequest2, (String)result.get(GpuDevice.VAR_nodeName)));
-			page.persistForClass(GpuDevice.VAR_created, GpuDevice.staticSetCreated(siteRequest2, (String)result.get(GpuDevice.VAR_created)));
+			page.persistForClass(GpuDevice.VAR_created, GpuDevice.staticSetCreated(siteRequest2, (String)result.get(GpuDevice.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(GpuDevice.VAR_gpuDeviceNumber, GpuDevice.staticSetGpuDeviceNumber(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceNumber)));
 			page.persistForClass(GpuDevice.VAR_gpuDeviceId, GpuDevice.staticSetGpuDeviceId(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceId)));
 			page.persistForClass(GpuDevice.VAR_archived, GpuDevice.staticSetArchived(siteRequest2, (String)result.get(GpuDevice.VAR_archived)));

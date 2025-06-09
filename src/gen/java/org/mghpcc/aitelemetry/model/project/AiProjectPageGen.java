@@ -229,13 +229,13 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiProjectPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiProjectPage o) {
+		return staticSetAiProjectPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiProjectPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiProjectPage(String entityVar, SiteRequest siteRequest_, String v, AiProjectPage o) {
 		switch(entityVar) {
 			default:
-				return AiProjectGenPage.staticSetAiProjectGenPage(entityVar,  siteRequest_, o);
+				return AiProjectGenPage.staticSetAiProjectGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	}
 
 	public static String descriptionAiProjectPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return AiProjectGenPage.descriptionAiProjectGenPage(var);

@@ -229,13 +229,13 @@ public abstract class BareMetalNetworkPageGen<DEV> extends BareMetalNetworkGenPa
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalNetworkPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetworkPage o) {
+		return staticSetBareMetalNetworkPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalNetworkPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalNetworkPage(String entityVar, SiteRequest siteRequest_, String v, BareMetalNetworkPage o) {
 		switch(entityVar) {
 			default:
-				return BareMetalNetworkGenPage.staticSetBareMetalNetworkGenPage(entityVar,  siteRequest_, o);
+				return BareMetalNetworkGenPage.staticSetBareMetalNetworkGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class BareMetalNetworkPageGen<DEV> extends BareMetalNetworkGenPa
 	}
 
 	public static String descriptionBareMetalNetworkPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return BareMetalNetworkGenPage.descriptionBareMetalNetworkGenPage(var);

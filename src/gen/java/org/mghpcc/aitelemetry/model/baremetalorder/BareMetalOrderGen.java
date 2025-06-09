@@ -1281,39 +1281,39 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalOrder(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalOrder o) {
+		return staticSetBareMetalOrder(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalOrder(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalOrder(String entityVar, SiteRequest siteRequest_, String v, BareMetalOrder o) {
 		switch(entityVar) {
 		case "description":
-			return BareMetalOrder.staticSetDescription(siteRequest_, o);
+			return BareMetalOrder.staticSetDescription(siteRequest_, v);
 		case "networkId":
-			return BareMetalOrder.staticSetNetworkId(siteRequest_, o);
+			return BareMetalOrder.staticSetNetworkId(siteRequest_, v);
 		case "networkName":
-			return BareMetalOrder.staticSetNetworkName(siteRequest_, o);
+			return BareMetalOrder.staticSetNetworkName(siteRequest_, v);
 		case "numberOfFc430":
-			return BareMetalOrder.staticSetNumberOfFc430(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfFc430(siteRequest_, v);
 		case "numberOfFc830":
-			return BareMetalOrder.staticSetNumberOfFc830(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfFc830(siteRequest_, v);
 		case "numberOfR730xd":
-			return BareMetalOrder.staticSetNumberOfR730xd(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfR730xd(siteRequest_, v);
 		case "numberOfWhiteboxFlax1":
-			return BareMetalOrder.staticSetNumberOfWhiteboxFlax1(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfWhiteboxFlax1(siteRequest_, v);
 		case "numberOfLenovoSd650nv2A100":
-			return BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest_, v);
 		case "numberOfLenovoSd665nv3H100":
-			return BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest_, o);
+			return BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest_, v);
 		case "image":
-			return BareMetalOrder.staticSetImage(siteRequest_, o);
+			return BareMetalOrder.staticSetImage(siteRequest_, v);
 		case "sshPublicKey":
-			return BareMetalOrder.staticSetSshPublicKey(siteRequest_, o);
+			return BareMetalOrder.staticSetSshPublicKey(siteRequest_, v);
 		case "floatingIp":
-			return BareMetalOrder.staticSetFloatingIp(siteRequest_, o);
+			return BareMetalOrder.staticSetFloatingIp(siteRequest_, v);
 		case "status":
-			return BareMetalOrder.staticSetStatus(siteRequest_, o);
+			return BareMetalOrder.staticSetStatus(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -2055,6 +2055,8 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionBareMetalOrder(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_description:
 			return "The description of this bare metal order";

@@ -229,13 +229,13 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetSitePagePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, SitePagePage o) {
+		return staticSetSitePagePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetSitePagePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetSitePagePage(String entityVar, SiteRequest siteRequest_, String v, SitePagePage o) {
 		switch(entityVar) {
 			default:
-				return SitePageGenPage.staticSetSitePageGenPage(entityVar,  siteRequest_, o);
+				return SitePageGenPage.staticSetSitePageGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class SitePagePageGen<DEV> extends SitePageGenPage {
 	}
 
 	public static String descriptionSitePagePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return SitePageGenPage.descriptionSitePageGenPage(var);

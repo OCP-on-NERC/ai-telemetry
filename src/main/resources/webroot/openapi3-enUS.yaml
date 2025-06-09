@@ -15969,10 +15969,6 @@ components:
                     type: string
                   description:
                     type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
                   locationTitles:
                     type: array
                     items:
@@ -15983,18 +15979,22 @@ components:
                       type: string
                   location:
                     type: object
-                  id:
-                    type: string
                   entityShortId:
                     type: string
                   ngsildTenant:
-                    type: string
-                  ngsildPath:
                     type: string
                   ngsildContext:
                     type: string
                   ngsildData:
                     type: object
+                  locationColors:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+                  ngsildPath:
+                    type: string
     PATCHGpuSliceRequest:
       allOf:
         - type: object
@@ -16013,23 +16013,6 @@ components:
               type: string
             removeAllDescription:
               type: string
-            setLocationColors:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationColors:
-              type: string
-            removeAllLocationColors:
-              type: array
-              items:
-                type: string
-            addLocationColors:
-              type: string
-            addAllLocationColors:
-              type: array
-              items:
-                type: string
             setLocationTitles:
               type: array
               nullable: true
@@ -16071,13 +16054,6 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
             setEntityShortId:
               type: string
               nullable: true
@@ -16091,13 +16067,6 @@ components:
             removeNgsildTenant:
               type: string
             removeAllNgsildTenant:
-              type: string
-            setNgsildPath:
-              type: string
-              nullable: true
-            removeNgsildPath:
-              type: string
-            removeAllNgsildPath:
               type: string
             setNgsildContext:
               type: string
@@ -16113,6 +16082,37 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setLocationColors:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeLocationColors:
+              type: string
+            removeAllLocationColors:
+              type: array
+              items:
+                type: string
+            addLocationColors:
+              type: string
+            addAllLocationColors:
+              type: array
+              items:
+                type: string
+            setId:
+              type: string
+              nullable: true
+            removeId:
+              type: string
+            removeAllId:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
     PATCHGpuSliceResponse:
       allOf:
         - type: object
@@ -16131,23 +16131,6 @@ components:
               type: string
             removeAllDescription:
               type: string
-            setLocationColors:
-              type: array
-              nullable: true
-              items:
-                type: string
-            removeLocationColors:
-              type: string
-            removeAllLocationColors:
-              type: array
-              items:
-                type: string
-            addLocationColors:
-              type: string
-            addAllLocationColors:
-              type: array
-              items:
-                type: string
             setLocationTitles:
               type: array
               nullable: true
@@ -16189,13 +16172,6 @@ components:
               type: object
             removeAllLocation:
               type: object
-            setId:
-              type: string
-              nullable: true
-            removeId:
-              type: string
-            removeAllId:
-              type: string
             setEntityShortId:
               type: string
               nullable: true
@@ -16209,13 +16185,6 @@ components:
             removeNgsildTenant:
               type: string
             removeAllNgsildTenant:
-              type: string
-            setNgsildPath:
-              type: string
-              nullable: true
-            removeNgsildPath:
-              type: string
-            removeAllNgsildPath:
               type: string
             setNgsildContext:
               type: string
@@ -16231,6 +16200,37 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setLocationColors:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeLocationColors:
+              type: string
+            removeAllLocationColors:
+              type: array
+              items:
+                type: string
+            addLocationColors:
+              type: string
+            addAllLocationColors:
+              type: array
+              items:
+                type: string
+            setId:
+              type: string
+              nullable: true
+            removeId:
+              type: string
+            removeAllId:
+              type: string
+            setNgsildPath:
+              type: string
+              nullable: true
+            removeNgsildPath:
+              type: string
+            removeAllNgsildPath:
+              type: string
     POSTGpuSliceRequest:
       allOf:
         - type: object
@@ -16239,10 +16239,6 @@ components:
               type: string
             description:
               type: string
-            locationColors:
-              type: array
-              items:
-                type: string
             locationTitles:
               type: array
               items:
@@ -16253,18 +16249,22 @@ components:
                 type: string
             location:
               type: object
-            id:
-              type: string
             entityShortId:
               type: string
             ngsildTenant:
-              type: string
-            ngsildPath:
               type: string
             ngsildContext:
               type: string
             ngsildData:
               type: object
+            locationColors:
+              type: array
+              items:
+                type: string
+            id:
+              type: string
+            ngsildPath:
+              type: string
     POSTGpuSliceResponse:
       allOf:
         - type: object
@@ -16273,10 +16273,6 @@ components:
               type: string
             description:
               type: string
-            locationColors:
-              type: array
-              items:
-                type: string
             locationTitles:
               type: array
               items:
@@ -16287,18 +16283,22 @@ components:
                 type: string
             location:
               type: object
-            id:
-              type: string
             entityShortId:
               type: string
             ngsildTenant:
-              type: string
-            ngsildPath:
               type: string
             ngsildContext:
               type: string
             ngsildData:
               type: object
+            locationColors:
+              type: array
+              items:
+                type: string
+            id:
+              type: string
+            ngsildPath:
+              type: string
     DELETEFilterGpuSliceResponse:
       allOf:
         - type: object
@@ -16307,10 +16307,6 @@ components:
               type: string
             description:
               type: string
-            locationColors:
-              type: array
-              items:
-                type: string
             locationTitles:
               type: array
               items:
@@ -16321,18 +16317,22 @@ components:
                 type: string
             location:
               type: object
-            id:
-              type: string
             entityShortId:
               type: string
             ngsildTenant:
-              type: string
-            ngsildPath:
               type: string
             ngsildContext:
               type: string
             ngsildData:
               type: object
+            locationColors:
+              type: array
+              items:
+                type: string
+            id:
+              type: string
+            ngsildPath:
+              type: string
     PUTImportGpuSliceRequest:
       allOf:
         - type: object
@@ -16346,10 +16346,6 @@ components:
                     type: string
                   description:
                     type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
                   locationTitles:
                     type: array
                     items:
@@ -16360,18 +16356,22 @@ components:
                       type: string
                   location:
                     type: object
-                  id:
-                    type: string
                   entityShortId:
                     type: string
                   ngsildTenant:
-                    type: string
-                  ngsildPath:
                     type: string
                   ngsildContext:
                     type: string
                   ngsildData:
                     type: object
+                  locationColors:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+                  ngsildPath:
+                    type: string
     PUTImportGpuSliceResponse:
       allOf:
         - type: object
@@ -16380,10 +16380,6 @@ components:
                     type: string
                   description:
                     type: string
-                  locationColors:
-                    type: array
-                    items:
-                      type: string
                   locationTitles:
                     type: array
                     items:
@@ -16394,18 +16390,22 @@ components:
                       type: string
                   location:
                     type: object
-                  id:
-                    type: string
                   entityShortId:
                     type: string
                   ngsildTenant:
-                    type: string
-                  ngsildPath:
                     type: string
                   ngsildContext:
                     type: string
                   ngsildData:
                     type: object
+                  locationColors:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+                  ngsildPath:
+                    type: string
     GETGpuSliceResponse:
       allOf:
         - type: object
@@ -16414,10 +16414,6 @@ components:
               type: string
             description:
               type: string
-            locationColors:
-              type: array
-              items:
-                type: string
             locationTitles:
               type: array
               items:
@@ -16428,18 +16424,22 @@ components:
                 type: string
             location:
               type: object
-            id:
-              type: string
             entityShortId:
               type: string
             ngsildTenant:
-              type: string
-            ngsildPath:
               type: string
             ngsildContext:
               type: string
             ngsildData:
               type: object
+            locationColors:
+              type: array
+              items:
+                type: string
+            id:
+              type: string
+            ngsildPath:
+              type: string
     DELETEGpuSliceResponse:
       allOf:
         - type: object
@@ -16448,10 +16448,6 @@ components:
               type: string
             description:
               type: string
-            locationColors:
-              type: array
-              items:
-                type: string
             locationTitles:
               type: array
               items:
@@ -16462,18 +16458,22 @@ components:
                 type: string
             location:
               type: object
-            id:
-              type: string
             entityShortId:
               type: string
             ngsildTenant:
-              type: string
-            ngsildPath:
               type: string
             ngsildContext:
               type: string
             ngsildData:
               type: object
+            locationColors:
+              type: array
+              items:
+                type: string
+            id:
+              type: string
+            ngsildPath:
+              type: string
     EditPageGpuSliceResponse:
       allOf:
         - type: string
@@ -17324,6 +17324,8 @@ components:
               items:
                 type: object
                 properties:
+                  tenantName:
+                    type: string
                   clusterName:
                     type: string
                   projectName:
@@ -17338,6 +17340,13 @@ components:
       allOf:
         - type: object
           properties:
+            setTenantName:
+              type: string
+              nullable: true
+            removeTenantName:
+              type: string
+            removeAllTenantName:
+              type: string
             setClusterName:
               type: string
               nullable: true
@@ -17377,6 +17386,13 @@ components:
       allOf:
         - type: object
           properties:
+            setTenantName:
+              type: string
+              nullable: true
+            removeTenantName:
+              type: string
+            removeAllTenantName:
+              type: string
             setClusterName:
               type: string
               nullable: true
@@ -17416,6 +17432,8 @@ components:
       allOf:
         - type: object
           properties:
+            tenantName:
+              type: string
             clusterName:
               type: string
             projectName:
@@ -17430,6 +17448,8 @@ components:
       allOf:
         - type: object
           properties:
+            tenantName:
+              type: string
             clusterName:
               type: string
             projectName:
@@ -17444,6 +17464,8 @@ components:
       allOf:
         - type: object
           properties:
+            tenantName:
+              type: string
             clusterName:
               type: string
             projectName:
@@ -17463,6 +17485,8 @@ components:
               items:
                 type: object
                 properties:
+                  tenantName:
+                    type: string
                   clusterName:
                     type: string
                   projectName:
@@ -17477,6 +17501,8 @@ components:
       allOf:
         - type: object
           properties:
+                  tenantName:
+                    type: string
                   clusterName:
                     type: string
                   projectName:
@@ -17491,6 +17517,8 @@ components:
       allOf:
         - type: object
           properties:
+            tenantName:
+              type: string
             clusterName:
               type: string
             projectName:
@@ -17505,6 +17533,8 @@ components:
       allOf:
         - type: object
           properties:
+            tenantName:
+              type: string
             clusterName:
               type: string
             projectName:
@@ -18194,6 +18224,8 @@ components:
                     type: boolean
                   displayName:
                     type: string
+                  siteFontSize:
+                    type: string
                   siteTheme:
                     type: string
                   webComponentsTheme:
@@ -18274,6 +18306,13 @@ components:
             removeDisplayName:
               type: string
             removeAllDisplayName:
+              type: string
+            setSiteFontSize:
+              type: string
+              nullable: true
+            removeSiteFontSize:
+              type: string
+            removeAllSiteFontSize:
               type: string
             setSiteTheme:
               type: string
@@ -18366,6 +18405,13 @@ components:
               type: string
             removeAllDisplayName:
               type: string
+            setSiteFontSize:
+              type: string
+              nullable: true
+            removeSiteFontSize:
+              type: string
+            removeAllSiteFontSize:
+              type: string
             setSiteTheme:
               type: string
               nullable: true
@@ -18404,6 +18450,8 @@ components:
               type: boolean
             displayName:
               type: string
+            siteFontSize:
+              type: string
             siteTheme:
               type: string
             webComponentsTheme:
@@ -18431,6 +18479,8 @@ components:
             seeArchived:
               type: boolean
             displayName:
+              type: string
+            siteFontSize:
               type: string
             siteTheme:
               type: string

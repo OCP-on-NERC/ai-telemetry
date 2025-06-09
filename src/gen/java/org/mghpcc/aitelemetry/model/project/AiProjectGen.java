@@ -639,23 +639,23 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiProject(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiProject o) {
+		return staticSetAiProject(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiProject(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiProject(String entityVar, SiteRequest siteRequest_, String v, AiProject o) {
 		switch(entityVar) {
 		case "clusterName":
-			return AiProject.staticSetClusterName(siteRequest_, o);
+			return AiProject.staticSetClusterName(siteRequest_, v);
 		case "projectName":
-			return AiProject.staticSetProjectName(siteRequest_, o);
+			return AiProject.staticSetProjectName(siteRequest_, v);
 		case "projectDisplayName":
-			return AiProject.staticSetProjectDisplayName(siteRequest_, o);
+			return AiProject.staticSetProjectDisplayName(siteRequest_, v);
 		case "projectId":
-			return AiProject.staticSetProjectId(siteRequest_, o);
+			return AiProject.staticSetProjectId(siteRequest_, v);
 		case "description":
-			return AiProject.staticSetDescription(siteRequest_, o);
+			return AiProject.staticSetDescription(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -1083,6 +1083,8 @@ public abstract class AiProjectGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionAiProject(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_clusterName:
 			return "The name of this cluster";

@@ -216,21 +216,22 @@ public abstract class BaseResultGen<DEV> extends Object {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setCreated(String o) {
-		this.created = BaseResult.staticSetCreated(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.created = BaseResult.staticSetCreated(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setCreated(Date o) {
 		this.created = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetCreated(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetCreated(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseResult createdInit() {
 		Wrap<ZonedDateTime> createdWrap = new Wrap<ZonedDateTime>().var("created");
@@ -248,11 +249,13 @@ public abstract class BaseResultGen<DEV> extends Object {
 	}
 
 	public static String staticSearchStrCreated(SiteRequest siteRequest_, String o) {
-		return BaseResult.staticSearchCreated(siteRequest_, BaseResult.staticSetCreated(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseResult.staticSearchCreated(siteRequest_, BaseResult.staticSetCreated(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqCreated(SiteRequest siteRequest_, String o) {
-		return BaseResult.staticSearchCreated(siteRequest_, BaseResult.staticSetCreated(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseResult.staticSearchCreated(siteRequest_, BaseResult.staticSetCreated(siteRequest_, o, zoneId)).toString();
 	}
 
 	public OffsetDateTime sqlCreated() {
@@ -296,21 +299,22 @@ public abstract class BaseResultGen<DEV> extends Object {
 	/** Example: 2011-12-03T10:15:30+01:00 **/
 	@JsonIgnore
 	public void setModified(String o) {
-		this.modified = BaseResult.staticSetModified(siteRequest_, o);
+		ZoneId zoneId = Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"));
+		this.modified = BaseResult.staticSetModified(siteRequest_, o, zoneId);
 	}
 	@JsonIgnore
 	public void setModified(Date o) {
 		this.modified = o == null ? null : ZonedDateTime.ofInstant(o.toInstant(), ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
 	}
-	public static ZonedDateTime staticSetModified(SiteRequest siteRequest_, String o) {
+	public static ZonedDateTime staticSetModified(SiteRequest siteRequest_, String o, ZoneId zoneId) {
 		if(StringUtils.endsWith(o, "]"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER);
 		else if(StringUtils.endsWith(o, "Z"))
-			return o == null ? null : Instant.parse(o).atZone(Optional.ofNullable(siteRequest_).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : Instant.parse(o).atZone(zoneId).truncatedTo(ChronoUnit.MILLIS);
 		else if(StringUtils.contains(o, "T"))
 			return o == null ? null : ZonedDateTime.parse(o, ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER).truncatedTo(ChronoUnit.MILLIS);
 		else
-			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.of(siteRequest_.getConfig().getString(ConfigKeys.SITE_ZONE))).truncatedTo(ChronoUnit.MILLIS);
+			return o == null ? null : LocalDate.parse(o, DateTimeFormatter.ISO_DATE).atStartOfDay(zoneId).truncatedTo(ChronoUnit.MILLIS);
 	}
 	protected BaseResult modifiedInit() {
 		Wrap<ZonedDateTime> modifiedWrap = new Wrap<ZonedDateTime>().var("modified");
@@ -328,11 +332,13 @@ public abstract class BaseResultGen<DEV> extends Object {
 	}
 
 	public static String staticSearchStrModified(SiteRequest siteRequest_, String o) {
-		return BaseResult.staticSearchModified(siteRequest_, BaseResult.staticSetModified(siteRequest_, o));
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseResult.staticSearchModified(siteRequest_, BaseResult.staticSetModified(siteRequest_, o, zoneId));
 	}
 
 	public static String staticSearchFqModified(SiteRequest siteRequest_, String o) {
-		return BaseResult.staticSearchModified(siteRequest_, BaseResult.staticSetModified(siteRequest_, o)).toString();
+		ZoneId zoneId = ZoneId.of("UTC");
+		return BaseResult.staticSearchModified(siteRequest_, BaseResult.staticSetModified(siteRequest_, o, zoneId)).toString();
 	}
 
 	//////////////
@@ -1260,41 +1266,39 @@ public abstract class BaseResultGen<DEV> extends Object {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBaseResult(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BaseResult o) {
+		return staticSetBaseResult(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBaseResult(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBaseResult(String entityVar, SiteRequest siteRequest_, String v, BaseResult o) {
 		switch(entityVar) {
 		case "created":
-			return BaseResult.staticSetCreated(siteRequest_, o);
 		case "modified":
-			return BaseResult.staticSetModified(siteRequest_, o);
 		case "archived":
-			return BaseResult.staticSetArchived(siteRequest_, o);
+			return BaseResult.staticSetArchived(siteRequest_, v);
 		case "classCanonicalName":
-			return BaseResult.staticSetClassCanonicalName(siteRequest_, o);
+			return BaseResult.staticSetClassCanonicalName(siteRequest_, v);
 		case "classSimpleName":
-			return BaseResult.staticSetClassSimpleName(siteRequest_, o);
+			return BaseResult.staticSetClassSimpleName(siteRequest_, v);
 		case "classCanonicalNames":
-			return BaseResult.staticSetClassCanonicalNames(siteRequest_, o);
+			return BaseResult.staticSetClassCanonicalNames(siteRequest_, v);
 		case "saves":
-			return BaseResult.staticSetSaves(siteRequest_, o);
+			return BaseResult.staticSetSaves(siteRequest_, v);
 		case "objectTitle":
-			return BaseResult.staticSetObjectTitle(siteRequest_, o);
+			return BaseResult.staticSetObjectTitle(siteRequest_, v);
 		case "displayPage":
-			return BaseResult.staticSetDisplayPage(siteRequest_, o);
+			return BaseResult.staticSetDisplayPage(siteRequest_, v);
 		case "editPage":
-			return BaseResult.staticSetEditPage(siteRequest_, o);
+			return BaseResult.staticSetEditPage(siteRequest_, v);
 		case "userPage":
-			return BaseResult.staticSetUserPage(siteRequest_, o);
+			return BaseResult.staticSetUserPage(siteRequest_, v);
 		case "download":
-			return BaseResult.staticSetDownload(siteRequest_, o);
+			return BaseResult.staticSetDownload(siteRequest_, v);
 		case "objectSuggest":
-			return BaseResult.staticSetObjectSuggest(siteRequest_, o);
+			return BaseResult.staticSetObjectSuggest(siteRequest_, v);
 		case "objectText":
-			return BaseResult.staticSetObjectText(siteRequest_, o);
+			return BaseResult.staticSetObjectText(siteRequest_, v);
 		case "solrId":
-			return BaseResult.staticSetSolrId(siteRequest_, o);
+			return BaseResult.staticSetSolrId(siteRequest_, v);
 			default:
 				return null;
 		}
@@ -2025,6 +2029,8 @@ public abstract class BaseResultGen<DEV> extends Object {
 	}
 
 	public static String descriptionBaseResult(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_siteRequest_:
 			return "The current request object";

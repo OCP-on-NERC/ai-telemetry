@@ -70,7 +70,6 @@ public class AiProject extends AiProjectGen<BaseModel> {
 	 * HtmRow: 3
 	 * HtmCell: 1
 	 * HtmColumn: 1
-	 * HtmRowTitleOpen: cluster details
 	 * Facet: true
 	 * AuthorizationResource: AiCluster
 	 **/

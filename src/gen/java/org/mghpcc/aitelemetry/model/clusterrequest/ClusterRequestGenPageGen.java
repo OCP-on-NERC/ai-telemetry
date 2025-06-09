@@ -634,23 +634,23 @@ public abstract class ClusterRequestGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterRequestGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterRequestGenPage o) {
+		return staticSetClusterRequestGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterRequestGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterRequestGenPage(String entityVar, SiteRequest siteRequest_, String v, ClusterRequestGenPage o) {
 		switch(entityVar) {
 		case "listClusterRequest":
-			return ClusterRequestGenPage.staticSetListClusterRequest(siteRequest_, o);
+			return ClusterRequestGenPage.staticSetListClusterRequest(siteRequest_, v);
 		case "resultCount":
-			return ClusterRequestGenPage.staticSetResultCount(siteRequest_, o);
+			return ClusterRequestGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return ClusterRequestGenPage.staticSetPk(siteRequest_, o);
+			return ClusterRequestGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return ClusterRequestGenPage.staticSetSolrId(siteRequest_, o);
+			return ClusterRequestGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriClusterRequest":
-			return ClusterRequestGenPage.staticSetPageUriClusterRequest(siteRequest_, o);
+			return ClusterRequestGenPage.staticSetPageUriClusterRequest(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class ClusterRequestGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionClusterRequestGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

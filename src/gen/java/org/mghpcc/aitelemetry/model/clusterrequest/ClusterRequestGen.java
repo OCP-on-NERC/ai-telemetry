@@ -539,19 +539,19 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterRequest(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterRequest o) {
+		return staticSetClusterRequest(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterRequest(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterRequest(String entityVar, SiteRequest siteRequest_, String v, ClusterRequest o) {
 		switch(entityVar) {
 		case "name":
-			return ClusterRequest.staticSetName(siteRequest_, o);
+			return ClusterRequest.staticSetName(siteRequest_, v);
 		case "clusterTemplateTitle":
-			return ClusterRequest.staticSetClusterTemplateTitle(siteRequest_, o);
+			return ClusterRequest.staticSetClusterTemplateTitle(siteRequest_, v);
 		case "userId":
-			return ClusterRequest.staticSetUserId(siteRequest_, o);
+			return ClusterRequest.staticSetUserId(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -909,6 +909,8 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionClusterRequest(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_name:
 			return "The name of this cluster";

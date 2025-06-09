@@ -634,23 +634,23 @@ public abstract class GpuSliceGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuSliceGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuSliceGenPage o) {
+		return staticSetGpuSliceGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuSliceGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuSliceGenPage(String entityVar, SiteRequest siteRequest_, String v, GpuSliceGenPage o) {
 		switch(entityVar) {
 		case "listGpuSlice":
-			return GpuSliceGenPage.staticSetListGpuSlice(siteRequest_, o);
+			return GpuSliceGenPage.staticSetListGpuSlice(siteRequest_, v);
 		case "resultCount":
-			return GpuSliceGenPage.staticSetResultCount(siteRequest_, o);
+			return GpuSliceGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return GpuSliceGenPage.staticSetPk(siteRequest_, o);
+			return GpuSliceGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return GpuSliceGenPage.staticSetSolrId(siteRequest_, o);
+			return GpuSliceGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriGpuSlice":
-			return GpuSliceGenPage.staticSetPageUriGpuSlice(siteRequest_, o);
+			return GpuSliceGenPage.staticSetPageUriGpuSlice(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class GpuSliceGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionGpuSliceGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

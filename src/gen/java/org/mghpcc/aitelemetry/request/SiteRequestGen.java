@@ -1849,53 +1849,53 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetSiteRequest(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, SiteRequest o) {
+		return staticSetSiteRequest(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetSiteRequest(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetSiteRequest(String entityVar, SiteRequest siteRequest_, String v, SiteRequest o) {
 		switch(entityVar) {
 		case "config":
-			return SiteRequest.staticSetConfig(siteRequest_, o);
+			return SiteRequest.staticSetConfig(siteRequest_, v);
 		case "i18n":
-			return SiteRequest.staticSetI18n(siteRequest_, o);
+			return SiteRequest.staticSetI18n(siteRequest_, v);
 		case "jsonObject":
-			return SiteRequest.staticSetJsonObject(siteRequest_, o);
+			return SiteRequest.staticSetJsonObject(siteRequest_, v);
 		case "userPrincipal":
-			return SiteRequest.staticSetUserPrincipal(siteRequest_, o);
+			return SiteRequest.staticSetUserPrincipal(siteRequest_, v);
 		case "userId":
-			return SiteRequest.staticSetUserId(siteRequest_, o);
+			return SiteRequest.staticSetUserId(siteRequest_, v);
 		case "userKey":
-			return SiteRequest.staticSetUserKey(siteRequest_, o);
+			return SiteRequest.staticSetUserKey(siteRequest_, v);
 		case "sessionId":
-			return SiteRequest.staticSetSessionId(siteRequest_, o);
+			return SiteRequest.staticSetSessionId(siteRequest_, v);
 		case "sessionIdBefore":
-			return SiteRequest.staticSetSessionIdBefore(siteRequest_, o);
+			return SiteRequest.staticSetSessionIdBefore(siteRequest_, v);
 		case "userName":
-			return SiteRequest.staticSetUserName(siteRequest_, o);
+			return SiteRequest.staticSetUserName(siteRequest_, v);
 		case "userLastName":
-			return SiteRequest.staticSetUserLastName(siteRequest_, o);
+			return SiteRequest.staticSetUserLastName(siteRequest_, v);
 		case "userFirstName":
-			return SiteRequest.staticSetUserFirstName(siteRequest_, o);
+			return SiteRequest.staticSetUserFirstName(siteRequest_, v);
 		case "userFullName":
-			return SiteRequest.staticSetUserFullName(siteRequest_, o);
+			return SiteRequest.staticSetUserFullName(siteRequest_, v);
 		case "userEmail":
-			return SiteRequest.staticSetUserEmail(siteRequest_, o);
+			return SiteRequest.staticSetUserEmail(siteRequest_, v);
 		case "scopes":
-			return SiteRequest.staticSetScopes(siteRequest_, o);
+			return SiteRequest.staticSetScopes(siteRequest_, v);
 		case "groups":
-			return SiteRequest.staticSetGroups(siteRequest_, o);
+			return SiteRequest.staticSetGroups(siteRequest_, v);
 		case "publicRead":
-			return SiteRequest.staticSetPublicRead(siteRequest_, o);
+			return SiteRequest.staticSetPublicRead(siteRequest_, v);
 		case "userResource":
-			return SiteRequest.staticSetUserResource(siteRequest_, o);
+			return SiteRequest.staticSetUserResource(siteRequest_, v);
 		case "lang":
-			return SiteRequest.staticSetLang(siteRequest_, o);
+			return SiteRequest.staticSetLang(siteRequest_, v);
 		case "requestPk":
-			return SiteRequest.staticSetRequestPk(siteRequest_, o);
+			return SiteRequest.staticSetRequestPk(siteRequest_, v);
 		case "requestUri":
-			return SiteRequest.staticSetRequestUri(siteRequest_, o);
+			return SiteRequest.staticSetRequestUri(siteRequest_, v);
 		case "requestMethod":
-			return SiteRequest.staticSetRequestMethod(siteRequest_, o);
+			return SiteRequest.staticSetRequestMethod(siteRequest_, v);
 			default:
 				return null;
 		}
@@ -2249,6 +2249,8 @@ public abstract class SiteRequestGen<DEV> extends Object {
 	}
 
 	public static String descriptionSiteRequest(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_config:
 			return "The site configuration variables";

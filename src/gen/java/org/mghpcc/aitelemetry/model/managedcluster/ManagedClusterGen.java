@@ -584,21 +584,21 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetManagedCluster(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ManagedCluster o) {
+		return staticSetManagedCluster(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetManagedCluster(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetManagedCluster(String entityVar, SiteRequest siteRequest_, String v, ManagedCluster o) {
 		switch(entityVar) {
 		case "id":
-			return ManagedCluster.staticSetId(siteRequest_, o);
+			return ManagedCluster.staticSetId(siteRequest_, v);
 		case "state":
-			return ManagedCluster.staticSetState(siteRequest_, o);
+			return ManagedCluster.staticSetState(siteRequest_, v);
 		case "apiUrl":
-			return ManagedCluster.staticSetApiUrl(siteRequest_, o);
+			return ManagedCluster.staticSetApiUrl(siteRequest_, v);
 		case "consoleUrl":
-			return ManagedCluster.staticSetConsoleUrl(siteRequest_, o);
+			return ManagedCluster.staticSetConsoleUrl(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -996,6 +996,8 @@ public abstract class ManagedClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionManagedCluster(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_id:
 			return "The ID of this cluster";

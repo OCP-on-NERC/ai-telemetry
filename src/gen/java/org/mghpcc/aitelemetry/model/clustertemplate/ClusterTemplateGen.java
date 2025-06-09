@@ -588,21 +588,21 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterTemplate(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplate o) {
+		return staticSetClusterTemplate(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterTemplate(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterTemplate(String entityVar, SiteRequest siteRequest_, String v, ClusterTemplate o) {
 		switch(entityVar) {
 		case "id":
-			return ClusterTemplate.staticSetId(siteRequest_, o);
+			return ClusterTemplate.staticSetId(siteRequest_, v);
 		case "title":
-			return ClusterTemplate.staticSetTitle(siteRequest_, o);
+			return ClusterTemplate.staticSetTitle(siteRequest_, v);
 		case "description":
-			return ClusterTemplate.staticSetDescription(siteRequest_, o);
+			return ClusterTemplate.staticSetDescription(siteRequest_, v);
 		case "parameters":
-			return ClusterTemplate.staticSetParameters(siteRequest_, o);
+			return ClusterTemplate.staticSetParameters(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -1003,6 +1003,8 @@ public abstract class ClusterTemplateGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionClusterTemplate(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_id:
 			return "The ID of this template";

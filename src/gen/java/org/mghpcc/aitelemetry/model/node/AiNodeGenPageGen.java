@@ -634,23 +634,23 @@ public abstract class AiNodeGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiNodeGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiNodeGenPage o) {
+		return staticSetAiNodeGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiNodeGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiNodeGenPage(String entityVar, SiteRequest siteRequest_, String v, AiNodeGenPage o) {
 		switch(entityVar) {
 		case "listAiNode":
-			return AiNodeGenPage.staticSetListAiNode(siteRequest_, o);
+			return AiNodeGenPage.staticSetListAiNode(siteRequest_, v);
 		case "resultCount":
-			return AiNodeGenPage.staticSetResultCount(siteRequest_, o);
+			return AiNodeGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return AiNodeGenPage.staticSetPk(siteRequest_, o);
+			return AiNodeGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return AiNodeGenPage.staticSetSolrId(siteRequest_, o);
+			return AiNodeGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriAiNode":
-			return AiNodeGenPage.staticSetPageUriAiNode(siteRequest_, o);
+			return AiNodeGenPage.staticSetPageUriAiNode(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class AiNodeGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionAiNodeGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

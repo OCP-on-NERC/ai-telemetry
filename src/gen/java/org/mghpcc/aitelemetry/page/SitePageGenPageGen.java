@@ -571,21 +571,21 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetSitePageGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, SitePageGenPage o) {
+		return staticSetSitePageGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetSitePageGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetSitePageGenPage(String entityVar, SiteRequest siteRequest_, String v, SitePageGenPage o) {
 		switch(entityVar) {
 		case "listSitePage":
-			return SitePageGenPage.staticSetListSitePage(siteRequest_, o);
+			return SitePageGenPage.staticSetListSitePage(siteRequest_, v);
 		case "resultCount":
-			return SitePageGenPage.staticSetResultCount(siteRequest_, o);
+			return SitePageGenPage.staticSetResultCount(siteRequest_, v);
 		case "solrId":
-			return SitePageGenPage.staticSetSolrId(siteRequest_, o);
+			return SitePageGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriSitePage":
-			return SitePageGenPage.staticSetPageUriSitePage(siteRequest_, o);
+			return SitePageGenPage.staticSetPageUriSitePage(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -749,6 +749,8 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionSitePageGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

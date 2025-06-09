@@ -367,15 +367,15 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalOrderPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalOrderPage o) {
+		return staticSetBareMetalOrderPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalOrderPage(String entityVar, SiteRequest siteRequest_, String v, BareMetalOrderPage o) {
 		switch(entityVar) {
 		case "resourceClasses":
-			return BareMetalOrderPage.staticSetResourceClasses(siteRequest_, o);
+			return BareMetalOrderPage.staticSetResourceClasses(siteRequest_, v);
 			default:
-				return BareMetalOrderGenPage.staticSetBareMetalOrderGenPage(entityVar,  siteRequest_, o);
+				return BareMetalOrderGenPage.staticSetBareMetalOrderGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -505,6 +505,8 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 	}
 
 	public static String descriptionBareMetalOrderPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return BareMetalOrderGenPage.descriptionBareMetalOrderGenPage(var);

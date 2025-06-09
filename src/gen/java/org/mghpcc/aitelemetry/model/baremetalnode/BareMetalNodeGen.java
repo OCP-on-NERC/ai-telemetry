@@ -930,31 +930,31 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalNode(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalNode o) {
+		return staticSetBareMetalNode(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalNode(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalNode(String entityVar, SiteRequest siteRequest_, String v, BareMetalNode o) {
 		switch(entityVar) {
 		case "leaseInfo":
-			return BareMetalNode.staticSetLeaseInfo(siteRequest_, o);
+			return BareMetalNode.staticSetLeaseInfo(siteRequest_, v);
 		case "networkInfo":
-			return BareMetalNode.staticSetNetworkInfo(siteRequest_, o);
+			return BareMetalNode.staticSetNetworkInfo(siteRequest_, v);
 		case "nodeId":
-			return BareMetalNode.staticSetNodeId(siteRequest_, o);
+			return BareMetalNode.staticSetNodeId(siteRequest_, v);
 		case "nodeIsMaintenance":
-			return BareMetalNode.staticSetNodeIsMaintenance(siteRequest_, o);
+			return BareMetalNode.staticSetNodeIsMaintenance(siteRequest_, v);
 		case "nodeLinks":
-			return BareMetalNode.staticSetNodeLinks(siteRequest_, o);
+			return BareMetalNode.staticSetNodeLinks(siteRequest_, v);
 		case "nodeName":
-			return BareMetalNode.staticSetNodeName(siteRequest_, o);
+			return BareMetalNode.staticSetNodeName(siteRequest_, v);
 		case "nodePowerState":
-			return BareMetalNode.staticSetNodePowerState(siteRequest_, o);
+			return BareMetalNode.staticSetNodePowerState(siteRequest_, v);
 		case "nodeProvisionState":
-			return BareMetalNode.staticSetNodeProvisionState(siteRequest_, o);
+			return BareMetalNode.staticSetNodeProvisionState(siteRequest_, v);
 		case "nodeResourceClass":
-			return BareMetalNode.staticSetNodeResourceClass(siteRequest_, o);
+			return BareMetalNode.staticSetNodeResourceClass(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -1546,6 +1546,8 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionBareMetalNode(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return BaseModel.descriptionBaseModel(var);

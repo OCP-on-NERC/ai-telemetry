@@ -1178,37 +1178,37 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuSlice(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuSlice o) {
+		return staticSetGpuSlice(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuSlice(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuSlice(String entityVar, SiteRequest siteRequest_, String v, GpuSlice o) {
 		switch(entityVar) {
 		case "sliceName":
-			return GpuSlice.staticSetSliceName(siteRequest_, o);
+			return GpuSlice.staticSetSliceName(siteRequest_, v);
 		case "description":
-			return GpuSlice.staticSetDescription(siteRequest_, o);
+			return GpuSlice.staticSetDescription(siteRequest_, v);
 		case "locationColors":
-			return GpuSlice.staticSetLocationColors(siteRequest_, o);
+			return GpuSlice.staticSetLocationColors(siteRequest_, v);
 		case "locationTitles":
-			return GpuSlice.staticSetLocationTitles(siteRequest_, o);
+			return GpuSlice.staticSetLocationTitles(siteRequest_, v);
 		case "locationLinks":
-			return GpuSlice.staticSetLocationLinks(siteRequest_, o);
+			return GpuSlice.staticSetLocationLinks(siteRequest_, v);
 		case "location":
-			return GpuSlice.staticSetLocation(siteRequest_, o);
+			return GpuSlice.staticSetLocation(siteRequest_, v);
 		case "id":
-			return GpuSlice.staticSetId(siteRequest_, o);
+			return GpuSlice.staticSetId(siteRequest_, v);
 		case "entityShortId":
-			return GpuSlice.staticSetEntityShortId(siteRequest_, o);
+			return GpuSlice.staticSetEntityShortId(siteRequest_, v);
 		case "ngsildTenant":
-			return GpuSlice.staticSetNgsildTenant(siteRequest_, o);
+			return GpuSlice.staticSetNgsildTenant(siteRequest_, v);
 		case "ngsildPath":
-			return GpuSlice.staticSetNgsildPath(siteRequest_, o);
+			return GpuSlice.staticSetNgsildPath(siteRequest_, v);
 		case "ngsildContext":
-			return GpuSlice.staticSetNgsildContext(siteRequest_, o);
+			return GpuSlice.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
-			return GpuSlice.staticSetNgsildData(siteRequest_, o);
+			return GpuSlice.staticSetNgsildData(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -1900,6 +1900,8 @@ public abstract class GpuSliceGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionGpuSlice(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_sliceName:
 			return "The name of this GPU slice";

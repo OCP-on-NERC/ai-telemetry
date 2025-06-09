@@ -229,13 +229,13 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuSlicePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuSlicePage o) {
+		return staticSetGpuSlicePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuSlicePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuSlicePage(String entityVar, SiteRequest siteRequest_, String v, GpuSlicePage o) {
 		switch(entityVar) {
 			default:
-				return GpuSliceGenPage.staticSetGpuSliceGenPage(entityVar,  siteRequest_, o);
+				return GpuSliceGenPage.staticSetGpuSliceGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class GpuSlicePageGen<DEV> extends GpuSliceGenPage {
 	}
 
 	public static String descriptionGpuSlicePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return GpuSliceGenPage.descriptionGpuSliceGenPage(var);

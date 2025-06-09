@@ -147,9 +147,9 @@ ENABLE_WORKER_VERTICLE: true
 ###################
 
 # The number of Vert.x instances to run per pod. 
-SITE_INSTANCES: 1
+SITE_INSTANCES: 4
 # The number of Vert.x worker instances to run per pod. 
-WORKER_POOL_SIZE: 2
+WORKER_POOL_SIZE: 4
 # The max event loop execute time in seconds. 
 VERTX_MAX_EVENT_LOOP_EXECUTE_TIME: 30
 # The max worker execute time in seconds. 

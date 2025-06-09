@@ -634,23 +634,23 @@ public abstract class ClusterOrderGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetClusterOrderGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterOrderGenPage o) {
+		return staticSetClusterOrderGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetClusterOrderGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetClusterOrderGenPage(String entityVar, SiteRequest siteRequest_, String v, ClusterOrderGenPage o) {
 		switch(entityVar) {
 		case "listClusterOrder":
-			return ClusterOrderGenPage.staticSetListClusterOrder(siteRequest_, o);
+			return ClusterOrderGenPage.staticSetListClusterOrder(siteRequest_, v);
 		case "resultCount":
-			return ClusterOrderGenPage.staticSetResultCount(siteRequest_, o);
+			return ClusterOrderGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return ClusterOrderGenPage.staticSetPk(siteRequest_, o);
+			return ClusterOrderGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return ClusterOrderGenPage.staticSetSolrId(siteRequest_, o);
+			return ClusterOrderGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriClusterOrder":
-			return ClusterOrderGenPage.staticSetPageUriClusterOrder(siteRequest_, o);
+			return ClusterOrderGenPage.staticSetPageUriClusterOrder(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class ClusterOrderGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionClusterOrderGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

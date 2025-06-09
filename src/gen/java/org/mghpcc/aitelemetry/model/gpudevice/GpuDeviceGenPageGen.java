@@ -634,23 +634,23 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuDeviceGenPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuDeviceGenPage o) {
+		return staticSetGpuDeviceGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuDeviceGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuDeviceGenPage(String entityVar, SiteRequest siteRequest_, String v, GpuDeviceGenPage o) {
 		switch(entityVar) {
 		case "listGpuDevice":
-			return GpuDeviceGenPage.staticSetListGpuDevice(siteRequest_, o);
+			return GpuDeviceGenPage.staticSetListGpuDevice(siteRequest_, v);
 		case "resultCount":
-			return GpuDeviceGenPage.staticSetResultCount(siteRequest_, o);
+			return GpuDeviceGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return GpuDeviceGenPage.staticSetPk(siteRequest_, o);
+			return GpuDeviceGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return GpuDeviceGenPage.staticSetSolrId(siteRequest_, o);
+			return GpuDeviceGenPage.staticSetSolrId(siteRequest_, v);
 		case "pageUriGpuDevice":
-			return GpuDeviceGenPage.staticSetPageUriGpuDevice(siteRequest_, o);
+			return GpuDeviceGenPage.staticSetPageUriGpuDevice(siteRequest_, v);
 			default:
-				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, o);
+				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -824,6 +824,8 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String descriptionGpuDeviceGenPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return PageLayout.descriptionPageLayout(var);

@@ -229,13 +229,13 @@ public abstract class BareMetalResourceClassPageGen<DEV> extends BareMetalResour
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalResourceClassPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClassPage o) {
+		return staticSetBareMetalResourceClassPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalResourceClassPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalResourceClassPage(String entityVar, SiteRequest siteRequest_, String v, BareMetalResourceClassPage o) {
 		switch(entityVar) {
 			default:
-				return BareMetalResourceClassGenPage.staticSetBareMetalResourceClassGenPage(entityVar,  siteRequest_, o);
+				return BareMetalResourceClassGenPage.staticSetBareMetalResourceClassGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class BareMetalResourceClassPageGen<DEV> extends BareMetalResour
 	}
 
 	public static String descriptionBareMetalResourceClassPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return BareMetalResourceClassGenPage.descriptionBareMetalResourceClassGenPage(var);

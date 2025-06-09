@@ -229,7 +229,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			response200Search(listGpuSlice.getRequest(), listGpuSlice.getResponse(), json);
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -364,7 +364,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = JsonObject.mapFrom(listGpuSlice.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -438,7 +438,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuSlice.first());
 								apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
@@ -565,7 +565,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							GpuSlice o2 = jsonObject.mapTo(GpuSlice.class);
 							o2.setSiteRequest_(siteRequest);
@@ -664,7 +664,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -837,7 +837,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -928,7 +928,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 						eventBus.request(GpuSlice.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postGpuSliceFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(GpuSlice.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postGpuSlice succeeded. "));
 						}).onFailure(ex -> {
@@ -1101,7 +1101,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1305,7 +1305,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1378,7 +1378,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuSlice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
@@ -1505,7 +1505,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteGpuSliceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1597,7 +1597,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1655,7 +1655,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1902,8 +1902,8 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getSliceName());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getSliceName()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchGpuSliceFuture(o, true).onSuccess(b -> {
@@ -1974,7 +1974,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2527,7 +2527,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuSlice.first());
-								apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuSlice", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterGpuSlice(apiRequest, listGpuSlice).onSuccess(e -> {
@@ -2654,7 +2654,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSliceName().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listGpuSlice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterGpuSliceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2746,7 +2746,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2804,7 +2804,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String sliceName = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("sliceName");
-						String m = String.format("%s %s not found", "GPU slice", sliceName);
+				String m = String.format("%s %s not found", "GPU slice", sliceName);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3185,7 +3185,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 	public Future<Void> relateGpuSlice(GpuSlice o) {
 		Promise<Void> promise = Promise.promise();
-			promise.complete();
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3281,14 +3281,14 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 				}
 
@@ -3349,7 +3349,7 @@ public class GpuSliceEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 
 			page.persistForClass(GpuSlice.VAR_sliceName, GpuSlice.staticSetSliceName(siteRequest2, (String)result.get(GpuSlice.VAR_sliceName)));
 			page.persistForClass(GpuSlice.VAR_description, GpuSlice.staticSetDescription(siteRequest2, (String)result.get(GpuSlice.VAR_description)));
-			page.persistForClass(GpuSlice.VAR_created, GpuSlice.staticSetCreated(siteRequest2, (String)result.get(GpuSlice.VAR_created)));
+			page.persistForClass(GpuSlice.VAR_created, GpuSlice.staticSetCreated(siteRequest2, (String)result.get(GpuSlice.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(GpuSlice.VAR_archived, GpuSlice.staticSetArchived(siteRequest2, (String)result.get(GpuSlice.VAR_archived)));
 			page.persistForClass(GpuSlice.VAR_location, GpuSlice.staticSetLocation(siteRequest2, (String)result.get(GpuSlice.VAR_location)));
 			page.persistForClass(GpuSlice.VAR_id, GpuSlice.staticSetId(siteRequest2, (String)result.get(GpuSlice.VAR_id)));

@@ -229,13 +229,13 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiNodePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiNodePage o) {
+		return staticSetAiNodePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiNodePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiNodePage(String entityVar, SiteRequest siteRequest_, String v, AiNodePage o) {
 		switch(entityVar) {
 			default:
-				return AiNodeGenPage.staticSetAiNodeGenPage(entityVar,  siteRequest_, o);
+				return AiNodeGenPage.staticSetAiNodeGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 	}
 
 	public static String descriptionAiNodePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return AiNodeGenPage.descriptionAiNodeGenPage(var);

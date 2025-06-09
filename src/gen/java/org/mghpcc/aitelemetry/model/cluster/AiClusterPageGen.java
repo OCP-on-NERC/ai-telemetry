@@ -229,13 +229,13 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiClusterPage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiClusterPage o) {
+		return staticSetAiClusterPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiClusterPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiClusterPage(String entityVar, SiteRequest siteRequest_, String v, AiClusterPage o) {
 		switch(entityVar) {
 			default:
-				return AiClusterGenPage.staticSetAiClusterGenPage(entityVar,  siteRequest_, o);
+				return AiClusterGenPage.staticSetAiClusterGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	}
 
 	public static String descriptionAiClusterPage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return AiClusterGenPage.descriptionAiClusterGenPage(var);

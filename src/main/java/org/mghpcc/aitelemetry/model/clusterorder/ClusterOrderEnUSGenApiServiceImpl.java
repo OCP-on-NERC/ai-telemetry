@@ -231,7 +231,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			response200Search(listClusterOrder.getRequest(), listClusterOrder.getResponse(), json);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -366,7 +366,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = JsonObject.mapFrom(listClusterOrder.getList().stream().findFirst().orElse(null));
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -440,7 +440,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterOrder.first());
 								apiRequest.setId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getId().toString()).orElse(null));
-								apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketClusterOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listPATCHClusterOrder(apiRequest, listClusterOrder).onSuccess(e -> {
@@ -567,7 +567,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							ClusterOrder o2 = jsonObject.mapTo(ClusterOrder.class);
 							o2.setSiteRequest_(siteRequest);
@@ -666,7 +666,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -693,12 +693,13 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case "setTemplateId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("ClusterTemplate");
 									}
-									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, pk2, val).onSuccess(a -> {
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, solrId2, val).onSuccess(a -> {
 										promise2.complete();
 									}).onFailure(ex -> {
 										promise2.fail(ex);
@@ -710,7 +711,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 						});
 						break;
 					case "removeTemplateId":
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(pk2 -> {
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
 							futures2.add(Future.future(promise2 -> {
 								sql(siteRequest).update(ClusterOrder.class, pk).setToNull(ClusterOrder.VAR_templateId, ClusterTemplate.class, null).onSuccess(a -> {
 									promise2.complete();
@@ -829,7 +830,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -920,7 +921,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 						eventBus.request(ClusterOrder.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postClusterOrderFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setPk(Long.parseLong(responseBody.getString("pk")));
+							apiRequest.setSolrId(responseBody.getString(ClusterOrder.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
 							LOG.debug(String.format("postClusterOrder succeeded. "));
 						}).onFailure(ex -> {
@@ -1093,7 +1094,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1139,12 +1140,13 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, inheritPrimaryKey).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("ClusterTemplate");
 									}
-									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, pk2, val).onSuccess(a -> {
+									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, solrId2, val).onSuccess(a -> {
 										promise2.complete();
 									}).onFailure(ex -> {
 										promise2.fail(ex);
@@ -1271,7 +1273,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1344,7 +1346,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterOrder.first());
-								apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketClusterOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEClusterOrder(apiRequest, listClusterOrder).onSuccess(e -> {
@@ -1471,7 +1473,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteClusterOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -1563,7 +1565,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -1583,9 +1585,10 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("ClusterTemplate");
 									}
 									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, null, null).onSuccess(a -> {
@@ -1640,7 +1643,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1887,8 +1890,8 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(o.getId());
-										apiRequest.setPk(o.getPk());
+										apiRequest.setId(Optional.ofNullable(o.getId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchClusterOrderFuture(o, true).onSuccess(b -> {
@@ -1959,7 +1962,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2352,7 +2355,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listClusterOrder.first());
-								apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketClusterOrder", JsonObject.mapFrom(apiRequest).toString());
 
 								listDELETEFilterClusterOrder(apiRequest, listClusterOrder).onSuccess(e -> {
@@ -2479,7 +2482,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
 							apiRequest.setId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getId().toString()).orElse(null));
-							apiRequest.setPk(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getPk()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listClusterOrder.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterClusterOrderFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
@@ -2571,7 +2574,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
@@ -2591,9 +2594,10 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_pk), ClusterTemplate.class, val, false).onSuccess(pk2 -> {
-									if(!pks.contains(pk2)) {
-										pks.add(pk2);
+								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
 										classes.add("ClusterTemplate");
 									}
 									sql(siteRequest).update(ClusterOrder.class, pk).set(ClusterOrder.VAR_templateId, ClusterTemplate.class, null, null).onSuccess(a -> {
@@ -2648,7 +2652,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			JsonObject json = new JsonObject();
 			if(json == null) {
 				String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
-						String m = String.format("%s %s not found", "OpenShift cluster order", id);
+				String m = String.format("%s %s not found", "OpenShift cluster order", id);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3029,33 +3033,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 
 	public Future<Void> relateClusterOrder(ClusterOrder o) {
 		Promise<Void> promise = Promise.promise();
-		try {
-			SiteRequest siteRequest = o.getSiteRequest_();
-			SqlConnection sqlConnection = siteRequest.getSqlConnection();
-			sqlConnection.preparedQuery("SELECT id as pk1, 'templateId' from ClusterTemplate where id=$1")
-					.collecting(Collectors.toList())
-					.execute(Tuple.of(o.getTemplateId())
-					).onSuccess(result -> {
-				try {
-					if(result != null) {
-						for(Row definition : result.value()) {
-							o.relateForClass(definition.getString(1), definition.getValue(0));
-						}
-					}
-					promise.complete();
-				} catch(Exception ex) {
-					LOG.error(String.format("relateClusterOrder failed. "), ex);
-					promise.fail(ex);
-				}
-			}).onFailure(ex -> {
-				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("relateClusterOrder failed. "), ex2);
-				promise.fail(ex2);
-			});
-		} catch(Exception ex) {
-			LOG.error(String.format("relateClusterOrder failed. "), ex);
-			promise.fail(ex);
-		}
+		promise.complete();
 		return promise.future();
 	}
 
@@ -3151,22 +3129,22 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			List<Long> pks = Optional.ofNullable(apiRequest).map(r -> r.getPks()).orElse(new ArrayList<>());
+			List<String> solrIds = Optional.ofNullable(apiRequest).map(r -> r.getSolrIds()).orElse(new ArrayList<>());
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			Boolean refresh = !"false".equals(siteRequest.getRequestVars().get("refresh"));
 			if(refresh && !Optional.ofNullable(siteRequest.getJsonObject()).map(JsonObject::isEmpty).orElse(true)) {
 				List<Future> futures = new ArrayList<>();
 
-				for(int i=0; i < pks.size(); i++) {
-					Long pk2 = pks.get(i);
+				for(int i=0; i < solrIds.size(); i++) {
+					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
 
-					if("ClusterTemplate".equals(classSimpleName2) && pk2 != null) {
+					if("ClusterTemplate".equals(classSimpleName2) && solrId2 != null) {
 						SearchList<ClusterTemplate> searchList2 = new SearchList<ClusterTemplate>();
 						searchList2.setStore(true);
 						searchList2.q("*:*");
 						searchList2.setC(ClusterTemplate.class);
-						searchList2.fq("pk_docvalues_long:" + pk2);
+						searchList2.fq("solrId:" + solrId2);
 						searchList2.rows(1L);
 						futures.add(Future.future(promise2 -> {
 							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
@@ -3176,7 +3154,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 									params.put("body", new JsonObject());
 									params.put("cookie", new JsonObject());
 									params.put("path", new JsonObject());
-									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("pk:" + pk2)).put("var", new JsonArray().add("refresh:false")));
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
 									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 									JsonObject json = new JsonObject().put("context", context);
 									eventBus.request("ai-telemetry-enUS-ClusterTemplate", json, new DeliveryOptions().addHeader("action", "patchClusterTemplateFuture")).onSuccess(c -> {
@@ -3254,7 +3232,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 
 			page.persistForClass(ClusterOrder.VAR_id, ClusterOrder.staticSetId(siteRequest2, (String)result.get(ClusterOrder.VAR_id)));
 			page.persistForClass(ClusterOrder.VAR_templateId, ClusterOrder.staticSetTemplateId(siteRequest2, (String)result.get(ClusterOrder.VAR_templateId)));
-			page.persistForClass(ClusterOrder.VAR_created, ClusterOrder.staticSetCreated(siteRequest2, (String)result.get(ClusterOrder.VAR_created)));
+			page.persistForClass(ClusterOrder.VAR_created, ClusterOrder.staticSetCreated(siteRequest2, (String)result.get(ClusterOrder.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(ClusterOrder.VAR_state, ClusterOrder.staticSetState(siteRequest2, (String)result.get(ClusterOrder.VAR_state)));
 			page.persistForClass(ClusterOrder.VAR_clusterId, ClusterOrder.staticSetClusterId(siteRequest2, (String)result.get(ClusterOrder.VAR_clusterId)));
 			page.persistForClass(ClusterOrder.VAR_archived, ClusterOrder.staticSetArchived(siteRequest2, (String)result.get(ClusterOrder.VAR_archived)));

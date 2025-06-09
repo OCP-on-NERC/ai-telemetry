@@ -1615,57 +1615,57 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetSitePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, SitePage o) {
+		return staticSetSitePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetSitePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetSitePage(String entityVar, SiteRequest siteRequest_, String v, SitePage o) {
 		switch(entityVar) {
 		case "article":
-			return SitePage.staticSetArticle(siteRequest_, o);
+			return SitePage.staticSetArticle(siteRequest_, v);
 		case "githubOrg":
-			return SitePage.staticSetGithubOrg(siteRequest_, o);
+			return SitePage.staticSetGithubOrg(siteRequest_, v);
 		case "siteName":
-			return SitePage.staticSetSiteName(siteRequest_, o);
+			return SitePage.staticSetSiteName(siteRequest_, v);
 		case "siteDisplayName":
-			return SitePage.staticSetSiteDisplayName(siteRequest_, o);
+			return SitePage.staticSetSiteDisplayName(siteRequest_, v);
 		case "sitePublicUrl":
-			return SitePage.staticSetSitePublicUrl(siteRequest_, o);
+			return SitePage.staticSetSitePublicUrl(siteRequest_, v);
 		case "mailingListUrl":
-			return SitePage.staticSetMailingListUrl(siteRequest_, o);
+			return SitePage.staticSetMailingListUrl(siteRequest_, v);
 		case "quayioOrg":
-			return SitePage.staticSetQuayioOrg(siteRequest_, o);
+			return SitePage.staticSetQuayioOrg(siteRequest_, v);
 		case "sitePomGroupId":
-			return SitePage.staticSetSitePomGroupId(siteRequest_, o);
+			return SitePage.staticSetSitePomGroupId(siteRequest_, v);
 		case "staticBaseUrl":
-			return SitePage.staticSetStaticBaseUrl(siteRequest_, o);
+			return SitePage.staticSetStaticBaseUrl(siteRequest_, v);
 		case "staticPath":
-			return SitePage.staticSetStaticPath(siteRequest_, o);
+			return SitePage.staticSetStaticPath(siteRequest_, v);
 		case "siteBaseUrl":
-			return SitePage.staticSetSiteBaseUrl(siteRequest_, o);
+			return SitePage.staticSetSiteBaseUrl(siteRequest_, v);
 		case "courseNum":
-			return SitePage.staticSetCourseNum(siteRequest_, o);
+			return SitePage.staticSetCourseNum(siteRequest_, v);
 		case "lessonNum":
-			return SitePage.staticSetLessonNum(siteRequest_, o);
+			return SitePage.staticSetLessonNum(siteRequest_, v);
 		case "name":
-			return SitePage.staticSetName(siteRequest_, o);
+			return SitePage.staticSetName(siteRequest_, v);
 		case "author":
-			return SitePage.staticSetAuthor(siteRequest_, o);
+			return SitePage.staticSetAuthor(siteRequest_, v);
 		case "pageId":
-			return SitePage.staticSetPageId(siteRequest_, o);
+			return SitePage.staticSetPageId(siteRequest_, v);
 		case "h1":
-			return SitePage.staticSetH1(siteRequest_, o);
+			return SitePage.staticSetH1(siteRequest_, v);
 		case "h2":
-			return SitePage.staticSetH2(siteRequest_, o);
+			return SitePage.staticSetH2(siteRequest_, v);
 		case "pageImageUri":
-			return SitePage.staticSetPageImageUri(siteRequest_, o);
+			return SitePage.staticSetPageImageUri(siteRequest_, v);
 		case "pageImageWidth":
-			return SitePage.staticSetPageImageWidth(siteRequest_, o);
+			return SitePage.staticSetPageImageWidth(siteRequest_, v);
 		case "pageImageHeight":
-			return SitePage.staticSetPageImageHeight(siteRequest_, o);
+			return SitePage.staticSetPageImageHeight(siteRequest_, v);
 		case "pageImageType":
-			return SitePage.staticSetPageImageType(siteRequest_, o);
+			return SitePage.staticSetPageImageType(siteRequest_, v);
 			default:
-				return BaseResult.staticSetBaseResult(entityVar,  siteRequest_, o);
+				return BaseResult.staticSetBaseResult(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -2350,6 +2350,8 @@ public abstract class SitePageGen<DEV> extends BaseResult {
 	}
 
 	public static String descriptionSitePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_courseNum:
 			return "The course number for this page. ";

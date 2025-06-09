@@ -229,13 +229,13 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuDevicePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuDevicePage o) {
+		return staticSetGpuDevicePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuDevicePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuDevicePage(String entityVar, SiteRequest siteRequest_, String v, GpuDevicePage o) {
 		switch(entityVar) {
 			default:
-				return GpuDeviceGenPage.staticSetGpuDeviceGenPage(entityVar,  siteRequest_, o);
+				return GpuDeviceGenPage.staticSetGpuDeviceGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class GpuDevicePageGen<DEV> extends GpuDeviceGenPage {
 	}
 
 	public static String descriptionGpuDevicePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return GpuDeviceGenPage.descriptionGpuDeviceGenPage(var);

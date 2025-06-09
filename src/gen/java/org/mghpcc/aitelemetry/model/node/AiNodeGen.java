@@ -1364,43 +1364,43 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetAiNode(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiNode o) {
+		return staticSetAiNode(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiNode(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetAiNode(String entityVar, SiteRequest siteRequest_, String v, AiNode o) {
 		switch(entityVar) {
 		case "clusterName":
-			return AiNode.staticSetClusterName(siteRequest_, o);
+			return AiNode.staticSetClusterName(siteRequest_, v);
 		case "nodeName":
-			return AiNode.staticSetNodeName(siteRequest_, o);
+			return AiNode.staticSetNodeName(siteRequest_, v);
 		case "nodeId":
-			return AiNode.staticSetNodeId(siteRequest_, o);
+			return AiNode.staticSetNodeId(siteRequest_, v);
 		case "description":
-			return AiNode.staticSetDescription(siteRequest_, o);
+			return AiNode.staticSetDescription(siteRequest_, v);
 		case "locationColors":
-			return AiNode.staticSetLocationColors(siteRequest_, o);
+			return AiNode.staticSetLocationColors(siteRequest_, v);
 		case "locationTitles":
-			return AiNode.staticSetLocationTitles(siteRequest_, o);
+			return AiNode.staticSetLocationTitles(siteRequest_, v);
 		case "locationLinks":
-			return AiNode.staticSetLocationLinks(siteRequest_, o);
+			return AiNode.staticSetLocationLinks(siteRequest_, v);
 		case "location":
-			return AiNode.staticSetLocation(siteRequest_, o);
+			return AiNode.staticSetLocation(siteRequest_, v);
 		case "gpuDevicesTotal":
-			return AiNode.staticSetGpuDevicesTotal(siteRequest_, o);
+			return AiNode.staticSetGpuDevicesTotal(siteRequest_, v);
 		case "id":
-			return AiNode.staticSetId(siteRequest_, o);
+			return AiNode.staticSetId(siteRequest_, v);
 		case "entityShortId":
-			return AiNode.staticSetEntityShortId(siteRequest_, o);
+			return AiNode.staticSetEntityShortId(siteRequest_, v);
 		case "ngsildTenant":
-			return AiNode.staticSetNgsildTenant(siteRequest_, o);
+			return AiNode.staticSetNgsildTenant(siteRequest_, v);
 		case "ngsildPath":
-			return AiNode.staticSetNgsildPath(siteRequest_, o);
+			return AiNode.staticSetNgsildPath(siteRequest_, v);
 		case "ngsildContext":
-			return AiNode.staticSetNgsildContext(siteRequest_, o);
+			return AiNode.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
-			return AiNode.staticSetNgsildData(siteRequest_, o);
+			return AiNode.staticSetNgsildData(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -2202,6 +2202,8 @@ public abstract class AiNodeGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionAiNode(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_clusterName:
 			return "The name of this cluster";

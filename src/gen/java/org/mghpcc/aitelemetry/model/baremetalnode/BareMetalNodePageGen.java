@@ -229,13 +229,13 @@ public abstract class BareMetalNodePageGen<DEV> extends BareMetalNodeGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetBareMetalNodePage(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, BareMetalNodePage o) {
+		return staticSetBareMetalNodePage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetBareMetalNodePage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetBareMetalNodePage(String entityVar, SiteRequest siteRequest_, String v, BareMetalNodePage o) {
 		switch(entityVar) {
 			default:
-				return BareMetalNodeGenPage.staticSetBareMetalNodeGenPage(entityVar,  siteRequest_, o);
+				return BareMetalNodeGenPage.staticSetBareMetalNodeGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -351,6 +351,8 @@ public abstract class BareMetalNodePageGen<DEV> extends BareMetalNodeGenPage {
 	}
 
 	public static String descriptionBareMetalNodePage(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 			default:
 				return BareMetalNodeGenPage.descriptionBareMetalNodeGenPage(var);

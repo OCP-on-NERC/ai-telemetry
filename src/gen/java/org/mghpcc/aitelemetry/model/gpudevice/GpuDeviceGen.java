@@ -1431,45 +1431,45 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSetGpuDevice(entityVar,  siteRequest_, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, GpuDevice o) {
+		return staticSetGpuDevice(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetGpuDevice(String entityVar, SiteRequest siteRequest_, String o) {
+	public static Object staticSetGpuDevice(String entityVar, SiteRequest siteRequest_, String v, GpuDevice o) {
 		switch(entityVar) {
 		case "clusterName":
-			return GpuDevice.staticSetClusterName(siteRequest_, o);
+			return GpuDevice.staticSetClusterName(siteRequest_, v);
 		case "nodeName":
-			return GpuDevice.staticSetNodeName(siteRequest_, o);
+			return GpuDevice.staticSetNodeName(siteRequest_, v);
 		case "gpuDeviceNumber":
-			return GpuDevice.staticSetGpuDeviceNumber(siteRequest_, o);
+			return GpuDevice.staticSetGpuDeviceNumber(siteRequest_, v);
 		case "gpuDeviceId":
-			return GpuDevice.staticSetGpuDeviceId(siteRequest_, o);
+			return GpuDevice.staticSetGpuDeviceId(siteRequest_, v);
 		case "gpuDeviceUtilization":
-			return GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, o);
+			return GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, v);
 		case "description":
-			return GpuDevice.staticSetDescription(siteRequest_, o);
+			return GpuDevice.staticSetDescription(siteRequest_, v);
 		case "locationColors":
-			return GpuDevice.staticSetLocationColors(siteRequest_, o);
+			return GpuDevice.staticSetLocationColors(siteRequest_, v);
 		case "locationTitles":
-			return GpuDevice.staticSetLocationTitles(siteRequest_, o);
+			return GpuDevice.staticSetLocationTitles(siteRequest_, v);
 		case "locationLinks":
-			return GpuDevice.staticSetLocationLinks(siteRequest_, o);
+			return GpuDevice.staticSetLocationLinks(siteRequest_, v);
 		case "location":
-			return GpuDevice.staticSetLocation(siteRequest_, o);
+			return GpuDevice.staticSetLocation(siteRequest_, v);
 		case "id":
-			return GpuDevice.staticSetId(siteRequest_, o);
+			return GpuDevice.staticSetId(siteRequest_, v);
 		case "entityShortId":
-			return GpuDevice.staticSetEntityShortId(siteRequest_, o);
+			return GpuDevice.staticSetEntityShortId(siteRequest_, v);
 		case "ngsildTenant":
-			return GpuDevice.staticSetNgsildTenant(siteRequest_, o);
+			return GpuDevice.staticSetNgsildTenant(siteRequest_, v);
 		case "ngsildPath":
-			return GpuDevice.staticSetNgsildPath(siteRequest_, o);
+			return GpuDevice.staticSetNgsildPath(siteRequest_, v);
 		case "ngsildContext":
-			return GpuDevice.staticSetNgsildContext(siteRequest_, o);
+			return GpuDevice.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
-			return GpuDevice.staticSetNgsildData(siteRequest_, o);
+			return GpuDevice.staticSetNgsildData(siteRequest_, v);
 			default:
-				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, o);
+				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -2311,6 +2311,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	}
 
 	public static String descriptionGpuDevice(String var) {
+		if(var == null)
+			return null;
 		switch(var) {
 		case VAR_clusterName:
 			return "The cluster name of this GPU device";
