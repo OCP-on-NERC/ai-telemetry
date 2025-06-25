@@ -147,8 +147,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-
+					if(!scopes.contains("GET")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -173,7 +172,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("GET");
 						}
-
+					}
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
@@ -336,8 +336,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-
+					if(!scopes.contains("GET")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -362,7 +361,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("GET");
 						}
-
+					}
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
@@ -464,20 +464,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("PATCH")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
-
+					if(!scopes.contains("PATCH")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -502,7 +489,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("PATCH");
 						}
-
+					}
+					if(authorizationDecisionResponse.failed() && !scopes.contains("PATCH")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
@@ -987,20 +987,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("POST")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
-
+					if(!scopes.contains("POST")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -1025,7 +1012,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("POST");
 						}
-
+					}
+					if(authorizationDecisionResponse.failed() && !scopes.contains("POST")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
@@ -1100,6 +1100,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -1195,7 +1200,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						promise2.complete(aiNode);
 					} catch(Exception ex) {
 						LOG.error(String.format("postAiNodeFuture failed. "), ex);
-						promise.fail(ex);
+						promise2.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
@@ -1508,20 +1513,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
-
+					if(!scopes.contains("DELETE")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -1546,7 +1538,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("DELETE");
 						}
-
+					}
+					if(authorizationDecisionResponse.failed() && !scopes.contains("DELETE")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
@@ -1884,20 +1889,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("PUT")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
-
+					if(!scopes.contains("PUT")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -1922,7 +1914,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("PUT");
 						}
-
+					}
+					if(authorizationDecisionResponse.failed() && !scopes.contains("PUT")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						ApiRequest apiRequest = new ApiRequest();
@@ -2034,6 +2039,11 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
+				Optional.ofNullable(serviceRequest.getParams().getJsonArray("scopes")).ifPresent(scopes -> {
+					scopes.stream().map(v -> v.toString()).forEach(scope -> {
+						siteRequest.addScopes(scope);
+					});
+				});
 				ApiRequest apiRequest = new ApiRequest();
 				apiRequest.setRows(1L);
 				apiRequest.setNumFound(1L);
@@ -2230,8 +2240,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-
+					if(!scopes.contains("GET")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -2256,7 +2265,8 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("GET");
 						}
-
+					}
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
@@ -2440,34 +2450,33 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-
-						if(!scopes.contains("GET")) {
-							//
-							List<String> fqs = new ArrayList<>();
-							List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-							groups.stream().map(group -> {
-										Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-										return mPermission.find() ? mPermission.group(1) : null;
-									}).filter(v -> v != null).forEach(value -> {
-										fqs.add(String.format("%s:%s", "clusterName", value));
-									});
-							JsonObject authParams = siteRequest.getServiceRequest().getParams();
-							JsonObject authQuery = authParams.getJsonObject("query");
-							if(authQuery == null) {
-								authQuery = new JsonObject();
-								authParams.put("query", authQuery);
-							}
-							JsonArray fq = authQuery.getJsonArray("fq");
-							if(fq == null) {
-								fq = new JsonArray();
-								authQuery.put("fq", fq);
-							}
-							if(fqs.size() > 0) {
-								fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-								scopes.add("GET");
-							}
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
@@ -2627,34 +2636,33 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					{
-
-						if(!scopes.contains("GET")) {
-							//
-							List<String> fqs = new ArrayList<>();
-							List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
-							groups.stream().map(group -> {
-										Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
-										return mPermission.find() ? mPermission.group(1) : null;
-									}).filter(v -> v != null).forEach(value -> {
-										fqs.add(String.format("%s:%s", "clusterName", value));
-									});
-							JsonObject authParams = siteRequest.getServiceRequest().getParams();
-							JsonObject authQuery = authParams.getJsonObject("query");
-							if(authQuery == null) {
-								authQuery = new JsonObject();
-								authParams.put("query", authQuery);
-							}
-							JsonArray fq = authQuery.getJsonArray("fq");
-							if(fq == null) {
-								fq = new JsonArray();
-								authQuery.put("fq", fq);
-							}
-							if(fqs.size() > 0) {
-								fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
-								scopes.add("GET");
-							}
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterName", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
 						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
+					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, false).onSuccess(listAiNode -> {
@@ -2815,20 +2823,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
-					if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
-						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
-						eventHandler.handle(Future.succeededFuture(
-							new ServiceResponse(403, "FORBIDDEN",
-								Buffer.buffer().appendString(
-									new JsonObject()
-										.put("errorCode", "403")
-										.put("errorMessage", msg)
-										.encodePrettily()
-									), MultiMap.caseInsensitiveMultiMap()
-							)
-						));
-					} else {
-
+					if(!scopes.contains("DELETE")) {
 						//
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
@@ -2853,7 +2848,20 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
 							scopes.add("DELETE");
 						}
-
+					}
+					if(authorizationDecisionResponse.failed() && !scopes.contains("DELETE")) {
+						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
+						eventHandler.handle(Future.succeededFuture(
+							new ServiceResponse(403, "FORBIDDEN",
+								Buffer.buffer().appendString(
+									new JsonObject()
+										.put("errorCode", "403")
+										.put("errorMessage", msg)
+										.encodePrettily()
+									), MultiMap.caseInsensitiveMultiMap()
+							)
+						));
+					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
 						searchAiNodeList(siteRequest, false, true, true).onSuccess(listAiNode -> {
@@ -3482,7 +3490,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT * FROM AiNode WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT clusterName, nodeName, created, nodeId, description, archived, location, sessionId, gpuDevicesTotal, userKey, id, ngsildTenant, objectTitle, ngsildPath, displayPage, ngsildContext, ngsildData FROM AiNode WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
