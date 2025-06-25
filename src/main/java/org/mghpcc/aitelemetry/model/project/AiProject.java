@@ -111,6 +111,7 @@ public class AiProject extends AiProjectGen<BaseModel> {
    * HtmCell: 2
    * Facet: true
    * VarId: true
+	 * AuthorizationResource: AiProject
    **/
   protected void _projectId(Wrap<String> w) {
     w.o(toId(String.format("%s-%s", clusterName, projectName)));

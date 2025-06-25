@@ -3011,10 +3011,10 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			} else if("availabilityzones".equals(varLower)) {
 				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addAvailabilityZones(v));
-				} else if(val instanceof JsonArray) {
-					((JsonArray)val).stream().forEach(v -> addAvailabilityZones(staticSetAvailabilityZones(siteRequest_, v.toString())));
 				} else if(val instanceof String[]) {
 					Arrays.asList((String[])val).stream().forEach(v -> addAvailabilityZones((String)v));
+				} else if(val instanceof JsonArray) {
+					((JsonArray)val).stream().forEach(v -> addAvailabilityZones(staticSetAvailabilityZones(siteRequest_, v.toString())));
 				}
 				if(!saves.contains("availabilityZones")) {
 					saves.add("availabilityZones");
@@ -3089,10 +3089,10 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			} else if("subnetids".equals(varLower)) {
 				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addSubnetIds(v));
-				} else if(val instanceof JsonArray) {
-					((JsonArray)val).stream().forEach(v -> addSubnetIds(staticSetSubnetIds(siteRequest_, v.toString())));
 				} else if(val instanceof String[]) {
 					Arrays.asList((String[])val).stream().forEach(v -> addSubnetIds((String)v));
+				} else if(val instanceof JsonArray) {
+					((JsonArray)val).stream().forEach(v -> addSubnetIds(staticSetSubnetIds(siteRequest_, v.toString())));
 				}
 				if(!saves.contains("subnetIds")) {
 					saves.add("subnetIds");
@@ -3101,10 +3101,10 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 			} else if("tags".equals(varLower)) {
 				if(val instanceof List<?>) {
 					((List<String>)val).stream().forEach(v -> addTags(v));
-				} else if(val instanceof JsonArray) {
-					((JsonArray)val).stream().forEach(v -> addTags(staticSetTags(siteRequest_, v.toString())));
 				} else if(val instanceof String[]) {
 					Arrays.asList((String[])val).stream().forEach(v -> addTags((String)v));
+				} else if(val instanceof JsonArray) {
+					((JsonArray)val).stream().forEach(v -> addTags(staticSetTags(siteRequest_, v.toString())));
 				}
 				if(!saves.contains("tags")) {
 					saves.add("tags");
