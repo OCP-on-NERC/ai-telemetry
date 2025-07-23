@@ -738,6 +738,7 @@ public abstract class GpuDeviceGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "GpuDeviceGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListGpuDevice_ = "searchListGpuDevice_";
 	public static final String VAR_listGpuDevice = "listGpuDevice";
 	public static final String VAR_resultCount = "resultCount";

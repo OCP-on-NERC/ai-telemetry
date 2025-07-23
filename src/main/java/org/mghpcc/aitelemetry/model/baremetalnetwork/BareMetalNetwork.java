@@ -9,7 +9,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import io.vertx.core.json.JsonArray;
 
 /**
- * Order: 10
+ * Order: 13
  * Description: An OpenStack bare metal network
  * AName: a bare metal network
  * Icon: <i class="fa-duotone fa-regular fa-network-wired"></i>

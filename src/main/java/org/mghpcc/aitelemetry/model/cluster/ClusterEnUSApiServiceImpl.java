@@ -30,6 +30,7 @@ import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
 import io.vertx.kafka.client.producer.KafkaProducer;
@@ -41,23 +42,29 @@ import com.hubspot.jinjava.Jinjava;
 /**
  * Translate: false
  **/
-public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl {
+public class ClusterEnUSApiServiceImpl extends ClusterEnUSGenApiServiceImpl {
 
-	public Future<Void> importResult(String classSimpleName, String classApiAddress, JsonObject aiNodeResult, JsonObject gpuDeviceResult) {
+	public Future<Void> importResult(String hubId, String classSimpleName, String classApiAddress, JsonObject aiNodeResult, JsonObject gpuDeviceResult) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			String clusterName = aiNodeResult.getJsonObject("metric").getString("cluster");
+			String hubResource = String.format("%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId);
+			String clusterResource = String.format("%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
 			JsonObject body = new JsonObject();
-			body.put(AiCluster.VAR_pk, clusterName);
-			body.put(AiCluster.VAR_clusterName, clusterName);
-			body.put(AiCluster.VAR_aiNodesTotal, aiNodeResult.getJsonArray("value").getString(1));
-			body.put(AiCluster.VAR_gpuDevicesTotal, gpuDeviceResult.getJsonArray("value").getString(1));
+			body.put(Cluster.VAR_pk, clusterResource);
+			body.put(Cluster.VAR_hubId, hubId);
+			body.put(Cluster.VAR_hubResource, hubResource);
+			body.put(Cluster.VAR_clusterResource, clusterResource);
+			body.put(Cluster.VAR_clusterName, clusterName);
+			body.put(Cluster.VAR_aiNodesTotal, aiNodeResult.getJsonArray("value").getString(1));
+			body.put(Cluster.VAR_gpuDevicesTotal, gpuDeviceResult.getJsonArray("value").getString(1));
 
 			JsonObject pageParams = new JsonObject();
 			pageParams.put("body", body);
 			pageParams.put("path", new JsonObject());
 			pageParams.put("cookie", new JsonObject());
 			pageParams.put("query", new JsonObject().put("softCommit", true).put("q", "*:*").put("var", new JsonArray().add("refresh:false")));
+			pageParams.put("scopes", new JsonArray().add("GET").add("POST").add("PATCH").add("PUT"));
 			JsonObject pageContext = new JsonObject().put("params", pageParams);
 			JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
@@ -65,7 +72,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 					.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 					.addHeader("action", String.format("putimport%sFuture", classSimpleName))
 					).onSuccess(message -> {
-				importResultAuth(classSimpleName, classApiAddress, body, clusterName).onSuccess(a -> {
+				importResultAuth(hubId, classSimpleName, classApiAddress, body).onSuccess(a -> {
 					LOG.info(String.format("Imported %s AI cluster", clusterName));
 					promise.complete();
 				}).onFailure(ex -> {
@@ -83,15 +90,16 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 		return promise.future();
 	}
 
-	public Future<Void> importResultAuth(String classSimpleName, String classApiAddress, JsonObject body, String id) {
+	public Future<Void> importResultAuth(String hubId, String classSimpleName, String classApiAddress, JsonObject body) {
 		Promise<Void> promise = Promise.promise();
 		try {
-			ZoneId zoneId = ZoneId.of(config.getString(ComputateConfigKeys.SITE_ZONE));
-			String groupName = String.format("%s-%s-GET", classSimpleName, id);
-			String policyId = String.format("%s-%s-GET", classSimpleName, id);
-			String policyName = String.format("%s-%s-GET", classSimpleName, id);
-			String resourceName = String.format("%s-%s", classSimpleName, id);
-			String resourceDisplayName = String.format("%s %s", classSimpleName, id);
+			String clusterName = body.getString(Cluster.VAR_clusterName);
+			String groupName = String.format("%s-%s-%s-%s-GET", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+			String policyId = String.format("%s-%s-%s-%s-GET", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+			String policyName = String.format("%s-%s-%s-%s-GET", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+			String resourceName = String.format("%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+			String permissionName = String.format("%s-%s-%s-%s-GET-permission", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+			String resourceDisplayName = String.format("%s %s %s %s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
 			String authAdminUsername = config.getString(ComputateConfigKeys.AUTH_ADMIN_USERNAME);
 			String authAdminPassword = config.getString(ComputateConfigKeys.AUTH_ADMIN_PASSWORD);
 			Integer authPort = Integer.parseInt(config.getString(ComputateConfigKeys.AUTH_PORT));
@@ -114,7 +122,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 							.expecting(HttpResponseExpectation.SC_CREATED.or(HttpResponseExpectation.SC_CONFLICT))
 							.onSuccess(createGroupResponse -> {
 						try {
-							webClient.get(authPort, authHostName, String.format("/admin/realms/%s/groups?exact=false&global=true&first=0&max=1&search=%s", authRealm, URLEncoder.encode(groupName, "UTF-8"))).ssl(authSsl)
+							webClient.get(authPort, authHostName, String.format("/admin/realms/%s/groups?exact=true&global=true&first=0&max=1&search=%s", authRealm, URLEncoder.encode(groupName, "UTF-8"))).ssl(authSsl)
 									.putHeader("Authorization", String.format("Bearer %s", authToken))
 									.send()
 									.expecting(HttpResponseExpectation.SC_OK)
@@ -141,7 +149,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 												webClient.post(authPort, authHostName, String.format("/admin/realms/%s/clients/%s/authz/resource-server/permission/scope", authRealm, authClient)).ssl(authSsl)
 														.putHeader("Authorization", String.format("Bearer %s", authToken))
 														.sendJson(new JsonObject()
-																.put("name", String.format("%s-%s", authRealm, groupName))
+																.put("name", permissionName)
 																.put("description", String.format("GET %s", groupName))
 																.put("decisionStrategy", "AFFIRMATIVE")
 																.put("resources", new JsonArray().add(resourceName))
@@ -202,10 +210,10 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 
 	@Override
 	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
-			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
+			String classSimpleName, String classApiAddress, String classAuthResource, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
 		ZonedDateTime dateTimeStarted = ZonedDateTime.now();
-		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = config.getInteger(ConfigKeys.AUTH_PORT);
@@ -214,6 +222,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 				String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
 				String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
 				MultiMap form = MultiMap.caseInsensitiveMultiMap();
+				String hubId = "moc";
 				form.add("grant_type", "client_credentials");
 				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);
 				webClient.post(authPort, authHostName, authTokenUri).ssl(authSsl).authentication(credentials)
@@ -231,7 +240,7 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 									JsonObject aiNodeResult = clustersWithAiNodesTotal.get(i);
 									JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
 									futures.add(Future.future(promise1 -> {
-										importResult(classSimpleName, classApiAddress, aiNodeResult, gpuDeviceResult).onComplete(b -> {
+										importResult(hubId, classSimpleName, classApiAddress, aiNodeResult, gpuDeviceResult).onComplete(b -> {
 											promise1.complete();
 										}).onFailure(ex -> {
 											LOG.error(String.format(importDataFail, classSimpleName), ex);
@@ -277,26 +286,26 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 		return promise.future();
 	}
 
-	protected Future<SearchList<AiCluster>> cleanupNonAiNodesTotal(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName, String accessToken) {
-		Promise<SearchList<AiCluster>> promise = Promise.promise();
+	protected Future<SearchList<Cluster>> cleanupNonAiNodesTotal(ComputateSiteRequest siteRequest, ZonedDateTime dateTimeStarted, String classSimpleName, String accessToken) {
+		Promise<SearchList<Cluster>> promise = Promise.promise();
 		try {
-			SearchList<AiCluster> searchList = new SearchList<AiCluster>();
+			SearchList<Cluster> searchList = new SearchList<Cluster>();
 			searchList.setStore(true);
 			searchList.q("*:*");
-			searchList.setC(AiCluster.class);
-			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", AiCluster.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
-			searchList.promiseDeepForClass(siteRequest).onSuccess(oldAiClusters -> {
+			searchList.setC(Cluster.class);
+			searchList.fq(String.format("modified_docvalues_date:[* TO %s]", Cluster.staticSearchCreated((SiteRequest)siteRequest, dateTimeStarted)));
+			searchList.promiseDeepForClass(siteRequest).onSuccess(oldClusters -> {
 				try {
 					List<Future<?>> futures = new ArrayList<>();
-					for(Integer i = 0; i < oldAiClusters.getList().size(); i++) {
-						AiCluster oldAiCluster = oldAiClusters.getList().get(i);
+					for(Integer i = 0; i < oldClusters.getList().size(); i++) {
+						Cluster oldCluster = oldClusters.getList().get(i);
 						futures.add(Future.future(promise1 -> {
 							try {
-								String clusterName = oldAiCluster.getClusterName();
+								String clusterName = oldCluster.getClusterName();
 								JsonObject body = new JsonObject();
-								body.put(AiCluster.VAR_clusterName, clusterName);
-								body.put(AiCluster.VAR_aiNodesTotal, 0);
-								body.put(AiCluster.VAR_gpuDevicesTotal, 0);
+								body.put(Cluster.VAR_clusterName, clusterName);
+								body.put(Cluster.VAR_aiNodesTotal, 0);
+								body.put(Cluster.VAR_gpuDevicesTotal, 0);
 
 								JsonObject pageParams = new JsonObject();
 								pageParams.put("body", body);
@@ -306,12 +315,12 @@ public class AiClusterEnUSApiServiceImpl extends AiClusterEnUSGenApiServiceImpl 
 								JsonObject pageContext = new JsonObject().put("params", pageParams);
 								JsonObject pageRequest = new JsonObject().put("context", pageContext);
 
-								vertx.eventBus().request(AiCluster.CLASS_API_ADDRESS_AiCluster, pageRequest, new DeliveryOptions()
+								vertx.eventBus().request(Cluster.CLASS_API_ADDRESS_Cluster, pageRequest, new DeliveryOptions()
 										.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 										.addHeader("action", String.format("putimport%sFuture", classSimpleName))
 										).onSuccess(message -> {
 									LOG.info(String.format("Imported %s AI cluster", clusterName));
-									promise1.complete(oldAiClusters);
+									promise1.complete(oldClusters);
 								}).onFailure(ex -> {
 									LOG.error(String.format(importDataFail, classSimpleName), ex);
 									promise1.fail(ex);

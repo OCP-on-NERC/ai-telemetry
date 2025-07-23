@@ -474,7 +474,7 @@ public class GpuDeviceGenPage extends GpuDeviceGenPageGen<PageLayout> {
    * Initialized: false
   **/
   protected void _result(Wrap<GpuDevice> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("gpuDeviceId")).orElse(null) != null)
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("gpuDeviceResource")).orElse(null) != null)
       w.o(searchListGpuDevice_.get(0));
   }
 

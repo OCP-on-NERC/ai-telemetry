@@ -318,15 +318,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "PATCH"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -743,15 +743,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "POST"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1162,15 +1162,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1512,15 +1512,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "PUT"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1959,15 +1959,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2120,15 +2120,15 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_SIMPLE_NAME, name, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)

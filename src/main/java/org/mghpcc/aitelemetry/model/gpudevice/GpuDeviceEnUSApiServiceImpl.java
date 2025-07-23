@@ -28,6 +28,9 @@ import org.computate.vertx.openapi.ComputateOAuth2AuthHandlerImpl;
 import org.computate.vertx.request.ComputateSiteRequest;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
+import org.mghpcc.aitelemetry.model.cluster.Cluster;
+import org.mghpcc.aitelemetry.model.hub.Hub;
+import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
 import io.vertx.kafka.client.producer.KafkaProducer;
@@ -43,18 +46,18 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 
 	@Override
 	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
-			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
+			String classSimpleName, String classApiAddress, String classAuthResource, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
 		// importDataRest(pagePath, vertx, siteRequest, classSimpleName, classApiAddress).onComplete(a -> promise.complete());
-		importDataVertx(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload);
+		importDataVertx(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload);
 		promise.complete();
 		return promise.future();
 	}
 
 	protected Future<Void> importDataRest(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
-			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
+			String classSimpleName, String classApiAddress, String classAuthResource, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
@@ -98,14 +101,22 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 										JsonArray clusterValue = clusterResult.getJsonArray("value");
 										String clusterName = clusterMetric.getString("cluster");
 										String nodeName = clusterMetric.getString("Hostname");
+										String hubId = "moc";
+										String hubResource = String.format("%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId);
+										String clusterResource = String.format("%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+										String nodeResource = String.format("%s-%s-%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName, AiNode.CLASS_AUTH_RESOURCE, nodeName);
 										Integer gpuDeviceNumber = Integer.parseInt(clusterMetric.getString("gpu"));
 										String gpuDeviceUtilization = clusterValue.getString(1);
+										String gpuDeviceResource = String.format("%s-%s-%s-%s-%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName, AiNode.CLASS_AUTH_RESOURCE, nodeName, GpuDevice.CLASS_AUTH_RESOURCE, gpuDeviceNumber);
 										JsonObject body = new JsonObject();
-										String gpuDeviceId = String.format("%s-%s-%s", clusterName, nodeName, gpuDeviceNumber);
-										body.put(GpuDevice.VAR_pk, gpuDeviceId);
-										body.put(GpuDevice.VAR_gpuDeviceId, gpuDeviceId);
-										body.put(GpuDevice.VAR_clusterName, clusterName);
-										body.put(GpuDevice.VAR_nodeName, nodeName);
+										body.put(GpuDevice.VAR_pk, gpuDeviceResource);
+										body.put(AiNode.VAR_hubId, hubId);
+										body.put(AiNode.VAR_hubResource, hubResource);
+										body.put(AiNode.VAR_clusterName, clusterName);
+										body.put(AiNode.VAR_clusterResource, clusterResource);
+										body.put(AiNode.VAR_nodeName, nodeName);
+										body.put(AiNode.VAR_nodeResource, nodeResource);
+										body.put(GpuDevice.VAR_gpuDeviceResource, gpuDeviceResource);
 										body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber.toString());
 										body.put(GpuDevice.VAR_gpuDeviceUtilization, gpuDeviceUtilization);
 
@@ -116,7 +127,7 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 												.sendJsonObject(new JsonObject().put("list", new JsonArray().add(body)))
 												.expecting(HttpResponseExpectation.SC_OK)
 												.onSuccess(importResponse -> {
-											LOG.info(String.format("Imported %s GPU device", gpuDeviceId));
+											LOG.info(String.format("Imported %s GPU device", gpuDeviceResource));
 											promise1.complete();
 										}).onFailure(ex -> {
 											LOG.error(String.format(importDataFail, classSimpleName), ex);
@@ -224,10 +235,10 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 	}
 
 	protected Future<Void> importDataVertx(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
-			String classSimpleName, String classApiAddress, String varPageId, String varUserUrl, String varDownload) {
+			String classSimpleName, String classApiAddress, String classAuthResource, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
 		ZonedDateTime dateTimeStarted = ZonedDateTime.now();
-		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, varPageId, varUserUrl, varDownload).onSuccess(a -> {
+		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload).onSuccess(a -> {
 			try {
 				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
 				Integer authPort = Integer.parseInt(config.getString(ConfigKeys.AUTH_PORT));
@@ -265,15 +276,23 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 										JsonArray clusterValue = clusterResult.getJsonArray("value");
 										String clusterName = clusterMetric.getString("cluster");
 										String nodeName = clusterMetric.getString("Hostname");
+										String hubId = "moc";
+										String hubResource = String.format("%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId);
+										String clusterResource = String.format("%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName);
+										String nodeResource = String.format("%s-%s-%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName, AiNode.CLASS_AUTH_RESOURCE, nodeName);
 										Integer gpuDeviceNumber = Integer.parseInt(clusterMetric.getString("gpu"));
 										String gpuDeviceUtilization = clusterValue.getString(1);
+										String gpuDeviceResource = String.format("%s-%s-%s-%s-%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName, AiNode.CLASS_AUTH_RESOURCE, nodeName, GpuDevice.CLASS_AUTH_RESOURCE, gpuDeviceNumber);
 										JsonObject body = new JsonObject();
-										String gpuDeviceId = String.format("%s-%s-%s", clusterName, nodeName, gpuDeviceNumber);
-										body.put(GpuDevice.VAR_pk, gpuDeviceId);
-										body.put(GpuDevice.VAR_gpuDeviceId, gpuDeviceId);
-										body.put(GpuDevice.VAR_clusterName, clusterName);
-										body.put(GpuDevice.VAR_nodeName, nodeName);
-										body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber);
+										body.put(GpuDevice.VAR_pk, gpuDeviceResource);
+										body.put(AiNode.VAR_hubId, hubId);
+										body.put(AiNode.VAR_hubResource, hubResource);
+										body.put(AiNode.VAR_clusterName, clusterName);
+										body.put(AiNode.VAR_clusterResource, clusterResource);
+										body.put(AiNode.VAR_nodeName, nodeName);
+										body.put(AiNode.VAR_nodeResource, nodeResource);
+										body.put(GpuDevice.VAR_gpuDeviceResource, gpuDeviceResource);
+										body.put(GpuDevice.VAR_gpuDeviceNumber, gpuDeviceNumber.toString());
 										body.put(GpuDevice.VAR_gpuDeviceUtilization, gpuDeviceUtilization);
 
 										JsonObject pageParams = new JsonObject();
@@ -288,7 +307,7 @@ public class GpuDeviceEnUSApiServiceImpl extends GpuDeviceEnUSGenApiServiceImpl 
 												.setSendTimeout(config.getLong(ComputateConfigKeys.VERTX_MAX_EVENT_LOOP_EXECUTE_TIME) * 1000)
 												.addHeader("action", String.format("putimport%sFuture", classSimpleName))
 												).onSuccess(message -> {
-											LOG.info(String.format("Imported %s GPU device", gpuDeviceId));
+											LOG.info(String.format("Imported %s GPU device", gpuDeviceResource));
 											promise1.complete();
 										}).onFailure(ex -> {
 											LOG.error(String.format(importDataFail, classSimpleName), ex);

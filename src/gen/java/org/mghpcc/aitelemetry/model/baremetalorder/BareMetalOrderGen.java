@@ -117,11 +117,11 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the BareMetalOrder class will inherit the helpful inherited class comments from the super class BareMetalOrderGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 12</h2>
- * <p>This class contains a comment <b>"Order: 12"</b>, which means this class will be sorted by the given number 12 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 16</h2>
+ * <p>This class contains a comment <b>"Order: 16"</b>, which means this class will be sorted by the given number 16 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
- * <h2>SqlOrder: 12</h2>
- * <p>This class contains a comment <b>"SqlOrder: 12"</b>, which means this class will be sorted by the given number 12 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>SqlOrder: 16</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 16"</b>, which means this class will be sorted by the given number 16 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -229,7 +229,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/bare-metal-order";
 	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/bare-metal-order";
 
-	public static final String Icon = "<i class=\"fa-duotone fa-regular fa-share-nodes\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-share-nodes\"></i>";
 
 	/////////////////
 	// description //
@@ -1890,6 +1890,7 @@ public abstract class BareMetalOrderGen<DEV> extends BaseModel {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalOrder";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrder";
+	public static final String CLASS_AUTH_RESOURCE = "BAREMETALORDER";
 	public static final String CLASS_API_ADDRESS_BareMetalOrder = "ai-telemetry-enUS-BareMetalOrder";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_BareMetalOrder;

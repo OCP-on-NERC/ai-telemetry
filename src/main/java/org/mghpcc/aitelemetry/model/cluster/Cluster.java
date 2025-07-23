@@ -13,6 +13,7 @@ import org.computate.vertx.config.ComputateConfigKeys;
 import org.computate.vertx.search.list.SearchList;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
 import org.mghpcc.aitelemetry.model.BaseModel;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonArray;
@@ -22,15 +23,18 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.pgclient.data.Polygon;
 
 /**
- * Order: 3
+ * Order: 5
  * Description: A Red Hat OpenShift cluster containing GPUs
- * AName: an AI cluster
+ * AName: an OpenShift cluster
  * Icon: <i class="fa-regular fa-server"></i>
+ * Sort.asc: hubId
+ * Sort.asc: clusterName
+ * Rows: 100
  *
- * SearchPageUri: /en-us/search/ai-cluster
- * EditPageUri: /en-us/edit/ai-cluster/{clusterName}
- * UserPageUri: /en-us/user/ai-cluster/{clusterName}
- * ApiUri: /en-us/api/ai-cluster
+ * SearchPageUri: /en-us/search/cluster
+ * EditPageUri: /en-us/edit/cluster/{clusterResource}
+ * UserPageUri: /en-us/user/cluster/{clusterResource}
+ * ApiUri: /en-us/api/cluster
  * ApiMethod:
  *   Search:
  *   GET:
@@ -40,7 +44,7 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   AiClusterAdmin:
+ *   ClusterAdmin:
  *     POST:
  *     PATCH:
  *     GET:
@@ -60,7 +64,35 @@ import io.vertx.pgclient.data.Polygon;
  *     Admin:
  *     SuperAdmin:
  **/
-public class AiCluster extends AiClusterGen<BaseModel> {
+public class Cluster extends ClusterGen<BaseModel> {
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: ACM Hub
+	 * Description: The name of the ACM Hub for this cluster in Prometheus Keycloak Proxy. 
+	 * HtmRow: 3
+	 * HtmCell: 1
+	 * HtmColumn: 1
+	 * HtmRowTitleOpen: cluster details
+	 * Facet: true
+	 **/
+	protected void _hubId(Wrap<String> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: hub auth resource
+	 * Description: The unique authorization resource for the hub for multi-tenancy
+	 * Facet: true
+	 * Relate: Hub.hubResource
+	 * AuthorizationResource: HUB
+	 **/
+	protected void _hubResource(Wrap<String> w) {
+		w.o(String.format("%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId));
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -69,16 +101,39 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DisplayName: cluster name
 	 * Description: The name of this cluster
 	 * HtmRow: 3
-	 * HtmCell: 1
-	 * HtmColumn: 1
-	 * HtmRowTitleOpen: cluster details
+	 * HtmCell: 3
+	 * HtmColumn: 2
 	 * Facet: true
-	 * VarName: true
-	 * VarId: true
-	 * AuthorizationResource: AiCluster
 	 **/
 	protected void _clusterName(Wrap<String> w) {}
 
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: cluster auth resource
+	 * Description: The unique authorization resource for the cluster for multi-tenancy
+	 * Facet: true
+	 * VarId: true
+	 * AuthorizationResource: CLUSTER
+	 **/
+	protected void _clusterResource(Wrap<String> w) {
+		w.o(String.format("%s-%s-%s-%s", Hub.CLASS_AUTH_RESOURCE, hubId, Cluster.CLASS_AUTH_RESOURCE, clusterName));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * DisplayName: unique name
+	 * Description: The unique name of this cluster
+	 * HtmRow: 3
+	 * HtmCell: 5
+	 * Facet: true
+	 * VarName: true
+	 **/
+	protected void _uniqueName(Wrap<String> w) {
+		w.o(String.format("%s in %s Hub", clusterName, hubId));
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -87,8 +142,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DisplayName: description
 	 * Description: A description of this cluster
 	 * HtmRow: 3
-	 * HtmCell: 2
-	 * HtmColumn: 2
+	 * HtmCell: 6
 	 * VarDescription: true
 	 * Multiline: true
 	 **/
@@ -148,15 +202,15 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 		w.o(staticSetLocation(siteRequest_, siteRequest_.getConfig().getString(ComputateConfigKeys.DEFAULT_MAP_LOCATION)));
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
 	 * Persist: true
 	 * DisplayName: entity ID
 	 * Description: A unique ID for this Smart Data Model
-	 * HtmRow: 3
-	 * HtmCell: 4
+	 * HtmRowTitle: NGSI-LD data
+	 * HtmRow: 5
+	 * HtmCell: 1
 	 * Facet: true
 	 */
 	protected void _id(Wrap<String> w) {
@@ -182,9 +236,8 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * Persist: true
 	 * DisplayName: NGSILD-Tenant
 	 * Description: The NGSILD-Tenant or Fiware-Service
-	 * HtmRowTitleOpen: NGSI-LD data
 	 * HtmRow: 5
-	 * HtmCell: 1
+	 * HtmCell: 2
 	 * Facet: true
 	 */
 	protected void _ngsildTenant(Wrap<String> w) {
@@ -198,7 +251,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DisplayName: NGSILD-Path
 	 * Description: The NGSILD-Path or Fiware-ServicePath
 	 * HtmRow: 5
-	 * HtmCell: 2
+	 * HtmCell: 3
 	 * Facet: true
 	 */
 	protected void _ngsildPath(Wrap<String> w) {
@@ -212,7 +265,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DisplayName: NGSILD context
 	 * Description: The NGSILD context URL for @context data
 	 * HtmRow: 5
-	 * HtmCell: 3
+	 * HtmCell: 4
 	 * Facet: true
 	 */
 	protected void _ngsildContext(Wrap<String> w) {
@@ -226,7 +279,7 @@ public class AiCluster extends AiClusterGen<BaseModel> {
 	 * DisplayName: NGSILD data
 	 * Description: The NGSILD data with @context from the context broker
 	 * HtmRow: 5
-	 * HtmCell: 4
+	 * HtmCell: 5
 	 * Facet: true
 	 * Multiline: true
 	 */

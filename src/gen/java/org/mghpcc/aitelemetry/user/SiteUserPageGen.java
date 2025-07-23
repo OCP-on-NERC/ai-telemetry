@@ -293,6 +293,7 @@ public abstract class SiteUserPageGen<DEV> extends SiteUserGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "SiteUserPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.user.SiteUserPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

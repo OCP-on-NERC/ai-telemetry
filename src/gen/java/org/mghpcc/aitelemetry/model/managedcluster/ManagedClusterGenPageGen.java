@@ -738,6 +738,7 @@ public abstract class ManagedClusterGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "ManagedClusterGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListManagedCluster_ = "searchListManagedCluster_";
 	public static final String VAR_listManagedCluster = "listManagedCluster";
 	public static final String VAR_resultCount = "resultCount";

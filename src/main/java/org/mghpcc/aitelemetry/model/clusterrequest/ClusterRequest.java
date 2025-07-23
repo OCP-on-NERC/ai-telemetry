@@ -5,7 +5,7 @@ import org.computate.search.wrap.Wrap;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
 /**
- * Order: 9
+ * Order: 12
  * Description: An OpenShift cluster request
  * AName: an OpenShift cluster request
  * Icon: <i class="fa-regular fa-server"></i>

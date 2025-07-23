@@ -293,6 +293,7 @@ public abstract class BareMetalNetworkPageGen<DEV> extends BareMetalNetworkGenPa
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNetworkPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

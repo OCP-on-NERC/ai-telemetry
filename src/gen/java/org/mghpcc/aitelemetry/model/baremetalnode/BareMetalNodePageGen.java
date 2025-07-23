@@ -293,6 +293,7 @@ public abstract class BareMetalNodePageGen<DEV> extends BareMetalNodeGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNodePage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodePage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

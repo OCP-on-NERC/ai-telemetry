@@ -6,10 +6,10 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import io.vertx.core.json.JsonArray;
 
 /**
- * Order: 11
+ * Order: 15
  * Description: An OpenStack bare metal node
  * AName: a bare metal node
- * Icon: <i class="fa-duotone fa-regular fa-hexagon-nodes"></i>
+ * Icon: <i class="fa-regular fa-hexagon-nodes"></i>
  * 
  * SearchPageUri: /en-us/search/bare-metal-node
  * EditPageUri: /en-us/edit/bare-metal-node/{nodeId}

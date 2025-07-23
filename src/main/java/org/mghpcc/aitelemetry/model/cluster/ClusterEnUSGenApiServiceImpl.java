@@ -1,5 +1,7 @@
-package org.mghpcc.aitelemetry.model.project;
+package org.mghpcc.aitelemetry.model.cluster;
 
+import org.mghpcc.aitelemetry.model.hub.HubEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -103,37 +105,38 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.project.AiProjectPage;
+import org.mghpcc.aitelemetry.model.cluster.ClusterPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AiProjectEnUSGenApiService {
+public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements ClusterEnUSGenApiService {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(AiProjectEnUSGenApiServiceImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(ClusterEnUSGenApiServiceImpl.class);
 
 	// Search //
 
 	@Override
-	public void searchAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void searchCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -152,16 +155,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -182,21 +185,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
-							response200SearchAiProject(listAiProject).onSuccess(response -> {
+						searchClusterList(siteRequest, false, true, false).onSuccess(listCluster -> {
+							response200SearchCluster(listCluster).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchAiProject succeeded. "));
+								LOG.debug(String.format("searchCluster succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchAiProject failed. "), ex);
+								LOG.error(String.format("searchCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchAiProject failed. "), ex);
+							LOG.error(String.format("searchCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchAiProject failed. "), ex);
+					LOG.error(String.format("searchCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -205,7 +208,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchAiProject failed. ", ex2));
+					LOG.error(String.format("searchCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -220,27 +223,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("searchAiProject failed. "), ex);
+				LOG.error(String.format("searchCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200SearchAiProject(SearchList<AiProject> listAiProject) {
+	public Future<ServiceResponse> response200SearchCluster(SearchList<Cluster> listCluster) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-			List<String> fls = listAiProject.getRequest().getFields();
+			SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+			List<String> fls = listCluster.getRequest().getFields();
 			JsonObject json = new JsonObject();
 			JsonArray l = new JsonArray();
-			listAiProject.getList().stream().forEach(o -> {
+			listCluster.getList().stream().forEach(o -> {
 				JsonObject json2 = JsonObject.mapFrom(o);
 				if(fls.size() > 0) {
 					Set<String> fieldNames = new HashSet<String>();
 					for(String fieldName : json2.fieldNames()) {
-						String v = AiProject.varIndexedAiProject(fieldName);
+						String v = Cluster.varIndexedCluster(fieldName);
 						if(v != null)
-							fieldNames.add(AiProject.varIndexedAiProject(fieldName));
+							fieldNames.add(Cluster.varIndexedCluster(fieldName));
 					}
 					if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
 						fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -258,10 +261,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				l.add(json2);
 			});
 			json.put("list", l);
-			response200Search(listAiProject.getRequest(), listAiProject.getResponse(), json);
+			response200Search(listCluster.getRequest(), listCluster.getResponse(), json);
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -269,12 +272,12 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchAiProject failed. "), ex);
+			LOG.error(String.format("response200SearchCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchAiProject(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchCluster(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -303,7 +306,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchAiProject(pivotFields2, pivotArray2);
+					responsePivotSearchCluster(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -312,23 +315,24 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// GET //
 
 	@Override
-	public void getAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void getCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -347,16 +351,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -377,21 +381,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
-							response200GETAiProject(listAiProject).onSuccess(response -> {
+						searchClusterList(siteRequest, false, true, false).onSuccess(listCluster -> {
+							response200GETCluster(listCluster).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("getAiProject succeeded. "));
+								LOG.debug(String.format("getCluster succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("getAiProject failed. "), ex);
+								LOG.error(String.format("getCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("getAiProject failed. "), ex);
+							LOG.error(String.format("getCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("getAiProject failed. "), ex);
+					LOG.error(String.format("getCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -400,7 +404,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("getAiProject failed. ", ex2));
+					LOG.error(String.format("getCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -415,20 +419,20 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("getAiProject failed. "), ex);
+				LOG.error(String.format("getCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200GETAiProject(SearchList<AiProject> listAiProject) {
+	public Future<ServiceResponse> response200GETCluster(SearchList<Cluster> listCluster) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-			JsonObject json = JsonObject.mapFrom(listAiProject.getList().stream().findFirst().orElse(null));
+			SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+			JsonObject json = JsonObject.mapFrom(listCluster.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -436,7 +440,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200GETAiProject failed. "), ex);
+			LOG.error(String.format("response200GETCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -445,24 +449,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// PATCH //
 
 	@Override
-	public void patchAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("patchAiProject started. "));
+	public void patchCluster(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("patchCluster started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -481,16 +486,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PATCH$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(PATCH)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-PATCH$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(PATCH)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -523,43 +528,43 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+						searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiProject.getRequest().getRows());
-								apiRequest.setNumFound(listAiProject.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listCluster.getRequest().getRows());
+								apiRequest.setNumFound(listCluster.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
-								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listCluster.first());
+								apiRequest.setId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getClusterResource().toString()).orElse(null));
+								apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
+								eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 
-								listPATCHAiProject(apiRequest, listAiProject).onSuccess(e -> {
-									response200PATCHAiProject(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("patchAiProject succeeded. "));
+								listPATCHCluster(apiRequest, listCluster).onSuccess(e -> {
+									response200PATCHCluster(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("patchCluster succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("patchAiProject failed. "), ex);
+										LOG.error(String.format("patchCluster failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("patchAiProject failed. "), ex);
+									LOG.error(String.format("patchCluster failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("patchAiProject failed. "), ex);
+								LOG.error(String.format("patchCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("patchAiProject failed. "), ex);
+							LOG.error(String.format("patchCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("patchAiProject failed. "), ex);
+					LOG.error(String.format("patchCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -568,7 +573,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("patchAiProject failed. ", ex2));
+					LOG.error(String.format("patchCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -583,58 +588,58 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("patchAiProject failed. "), ex);
+				LOG.error(String.format("patchCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPATCHAiProject(ApiRequest apiRequest, SearchList<AiProject> listAiProject) {
+	public Future<Void> listPATCHCluster(ApiRequest apiRequest, SearchList<Cluster> listCluster) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-		listAiProject.getList().forEach(o -> {
+		SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+		listCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiProject o2 = jsonObject.mapTo(AiProject.class);
+			Cluster o2 = jsonObject.mapTo(Cluster.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				patchAiProjectFuture(o2, false).onSuccess(a -> {
+				patchClusterFuture(o2, false).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listPATCHAiProject failed. "), ex);
+					LOG.error(String.format("listPATCHCluster failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiProject.next().onSuccess(next -> {
+			listCluster.next().onSuccess(next -> {
 				if(next) {
-					listPATCHAiProject(apiRequest, listAiProject).onSuccess(b -> {
+					listPATCHCluster(apiRequest, listCluster).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPATCHAiProject failed. "), ex);
+						LOG.error(String.format("listPATCHCluster failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPATCHAiProject failed. "), ex);
+				LOG.error(String.format("listPATCHCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listPATCHAiProject failed. "), ex);
+			LOG.error(String.format("listPATCHCluster failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void patchAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void patchClusterFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -645,10 +650,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						siteRequest.addScopes(scope);
 					});
 				});
-				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+				searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 					try {
-						AiProject o = listAiProject.first();
-						if(o != null && listAiProject.getResponse().getResponse().getNumFound() == 1) {
+						Cluster o = listCluster.first();
+						if(o != null && listCluster.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -660,12 +665,12 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getClusterResource().toString()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
-							AiProject o2 = jsonObject.mapTo(AiProject.class);
+							Cluster o2 = jsonObject.mapTo(Cluster.class);
 							o2.setSiteRequest_(siteRequest);
-							patchAiProjectFuture(o2, false).onSuccess(o3 -> {
+							patchClusterFuture(o2, false).onSuccess(o3 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -674,46 +679,46 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("patchAiProject failed. "), ex);
+						LOG.error(String.format("patchCluster failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("patchAiProject failed. "), ex);
+					LOG.error(String.format("patchCluster failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("patchAiProject failed. "), ex);
+				LOG.error(String.format("patchCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("patchAiProject failed. "), ex);
+			LOG.error(String.format("patchCluster failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiProject> patchAiProjectFuture(AiProject o, Boolean inheritPrimaryKey) {
+	public Future<Cluster> patchClusterFuture(Cluster o, Boolean inheritPrimaryKey) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiProject> promise = Promise.promise();
+		Promise<Cluster> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiProject> promise1 = Promise.promise();
+			Promise<Cluster> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiProject(siteRequest).onSuccess(a -> {
-					sqlPATCHAiProject(o, inheritPrimaryKey).onSuccess(aiProject -> {
-						persistAiProject(aiProject, true).onSuccess(c -> {
-							relateAiProject(aiProject).onSuccess(d -> {
-								indexAiProject(aiProject).onSuccess(o2 -> {
+				varsCluster(siteRequest).onSuccess(a -> {
+					sqlPATCHCluster(o, inheritPrimaryKey).onSuccess(cluster -> {
+						persistCluster(cluster, true).onSuccess(c -> {
+							relateCluster(cluster).onSuccess(d -> {
+								indexCluster(cluster).onSuccess(o2 -> {
 									if(apiRequest != null) {
 										apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 										if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-											o2.apiRequestAiProject();
+											o2.apiRequestCluster();
 											if(apiRequest.getVars().size() > 0)
-												eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+												eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 										}
 									}
-									promise1.complete(aiProject);
+									promise1.complete(cluster);
 								}).onFailure(ex -> {
 									promise1.fail(ex);
 								});
@@ -735,28 +740,28 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiProject -> {
-				Promise<AiProject> promise2 = Promise.promise();
-				refreshAiProject(aiProject).onSuccess(a -> {
-					promise2.complete(aiProject);
+			}).compose(cluster -> {
+				Promise<Cluster> promise2 = Promise.promise();
+				refreshCluster(cluster).onSuccess(a -> {
+					promise2.complete(cluster);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiProject -> {
-				promise.complete(aiProject);
+			}).onSuccess(cluster -> {
+				promise.complete(cluster);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("patchAiProjectFuture failed. "), ex);
+			LOG.error(String.format("patchClusterFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPATCHAiProject(AiProject o, Boolean inheritPrimaryKey) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> sqlPATCHCluster(Cluster o, Boolean inheritPrimaryKey) {
+		Promise<Cluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -764,55 +769,86 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiProject SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE Cluster SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
 			Set<String> methodNames = jsonObject.fieldNames();
-			AiProject o2 = new AiProject();
+			Cluster o2 = new Cluster();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
-					case "setClusterName":
-							o2.setClusterName(jsonObject.getString(entityVar));
+					case "setHubId":
+							o2.setHubId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_clusterName + "=$" + num);
+							bSql.append(Cluster.VAR_hubId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlClusterName());
+							bParams.add(o2.sqlHubId());
 						break;
-					case "setProjectName":
-							o2.setProjectName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiProject.VAR_projectName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlProjectName());
+					case "setHubResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(Cluster.class, pk).set(Cluster.VAR_hubResource, Hub.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeHubResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(Cluster.class, pk).setToNull(Cluster.VAR_hubResource, Hub.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_created + "=$" + num);
+							bSql.append(Cluster.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
-					case "setProjectId":
-							o2.setProjectId(jsonObject.getString(entityVar));
+					case "setClusterName":
+							o2.setClusterName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_projectId + "=$" + num);
+							bSql.append(Cluster.VAR_clusterName + "=$" + num);
 							num++;
-							bParams.add(o2.sqlProjectId());
+							bParams.add(o2.sqlClusterName());
+						break;
+					case "setClusterResource":
+							o2.setClusterResource(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_clusterResource + "=$" + num);
+							num++;
+							bParams.add(o2.sqlClusterResource());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_archived + "=$" + num);
+							bSql.append(Cluster.VAR_archived + "=$" + num);
 							num++;
 							bParams.add(o2.sqlArchived());
 						break;
@@ -820,7 +856,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							o2.setDescription(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_description + "=$" + num);
+							bSql.append(Cluster.VAR_description + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDescription());
 						break;
@@ -828,7 +864,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_sessionId + "=$" + num);
+							bSql.append(Cluster.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
@@ -836,25 +872,89 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_userKey + "=$" + num);
+							bSql.append(Cluster.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
+						break;
+					case "setLocation":
+							o2.setLocation(jsonObject.getJsonObject(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_location + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocation());
+						break;
+					case "setId":
+							o2.setId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_id + "=$" + num);
+							num++;
+							bParams.add(o2.sqlId());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_objectTitle + "=$" + num);
+							bSql.append(Cluster.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
+						break;
+					case "setNgsildTenant":
+							o2.setNgsildTenant(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_ngsildTenant + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildTenant());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(AiProject.VAR_displayPage + "=$" + num);
+							bSql.append(Cluster.VAR_displayPage + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDisplayPage());
+						break;
+					case "setNgsildPath":
+							o2.setNgsildPath(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_ngsildPath + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildPath());
+						break;
+					case "setNgsildContext":
+							o2.setNgsildContext(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_ngsildContext + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildContext());
+						break;
+					case "setNgsildData":
+							o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_ngsildData + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNgsildData());
+						break;
+					case "setAiNodesTotal":
+							o2.setAiNodesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_aiNodesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlAiNodesTotal());
+						break;
+					case "setGpuDevicesTotal":
+							o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_gpuDevicesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 				}
 			}
@@ -868,40 +968,40 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiProject failed", ex);
-						LOG.error(String.format("relateAiProject failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value Cluster failed", ex);
+						LOG.error(String.format("relateCluster failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
 			}
 			CompositeFuture.all(futures1).onSuccess(a -> {
 				CompositeFuture.all(futures2).onSuccess(b -> {
-					AiProject o3 = new AiProject();
+					Cluster o3 = new Cluster();
 					o3.setSiteRequest_(o.getSiteRequest_());
 					o3.setPk(pk);
 					promise.complete(o3);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPATCHAiProject failed. "), ex);
+					LOG.error(String.format("sqlPATCHCluster failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPATCHAiProject failed. "), ex);
+				LOG.error(String.format("sqlPATCHCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPATCHAiProject failed. "), ex);
+			LOG.error(String.format("sqlPATCHCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200PATCHAiProject(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PATCHCluster(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -909,7 +1009,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PATCHAiProject failed. "), ex);
+			LOG.error(String.format("response200PATCHCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -918,24 +1018,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// POST //
 
 	@Override
-	public void postAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("postAiProject started. "));
+	public void postCluster(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("postCluster started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -954,16 +1055,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-POST$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(POST)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-POST$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(POST)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -1002,7 +1103,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+						eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 						JsonObject params = new JsonObject();
 						params.put("body", siteRequest.getJsonObject());
 						params.put("path", new JsonObject());
@@ -1021,19 +1122,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						params.put("query", query);
 						JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 						JsonObject json = new JsonObject().put("context", context);
-						eventBus.request(AiProject.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAiProjectFuture")).onSuccess(a -> {
+						eventBus.request(Cluster.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postClusterFuture")).onSuccess(a -> {
 							JsonObject responseMessage = (JsonObject)a.body();
 							JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-							apiRequest.setSolrId(responseBody.getString(AiProject.VAR_solrId));
+							apiRequest.setSolrId(responseBody.getString(Cluster.VAR_solrId));
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-							LOG.debug(String.format("postAiProject succeeded. "));
+							LOG.debug(String.format("postCluster succeeded. "));
 						}).onFailure(ex -> {
-							LOG.error(String.format("postAiProject failed. "), ex);
+							LOG.error(String.format("postCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("postAiProject failed. "), ex);
+					LOG.error(String.format("postCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1042,7 +1143,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiProject failed. ", ex2));
+					LOG.error(String.format("postCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1057,14 +1158,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiProject failed. "), ex);
+				LOG.error(String.format("postCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
 	@Override
-	public void postAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void postClusterFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -1082,13 +1183,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
-				postAiProjectFuture(siteRequest, false).onSuccess(o -> {
+				postClusterFuture(siteRequest, false).onSuccess(o -> {
 					eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
 				}).onFailure(ex -> {
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Throwable ex) {
-				LOG.error(String.format("postAiProject failed. "), ex);
+				LOG.error(String.format("postCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
@@ -1096,7 +1197,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("postAiProject failed. ", ex2));
+					LOG.error(String.format("postCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1111,26 +1212,26 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("postAiProject failed. "), ex);
+				LOG.error(String.format("postCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<AiProject> postAiProjectFuture(SiteRequest siteRequest, Boolean projectId) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> postClusterFuture(SiteRequest siteRequest, Boolean clusterResource) {
+		Promise<Cluster> promise = Promise.promise();
 
 		try {
 			pgPool.withTransaction(sqlConnection -> {
-				Promise<AiProject> promise1 = Promise.promise();
+				Promise<Cluster> promise1 = Promise.promise();
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiProject(siteRequest).onSuccess(a -> {
-					createAiProject(siteRequest).onSuccess(aiProject -> {
-						sqlPOSTAiProject(aiProject, projectId).onSuccess(b -> {
-							persistAiProject(aiProject, false).onSuccess(c -> {
-								relateAiProject(aiProject).onSuccess(d -> {
-									indexAiProject(aiProject).onSuccess(o2 -> {
-										promise1.complete(aiProject);
+				varsCluster(siteRequest).onSuccess(a -> {
+					createCluster(siteRequest).onSuccess(cluster -> {
+						sqlPOSTCluster(cluster, clusterResource).onSuccess(b -> {
+							persistCluster(cluster, false).onSuccess(c -> {
+								relateCluster(cluster).onSuccess(d -> {
+									indexCluster(cluster).onSuccess(o2 -> {
+										promise1.complete(cluster);
 									}).onFailure(ex -> {
 										promise1.fail(ex);
 									});
@@ -1155,50 +1256,50 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiProject -> {
-				Promise<AiProject> promise2 = Promise.promise();
-				refreshAiProject(aiProject).onSuccess(a -> {
+			}).compose(cluster -> {
+				Promise<Cluster> promise2 = Promise.promise();
+				refreshCluster(cluster).onSuccess(a -> {
 					try {
 						ApiRequest apiRequest = siteRequest.getApiRequest_();
 						if(apiRequest != null) {
 							apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-							aiProject.apiRequestAiProject();
-							eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+							cluster.apiRequestCluster();
+							eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 						}
-						promise2.complete(aiProject);
+						promise2.complete(cluster);
 					} catch(Exception ex) {
-						LOG.error(String.format("postAiProjectFuture failed. "), ex);
+						LOG.error(String.format("postClusterFuture failed. "), ex);
 						promise2.fail(ex);
 					}
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiProject -> {
+			}).onSuccess(cluster -> {
 				try {
 					ApiRequest apiRequest = siteRequest.getApiRequest_();
 					if(apiRequest != null) {
 						apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-						aiProject.apiRequestAiProject();
-						eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+						cluster.apiRequestCluster();
+						eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 					}
-					promise.complete(aiProject);
+					promise.complete(cluster);
 				} catch(Exception ex) {
-					LOG.error(String.format("postAiProjectFuture failed. "), ex);
+					LOG.error(String.format("postClusterFuture failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("postAiProjectFuture failed. "), ex);
+			LOG.error(String.format("postClusterFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiProject> sqlPOSTAiProject(AiProject o, Boolean inheritPrimaryKey) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> sqlPOSTCluster(Cluster o, Boolean inheritPrimaryKey) {
+		Promise<Cluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1206,11 +1307,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("UPDATE AiProject SET ");
+			StringBuilder bSql = new StringBuilder("UPDATE Cluster SET ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiProject o2 = new AiProject();
+			Cluster o2 = new Cluster();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1236,95 +1337,187 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case AiProject.VAR_clusterName:
-						o2.setClusterName(jsonObject.getString(entityVar));
+					case Cluster.VAR_hubId:
+						o2.setHubId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_clusterName + "=$" + num);
+						bSql.append(Cluster.VAR_hubId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlClusterName());
+						bParams.add(o2.sqlHubId());
 						break;
-					case AiProject.VAR_projectName:
-						o2.setProjectName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiProject.VAR_projectName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlProjectName());
+					case Cluster.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(Cluster.class, pk).set(Cluster.VAR_hubResource, Hub.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
-					case AiProject.VAR_created:
+					case Cluster.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_created + "=$" + num);
+						bSql.append(Cluster.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case AiProject.VAR_projectId:
-						o2.setProjectId(jsonObject.getString(entityVar));
+					case Cluster.VAR_clusterName:
+						o2.setClusterName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_projectId + "=$" + num);
+						bSql.append(Cluster.VAR_clusterName + "=$" + num);
 						num++;
-						bParams.add(o2.sqlProjectId());
+						bParams.add(o2.sqlClusterName());
 						break;
-					case AiProject.VAR_archived:
+					case Cluster.VAR_clusterResource:
+						o2.setClusterResource(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_clusterResource + "=$" + num);
+						num++;
+						bParams.add(o2.sqlClusterResource());
+						break;
+					case Cluster.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_archived + "=$" + num);
+						bSql.append(Cluster.VAR_archived + "=$" + num);
 						num++;
 						bParams.add(o2.sqlArchived());
 						break;
-					case AiProject.VAR_description:
+					case Cluster.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_description + "=$" + num);
+						bSql.append(Cluster.VAR_description + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDescription());
 						break;
-					case AiProject.VAR_sessionId:
+					case Cluster.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_sessionId + "=$" + num);
+						bSql.append(Cluster.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case AiProject.VAR_userKey:
+					case Cluster.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_userKey + "=$" + num);
+						bSql.append(Cluster.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
-					case AiProject.VAR_objectTitle:
+					case Cluster.VAR_location:
+						o2.setLocation(jsonObject.getJsonObject(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_location + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocation());
+						break;
+					case Cluster.VAR_id:
+						o2.setId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_id + "=$" + num);
+						num++;
+						bParams.add(o2.sqlId());
+						break;
+					case Cluster.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_objectTitle + "=$" + num);
+						bSql.append(Cluster.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
 						break;
-					case AiProject.VAR_displayPage:
+					case Cluster.VAR_ngsildTenant:
+						o2.setNgsildTenant(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_ngsildTenant + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildTenant());
+						break;
+					case Cluster.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(AiProject.VAR_displayPage + "=$" + num);
+						bSql.append(Cluster.VAR_displayPage + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDisplayPage());
+						break;
+					case Cluster.VAR_ngsildPath:
+						o2.setNgsildPath(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_ngsildPath + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildPath());
+						break;
+					case Cluster.VAR_ngsildContext:
+						o2.setNgsildContext(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_ngsildContext + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildContext());
+						break;
+					case Cluster.VAR_ngsildData:
+						o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_ngsildData + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNgsildData());
+						break;
+					case Cluster.VAR_aiNodesTotal:
+						o2.setAiNodesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_aiNodesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlAiNodesTotal());
+						break;
+					case Cluster.VAR_gpuDevicesTotal:
+						o2.setGpuDevicesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_gpuDevicesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDevicesTotal());
 						break;
 					}
 				}
@@ -1339,8 +1532,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							).onSuccess(b -> {
 						a.handle(Future.succeededFuture());
 					}).onFailure(ex -> {
-						RuntimeException ex2 = new RuntimeException("value AiProject failed", ex);
-						LOG.error(String.format("relateAiProject failed. "), ex2);
+						RuntimeException ex2 = new RuntimeException("value Cluster failed", ex);
+						LOG.error(String.format("relateCluster failed. "), ex2);
 						a.handle(Future.failedFuture(ex2));
 					});
 				}));
@@ -1349,28 +1542,28 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete(o2);
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlPOSTAiProject failed. "), ex);
+					LOG.error(String.format("sqlPOSTCluster failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlPOSTAiProject failed. "), ex);
+				LOG.error(String.format("sqlPOSTCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlPOSTAiProject failed. "), ex);
+			LOG.error(String.format("sqlPOSTCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200POSTAiProject(AiProject o) {
+	public Future<ServiceResponse> response200POSTCluster(Cluster o) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1378,7 +1571,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200POSTAiProject failed. "), ex);
+			LOG.error(String.format("response200POSTCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1387,24 +1580,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// DELETE //
 
 	@Override
-	public void deleteAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deleteAiProject started. "));
+	public void deleteCluster(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deleteCluster started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1423,16 +1617,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(DELETE)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-DELETE$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(DELETE)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -1465,42 +1659,42 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+						searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiProject.getRequest().getRows());
-								apiRequest.setNumFound(listAiProject.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listCluster.getRequest().getRows());
+								apiRequest.setNumFound(listCluster.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
-								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listCluster.first());
+								apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
+								eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEAiProject(apiRequest, listAiProject).onSuccess(e -> {
-									response200DELETEAiProject(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deleteAiProject succeeded. "));
+								listDELETECluster(apiRequest, listCluster).onSuccess(e -> {
+									response200DELETECluster(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deleteCluster succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deleteAiProject failed. "), ex);
+										LOG.error(String.format("deleteCluster failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deleteAiProject failed. "), ex);
+									LOG.error(String.format("deleteCluster failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deleteAiProject failed. "), ex);
+								LOG.error(String.format("deleteCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deleteAiProject failed. "), ex);
+							LOG.error(String.format("deleteCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deleteAiProject failed. "), ex);
+					LOG.error(String.format("deleteCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1509,7 +1703,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deleteAiProject failed. ", ex2));
+					LOG.error(String.format("deleteCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1524,58 +1718,58 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("deleteAiProject failed. "), ex);
+				LOG.error(String.format("deleteCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEAiProject(ApiRequest apiRequest, SearchList<AiProject> listAiProject) {
+	public Future<Void> listDELETECluster(ApiRequest apiRequest, SearchList<Cluster> listCluster) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-		listAiProject.getList().forEach(o -> {
+		SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+		listCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiProject o2 = jsonObject.mapTo(AiProject.class);
+			Cluster o2 = jsonObject.mapTo(Cluster.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deleteAiProjectFuture(o).onSuccess(a -> {
+				deleteClusterFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEAiProject failed. "), ex);
+					LOG.error(String.format("listDELETECluster failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiProject.next().onSuccess(next -> {
+			listCluster.next().onSuccess(next -> {
 				if(next) {
-					listDELETEAiProject(apiRequest, listAiProject).onSuccess(b -> {
+					listDELETECluster(apiRequest, listCluster).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEAiProject failed. "), ex);
+						LOG.error(String.format("listDELETECluster failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEAiProject failed. "), ex);
+				LOG.error(String.format("listDELETECluster failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEAiProject failed. "), ex);
+			LOG.error(String.format("listDELETECluster failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deleteAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deleteClusterFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -1586,10 +1780,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						siteRequest.addScopes(scope);
 					});
 				});
-				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+				searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 					try {
-						AiProject o = listAiProject.first();
-						if(o != null && listAiProject.getResponse().getResponse().getNumFound() == 1) {
+						Cluster o = listCluster.first();
+						if(o != null && listCluster.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -1601,9 +1795,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
-							deleteAiProjectFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getClusterResource().toString()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
+							deleteClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -1612,42 +1806,42 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deleteAiProject failed. "), ex);
+						LOG.error(String.format("deleteCluster failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deleteAiProject failed. "), ex);
+					LOG.error(String.format("deleteCluster failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deleteAiProject failed. "), ex);
+				LOG.error(String.format("deleteCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deleteAiProject failed. "), ex);
+			LOG.error(String.format("deleteCluster failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiProject> deleteAiProjectFuture(AiProject o) {
+	public Future<Cluster> deleteClusterFuture(Cluster o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiProject> promise = Promise.promise();
+		Promise<Cluster> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiProject> promise1 = Promise.promise();
+			Promise<Cluster> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiProject(siteRequest).onSuccess(a -> {
-					sqlDELETEAiProject(o).onSuccess(aiProject -> {
-						relateAiProject(o).onSuccess(d -> {
-							unindexAiProject(o).onSuccess(o2 -> {
+				varsCluster(siteRequest).onSuccess(a -> {
+					sqlDELETECluster(o).onSuccess(cluster -> {
+						relateCluster(o).onSuccess(d -> {
+							unindexCluster(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiProject();
+										o2.apiRequestCluster();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -1669,27 +1863,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiProject -> {
-				Promise<AiProject> promise2 = Promise.promise();
-				refreshAiProject(o).onSuccess(a -> {
+			}).compose(cluster -> {
+				Promise<Cluster> promise2 = Promise.promise();
+				refreshCluster(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiProject -> {
-				promise.complete(aiProject);
+			}).onSuccess(cluster -> {
+				promise.complete(cluster);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deleteAiProjectFuture failed. "), ex);
+			LOG.error(String.format("deleteClusterFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEAiProject(AiProject o) {
+	public Future<Void> sqlDELETECluster(Cluster o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -1698,11 +1892,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiProject ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM Cluster ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiProject o2 = new AiProject();
+			Cluster o2 = new Cluster();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -1711,6 +1905,26 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case Cluster.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(Cluster.class, pk).set(Cluster.VAR_hubResource, Hub.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -1723,8 +1937,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiProject failed", ex);
-					LOG.error(String.format("unrelateAiProject failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value Cluster failed", ex);
+					LOG.error(String.format("unrelateCluster failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -1732,27 +1946,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEAiProject failed. "), ex);
+					LOG.error(String.format("sqlDELETECluster failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEAiProject failed. "), ex);
+				LOG.error(String.format("sqlDELETECluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEAiProject failed. "), ex);
+			LOG.error(String.format("sqlDELETECluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEAiProject(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETECluster(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1760,7 +1974,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEAiProject failed. "), ex);
+			LOG.error(String.format("response200DELETECluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -1769,24 +1983,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// PUTImport //
 
 	@Override
-	public void putimportAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("putimportAiProject started. "));
+	public void putimportCluster(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("putimportCluster started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "PUT"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1805,16 +2020,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-PUT$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(PUT)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-PUT$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(PUT)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -1854,27 +2069,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						apiRequest.setNumPATCH(0L);
 						apiRequest.initDeepApiRequest(siteRequest);
 						siteRequest.setApiRequest_(apiRequest);
-						eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
-						varsAiProject(siteRequest).onSuccess(d -> {
-							listPUTImportAiProject(apiRequest, siteRequest).onSuccess(e -> {
-								response200PUTImportAiProject(siteRequest).onSuccess(response -> {
-									LOG.debug(String.format("putimportAiProject succeeded. "));
+						eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
+						varsCluster(siteRequest).onSuccess(d -> {
+							listPUTImportCluster(apiRequest, siteRequest).onSuccess(e -> {
+								response200PUTImportCluster(siteRequest).onSuccess(response -> {
+									LOG.debug(String.format("putimportCluster succeeded. "));
 									eventHandler.handle(Future.succeededFuture(response));
 								}).onFailure(ex -> {
-									LOG.error(String.format("putimportAiProject failed. "), ex);
+									LOG.error(String.format("putimportCluster failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							}).onFailure(ex -> {
-								LOG.error(String.format("putimportAiProject failed. "), ex);
+								LOG.error(String.format("putimportCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportAiProject failed. "), ex);
+							LOG.error(String.format("putimportCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("putimportAiProject failed. "), ex);
+					LOG.error(String.format("putimportCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -1883,7 +2098,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiProject failed. ", ex2));
+					LOG.error(String.format("putimportCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1898,13 +2113,13 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiProject failed. "), ex);
+				LOG.error(String.format("putimportCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listPUTImportAiProject(ApiRequest apiRequest, SiteRequest siteRequest) {
+	public Future<Void> listPUTImportCluster(ApiRequest apiRequest, SiteRequest siteRequest) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
 		JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -1929,10 +2144,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiProject.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAiProjectFuture")).onSuccess(a -> {
+					eventBus.request(Cluster.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportClusterFuture")).onSuccess(a -> {
 						promise1.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listPUTImportAiProject failed. "), ex);
+						LOG.error(String.format("listPUTImportCluster failed. "), ex);
 						promise1.fail(ex);
 					});
 				}));
@@ -1941,18 +2156,18 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 				promise.complete();
 			}).onFailure(ex -> {
-				LOG.error(String.format("listPUTImportAiProject failed. "), ex);
+				LOG.error(String.format("listPUTImportCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("listPUTImportAiProject failed. "), ex);
+			LOG.error(String.format("listPUTImportCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
 	@Override
-	public void putimportAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void putimportClusterFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -1967,19 +2182,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String projectId = Optional.ofNullable(body.getString(AiProject.VAR_projectId)).orElse(body.getString(AiProject.VAR_solrId));
+				String clusterResource = Optional.ofNullable(body.getString(Cluster.VAR_clusterResource)).orElse(body.getString(Cluster.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 				pgPool.getConnection().onSuccess(sqlConnection -> {
-					String sqlQuery = String.format("select * from %s WHERE projectId=$1", AiProject.CLASS_SIMPLE_NAME);
+					String sqlQuery = String.format("select * from %s WHERE clusterResource=$1", Cluster.CLASS_SIMPLE_NAME);
 					sqlConnection.preparedQuery(sqlQuery)
-							.execute(Tuple.tuple(Arrays.asList(projectId))
+							.execute(Tuple.tuple(Arrays.asList(clusterResource))
 							).onSuccess(result -> {
 						sqlConnection.close().onSuccess(a -> {
 							try {
 								if(result.size() >= 1) {
-									AiProject o = new AiProject();
+									Cluster o = new Cluster();
 									o.setSiteRequest_(siteRequest);
 									for(Row definition : result.value()) {
 										for(Integer i = 0; i < definition.size(); i++) {
@@ -1988,11 +2203,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 												Object columnValue = definition.getValue(i);
 												o.persistForClass(columnName, columnValue);
 											} catch(Exception e) {
-												LOG.error(String.format("persistAiProject failed. "), e);
+												LOG.error(String.format("persistCluster failed. "), e);
 											}
 										}
 									}
-									AiProject o2 = new AiProject();
+									Cluster o2 = new Cluster();
 									o2.setSiteRequest_(siteRequest);
 									JsonObject body2 = new JsonObject();
 									for(String f : body.fieldNames()) {
@@ -2024,56 +2239,56 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 										} else {
 											o2.persistForClass(f, bodyVal);
 											o2.relateForClass(f, bodyVal);
-											if(!StringUtils.containsAny(f, "projectId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "clusterResource", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
 									}
 									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 										if(!body.fieldNames().contains(f)) {
-											if(!StringUtils.containsAny(f, "projectId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "clusterResource", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.putNull("set" + StringUtils.capitalize(f));
 										}
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(Optional.ofNullable(o.getProjectId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setId(Optional.ofNullable(o.getClusterResource()).map(v -> v.toString()).orElse(null));
 										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
-									patchAiProjectFuture(o, true).onSuccess(b -> {
-										LOG.debug("Import AiProject {} succeeded, modified AiProject. ", body.getValue(AiProject.VAR_projectId));
+									patchClusterFuture(o, true).onSuccess(b -> {
+										LOG.debug("Import Cluster {} succeeded, modified Cluster. ", body.getValue(Cluster.VAR_clusterResource));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
-										LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+										LOG.error(String.format("putimportClusterFuture failed. "), ex);
 										eventHandler.handle(Future.failedFuture(ex));
 									});
 								} else {
-									postAiProjectFuture(siteRequest, true).onSuccess(b -> {
-										LOG.debug("Import AiProject {} succeeded, created new AiProject. ", body.getValue(AiProject.VAR_projectId));
+									postClusterFuture(siteRequest, true).onSuccess(b -> {
+										LOG.debug("Import Cluster {} succeeded, created new Cluster. ", body.getValue(Cluster.VAR_clusterResource));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
-										LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+										LOG.error(String.format("putimportClusterFuture failed. "), ex);
 										eventHandler.handle(Future.failedFuture(ex));
 									});
 								}
 							} catch(Exception ex) {
-								LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+								LOG.error(String.format("putimportClusterFuture failed. "), ex);
 								eventHandler.handle(Future.failedFuture(ex));
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+							LOG.error(String.format("putimportClusterFuture failed. "), ex);
 							eventHandler.handle(Future.failedFuture(ex));
 						});
 					}).onFailure(ex -> {
-						LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+						LOG.error(String.format("putimportClusterFuture failed. "), ex);
 						eventHandler.handle(Future.failedFuture(ex));
 					});
 				}).onFailure(ex -> {
-					LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+					LOG.error(String.format("putimportClusterFuture failed. "), ex);
 					eventHandler.handle(Future.failedFuture(ex));
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("putimportAiProjectFuture failed. "), ex);
+				LOG.error(String.format("putimportClusterFuture failed. "), ex);
 				eventHandler.handle(Future.failedFuture(ex));
 			}
 		}).onFailure(ex -> {
@@ -2081,7 +2296,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("putimportAiProject failed. ", ex2));
+					LOG.error(String.format("putimportCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2096,19 +2311,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("putimportAiProject failed. "), ex);
+				LOG.error(String.format("putimportCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<ServiceResponse> response200PUTImportAiProject(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200PUTImportCluster(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2116,7 +2331,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200PUTImportAiProject failed. "), ex);
+			LOG.error(String.format("response200PUTImportCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -2125,25 +2340,26 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// SearchPage //
 
 	@Override
-	public void searchpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void searchpageCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
 			serviceRequest.setUser(user.principal());
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2162,16 +2378,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -2192,21 +2408,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
-							response200SearchPageAiProject(listAiProject).onSuccess(response -> {
+						searchClusterList(siteRequest, false, true, false).onSuccess(listCluster -> {
+							response200SearchPageCluster(listCluster).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("searchpageAiProject succeeded. "));
+								LOG.debug(String.format("searchpageCluster succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("searchpageAiProject failed. "), ex);
+								LOG.error(String.format("searchpageCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("searchpageAiProject failed. "), ex);
+							LOG.error(String.format("searchpageCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchpageAiProject failed. "), ex);
+					LOG.error(String.format("searchpageCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2215,7 +2431,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiProject failed. ", ex2));
+					LOG.error(String.format("searchpageCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2230,7 +2446,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageAiProject failed. "), ex);
+				LOG.error(String.format("searchpageCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
@@ -2239,7 +2455,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("searchpageAiProject failed. ", ex2));
+					LOG.error(String.format("searchpageCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2254,38 +2470,38 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("searchpageAiProject failed. "), ex);
+				LOG.error(String.format("searchpageCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void searchpageAiProjectPageInit(AiProjectPage page, SearchList<AiProject> listAiProject) {
+	public void searchpageClusterPageInit(ClusterPage page, SearchList<Cluster> listCluster) {
 	}
 
-	public String templateSearchPageAiProject(ServiceRequest serviceRequest) {
-		return "en-us/search/ai-project/AiProjectSearchPage.htm";
+	public String templateSearchPageCluster(ServiceRequest serviceRequest) {
+		return "en-us/search/cluster/ClusterSearchPage.htm";
 	}
-	public Future<ServiceResponse> response200SearchPageAiProject(SearchList<AiProject> listAiProject) {
+	public Future<ServiceResponse> response200SearchPageCluster(SearchList<Cluster> listCluster) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateSearchPageAiProject(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateSearchPageCluster(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiProjectPage page = new AiProjectPage();
+			ClusterPage page = new ClusterPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiProject.size() >= 1)
-				siteRequest.setRequestPk(listAiProject.get(0).getPk());
-			page.setSearchListAiProject_(listAiProject);
+			if(listCluster.size() >= 1)
+				siteRequest.setRequestPk(listCluster.get(0).getPk());
+			page.setSearchListCluster_(listCluster);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
+			page.promiseDeepClusterPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2293,19 +2509,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200SearchPageAiProject failed. "), ex);
+					LOG.error(String.format("response200SearchPageCluster failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200SearchPageAiProject failed. "), ex);
+			LOG.error(String.format("response200SearchPageCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotSearchPageAiProject(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotSearchPageCluster(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2334,7 +2550,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotSearchPageAiProject(pivotFields2, pivotArray2);
+					responsePivotSearchPageCluster(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2343,23 +2559,24 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// EditPage //
 
 	@Override
-	public void editpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void editpageCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2378,16 +2595,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -2408,21 +2625,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
-							response200EditPageAiProject(listAiProject).onSuccess(response -> {
+						searchClusterList(siteRequest, false, true, false).onSuccess(listCluster -> {
+							response200EditPageCluster(listCluster).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("editpageAiProject succeeded. "));
+								LOG.debug(String.format("editpageCluster succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("editpageAiProject failed. "), ex);
+								LOG.error(String.format("editpageCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("editpageAiProject failed. "), ex);
+							LOG.error(String.format("editpageCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("editpageAiProject failed. "), ex);
+					LOG.error(String.format("editpageCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2431,7 +2648,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("editpageAiProject failed. ", ex2));
+					LOG.error(String.format("editpageCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2446,38 +2663,38 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("editpageAiProject failed. "), ex);
+				LOG.error(String.format("editpageCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void editpageAiProjectPageInit(AiProjectPage page, SearchList<AiProject> listAiProject) {
+	public void editpageClusterPageInit(ClusterPage page, SearchList<Cluster> listCluster) {
 	}
 
-	public String templateEditPageAiProject(ServiceRequest serviceRequest) {
-		return "en-us/edit/ai-project/AiProjectEditPage.htm";
+	public String templateEditPageCluster(ServiceRequest serviceRequest) {
+		return "en-us/edit/cluster/ClusterEditPage.htm";
 	}
-	public Future<ServiceResponse> response200EditPageAiProject(SearchList<AiProject> listAiProject) {
+	public Future<ServiceResponse> response200EditPageCluster(SearchList<Cluster> listCluster) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateEditPageAiProject(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateEditPageCluster(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiProjectPage page = new AiProjectPage();
+			ClusterPage page = new ClusterPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiProject.size() >= 1)
-				siteRequest.setRequestPk(listAiProject.get(0).getPk());
-			page.setSearchListAiProject_(listAiProject);
+			if(listCluster.size() >= 1)
+				siteRequest.setRequestPk(listCluster.get(0).getPk());
+			page.setSearchListCluster_(listCluster);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
+			page.promiseDeepClusterPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2485,19 +2702,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200EditPageAiProject failed. "), ex);
+					LOG.error(String.format("response200EditPageCluster failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200EditPageAiProject failed. "), ex);
+			LOG.error(String.format("response200EditPageCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotEditPageAiProject(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotEditPageCluster(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2526,7 +2743,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotEditPageAiProject(pivotFields2, pivotArray2);
+					responsePivotEditPageCluster(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2535,23 +2752,24 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// UserPage //
 
 	@Override
-	public void userpageAiProject(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void userpageCluster(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2570,16 +2788,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-GET$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -2600,21 +2818,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, false).onSuccess(listAiProject -> {
-							response200UserPageAiProject(listAiProject).onSuccess(response -> {
+						searchClusterList(siteRequest, false, true, false).onSuccess(listCluster -> {
+							response200UserPageCluster(listCluster).onSuccess(response -> {
 								eventHandler.handle(Future.succeededFuture(response));
-								LOG.debug(String.format("userpageAiProject succeeded. "));
+								LOG.debug(String.format("userpageCluster succeeded. "));
 							}).onFailure(ex -> {
-								LOG.error(String.format("userpageAiProject failed. "), ex);
+								LOG.error(String.format("userpageCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							});
 						}).onFailure(ex -> {
-							LOG.error(String.format("userpageAiProject failed. "), ex);
+							LOG.error(String.format("userpageCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("userpageAiProject failed. "), ex);
+					LOG.error(String.format("userpageCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2623,7 +2841,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("userpageAiProject failed. ", ex2));
+					LOG.error(String.format("userpageCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2638,38 +2856,38 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("userpageAiProject failed. "), ex);
+				LOG.error(String.format("userpageCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public void userpageAiProjectPageInit(AiProjectPage page, SearchList<AiProject> listAiProject) {
+	public void userpageClusterPageInit(ClusterPage page, SearchList<Cluster> listCluster) {
 	}
 
-	public String templateUserPageAiProject(ServiceRequest serviceRequest) {
+	public String templateUserPageCluster(ServiceRequest serviceRequest) {
 		return String.format("%s.htm", serviceRequest.getExtra().getString("uri").substring(1));
 	}
-	public Future<ServiceResponse> response200UserPageAiProject(SearchList<AiProject> listAiProject) {
+	public Future<ServiceResponse> response200UserPageCluster(SearchList<Cluster> listCluster) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
-			SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-			String pageTemplateUri = templateUserPageAiProject(siteRequest.getServiceRequest());
+			SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+			String pageTemplateUri = templateUserPageCluster(siteRequest.getServiceRequest());
 			String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
 			Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
 			String template = siteTemplatePath == null ? Resources.toString(Resources.getResource(resourceTemplatePath.toString()), StandardCharsets.UTF_8) : Files.readString(resourceTemplatePath, Charset.forName("UTF-8"));
-			AiProjectPage page = new AiProjectPage();
+			ClusterPage page = new ClusterPage();
 			MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
 			siteRequest.setRequestHeaders(requestHeaders);
 
-			if(listAiProject.size() >= 1)
-				siteRequest.setRequestPk(listAiProject.get(0).getPk());
-			page.setSearchListAiProject_(listAiProject);
+			if(listCluster.size() >= 1)
+				siteRequest.setRequestPk(listCluster.get(0).getPk());
+			page.setSearchListCluster_(listCluster);
 			page.setSiteRequest_(siteRequest);
 			page.setServiceRequest(siteRequest.getServiceRequest());
 			page.setWebClient(webClient);
 			page.setVertx(vertx);
-			page.promiseDeepAiProjectPage(siteRequest).onSuccess(a -> {
+			page.promiseDeepClusterPage(siteRequest).onSuccess(a -> {
 				try {
 					JsonObject ctx = ConfigKeys.getPageContext(config);
 					ctx.mergeIn(JsonObject.mapFrom(page));
@@ -2677,19 +2895,19 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					Buffer buffer = Buffer.buffer(renderedTemplate);
 					promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
 				} catch(Exception ex) {
-					LOG.error(String.format("response200UserPageAiProject failed. "), ex);
+					LOG.error(String.format("response200UserPageCluster failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("response200UserPageAiProject failed. "), ex);
+			LOG.error(String.format("response200UserPageCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void responsePivotUserPageAiProject(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+	public void responsePivotUserPageCluster(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
 		if(pivots != null) {
 			for(SolrResponse.Pivot pivotField : pivots) {
 				String entityIndexed = pivotField.getField();
@@ -2718,7 +2936,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				if(pivotFields2 != null) {
 					JsonArray pivotArray2 = new JsonArray();
 					pivotJson.put("pivot", pivotArray2);
-					responsePivotUserPageAiProject(pivotFields2, pivotArray2);
+					responsePivotUserPageCluster(pivotFields2, pivotArray2);
 				}
 			}
 		}
@@ -2727,24 +2945,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	// DELETEFilter //
 
 	@Override
-	public void deletefilterAiProject(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-		LOG.debug(String.format("deletefilterAiProject started. "));
+	public void deletefilterCluster(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		LOG.debug(String.format("deletefilterCluster started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
+			String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+			String CLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", AiProject.CLASS_SIMPLE_NAME, "PUT"));
-			if(projectId != null)
-				form.add("permission", String.format("%s-%s#%s", AiProject.CLASS_SIMPLE_NAME, projectId, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", Cluster.CLASS_AUTH_RESOURCE, "PUT"));
+			if(clusterResource != null)
+				form.add("permission", String.format("%s#%s", clusterResource, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2763,16 +2982,16 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						List<String> fqs = new ArrayList<>();
 						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiCluster-(.*)-DELETE$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(DELETE)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "clusterName", value));
+									fqs.add(String.format("%s:%s", "hubResource", value));
 								});
 						groups.stream().map(group -> {
-									Matcher mPermission = Pattern.compile("^/AiProject-(.*)-DELETE$").matcher(group);
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(DELETE)$").matcher(group);
 									return mPermission.find() ? mPermission.group(1) : null;
 								}).filter(v -> v != null).forEach(value -> {
-									fqs.add(String.format("%s:%s", "projectId", value));
+									fqs.add(String.format("%s:%s", "clusterResource", value));
 								});
 						JsonObject authParams = siteRequest.getServiceRequest().getParams();
 						JsonObject authQuery = authParams.getJsonObject("query");
@@ -2805,42 +3024,42 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					} else {
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
-						searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+						searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 							try {
 								ApiRequest apiRequest = new ApiRequest();
-								apiRequest.setRows(listAiProject.getRequest().getRows());
-								apiRequest.setNumFound(listAiProject.getResponse().getResponse().getNumFound());
+								apiRequest.setRows(listCluster.getRequest().getRows());
+								apiRequest.setNumFound(listCluster.getResponse().getResponse().getNumFound());
 								apiRequest.setNumPATCH(0L);
 								apiRequest.initDeepApiRequest(siteRequest);
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
-									apiRequest.setOriginal(listAiProject.first());
-								apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
-								eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+									apiRequest.setOriginal(listCluster.first());
+								apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
+								eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 
-								listDELETEFilterAiProject(apiRequest, listAiProject).onSuccess(e -> {
-									response200DELETEFilterAiProject(siteRequest).onSuccess(response -> {
-										LOG.debug(String.format("deletefilterAiProject succeeded. "));
+								listDELETEFilterCluster(apiRequest, listCluster).onSuccess(e -> {
+									response200DELETEFilterCluster(siteRequest).onSuccess(response -> {
+										LOG.debug(String.format("deletefilterCluster succeeded. "));
 										eventHandler.handle(Future.succeededFuture(response));
 									}).onFailure(ex -> {
-										LOG.error(String.format("deletefilterAiProject failed. "), ex);
+										LOG.error(String.format("deletefilterCluster failed. "), ex);
 										error(siteRequest, eventHandler, ex);
 									});
 								}).onFailure(ex -> {
-									LOG.error(String.format("deletefilterAiProject failed. "), ex);
+									LOG.error(String.format("deletefilterCluster failed. "), ex);
 									error(siteRequest, eventHandler, ex);
 								});
 							} catch(Exception ex) {
-								LOG.error(String.format("deletefilterAiProject failed. "), ex);
+								LOG.error(String.format("deletefilterCluster failed. "), ex);
 								error(siteRequest, eventHandler, ex);
 							}
 						}).onFailure(ex -> {
-							LOG.error(String.format("deletefilterAiProject failed. "), ex);
+							LOG.error(String.format("deletefilterCluster failed. "), ex);
 							error(siteRequest, eventHandler, ex);
 						});
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("deletefilterAiProject failed. "), ex);
+					LOG.error(String.format("deletefilterCluster failed. "), ex);
 					error(null, eventHandler, ex);
 				}
 			});
@@ -2849,7 +3068,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
 				} catch(Exception ex2) {
-					LOG.error(String.format("deletefilterAiProject failed. ", ex2));
+					LOG.error(String.format("deletefilterCluster failed. ", ex2));
 					error(null, eventHandler, ex2);
 				}
 			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2864,58 +3083,58 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							)
 					));
 			} else {
-				LOG.error(String.format("deletefilterAiProject failed. "), ex);
+				LOG.error(String.format("deletefilterCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		});
 	}
 
-	public Future<Void> listDELETEFilterAiProject(ApiRequest apiRequest, SearchList<AiProject> listAiProject) {
+	public Future<Void> listDELETEFilterCluster(ApiRequest apiRequest, SearchList<Cluster> listCluster) {
 		Promise<Void> promise = Promise.promise();
 		List<Future> futures = new ArrayList<>();
-		SiteRequest siteRequest = listAiProject.getSiteRequest_(SiteRequest.class);
-		listAiProject.getList().forEach(o -> {
+		SiteRequest siteRequest = listCluster.getSiteRequest_(SiteRequest.class);
+		listCluster.getList().forEach(o -> {
 			SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
 			siteRequest2.setScopes(siteRequest.getScopes());
 			o.setSiteRequest_(siteRequest2);
 			siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
 			JsonObject jsonObject = JsonObject.mapFrom(o);
-			AiProject o2 = jsonObject.mapTo(AiProject.class);
+			Cluster o2 = jsonObject.mapTo(Cluster.class);
 			o2.setSiteRequest_(siteRequest2);
 			futures.add(Future.future(promise1 -> {
-				deletefilterAiProjectFuture(o).onSuccess(a -> {
+				deletefilterClusterFuture(o).onSuccess(a -> {
 					promise1.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+					LOG.error(String.format("listDELETEFilterCluster failed. "), ex);
 					promise1.fail(ex);
 				});
 			}));
 		});
 		CompositeFuture.all(futures).onSuccess( a -> {
-			listAiProject.next().onSuccess(next -> {
+			listCluster.next().onSuccess(next -> {
 				if(next) {
-					listDELETEFilterAiProject(apiRequest, listAiProject).onSuccess(b -> {
+					listDELETEFilterCluster(apiRequest, listCluster).onSuccess(b -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+						LOG.error(String.format("listDELETEFilterCluster failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete();
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+				LOG.error(String.format("listDELETEFilterCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		}).onFailure(ex -> {
-			LOG.error(String.format("listDELETEFilterAiProject failed. "), ex);
+			LOG.error(String.format("listDELETEFilterCluster failed. "), ex);
 			promise.fail(ex);
 		});
 		return promise.future();
 	}
 
 	@Override
-	public void deletefilterAiProjectFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+	public void deletefilterClusterFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			try {
@@ -2926,10 +3145,10 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						siteRequest.addScopes(scope);
 					});
 				});
-				searchAiProjectList(siteRequest, false, true, true).onSuccess(listAiProject -> {
+				searchClusterList(siteRequest, false, true, true).onSuccess(listCluster -> {
 					try {
-						AiProject o = listAiProject.first();
-						if(o != null && listAiProject.getResponse().getResponse().getNumFound() == 1) {
+						Cluster o = listCluster.first();
+						if(o != null && listCluster.getResponse().getResponse().getNumFound() == 1) {
 							ApiRequest apiRequest = new ApiRequest();
 							apiRequest.setRows(1L);
 							apiRequest.setNumFound(1L);
@@ -2941,9 +3160,9 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getProjectId().toString()).orElse(null));
-							apiRequest.setSolrId(Optional.ofNullable(listAiProject.first()).map(o2 -> o2.getSolrId()).orElse(null));
-							deletefilterAiProjectFuture(o).onSuccess(o2 -> {
+							apiRequest.setId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getClusterResource().toString()).orElse(null));
+							apiRequest.setSolrId(Optional.ofNullable(listCluster.first()).map(o2 -> o2.getSolrId()).orElse(null));
+							deletefilterClusterFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 							}).onFailure(ex -> {
 								eventHandler.handle(Future.failedFuture(ex));
@@ -2952,42 +3171,42 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
 						}
 					} catch(Exception ex) {
-						LOG.error(String.format("deletefilterAiProject failed. "), ex);
+						LOG.error(String.format("deletefilterCluster failed. "), ex);
 						error(siteRequest, eventHandler, ex);
 					}
 				}).onFailure(ex -> {
-					LOG.error(String.format("deletefilterAiProject failed. "), ex);
+					LOG.error(String.format("deletefilterCluster failed. "), ex);
 					error(siteRequest, eventHandler, ex);
 				});
 			} catch(Exception ex) {
-				LOG.error(String.format("deletefilterAiProject failed. "), ex);
+				LOG.error(String.format("deletefilterCluster failed. "), ex);
 				error(null, eventHandler, ex);
 			}
 		}).onFailure(ex -> {
-			LOG.error(String.format("deletefilterAiProject failed. "), ex);
+			LOG.error(String.format("deletefilterCluster failed. "), ex);
 			error(null, eventHandler, ex);
 		});
 	}
 
-	public Future<AiProject> deletefilterAiProjectFuture(AiProject o) {
+	public Future<Cluster> deletefilterClusterFuture(Cluster o) {
 		SiteRequest siteRequest = o.getSiteRequest_();
-		Promise<AiProject> promise = Promise.promise();
+		Promise<Cluster> promise = Promise.promise();
 
 		try {
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
-			Promise<AiProject> promise1 = Promise.promise();
+			Promise<Cluster> promise1 = Promise.promise();
 			pgPool.withTransaction(sqlConnection -> {
 				siteRequest.setSqlConnection(sqlConnection);
-				varsAiProject(siteRequest).onSuccess(a -> {
-					sqlDELETEFilterAiProject(o).onSuccess(aiProject -> {
-						relateAiProject(o).onSuccess(d -> {
-							unindexAiProject(o).onSuccess(o2 -> {
+				varsCluster(siteRequest).onSuccess(a -> {
+					sqlDELETEFilterCluster(o).onSuccess(cluster -> {
+						relateCluster(o).onSuccess(d -> {
+							unindexCluster(o).onSuccess(o2 -> {
 								if(apiRequest != null) {
 									apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
 									if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-										o2.apiRequestAiProject();
+										o2.apiRequestCluster();
 										if(apiRequest.getVars().size() > 0)
-											eventBus.publish("websocketAiProject", JsonObject.mapFrom(apiRequest).toString());
+											eventBus.publish("websocketCluster", JsonObject.mapFrom(apiRequest).toString());
 									}
 								}
 								promise1.complete();
@@ -3009,27 +3228,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			}).onFailure(ex -> {
 				siteRequest.setSqlConnection(null);
 				promise.fail(ex);
-			}).compose(aiProject -> {
-				Promise<AiProject> promise2 = Promise.promise();
-				refreshAiProject(o).onSuccess(a -> {
+			}).compose(cluster -> {
+				Promise<Cluster> promise2 = Promise.promise();
+				refreshCluster(o).onSuccess(a -> {
 					promise2.complete(o);
 				}).onFailure(ex -> {
 					promise2.fail(ex);
 				});
 				return promise2.future();
-			}).onSuccess(aiProject -> {
-				promise.complete(aiProject);
+			}).onSuccess(cluster -> {
+				promise.complete(cluster);
 			}).onFailure(ex -> {
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("deletefilterAiProjectFuture failed. "), ex);
+			LOG.error(String.format("deletefilterClusterFuture failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> sqlDELETEFilterAiProject(AiProject o) {
+	public Future<Void> sqlDELETEFilterCluster(Cluster o) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
@@ -3038,11 +3257,11 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Integer num = 1;
-			StringBuilder bSql = new StringBuilder("DELETE FROM AiProject ");
+			StringBuilder bSql = new StringBuilder("DELETE FROM Cluster ");
 			List<Object> bParams = new ArrayList<Object>();
 			Long pk = o.getPk();
 			JsonObject jsonObject = siteRequest.getJsonObject();
-			AiProject o2 = new AiProject();
+			Cluster o2 = new Cluster();
 			o2.setSiteRequest_(siteRequest);
 			List<Future> futures1 = new ArrayList<>();
 			List<Future> futures2 = new ArrayList<>();
@@ -3051,6 +3270,26 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case Cluster.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(Cluster.class, pk).set(Cluster.VAR_hubResource, Hub.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -3063,8 +3302,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						).onSuccess(b -> {
 					a.handle(Future.succeededFuture());
 				}).onFailure(ex -> {
-					RuntimeException ex2 = new RuntimeException("value AiProject failed", ex);
-					LOG.error(String.format("unrelateAiProject failed. "), ex2);
+					RuntimeException ex2 = new RuntimeException("value Cluster failed", ex);
+					LOG.error(String.format("unrelateCluster failed. "), ex2);
 					a.handle(Future.failedFuture(ex2));
 				});
 			}));
@@ -3072,27 +3311,27 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				CompositeFuture.all(futures2).onSuccess(b -> {
 					promise.complete();
 				}).onFailure(ex -> {
-					LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+					LOG.error(String.format("sqlDELETEFilterCluster failed. "), ex);
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+				LOG.error(String.format("sqlDELETEFilterCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("sqlDELETEFilterAiProject failed. "), ex);
+			LOG.error(String.format("sqlDELETEFilterCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<ServiceResponse> response200DELETEFilterAiProject(SiteRequest siteRequest) {
+	public Future<ServiceResponse> response200DELETEFilterCluster(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String projectId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("projectId");
-				String m = String.format("%s %s not found", "AI project", projectId);
+				String clusterResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("clusterResource");
+				String m = String.format("%s %s not found", "OpenShift cluster", clusterResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3100,7 +3339,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("response200DELETEFilterAiProject failed. "), ex);
+			LOG.error(String.format("response200DELETEFilterCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3108,78 +3347,78 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	// General //
 
-	public Future<AiProject> createAiProject(SiteRequest siteRequest) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> createCluster(SiteRequest siteRequest) {
+		Promise<Cluster> promise = Promise.promise();
 		try {
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			String userId = siteRequest.getUserId();
 			Long userKey = siteRequest.getUserKey();
 			ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-			sqlConnection.preparedQuery("INSERT INTO AiProject(created, userKey) VALUES($1, $2) RETURNING pk")
+			sqlConnection.preparedQuery("INSERT INTO Cluster(created, userKey) VALUES($1, $2) RETURNING pk")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
 				Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
 				Long pk = createLine.getLong(0);
-				AiProject o = new AiProject();
+				Cluster o = new Cluster();
 				o.setPk(pk);
 				o.setSiteRequest_(siteRequest);
 				promise.complete(o);
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error("createAiProject failed. ", ex2);
+				LOG.error("createCluster failed. ", ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("createAiProject failed. "), ex);
+			LOG.error(String.format("createCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public void searchAiProjectQ(SearchList<AiProject> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchClusterQ(SearchList<Cluster> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
 		if(!"*".equals(entityVar)) {
 		}
 	}
 
-	public String searchAiProjectFq(SearchList<AiProject> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public String searchClusterFq(SearchList<Cluster> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		if(StringUtils.startsWith(valueIndexed, "[")) {
 			String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
 			if(fqs.length != 2)
 				throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-			String fq1 = fqs[0].equals("*") ? fqs[0] : AiProject.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-			String fq2 = fqs[1].equals("*") ? fqs[1] : AiProject.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+			String fq1 = fqs[0].equals("*") ? fqs[0] : Cluster.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+			String fq2 = fqs[1].equals("*") ? fqs[1] : Cluster.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
 			 return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
 		} else {
-			return varIndexed + ":" + SearchTool.escapeQueryChars(AiProject.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+			return varIndexed + ":" + SearchTool.escapeQueryChars(Cluster.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
 		}
 	}
 
-	public void searchAiProjectSort(SearchList<AiProject> searchList, String entityVar, String valueIndexed, String varIndexed) {
+	public void searchClusterSort(SearchList<Cluster> searchList, String entityVar, String valueIndexed, String varIndexed) {
 		if(varIndexed == null)
 			throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
 		searchList.sort(varIndexed, valueIndexed);
 	}
 
-	public void searchAiProjectRows(SearchList<AiProject> searchList, Long valueRows) {
+	public void searchClusterRows(SearchList<Cluster> searchList, Long valueRows) {
 			searchList.rows(valueRows != null ? valueRows : 10L);
 	}
 
-	public void searchAiProjectStart(SearchList<AiProject> searchList, Long valueStart) {
+	public void searchClusterStart(SearchList<Cluster> searchList, Long valueStart) {
 		searchList.start(valueStart);
 	}
 
-	public void searchAiProjectVar(SearchList<AiProject> searchList, String var, String value) {
+	public void searchClusterVar(SearchList<Cluster> searchList, String var, String value) {
 		searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
 	}
 
-	public void searchAiProjectUri(SearchList<AiProject> searchList) {
+	public void searchClusterUri(SearchList<Cluster> searchList) {
 	}
 
-	public Future<ServiceResponse> varsAiProject(SiteRequest siteRequest) {
+	public Future<ServiceResponse> varsCluster(SiteRequest siteRequest) {
 		Promise<ServiceResponse> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -3197,25 +3436,25 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						siteRequest.getRequestVars().put(entityVar, valueIndexed);
 					}
 				} catch(Exception ex) {
-					LOG.error(String.format("searchAiProject failed. "), ex);
+					LOG.error(String.format("searchCluster failed. "), ex);
 					promise.fail(ex);
 				}
 			});
 			promise.complete();
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiProject failed. "), ex);
+			LOG.error(String.format("searchCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<SearchList<AiProject>> searchAiProjectList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
-		Promise<SearchList<AiProject>> promise = Promise.promise();
+	public Future<SearchList<Cluster>> searchClusterList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify) {
+		Promise<SearchList<Cluster>> promise = Promise.promise();
 		try {
 			ServiceRequest serviceRequest = siteRequest.getServiceRequest();
 			String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
 			String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-			SearchList<AiProject> searchList = new SearchList<AiProject>();
+			SearchList<Cluster> searchList = new SearchList<Cluster>();
 			String facetRange = null;
 			Date facetRangeStart = null;
 			Date facetRangeEnd = null;
@@ -3225,18 +3464,18 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			searchList.setPopulate(populate);
 			searchList.setStore(store);
 			searchList.q("*:*");
-			searchList.setC(AiProject.class);
+			searchList.setC(Cluster.class);
 			searchList.setSiteRequest_(siteRequest);
 			searchList.facetMinCount(1);
 			if(entityList != null) {
 				for(String v : entityList) {
-					searchList.fl(AiProject.varIndexedAiProject(v));
+					searchList.fl(Cluster.varIndexedCluster(v));
 				}
 			}
 
-			String projectId = serviceRequest.getParams().getJsonObject("path").getString("projectId");
-			if(projectId != null) {
-				searchList.fq("projectId_docvalues_string:" + SearchTool.escapeQueryChars(projectId));
+			String clusterResource = serviceRequest.getParams().getJsonObject("path").getString("clusterResource");
+			if(clusterResource != null) {
+				searchList.fq("clusterResource_docvalues_string:" + SearchTool.escapeQueryChars(clusterResource));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -3259,7 +3498,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							String[] varsIndexed = new String[entityVars.length];
 							for(Integer i = 0; i < entityVars.length; i++) {
 								entityVar = entityVars[i];
-								varsIndexed[i] = AiProject.varIndexedAiProject(entityVar);
+								varsIndexed[i] = Cluster.varIndexedCluster(entityVar);
 							}
 							searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
 						}
@@ -3271,8 +3510,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								while(mQ.find()) {
 									entityVar = mQ.group(1).trim();
 									valueIndexed = mQ.group(2).trim();
-									varIndexed = AiProject.varIndexedAiProject(entityVar);
-									String entityQ = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = Cluster.varIndexedCluster(entityVar);
+									String entityQ = searchClusterFq(searchList, entityVar, valueIndexed, varIndexed);
 									mQ.appendReplacement(sb, entityQ);
 								}
 								if(!sb.isEmpty()) {
@@ -3285,8 +3524,8 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								while(mFq.find()) {
 									entityVar = mFq.group(1).trim();
 									valueIndexed = mFq.group(2).trim();
-									varIndexed = AiProject.varIndexedAiProject(entityVar);
-									String entityFq = searchAiProjectFq(searchList, entityVar, valueIndexed, varIndexed);
+									varIndexed = Cluster.varIndexedCluster(entityVar);
+									String entityFq = searchClusterFq(searchList, entityVar, valueIndexed, varIndexed);
 									mFq.appendReplacement(sb, entityFq);
 								}
 								if(!sb.isEmpty()) {
@@ -3296,14 +3535,14 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							} else if(paramName.equals("sort")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
 								valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-								varIndexed = AiProject.varIndexedAiProject(entityVar);
-								searchAiProjectSort(searchList, entityVar, valueIndexed, varIndexed);
+								varIndexed = Cluster.varIndexedCluster(entityVar);
+								searchClusterSort(searchList, entityVar, valueIndexed, varIndexed);
 							} else if(paramName.equals("start")) {
 								valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiProjectStart(searchList, valueStart);
+								searchClusterStart(searchList, valueStart);
 							} else if(paramName.equals("rows")) {
 								valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-								searchAiProjectRows(searchList, valueRows);
+								searchClusterRows(searchList, valueRows);
 							} else if(paramName.equals("stats")) {
 								searchList.stats((Boolean)paramObject);
 							} else if(paramName.equals("stats.field")) {
@@ -3311,7 +3550,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								if(mStats.find()) {
 									String solrLocalParams = mStats.group(1);
 									entityVar = mStats.group(2).trim();
-									varIndexed = AiProject.varIndexedAiProject(entityVar);
+									varIndexed = Cluster.varIndexedCluster(entityVar);
 									searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									statsField = entityVar;
 									statsFieldIndexed = varIndexed;
@@ -3337,33 +3576,33 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								if(mFacetRange.find()) {
 									String solrLocalParams = mFacetRange.group(1);
 									entityVar = mFacetRange.group(2).trim();
-									varIndexed = AiProject.varIndexedAiProject(entityVar);
+									varIndexed = Cluster.varIndexedCluster(entityVar);
 									searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
 									facetRange = entityVar;
 								}
 							} else if(paramName.equals("facet.field")) {
 								entityVar = (String)paramObject;
-								varIndexed = AiProject.varIndexedAiProject(entityVar);
+								varIndexed = Cluster.varIndexedCluster(entityVar);
 								if(varIndexed != null)
 									searchList.facetField(varIndexed);
 							} else if(paramName.equals("var")) {
 								entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
 								valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-								searchAiProjectVar(searchList, entityVar, valueIndexed);
+								searchClusterVar(searchList, entityVar, valueIndexed);
 							} else if(paramName.equals("cursorMark")) {
 								valueCursorMark = (String)paramObject;
 								searchList.cursorMark((String)paramObject);
 							}
 						}
-						searchAiProjectUri(searchList);
+						searchClusterUri(searchList);
 					}
 				} catch(Exception e) {
 					ExceptionUtils.rethrow(e);
 				}
 			}
 			if("*:*".equals(searchList.getQuery()) && searchList.getSorts().size() == 0) {
+				searchList.sort("hubId_docvalues_string", "asc");
 				searchList.sort("clusterName_docvalues_string", "asc");
-				searchList.sort("projectName_docvalues_string", "asc");
 				searchList.setDefaultSort(true);
 			}
 			String facetRange2 = facetRange;
@@ -3372,7 +3611,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			String facetRangeGap2 = facetRangeGap;
 			String statsField2 = statsField;
 			String statsFieldIndexed2 = statsFieldIndexed;
-			searchAiProject2(siteRequest, populate, store, modify, searchList);
+			searchCluster2(siteRequest, populate, store, modify, searchList);
 			searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
 				if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
 					StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3408,32 +3647,32 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					searchList.query().onSuccess(b -> {
 						promise.complete(searchList);
 					}).onFailure(ex -> {
-						LOG.error(String.format("searchAiProject failed. "), ex);
+						LOG.error(String.format("searchCluster failed. "), ex);
 						promise.fail(ex);
 					});
 				} else {
 					promise.complete(searchList);
 				}
 			}).onFailure(ex -> {
-				LOG.error(String.format("searchAiProject failed. "), ex);
+				LOG.error(String.format("searchCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("searchAiProject failed. "), ex);
+			LOG.error(String.format("searchCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
-	public void searchAiProject2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<AiProject> searchList) {
+	public void searchCluster2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Cluster> searchList) {
 	}
 
-	public Future<Void> persistAiProject(AiProject o, Boolean patch) {
+	public Future<Void> persistCluster(Cluster o, Boolean patch) {
 		Promise<Void> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT clusterName, projectName, created, projectId, archived, description, sessionId, userKey, objectTitle, displayPage FROM AiProject WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, description, sessionId, userKey, location, id, objectTitle, ngsildTenant, displayPage, ngsildPath, ngsildContext, ngsildData, aiNodesTotal, gpuDevicesTotal FROM Cluster WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3446,7 +3685,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								try {
 									o.persistForClass(columnName, columnValue);
 								} catch(Exception e) {
-									LOG.error(String.format("persistAiProject failed. "), e);
+									LOG.error(String.format("persistCluster failed. "), e);
 								}
 							}
 						}
@@ -3454,42 +3693,68 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					o.promiseDeepForClass(siteRequest).onSuccess(a -> {
 						promise.complete();
 					}).onFailure(ex -> {
-						LOG.error(String.format("persistAiProject failed. "), ex);
+						LOG.error(String.format("persistCluster failed. "), ex);
 						promise.fail(ex);
 					});
 				} catch(Exception ex) {
-					LOG.error(String.format("persistAiProject failed. "), ex);
+					LOG.error(String.format("persistCluster failed. "), ex);
 					promise.fail(ex);
 				}
 			}).onFailure(ex -> {
 				RuntimeException ex2 = new RuntimeException(ex);
-				LOG.error(String.format("persistAiProject failed. "), ex2);
+				LOG.error(String.format("persistCluster failed. "), ex2);
 				promise.fail(ex2);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("persistAiProject failed. "), ex);
+			LOG.error(String.format("persistCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> relateAiProject(AiProject o) {
+	public Future<Void> relateCluster(Cluster o) {
 		Promise<Void> promise = Promise.promise();
-		promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT hubResource as pk2, 'hubResource' from Hub where hubResource=$1")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getHubResource())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateCluster failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateCluster failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateCluster failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 
 	public String searchVar(String varIndexed) {
-		return AiProject.searchVarAiProject(varIndexed);
+		return Cluster.searchVarCluster(varIndexed);
 	}
 
 	@Override
 	public String getClassApiAddress() {
-		return AiProject.CLASS_API_ADDRESS_AiProject;
+		return Cluster.CLASS_API_ADDRESS_Cluster;
 	}
 
-	public Future<AiProject> indexAiProject(AiProject o) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> indexCluster(Cluster o) {
+		Promise<Cluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3498,7 +3763,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			json.put("add", add);
 			JsonObject doc = new JsonObject();
 			add.put("doc", doc);
-			o.indexAiProject(doc);
+			o.indexCluster(doc);
 			String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 			String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
 			String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3515,18 +3780,18 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 				promise.complete(o);
 			}).onFailure(ex -> {
-				LOG.error(String.format("indexAiProject failed. "), new RuntimeException(ex));
+				LOG.error(String.format("indexCluster failed. "), new RuntimeException(ex));
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("indexAiProject failed. "), ex);
+			LOG.error(String.format("indexCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<AiProject> unindexAiProject(AiProject o) {
-		Promise<AiProject> promise = Promise.promise();
+	public Future<Cluster> unindexCluster(Cluster o) {
+		Promise<Cluster> promise = Promise.promise();
 		try {
 			SiteRequest siteRequest = o.getSiteRequest_();
 			ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3534,7 +3799,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				JsonObject json = new JsonObject();
 				JsonObject delete = new JsonObject();
 				json.put("delete", delete);
-				String query = String.format("filter(%s:%s)", AiProject.VAR_solrId, o.obtainForClass(AiProject.VAR_solrId));
+				String query = String.format("filter(%s:%s)", Cluster.VAR_solrId, o.obtainForClass(Cluster.VAR_solrId));
 				delete.put("query", query);
 				String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
 				String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -3552,21 +3817,21 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
 					promise.complete(o);
 				}).onFailure(ex -> {
-					LOG.error(String.format("unindexAiProject failed. "), new RuntimeException(ex));
+					LOG.error(String.format("unindexCluster failed. "), new RuntimeException(ex));
 					promise.fail(ex);
 				});
 			}).onFailure(ex -> {
-				LOG.error(String.format("unindexAiProject failed. "), ex);
+				LOG.error(String.format("unindexCluster failed. "), ex);
 				promise.fail(ex);
 			});
 		} catch(Exception ex) {
-			LOG.error(String.format("unindexAiProject failed. "), ex);
+			LOG.error(String.format("unindexCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
 	}
 
-	public Future<Void> refreshAiProject(AiProject o) {
+	public Future<Void> refreshCluster(Cluster o) {
 		Promise<Void> promise = Promise.promise();
 		SiteRequest siteRequest = o.getSiteRequest_();
 		try {
@@ -3580,6 +3845,41 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				for(int i=0; i < solrIds.size(); i++) {
 					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
+
+					if("Hub".equals(classSimpleName2) && solrId2 != null) {
+						SearchList<Hub> searchList2 = new SearchList<Hub>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(Hub.class);
+						searchList2.fq("solrId:" + solrId2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								Hub o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-Hub", json, new DeliveryOptions().addHeader("action", "patchHubFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
 				}
 
 				CompositeFuture.all(futures).onSuccess(b -> {
@@ -3602,7 +3902,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					params.put("query", query);
 					JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
 					JsonObject json = new JsonObject().put("context", context);
-					eventBus.request(AiProject.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAiProjectFuture")).onSuccess(c -> {
+					eventBus.request(Cluster.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchClusterFuture")).onSuccess(c -> {
 						JsonObject responseMessage = (JsonObject)c.body();
 						Integer statusCode = responseMessage.getInteger("statusCode");
 						if(statusCode.equals(200))
@@ -3621,7 +3921,7 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				promise.complete();
 			}
 		} catch(Exception ex) {
-			LOG.error(String.format("refreshAiProject failed. "), ex);
+			LOG.error(String.format("refreshCluster failed. "), ex);
 			promise.fail(ex);
 		}
 		return promise.future();
@@ -3634,19 +3934,28 @@ public class AiProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			Map<String, Object> result = (Map<String, Object>)ctx.get("result");
 			SiteRequest siteRequest2 = (SiteRequest)siteRequest;
 			String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-			AiProject page = new AiProject();
+			Cluster page = new Cluster();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(AiProject.VAR_clusterName, AiProject.staticSetClusterName(siteRequest2, (String)result.get(AiProject.VAR_clusterName)));
-			page.persistForClass(AiProject.VAR_projectName, AiProject.staticSetProjectName(siteRequest2, (String)result.get(AiProject.VAR_projectName)));
-			page.persistForClass(AiProject.VAR_created, AiProject.staticSetCreated(siteRequest2, (String)result.get(AiProject.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
-			page.persistForClass(AiProject.VAR_projectId, AiProject.staticSetProjectId(siteRequest2, (String)result.get(AiProject.VAR_projectId)));
-			page.persistForClass(AiProject.VAR_archived, AiProject.staticSetArchived(siteRequest2, (String)result.get(AiProject.VAR_archived)));
-			page.persistForClass(AiProject.VAR_description, AiProject.staticSetDescription(siteRequest2, (String)result.get(AiProject.VAR_description)));
-			page.persistForClass(AiProject.VAR_sessionId, AiProject.staticSetSessionId(siteRequest2, (String)result.get(AiProject.VAR_sessionId)));
-			page.persistForClass(AiProject.VAR_userKey, AiProject.staticSetUserKey(siteRequest2, (String)result.get(AiProject.VAR_userKey)));
-			page.persistForClass(AiProject.VAR_objectTitle, AiProject.staticSetObjectTitle(siteRequest2, (String)result.get(AiProject.VAR_objectTitle)));
-			page.persistForClass(AiProject.VAR_displayPage, AiProject.staticSetDisplayPage(siteRequest2, (String)result.get(AiProject.VAR_displayPage)));
+			page.persistForClass(Cluster.VAR_hubId, Cluster.staticSetHubId(siteRequest2, (String)result.get(Cluster.VAR_hubId)));
+			page.persistForClass(Cluster.VAR_hubResource, Cluster.staticSetHubResource(siteRequest2, (String)result.get(Cluster.VAR_hubResource)));
+			page.persistForClass(Cluster.VAR_created, Cluster.staticSetCreated(siteRequest2, (String)result.get(Cluster.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+			page.persistForClass(Cluster.VAR_clusterName, Cluster.staticSetClusterName(siteRequest2, (String)result.get(Cluster.VAR_clusterName)));
+			page.persistForClass(Cluster.VAR_clusterResource, Cluster.staticSetClusterResource(siteRequest2, (String)result.get(Cluster.VAR_clusterResource)));
+			page.persistForClass(Cluster.VAR_archived, Cluster.staticSetArchived(siteRequest2, (String)result.get(Cluster.VAR_archived)));
+			page.persistForClass(Cluster.VAR_description, Cluster.staticSetDescription(siteRequest2, (String)result.get(Cluster.VAR_description)));
+			page.persistForClass(Cluster.VAR_sessionId, Cluster.staticSetSessionId(siteRequest2, (String)result.get(Cluster.VAR_sessionId)));
+			page.persistForClass(Cluster.VAR_userKey, Cluster.staticSetUserKey(siteRequest2, (String)result.get(Cluster.VAR_userKey)));
+			page.persistForClass(Cluster.VAR_location, Cluster.staticSetLocation(siteRequest2, (String)result.get(Cluster.VAR_location)));
+			page.persistForClass(Cluster.VAR_id, Cluster.staticSetId(siteRequest2, (String)result.get(Cluster.VAR_id)));
+			page.persistForClass(Cluster.VAR_objectTitle, Cluster.staticSetObjectTitle(siteRequest2, (String)result.get(Cluster.VAR_objectTitle)));
+			page.persistForClass(Cluster.VAR_ngsildTenant, Cluster.staticSetNgsildTenant(siteRequest2, (String)result.get(Cluster.VAR_ngsildTenant)));
+			page.persistForClass(Cluster.VAR_displayPage, Cluster.staticSetDisplayPage(siteRequest2, (String)result.get(Cluster.VAR_displayPage)));
+			page.persistForClass(Cluster.VAR_ngsildPath, Cluster.staticSetNgsildPath(siteRequest2, (String)result.get(Cluster.VAR_ngsildPath)));
+			page.persistForClass(Cluster.VAR_ngsildContext, Cluster.staticSetNgsildContext(siteRequest2, (String)result.get(Cluster.VAR_ngsildContext)));
+			page.persistForClass(Cluster.VAR_ngsildData, Cluster.staticSetNgsildData(siteRequest2, (String)result.get(Cluster.VAR_ngsildData)));
+			page.persistForClass(Cluster.VAR_aiNodesTotal, Cluster.staticSetAiNodesTotal(siteRequest2, (String)result.get(Cluster.VAR_aiNodesTotal)));
+			page.persistForClass(Cluster.VAR_gpuDevicesTotal, Cluster.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(Cluster.VAR_gpuDevicesTotal)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

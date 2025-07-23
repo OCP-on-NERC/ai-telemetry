@@ -293,6 +293,7 @@ public abstract class ManagedClusterPageGen<DEV> extends ManagedClusterGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "ManagedClusterPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

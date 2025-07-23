@@ -11,10 +11,10 @@ import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import io.vertx.core.Promise;
 
 /**
- * Order: 12
+ * Order: 16
  * Description: A bare metal order
  * AName: a bare metal order
- * Icon: <i class="fa-duotone fa-regular fa-share-nodes"></i>
+ * Icon: <i class="fa-regular fa-share-nodes"></i>
  *
  * SearchPageUri: /en-us/search/bare-metal-order
  * EditPageUri: /en-us/edit/bare-metal-order/{pk}

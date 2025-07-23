@@ -1,14 +1,7 @@
-package org.mghpcc.aitelemetry.model.cluster;
+package org.mghpcc.aitelemetry.model.hub;
 
-import org.mghpcc.aitelemetry.model.cluster.AiCluster;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 import java.lang.String;
-import java.util.List;
-import io.vertx.pgclient.data.Point;
-import io.vertx.core.json.JsonObject;
-import java.lang.Integer;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -20,15 +13,20 @@ import org.computate.search.wrap.Wrap;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Locale;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.api.service.ServiceRequest;
 import io.vertx.core.json.JsonArray;
 import java.net.URLDecoder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
@@ -44,43 +42,44 @@ import java.util.HashMap;
 import org.computate.search.tool.TimeTool;
 import org.computate.search.tool.SearchTool;
 import java.time.ZoneId;
+import io.vertx.pgclient.data.Point;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
+public class HubGenPage extends HubGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
    * Ignore: true
    **/
-  protected void _searchListAiCluster_(Wrap<SearchList<AiCluster>> w) {
+  protected void _searchListHub_(Wrap<SearchList<Hub>> w) {
   }
 
   @Override
   protected void _pageResponse(Wrap<String> w) {
-    if(searchListAiCluster_ != null)
-      w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
+    if(searchListHub_ != null)
+      w.o(Optional.ofNullable(searchListHub_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getStats()).orElse(null));
+    w.o(Optional.ofNullable(searchListHub_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
+    w.o(Optional.ofNullable(searchListHub_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
   protected void _pagination(JsonObject pagination) {
     JsonArray pages = new JsonArray();
-    Long start = searchListAiCluster_.getStart().longValue();
-    Long rows = searchListAiCluster_.getRows().longValue();
-    Long foundNum = Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiCluster_.getList().size()));
+    Long start = searchListHub_.getStart().longValue();
+    Long rows = searchListHub_.getRows().longValue();
+    Long foundNum = Optional.ofNullable(searchListHub_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListHub_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -122,12 +121,12 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _varsQ(JsonObject vars) {
-    AiCluster.varsQForClass().forEach(var -> {
+    Hub.varsQForClass().forEach(var -> {
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiCluster.displayNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiCluster.classSimpleNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", Optional.ofNullable(searchListAiCluster_.getRequest().getQuery()).filter(fq -> fq.startsWith(AiCluster.varIndexedAiCluster(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(Hub.displayNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Hub.classSimpleNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", Optional.ofNullable(searchListHub_.getRequest().getQuery()).filter(fq -> fq.startsWith(Hub.varIndexedHub(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -140,17 +139,17 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
     varsFqCount = 0;
-    for(String var : AiCluster.varsFqForClass()) {
-      String varIndexed = AiCluster.varIndexedAiCluster(var);
-      String varStored = AiCluster.varStoredAiCluster(var);
+    for(String var : Hub.varsFqForClass()) {
+      String varIndexed = Hub.varIndexedHub(var);
+      String varStored = Hub.varStoredHub(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
       json.put("varStored", varStored);
       json.put("varIndexed", varIndexed);
       String type = StringUtils.substringAfterLast(varIndexed, "_");
-      json.put("displayName", Optional.ofNullable(AiCluster.displayNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiCluster.classSimpleNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      Object v = searchListAiCluster_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiCluster.varIndexedAiCluster(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      json.put("displayName", Optional.ofNullable(Hub.displayNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Hub.classSimpleNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      Object v = searchListHub_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Hub.varIndexedHub(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
       if(v != null) {
         json.put("val", v);
         varsFqCount++;
@@ -216,13 +215,13 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _varsRange(JsonObject vars) {
-    AiCluster.varsRangeForClass().forEach(var -> {
-      String varIndexed = AiCluster.varIndexedAiCluster(var);
+    Hub.varsRangeForClass().forEach(var -> {
+      String varIndexed = Hub.varIndexedHub(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiCluster.displayNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiCluster.classSimpleNameAiCluster(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListAiCluster_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiCluster.varIndexedAiCluster(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(Hub.displayNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Hub.classSimpleNameHub(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", searchListHub_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Hub.varIndexedHub(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -233,7 +232,7 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = Optional.ofNullable(searchListAiCluster_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiCluster_.getList().size()));
+    Long num = Optional.ofNullable(searchListHub_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListHub_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
@@ -261,28 +260,28 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
     }
     query.put("q", q);
 
-    Long rows1 = Optional.ofNullable(searchListAiCluster_).map(l -> l.getRows()).orElse(10L);
-    Long start1 = Optional.ofNullable(searchListAiCluster_).map(l -> l.getStart()).orElse(1L);
+    Long rows1 = Optional.ofNullable(searchListHub_).map(l -> l.getRows()).orElse(10L);
+    Long start1 = Optional.ofNullable(searchListHub_).map(l -> l.getStart()).orElse(1L);
     Long start2 = start1 - rows1;
     Long start3 = start1 + rows1;
     Long rows2 = rows1 / 2;
     Long rows3 = rows1 * 2;
     start2 = start2 < 0 ? 0 : start2;
     JsonObject fqs = new JsonObject();
-    for(String fq : Optional.ofNullable(searchListAiCluster_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
+    for(String fq : Optional.ofNullable(searchListHub_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
       if(!StringUtils.contains(fq, "(")) {
-        String fq1 = AiCluster.searchVarAiCluster(StringUtils.substringBefore(fq, ":"));
+        String fq1 = Hub.searchVarHub(StringUtils.substringBefore(fq, ":"));
         String fq2 = StringUtils.substringAfter(fq, ":");
         if(!StringUtils.startsWithAny(fq, "classCanonicalNames_", "archived_", "sessionId", "userKeys"))
-          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", AiCluster.displayNameForClass(fq1)));
+          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", Hub.displayNameForClass(fq1)));
         }
       }
     query.put("fq", fqs);
 
     JsonArray sorts = new JsonArray();
-    for(String sort : Optional.ofNullable(searchListAiCluster_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
-      String sort1 = AiCluster.searchVarAiCluster(StringUtils.substringBefore(sort, " "));
-      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", AiCluster.displayNameForClass(sort1)));
+    for(String sort : Optional.ofNullable(searchListHub_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
+      String sort1 = Hub.searchVarHub(StringUtils.substringBefore(sort, " "));
+      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", Hub.displayNameForClass(sort1)));
     }
     query.put("sort", sorts);
   }
@@ -316,31 +315,31 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
   @Override
   protected void _rows(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("rows", null) != null)
-      w.o(searchListAiCluster_.getRows());
+      w.o(searchListHub_.getRows());
   }
 
   @Override
   protected void _start(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("start", null) != null)
-      w.o(searchListAiCluster_.getStart());
+      w.o(searchListHub_.getStart());
   }
 
   @Override
   protected void _rangeGap(Wrap<String> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.gap", null) != null)
-      w.o(Optional.ofNullable(searchListAiCluster_.getFacetRangeGap()).orElse(null));
+      w.o(Optional.ofNullable(searchListHub_.getFacetRangeGap()).orElse(null));
   }
 
   @Override
   protected void _rangeEnd(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.end", null) != null)
-      w.o(Optional.ofNullable(searchListAiCluster_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListHub_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
   protected void _rangeStart(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.start", null) != null)
-      w.o(Optional.ofNullable(searchListAiCluster_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListHub_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
@@ -360,33 +359,31 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeVar(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return AiCluster.searchVarAiCluster(v); }).orElse("created"));
+    w.o(Optional.ofNullable(searchListHub_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return Hub.searchVarHub(v); }).orElse("created"));
   }
 
   @Override
   protected void _defaultFacetSort(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getFacetSort()).orElse("index"));
+    w.o(Optional.ofNullable(searchListHub_.getFacetSort()).orElse("index"));
   }
 
   @Override
   protected void _defaultFacetLimit(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getFacetLimit()).orElse(1));
+    w.o(Optional.ofNullable(searchListHub_.getFacetLimit()).orElse(1));
   }
 
   @Override
   protected void _defaultFacetMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getFacetMinCount()).orElse(1));
+    w.o(Optional.ofNullable(searchListHub_.getFacetMinCount()).orElse(1));
   }
 
   @Override
   protected void _defaultPivotMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiCluster_.getFacetPivotMinCount()).orElse(0));
+    w.o(Optional.ofNullable(searchListHub_.getFacetPivotMinCount()).orElse(0));
   }
 
   @Override
   protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
-    Point point = AiCluster.staticSetLocation(siteRequest_, Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_LOCATION)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION)));
-    w.o(new JsonObject().put("type", "Point").put("coordinates", new JsonArray().add(Double.valueOf(point.getX())).add(Double.valueOf(point.getY()))));
   }
 
   @Override
@@ -398,10 +395,10 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultSortVars(List<String> l) {
-    if(!searchListAiCluster_.getDefaultSort()) {
-      Optional.ofNullable(searchListAiCluster_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+    if(!searchListHub_.getDefaultSort()) {
+      Optional.ofNullable(searchListHub_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
         String varSortParts[] = varSortStr.split(" ");
-        String varSort = AiCluster.searchVarAiCluster(varSortParts[0]);
+        String varSort = Hub.searchVarHub(varSortParts[0]);
         String varSortDirection = varSortParts[1];
         l.add(String.format("%s %s", varSort, varSortDirection));
       });
@@ -410,14 +407,14 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultFieldListVars(List<String> l) {
-    Optional.ofNullable(searchListAiCluster_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
+    Optional.ofNullable(searchListHub_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
       if(StringUtils.contains(varStored2, "}"))
         varStored2 = StringUtils.substringAfterLast(varStored2, "}");
       String[] parts = varStored2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiCluster.searchVarAiCluster(part);
+          String var = Hub.searchVarHub(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -427,14 +424,14 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultStatsVars(List<String> l) {
-    Optional.ofNullable(searchListAiCluster_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
+    Optional.ofNullable(searchListHub_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
       String varIndexed2 = varIndexed;
       if(StringUtils.contains(varIndexed2, "}"))
         varIndexed2 = StringUtils.substringAfterLast(varIndexed2, "}");
       String[] parts = varIndexed2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiCluster.searchVarAiCluster(part);
+          String var = Hub.searchVarHub(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -444,14 +441,14 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultPivotVars(List<String> l) {
-    Optional.ofNullable(searchListAiCluster_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
+    Optional.ofNullable(searchListHub_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
       String facetPivot2 = facetPivot;
       if(StringUtils.contains(facetPivot2, "}"))
         facetPivot2 = StringUtils.substringAfterLast(facetPivot2, "}");
       String[] parts = facetPivot2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiCluster.searchVarAiCluster(part);
+          String var = Hub.searchVarHub(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -462,20 +459,20 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
   /**
    * {@inheritDoc}
    **/
-  protected void _listAiCluster(JsonArray l) {
-    Optional.ofNullable(searchListAiCluster_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
+  protected void _listHub(JsonArray l) {
+    Optional.ofNullable(searchListHub_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
   protected void _resultCount(Wrap<Integer> w) {
-    w.o(searchListAiCluster_ == null ? 0 : searchListAiCluster_.size());
+    w.o(searchListHub_ == null ? 0 : searchListHub_.size());
   }
 
   /**
    * Initialized: false
   **/
-  protected void _result(Wrap<AiCluster> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("clusterName")).orElse(null) != null)
-      w.o(searchListAiCluster_.get(0));
+  protected void _result(Wrap<Hub> w) {
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("hubResource")).orElse(null) != null)
+      w.o(searchListHub_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
@@ -495,7 +492,7 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _classSimpleName(Wrap<String> w) {
-    w.o("AiCluster");
+    w.o("Hub");
   }
 
   @Override
@@ -503,21 +500,21 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("AI clusters");
-    else if(searchListAiCluster_ == null || resultCount == 0)
-      c.o("no AI cluster found");
+      c.o("hubs");
+    else if(searchListHub_ == null || resultCount == 0)
+      c.o("no hub found");
     else
-      c.o("AI clusters");
+      c.o("hubs");
   }
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/en-us/search/ai-cluster");
+    c.o("/en-us/search/hub");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/en-us/api/ai-cluster");
+    c.o("/en-us/api/hub");
   }
 
   @Override
@@ -527,20 +524,20 @@ public class AiClusterGenPage extends AiClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _pageDescription(Wrap<String> c) {
-      c.o("A Red Hat OpenShift cluster containing GPUs");
+      c.o("An Red Hat Advanced Cluster Management Hub cluster. ");
   }
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/en-us/search/ai-cluster-999.png");
+      c.o("/png/en-us/search/hub-999.png");
   }
 
   @Override
   protected void _classIcon(Wrap<String> c) {
-      c.o("<i class=\"fa-regular fa-server\"></i>");
+      c.o("<i class=\"fa-regular fa-sitemap\"></i>");
   }
 
-  protected void _pageUriAiCluster(Wrap<String> c) {
-      c.o("/en-us/search/ai-cluster");
+  protected void _pageUriHub(Wrap<String> c) {
+      c.o("/en-us/search/hub");
   }
 }

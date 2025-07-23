@@ -1,5 +1,11 @@
 package org.mghpcc.aitelemetry.model.gpudevice;
 
+import org.mghpcc.aitelemetry.model.hub.HubEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.hub.Hub;
+import org.mghpcc.aitelemetry.model.cluster.ClusterEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.cluster.Cluster;
+import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -120,20 +126,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void searchGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -147,6 +154,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
@@ -228,8 +267,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			json.put("list", l);
 			response200Search(listGpuDevice.getRequest(), listGpuDevice.getResponse(), json);
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -283,20 +322,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void getGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -310,6 +350,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
@@ -363,8 +435,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = listGpuDevice.getSiteRequest_(SiteRequest.class);
 			JsonObject json = JsonObject.mapFrom(listGpuDevice.getList().stream().findFirst().orElse(null));
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -385,20 +457,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		LOG.debug(String.format("patchGpuDevice started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -412,6 +485,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("PATCH")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(PATCH)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(PATCH)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PATCH");
+						}
+					}
 					if(authorizationDecisionResponse.failed() && !scopes.contains("PATCH")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -437,7 +542,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 								siteRequest.setApiRequest_(apiRequest);
 								if(apiRequest.getNumFound() == 1L)
 									apiRequest.setOriginal(listGpuDevice.first());
-								apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
+								apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceResource().toString()).orElse(null));
 								apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 								eventBus.publish("websocketGpuDevice", JsonObject.mapFrom(apiRequest).toString());
 
@@ -564,7 +669,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceResource().toString()).orElse(null));
 							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							JsonObject jsonObject = JsonObject.mapFrom(o);
 							GpuDevice o2 = jsonObject.mapTo(GpuDevice.class);
@@ -680,21 +785,44 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 			for(String entityVar : methodNames) {
 				switch(entityVar) {
-					case "setClusterName":
-							o2.setClusterName(jsonObject.getString(entityVar));
+					case "setHubId":
+							o2.setHubId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
+							bSql.append(GpuDevice.VAR_hubId + "=$" + num);
 							num++;
-							bParams.add(o2.sqlClusterName());
+							bParams.add(o2.sqlHubId());
 						break;
-					case "setNodeName":
-							o2.setNodeName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNodeName());
+					case "setHubResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_hubResource, Hub.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeHubResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(GpuDevice.class, pk).setToNull(GpuDevice.VAR_hubResource, Hub.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
@@ -704,21 +832,44 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlCreated());
 						break;
-					case "setGpuDeviceNumber":
-							o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
+					case "setClusterName":
+							o2.setClusterName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
+							bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
 							num++;
-							bParams.add(o2.sqlGpuDeviceNumber());
+							bParams.add(o2.sqlClusterName());
 						break;
-					case "setGpuDeviceId":
-							o2.setGpuDeviceId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_gpuDeviceId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlGpuDeviceId());
+					case "setClusterResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Cluster.varIndexedCluster(Cluster.VAR_clusterResource), Cluster.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Cluster");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_clusterResource, Cluster.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeClusterResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(GpuDevice.class, pk).setToNull(GpuDevice.VAR_clusterResource, Cluster.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -728,21 +879,60 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlArchived());
 						break;
-					case "setGpuDeviceUtilization":
-							o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+					case "setNodeName":
+							o2.setNodeName(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+							bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
 							num++;
-							bParams.add(o2.sqlGpuDeviceUtilization());
+							bParams.add(o2.sqlNodeName());
 						break;
-					case "setDescription":
-							o2.setDescription(jsonObject.getString(entityVar));
+					case "setNodeResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(AiNode.varIndexedAiNode(AiNode.VAR_nodeResource), AiNode.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("AiNode");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_nodeResource, AiNode.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "removeNodeResource":
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+							futures2.add(Future.future(promise2 -> {
+								sql(siteRequest).update(GpuDevice.class, pk).setToNull(GpuDevice.VAR_nodeResource, AiNode.class, null).onSuccess(a -> {
+									promise2.complete();
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case "setGpuDeviceNumber":
+							o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_description + "=$" + num);
+							bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
 							num++;
-							bParams.add(o2.sqlDescription());
+							bParams.add(o2.sqlGpuDeviceNumber());
+						break;
+					case "setGpuDeviceResource":
+							o2.setGpuDeviceResource(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_gpuDeviceResource + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDeviceResource());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -760,6 +950,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlUserKey());
 						break;
+					case "setGpuDeviceUtilization":
+							o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+							num++;
+							bParams.add(o2.sqlGpuDeviceUtilization());
+						break;
+					case "setDescription":
+							o2.setDescription(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_description + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDescription());
+						break;
+					case "setObjectTitle":
+							o2.setObjectTitle(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
+							num++;
+							bParams.add(o2.sqlObjectTitle());
+						break;
+					case "setDisplayPage":
+							o2.setDisplayPage(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_displayPage + "=$" + num);
+							num++;
+							bParams.add(o2.sqlDisplayPage());
+						break;
 					case "setLocation":
 							o2.setLocation(jsonObject.getJsonObject(entityVar));
 							if(bParams.size() > 0)
@@ -776,14 +998,6 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							num++;
 							bParams.add(o2.sqlId());
 						break;
-					case "setObjectTitle":
-							o2.setObjectTitle(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
-							num++;
-							bParams.add(o2.sqlObjectTitle());
-						break;
 					case "setNgsildTenant":
 							o2.setNgsildTenant(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -791,14 +1005,6 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(GpuDevice.VAR_ngsildTenant + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNgsildTenant());
-						break;
-					case "setDisplayPage":
-							o2.setDisplayPage(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(GpuDevice.VAR_displayPage + "=$" + num);
-							num++;
-							bParams.add(o2.sqlDisplayPage());
 						break;
 					case "setNgsildPath":
 							o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -868,8 +1074,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -890,20 +1096,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		LOG.debug(String.format("postGpuDevice started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -917,6 +1124,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("POST")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(POST)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(POST)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("POST");
+						}
+					}
 					if(authorizationDecisionResponse.failed() && !scopes.contains("POST")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -1053,7 +1292,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		});
 	}
 
-	public Future<GpuDevice> postGpuDeviceFuture(SiteRequest siteRequest, Boolean gpuDeviceId) {
+	public Future<GpuDevice> postGpuDeviceFuture(SiteRequest siteRequest, Boolean gpuDeviceResource) {
 		Promise<GpuDevice> promise = Promise.promise();
 
 		try {
@@ -1062,7 +1301,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				siteRequest.setSqlConnection(sqlConnection);
 				varsGpuDevice(siteRequest).onSuccess(a -> {
 					createGpuDevice(siteRequest).onSuccess(gpuDevice -> {
-						sqlPOSTGpuDevice(gpuDevice, gpuDeviceId).onSuccess(b -> {
+						sqlPOSTGpuDevice(gpuDevice, gpuDeviceResource).onSuccess(b -> {
 							persistGpuDevice(gpuDevice, false).onSuccess(c -> {
 								relateGpuDevice(gpuDevice).onSuccess(d -> {
 									indexGpuDevice(gpuDevice).onSuccess(o2 -> {
@@ -1172,23 +1411,34 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
-					case GpuDevice.VAR_clusterName:
-						o2.setClusterName(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_hubId:
+						o2.setHubId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
+						bSql.append(GpuDevice.VAR_hubId + "=$" + num);
 						num++;
-						bParams.add(o2.sqlClusterName());
+						bParams.add(o2.sqlHubId());
 						break;
-					case GpuDevice.VAR_nodeName:
-						o2.setNodeName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeName());
+					case GpuDevice.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_hubResource, Hub.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case GpuDevice.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
@@ -1199,23 +1449,34 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlCreated());
 						break;
-					case GpuDevice.VAR_gpuDeviceNumber:
-						o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_clusterName:
+						o2.setClusterName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
+						bSql.append(GpuDevice.VAR_clusterName + "=$" + num);
 						num++;
-						bParams.add(o2.sqlGpuDeviceNumber());
+						bParams.add(o2.sqlClusterName());
 						break;
-					case GpuDevice.VAR_gpuDeviceId:
-						o2.setGpuDeviceId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuDevice.VAR_gpuDeviceId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlGpuDeviceId());
+					case GpuDevice.VAR_clusterResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Cluster.varIndexedCluster(Cluster.VAR_clusterResource), Cluster.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Cluster");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_clusterResource, Cluster.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case GpuDevice.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -1226,23 +1487,52 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlArchived());
 						break;
-					case GpuDevice.VAR_gpuDeviceUtilization:
-						o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_nodeName:
+						o2.setNodeName(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+						bSql.append(GpuDevice.VAR_nodeName + "=$" + num);
 						num++;
-						bParams.add(o2.sqlGpuDeviceUtilization());
+						bParams.add(o2.sqlNodeName());
 						break;
-					case GpuDevice.VAR_description:
-						o2.setDescription(jsonObject.getString(entityVar));
+					case GpuDevice.VAR_nodeResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(AiNode.varIndexedAiNode(AiNode.VAR_nodeResource), AiNode.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("AiNode");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_nodeResource, AiNode.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case GpuDevice.VAR_gpuDeviceNumber:
+						o2.setGpuDeviceNumber(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(GpuDevice.VAR_description + "=$" + num);
+						bSql.append(GpuDevice.VAR_gpuDeviceNumber + "=$" + num);
 						num++;
-						bParams.add(o2.sqlDescription());
+						bParams.add(o2.sqlGpuDeviceNumber());
+						break;
+					case GpuDevice.VAR_gpuDeviceResource:
+						o2.setGpuDeviceResource(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_gpuDeviceResource + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDeviceResource());
 						break;
 					case GpuDevice.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -1262,6 +1552,42 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlUserKey());
 						break;
+					case GpuDevice.VAR_gpuDeviceUtilization:
+						o2.setGpuDeviceUtilization(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_gpuDeviceUtilization + "=$" + num);
+						num++;
+						bParams.add(o2.sqlGpuDeviceUtilization());
+						break;
+					case GpuDevice.VAR_description:
+						o2.setDescription(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_description + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDescription());
+						break;
+					case GpuDevice.VAR_objectTitle:
+						o2.setObjectTitle(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
+						num++;
+						bParams.add(o2.sqlObjectTitle());
+						break;
+					case GpuDevice.VAR_displayPage:
+						o2.setDisplayPage(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_displayPage + "=$" + num);
+						num++;
+						bParams.add(o2.sqlDisplayPage());
+						break;
 					case GpuDevice.VAR_location:
 						o2.setLocation(jsonObject.getJsonObject(entityVar));
 						if(bParams.size() > 0) {
@@ -1280,15 +1606,6 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						num++;
 						bParams.add(o2.sqlId());
 						break;
-					case GpuDevice.VAR_objectTitle:
-						o2.setObjectTitle(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuDevice.VAR_objectTitle + "=$" + num);
-						num++;
-						bParams.add(o2.sqlObjectTitle());
-						break;
 					case GpuDevice.VAR_ngsildTenant:
 						o2.setNgsildTenant(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1297,15 +1614,6 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(GpuDevice.VAR_ngsildTenant + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNgsildTenant());
-						break;
-					case GpuDevice.VAR_displayPage:
-						o2.setDisplayPage(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(GpuDevice.VAR_displayPage + "=$" + num);
-						num++;
-						bParams.add(o2.sqlDisplayPage());
 						break;
 					case GpuDevice.VAR_ngsildPath:
 						o2.setNgsildPath(jsonObject.getString(entityVar));
@@ -1377,8 +1685,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = o.getSiteRequest_();
 			JsonObject json = JsonObject.mapFrom(o);
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1399,20 +1707,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		LOG.debug(String.format("deleteGpuDevice started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1426,6 +1735,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("DELETE")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(DELETE)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(DELETE)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
 					if(authorizationDecisionResponse.failed() && !scopes.contains("DELETE")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -1577,7 +1918,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceResource().toString()).orElse(null));
 							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deleteGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -1687,6 +2028,66 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case GpuDevice.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_hubResource, Hub.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case GpuDevice.VAR_clusterResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Cluster.varIndexedCluster(Cluster.VAR_clusterResource), Cluster.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Cluster");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_clusterResource, Cluster.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case GpuDevice.VAR_nodeResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(AiNode.varIndexedAiNode(AiNode.VAR_nodeResource), AiNode.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("AiNode");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_nodeResource, AiNode.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -1727,8 +2128,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -1749,20 +2150,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		LOG.debug(String.format("putimportGpuDevice started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "PUT"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1776,6 +2178,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("PUT")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(PUT)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(PUT)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("PUT");
+						}
+					}
 					if(authorizationDecisionResponse.failed() && !scopes.contains("PUT")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -1911,14 +2345,14 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				apiRequest.setNumPATCH(0L);
 				apiRequest.initDeepApiRequest(siteRequest);
 				siteRequest.setApiRequest_(apiRequest);
-				String gpuDeviceId = Optional.ofNullable(body.getString(GpuDevice.VAR_gpuDeviceId)).orElse(body.getString(GpuDevice.VAR_solrId));
+				String gpuDeviceResource = Optional.ofNullable(body.getString(GpuDevice.VAR_gpuDeviceResource)).orElse(body.getString(GpuDevice.VAR_solrId));
 				if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
 					siteRequest.getRequestVars().put( "refresh", "false" );
 				}
 				pgPool.getConnection().onSuccess(sqlConnection -> {
-					String sqlQuery = String.format("select * from %s WHERE gpuDeviceId=$1", GpuDevice.CLASS_SIMPLE_NAME);
+					String sqlQuery = String.format("select * from %s WHERE gpuDeviceResource=$1", GpuDevice.CLASS_SIMPLE_NAME);
 					sqlConnection.preparedQuery(sqlQuery)
-							.execute(Tuple.tuple(Arrays.asList(gpuDeviceId))
+							.execute(Tuple.tuple(Arrays.asList(gpuDeviceResource))
 							).onSuccess(result -> {
 						sqlConnection.close().onSuccess(a -> {
 							try {
@@ -1968,24 +2402,24 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 										} else {
 											o2.persistForClass(f, bodyVal);
 											o2.relateForClass(f, bodyVal);
-											if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "gpuDeviceResource", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.put("set" + StringUtils.capitalize(f), bodyVal);
 										}
 									}
 									for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
 										if(!body.fieldNames().contains(f)) {
-											if(!StringUtils.containsAny(f, "gpuDeviceId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+											if(!StringUtils.containsAny(f, "gpuDeviceResource", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
 												body2.putNull("set" + StringUtils.capitalize(f));
 										}
 									}
 									if(result.size() >= 1) {
 										apiRequest.setOriginal(o);
-										apiRequest.setId(Optional.ofNullable(o.getGpuDeviceId()).map(v -> v.toString()).orElse(null));
+										apiRequest.setId(Optional.ofNullable(o.getGpuDeviceResource()).map(v -> v.toString()).orElse(null));
 										apiRequest.setSolrId(o.getSolrId());
 									}
 									siteRequest.setJsonObject(body2);
 									patchGpuDeviceFuture(o, true).onSuccess(b -> {
-										LOG.debug("Import GpuDevice {} succeeded, modified GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
+										LOG.debug("Import GpuDevice {} succeeded, modified GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceResource));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
 										LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
@@ -1993,7 +2427,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 									});
 								} else {
 									postGpuDeviceFuture(siteRequest, true).onSuccess(b -> {
-										LOG.debug("Import GpuDevice {} succeeded, created new GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceId));
+										LOG.debug("Import GpuDevice {} succeeded, created new GpuDevice. ", body.getValue(GpuDevice.VAR_gpuDeviceResource));
 										eventHandler.handle(Future.succeededFuture());
 									}).onFailure(ex -> {
 										LOG.error(String.format("putimportGpuDeviceFuture failed. "), ex);
@@ -2051,8 +2485,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -2070,22 +2504,25 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	@Override
 	public void searchpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+		oauth2AuthenticationProvider.refresh(User.create(serviceRequest.getUser())).onSuccess(user -> {
+			serviceRequest.setUser(user.principal());
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2099,6 +2536,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
@@ -2120,6 +2589,30 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 					error(null, eventHandler, ex);
 				}
 			});
+		}).onFailure(ex -> {
+			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
+				try {
+					eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
+				} catch(Exception ex2) {
+					LOG.error(String.format("searchpageGpuDevice failed. ", ex2));
+					error(null, eventHandler, ex2);
+				}
+			} else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
+				eventHandler.handle(Future.succeededFuture(
+					new ServiceResponse(401, "UNAUTHORIZED",
+						Buffer.buffer().appendString(
+							new JsonObject()
+								.put("errorCode", "401")
+								.put("errorMessage", "SSO Resource Permission check returned DENY")
+								.encodePrettily()
+							), MultiMap.caseInsensitiveMultiMap()
+							)
+					));
+			} else {
+				LOG.error(String.format("searchpageGpuDevice failed. "), ex);
+				error(null, eventHandler, ex);
+			}
+		});
 		}).onFailure(ex -> {
 			if("Inactive Token".equals(ex.getMessage()) || StringUtils.startsWith(ex.getMessage(), "invalid_grant:")) {
 				try {
@@ -2232,20 +2725,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void editpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2259,6 +2753,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
@@ -2392,20 +2918,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 	public void userpageGpuDevice(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2419,6 +2946,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("GET")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(GET)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("GET");
+						}
+					}
 					{
 						siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
 						List<String> scopes2 = siteRequest.getScopes();
@@ -2553,20 +3112,21 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		LOG.debug(String.format("deletefilterGpuDevice started. "));
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
-			String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
+			String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+			String GPUDEVICE = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("GPUDEVICE");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_SIMPLE_NAME, "PUT"));
-			if(gpuDeviceId != null)
-				form.add("permission", String.format("%s-%s#%s", GpuDevice.CLASS_SIMPLE_NAME, gpuDeviceId, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", GpuDevice.CLASS_AUTH_RESOURCE, "PUT"));
+			if(gpuDeviceResource != null)
+				form.add("permission", String.format("%s#%s", gpuDeviceResource, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2580,6 +3140,38 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				try {
 					HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
 					JsonArray scopes = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray().stream().findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+					if(!scopes.contains("DELETE")) {
+						//
+						List<String> fqs = new ArrayList<>();
+						List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?HUB-(.*))-(DELETE)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "hubResource", value));
+								});
+						groups.stream().map(group -> {
+									Matcher mPermission = Pattern.compile("^/(.*-?CLUSTER-(.*))-(DELETE)$").matcher(group);
+									return mPermission.find() ? mPermission.group(1) : null;
+								}).filter(v -> v != null).forEach(value -> {
+									fqs.add(String.format("%s:%s", "clusterResource", value));
+								});
+						JsonObject authParams = siteRequest.getServiceRequest().getParams();
+						JsonObject authQuery = authParams.getJsonObject("query");
+						if(authQuery == null) {
+							authQuery = new JsonObject();
+							authParams.put("query", authQuery);
+						}
+						JsonArray fq = authQuery.getJsonArray("fq");
+						if(fq == null) {
+							fq = new JsonArray();
+							authQuery.put("fq", fq);
+						}
+						if(fqs.size() > 0) {
+							fq.add(fqs.stream().collect(Collectors.joining(" OR ")));
+							scopes.add("DELETE");
+						}
+					}
 					if(authorizationDecisionResponse.failed() && !scopes.contains("DELETE")) {
 						String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
 						eventHandler.handle(Future.succeededFuture(
@@ -2731,7 +3323,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							}
 							if(apiRequest.getNumFound() == 1L)
 								apiRequest.setOriginal(o);
-							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceId().toString()).orElse(null));
+							apiRequest.setId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getGpuDeviceResource().toString()).orElse(null));
 							apiRequest.setSolrId(Optional.ofNullable(listGpuDevice.first()).map(o2 -> o2.getSolrId()).orElse(null));
 							deletefilterGpuDeviceFuture(o).onSuccess(o2 -> {
 								eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
@@ -2841,6 +3433,66 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				Set<String> entityVars = jsonObject.fieldNames();
 				for(String entityVar : entityVars) {
 					switch(entityVar) {
+					case GpuDevice.VAR_hubResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Hub.varIndexedHub(Hub.VAR_hubResource), Hub.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Hub");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_hubResource, Hub.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case GpuDevice.VAR_clusterResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(Cluster.varIndexedCluster(Cluster.VAR_clusterResource), Cluster.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("Cluster");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_clusterResource, Cluster.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
+					case GpuDevice.VAR_nodeResource:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(AiNode.varIndexedAiNode(AiNode.VAR_nodeResource), AiNode.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("AiNode");
+									}
+									sql(siteRequest).update(GpuDevice.class, pk).set(GpuDevice.VAR_nodeResource, AiNode.class, null, null).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
+						break;
 					}
 				}
 			}
@@ -2881,8 +3533,8 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 		try {
 			JsonObject json = new JsonObject();
 			if(json == null) {
-				String gpuDeviceId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceId");
-				String m = String.format("%s %s not found", "GPU device", gpuDeviceId);
+				String gpuDeviceResource = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("gpuDeviceResource");
+				String m = String.format("%s %s not found", "GPU device", gpuDeviceResource);
 				promise.complete(new ServiceResponse(404
 						, m
 						, Buffer.buffer(new JsonObject().put("message", m).encodePrettily()), null));
@@ -3024,9 +3676,9 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 
-			String gpuDeviceId = serviceRequest.getParams().getJsonObject("path").getString("gpuDeviceId");
-			if(gpuDeviceId != null) {
-				searchList.fq("gpuDeviceId_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceId));
+			String gpuDeviceResource = serviceRequest.getParams().getJsonObject("path").getString("gpuDeviceResource");
+			if(gpuDeviceResource != null) {
+				searchList.fq("gpuDeviceResource_docvalues_string:" + SearchTool.escapeQueryChars(gpuDeviceResource));
 			}
 
 			for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -3152,7 +3804,11 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				}
 			}
 			if("*:*".equals(searchList.getQuery()) && searchList.getSorts().size() == 0) {
-				searchList.sort("created_docvalues_date", "desc");
+				searchList.sort("hubId_docvalues_string", "asc");
+				searchList.sort("clusterName_docvalues_string", "asc");
+				searchList.sort("nodeName_docvalues_string", "asc");
+				searchList.sort("gpuDeviceNumber_docvalues_int", "asc");
+				searchList.setDefaultSort(true);
 			}
 			String facetRange2 = facetRange;
 			Date facetRangeStart2 = facetRangeStart;
@@ -3221,7 +3877,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT clusterName, nodeName, created, gpuDeviceNumber, gpuDeviceId, archived, gpuDeviceUtilization, description, sessionId, userKey, location, id, objectTitle, ngsildTenant, displayPage, ngsildPath, ngsildContext, ngsildData FROM GpuDevice WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, nodeName, nodeResource, gpuDeviceNumber, gpuDeviceResource, sessionId, userKey, gpuDeviceUtilization, description, objectTitle, displayPage, location, id, ngsildTenant, ngsildPath, ngsildContext, ngsildData FROM GpuDevice WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3263,7 +3919,33 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 
 	public Future<Void> relateGpuDevice(GpuDevice o) {
 		Promise<Void> promise = Promise.promise();
-		promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT hubResource as pk2, 'hubResource' from Hub where hubResource=$1 UNION SELECT clusterResource as pk2, 'clusterResource' from Cluster where clusterResource=$2 UNION SELECT nodeResource as pk2, 'nodeResource' from AiNode where nodeResource=$3")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getHubResource(), o.getClusterResource(), o.getNodeResource())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateGpuDevice failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateGpuDevice failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateGpuDevice failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 
@@ -3368,6 +4050,111 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 				for(int i=0; i < solrIds.size(); i++) {
 					String solrId2 = solrIds.get(i);
 					String classSimpleName2 = classes.get(i);
+
+					if("Hub".equals(classSimpleName2) && solrId2 != null) {
+						SearchList<Hub> searchList2 = new SearchList<Hub>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(Hub.class);
+						searchList2.fq("solrId:" + solrId2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								Hub o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-Hub", json, new DeliveryOptions().addHeader("action", "patchHubFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
+
+					if("Cluster".equals(classSimpleName2) && solrId2 != null) {
+						SearchList<Cluster> searchList2 = new SearchList<Cluster>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(Cluster.class);
+						searchList2.fq("solrId:" + solrId2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								Cluster o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-Cluster", json, new DeliveryOptions().addHeader("action", "patchClusterFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
+
+					if("AiNode".equals(classSimpleName2) && solrId2 != null) {
+						SearchList<AiNode> searchList2 = new SearchList<AiNode>();
+						searchList2.setStore(true);
+						searchList2.q("*:*");
+						searchList2.setC(AiNode.class);
+						searchList2.fq("solrId:" + solrId2);
+						searchList2.rows(1L);
+						futures.add(Future.future(promise2 -> {
+							searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+								AiNode o2 = searchList2.getList().stream().findFirst().orElse(null);
+								if(o2 != null) {
+									JsonObject params = new JsonObject();
+									params.put("body", new JsonObject());
+									params.put("cookie", new JsonObject());
+									params.put("path", new JsonObject());
+									params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+									JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+									JsonObject json = new JsonObject().put("context", context);
+									eventBus.request("ai-telemetry-enUS-AiNode", json, new DeliveryOptions().addHeader("action", "patchAiNodeFuture")).onSuccess(c -> {
+										JsonObject responseMessage = (JsonObject)c.body();
+										Integer statusCode = responseMessage.getInteger("statusCode");
+										if(statusCode.equals(200))
+											promise2.complete();
+										else
+											promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}
+							}).onFailure(ex -> {
+								promise2.fail(ex);
+							});
+						}));
+					}
 				}
 
 				CompositeFuture.all(futures).onSuccess(b -> {
@@ -3425,21 +4212,25 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			GpuDevice page = new GpuDevice();
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
-			page.persistForClass(GpuDevice.VAR_clusterName, GpuDevice.staticSetClusterName(siteRequest2, (String)result.get(GpuDevice.VAR_clusterName)));
-			page.persistForClass(GpuDevice.VAR_nodeName, GpuDevice.staticSetNodeName(siteRequest2, (String)result.get(GpuDevice.VAR_nodeName)));
+			page.persistForClass(GpuDevice.VAR_hubId, GpuDevice.staticSetHubId(siteRequest2, (String)result.get(GpuDevice.VAR_hubId)));
+			page.persistForClass(GpuDevice.VAR_hubResource, GpuDevice.staticSetHubResource(siteRequest2, (String)result.get(GpuDevice.VAR_hubResource)));
 			page.persistForClass(GpuDevice.VAR_created, GpuDevice.staticSetCreated(siteRequest2, (String)result.get(GpuDevice.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
-			page.persistForClass(GpuDevice.VAR_gpuDeviceNumber, GpuDevice.staticSetGpuDeviceNumber(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceNumber)));
-			page.persistForClass(GpuDevice.VAR_gpuDeviceId, GpuDevice.staticSetGpuDeviceId(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceId)));
+			page.persistForClass(GpuDevice.VAR_clusterName, GpuDevice.staticSetClusterName(siteRequest2, (String)result.get(GpuDevice.VAR_clusterName)));
+			page.persistForClass(GpuDevice.VAR_clusterResource, GpuDevice.staticSetClusterResource(siteRequest2, (String)result.get(GpuDevice.VAR_clusterResource)));
 			page.persistForClass(GpuDevice.VAR_archived, GpuDevice.staticSetArchived(siteRequest2, (String)result.get(GpuDevice.VAR_archived)));
-			page.persistForClass(GpuDevice.VAR_gpuDeviceUtilization, GpuDevice.staticSetGpuDeviceUtilization(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceUtilization)));
-			page.persistForClass(GpuDevice.VAR_description, GpuDevice.staticSetDescription(siteRequest2, (String)result.get(GpuDevice.VAR_description)));
+			page.persistForClass(GpuDevice.VAR_nodeName, GpuDevice.staticSetNodeName(siteRequest2, (String)result.get(GpuDevice.VAR_nodeName)));
+			page.persistForClass(GpuDevice.VAR_nodeResource, GpuDevice.staticSetNodeResource(siteRequest2, (String)result.get(GpuDevice.VAR_nodeResource)));
+			page.persistForClass(GpuDevice.VAR_gpuDeviceNumber, GpuDevice.staticSetGpuDeviceNumber(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceNumber)));
+			page.persistForClass(GpuDevice.VAR_gpuDeviceResource, GpuDevice.staticSetGpuDeviceResource(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceResource)));
 			page.persistForClass(GpuDevice.VAR_sessionId, GpuDevice.staticSetSessionId(siteRequest2, (String)result.get(GpuDevice.VAR_sessionId)));
 			page.persistForClass(GpuDevice.VAR_userKey, GpuDevice.staticSetUserKey(siteRequest2, (String)result.get(GpuDevice.VAR_userKey)));
+			page.persistForClass(GpuDevice.VAR_gpuDeviceUtilization, GpuDevice.staticSetGpuDeviceUtilization(siteRequest2, (String)result.get(GpuDevice.VAR_gpuDeviceUtilization)));
+			page.persistForClass(GpuDevice.VAR_description, GpuDevice.staticSetDescription(siteRequest2, (String)result.get(GpuDevice.VAR_description)));
+			page.persistForClass(GpuDevice.VAR_objectTitle, GpuDevice.staticSetObjectTitle(siteRequest2, (String)result.get(GpuDevice.VAR_objectTitle)));
+			page.persistForClass(GpuDevice.VAR_displayPage, GpuDevice.staticSetDisplayPage(siteRequest2, (String)result.get(GpuDevice.VAR_displayPage)));
 			page.persistForClass(GpuDevice.VAR_location, GpuDevice.staticSetLocation(siteRequest2, (String)result.get(GpuDevice.VAR_location)));
 			page.persistForClass(GpuDevice.VAR_id, GpuDevice.staticSetId(siteRequest2, (String)result.get(GpuDevice.VAR_id)));
-			page.persistForClass(GpuDevice.VAR_objectTitle, GpuDevice.staticSetObjectTitle(siteRequest2, (String)result.get(GpuDevice.VAR_objectTitle)));
 			page.persistForClass(GpuDevice.VAR_ngsildTenant, GpuDevice.staticSetNgsildTenant(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildTenant)));
-			page.persistForClass(GpuDevice.VAR_displayPage, GpuDevice.staticSetDisplayPage(siteRequest2, (String)result.get(GpuDevice.VAR_displayPage)));
 			page.persistForClass(GpuDevice.VAR_ngsildPath, GpuDevice.staticSetNgsildPath(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildPath)));
 			page.persistForClass(GpuDevice.VAR_ngsildContext, GpuDevice.staticSetNgsildContext(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildContext)));
 			page.persistForClass(GpuDevice.VAR_ngsildData, GpuDevice.staticSetNgsildData(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildData)));

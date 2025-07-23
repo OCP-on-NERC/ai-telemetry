@@ -2168,6 +2168,7 @@ public abstract class BaseModelGen<DEV> extends Object {
 
 	public static final String CLASS_SIMPLE_NAME = "BaseModel";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.BaseModel";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_pk = "pk";
 	public static final String VAR_created = "created";

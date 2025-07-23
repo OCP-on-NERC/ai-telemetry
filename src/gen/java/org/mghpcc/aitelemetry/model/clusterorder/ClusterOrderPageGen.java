@@ -293,6 +293,7 @@ public abstract class ClusterOrderPageGen<DEV> extends ClusterOrderGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterOrderPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

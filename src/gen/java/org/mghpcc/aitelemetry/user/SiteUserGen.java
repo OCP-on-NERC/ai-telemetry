@@ -102,11 +102,11 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the SiteUser class will inherit the helpful inherited class comments from the super class SiteUserGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 1</h2>
- * <p>This class contains a comment <b>"Order: 1"</b>, which means this class will be sorted by the given number 1 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 3</h2>
+ * <p>This class contains a comment <b>"Order: 3"</b>, which means this class will be sorted by the given number 3 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
- * <h2>SqlOrder: 1</h2>
- * <p>This class contains a comment <b>"SqlOrder: 1"</b>, which means this class will be sorted by the given number 1 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>SqlOrder: 3</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 3"</b>, which means this class will be sorted by the given number 3 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -202,7 +202,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/user/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/user/%s";
 
-	public static final String Icon = "<i class=\"fa-duotone fa-regular fa-user-gear\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-user-gear\"></i>";
 
 	//////////////
 	// userKeys //
@@ -1636,6 +1636,7 @@ public abstract class SiteUserGen<DEV> extends BaseModel {
 
 	public static final String CLASS_SIMPLE_NAME = "SiteUser";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.user.SiteUser";
+	public static final String CLASS_AUTH_RESOURCE = "SITEUSER";
 	public static final String CLASS_API_ADDRESS_SiteUser = "ai-telemetry-enUS-SiteUser";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_SiteUser;

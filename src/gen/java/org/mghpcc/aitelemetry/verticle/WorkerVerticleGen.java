@@ -263,6 +263,7 @@ public abstract class WorkerVerticleGen<DEV> extends AbstractVerticle {
 
 	public static final String CLASS_SIMPLE_NAME = "WorkerVerticle";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.verticle.WorkerVerticle";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	public String idForClass() {

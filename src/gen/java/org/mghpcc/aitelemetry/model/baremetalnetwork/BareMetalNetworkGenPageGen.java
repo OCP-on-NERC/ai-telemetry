@@ -738,6 +738,7 @@ public abstract class BareMetalNetworkGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNetworkGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListBareMetalNetwork_ = "searchListBareMetalNetwork_";
 	public static final String VAR_listBareMetalNetwork = "listBareMetalNetwork";
 	public static final String VAR_resultCount = "resultCount";

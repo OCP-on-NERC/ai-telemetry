@@ -125,15 +125,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -288,15 +288,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -390,15 +390,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "PATCH"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -831,15 +831,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "POST"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1268,15 +1268,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1618,15 +1618,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "PUT"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1941,15 +1941,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2048,15 +2048,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2208,15 +2208,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2369,15 +2369,15 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_SIMPLE_NAME, id, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)

@@ -293,6 +293,7 @@ public abstract class ClusterRequestPageGen<DEV> extends ClusterRequestGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterRequestPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

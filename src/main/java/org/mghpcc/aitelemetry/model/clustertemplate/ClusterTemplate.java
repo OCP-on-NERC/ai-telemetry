@@ -6,7 +6,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import io.vertx.core.json.JsonArray;
 
 /**
- * Order: 8
+ * Order: 10
  * Description: An OpenShift cluster template
  * AName: an OpenShift cluster template
  * Icon: <i class="fa-regular fa-server"></i>

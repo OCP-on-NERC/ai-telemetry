@@ -738,6 +738,7 @@ public abstract class BareMetalOrderGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalOrderGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListBareMetalOrder_ = "searchListBareMetalOrder_";
 	public static final String VAR_listBareMetalOrder = "listBareMetalOrder";
 	public static final String VAR_resultCount = "resultCount";

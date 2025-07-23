@@ -293,6 +293,7 @@ public abstract class BareMetalResourceClassPageGen<DEV> extends BareMetalResour
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalResourceClassPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override
