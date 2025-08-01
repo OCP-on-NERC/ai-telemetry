@@ -129,15 +129,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -293,15 +293,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -396,15 +396,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PATCH"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "PATCH"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -700,7 +700,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case "setClusterTemplateTitle":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -728,10 +728,18 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}));
 						});
 						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(ClusterRequest.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
+						break;
 					case "setUserId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -758,14 +766,6 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 								});
 							}));
 						});
-						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(ClusterRequest.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
 						break;
 					case "setArchived":
 							o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -878,15 +878,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "POST"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "POST"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -1170,33 +1170,13 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_clusterTemplateTitle:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
 										classes.add("ClusterTemplate");
 									}
 									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_clusterTemplateTitle, ClusterTemplate.class, solrId2, val).onSuccess(a -> {
-										promise2.complete();
-									}).onFailure(ex -> {
-										promise2.fail(ex);
-									});
-								}).onFailure(ex -> {
-									promise2.fail(ex);
-								});
-							}));
-						});
-						break;
-					case ClusterRequest.VAR_userId:
-						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
-							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
-									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
-									if(solrId2 != null) {
-										solrIds.add(solrId2);
-										classes.add("SiteUser");
-									}
-									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, solrId2, val).onSuccess(a -> {
 										promise2.complete();
 									}).onFailure(ex -> {
 										promise2.fail(ex);
@@ -1215,6 +1195,26 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(ClusterRequest.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
+						break;
+					case ClusterRequest.VAR_userId:
+						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+							futures1.add(Future.future(promise2 -> {
+								searchModel(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
+									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+									if(solrId2 != null) {
+										solrIds.add(solrId2);
+										classes.add("SiteUser");
+									}
+									sql(siteRequest).update(ClusterRequest.class, pk).set(ClusterRequest.VAR_userId, SiteUser.class, solrId2, val).onSuccess(a -> {
+										promise2.complete();
+									}).onFailure(ex -> {
+										promise2.fail(ex);
+									});
+								}).onFailure(ex -> {
+									promise2.fail(ex);
+								});
+							}));
+						});
 						break;
 					case ClusterRequest.VAR_archived:
 						o2.setArchived(jsonObject.getBoolean(entityVar));
@@ -1331,15 +1331,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "DELETE"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -1620,7 +1620,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_clusterTemplateTitle:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -1640,7 +1640,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_userId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -1724,15 +1724,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "PUT"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "PUT"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -2050,15 +2050,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -2211,15 +2211,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -2372,15 +2372,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -2534,15 +2534,15 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_SIMPLE_NAME, name, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ClusterRequest.CLASS_AUTH_RESOURCE, name, "DELETE"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -2823,7 +2823,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_clusterTemplateTitle:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_title), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -2843,7 +2843,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 					case ClusterRequest.VAR_userId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(SiteUser.varIndexedSiteUser(SiteUser.VAR_userId), SiteUser.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -3245,7 +3245,7 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT name, clusterTemplateTitle, userId, created, archived, sessionId, userKey, objectTitle, displayPage FROM ClusterRequest WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT name, clusterTemplateTitle, created, userId, archived, sessionId, userKey, objectTitle, displayPage FROM ClusterRequest WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3287,7 +3287,33 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 	public Future<Void> relateClusterRequest(ClusterRequest o) {
 		Promise<Void> promise = Promise.promise();
-		promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT title as pk2, 'clusterTemplateTitle' from ClusterTemplate where title=$1 UNION SELECT userId as pk2, 'userId' from SiteUser where userId=$2")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getClusterTemplateTitle(), o.getUserId())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateClusterRequest failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateClusterRequest failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateClusterRequest failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 
@@ -3521,8 +3547,8 @@ public class ClusterRequestEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 
 			page.persistForClass(ClusterRequest.VAR_name, ClusterRequest.staticSetName(siteRequest2, (String)result.get(ClusterRequest.VAR_name)));
 			page.persistForClass(ClusterRequest.VAR_clusterTemplateTitle, ClusterRequest.staticSetClusterTemplateTitle(siteRequest2, (String)result.get(ClusterRequest.VAR_clusterTemplateTitle)));
-			page.persistForClass(ClusterRequest.VAR_userId, ClusterRequest.staticSetUserId(siteRequest2, (String)result.get(ClusterRequest.VAR_userId)));
 			page.persistForClass(ClusterRequest.VAR_created, ClusterRequest.staticSetCreated(siteRequest2, (String)result.get(ClusterRequest.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+			page.persistForClass(ClusterRequest.VAR_userId, ClusterRequest.staticSetUserId(siteRequest2, (String)result.get(ClusterRequest.VAR_userId)));
 			page.persistForClass(ClusterRequest.VAR_archived, ClusterRequest.staticSetArchived(siteRequest2, (String)result.get(ClusterRequest.VAR_archived)));
 			page.persistForClass(ClusterRequest.VAR_sessionId, ClusterRequest.staticSetSessionId(siteRequest2, (String)result.get(ClusterRequest.VAR_sessionId)));
 			page.persistForClass(ClusterRequest.VAR_userKey, ClusterRequest.staticSetUserKey(siteRequest2, (String)result.get(ClusterRequest.VAR_userKey)));

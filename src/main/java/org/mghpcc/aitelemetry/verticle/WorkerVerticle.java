@@ -39,36 +39,39 @@ import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.page.SitePage;
 import org.mghpcc.aitelemetry.page.SitePageEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.page.SitePageEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.cluster.AiCluster;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.node.AiNode;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.node.AiNodeEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.cluster.Cluster;
+import org.mghpcc.aitelemetry.model.cluster.ClusterEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.cluster.ClusterEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDevice;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.gpudevice.GpuDeviceEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.project.AiProject;
-import org.mghpcc.aitelemetry.model.project.AiProjectEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.project.AiProjectEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
-import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.hub.Hub;
+import org.mghpcc.aitelemetry.model.hub.HubEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.hub.HubEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.project.Project;
+import org.mghpcc.aitelemetry.model.project.ProjectEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.project.Project;
 import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrder;
 import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplate;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedCluster;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.managedcluster.ManagedClusterEnUSGenApiService;
-import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClass;
-import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSApiServiceImpl;
-import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetworkEnUSGenApiService;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClass;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSApiServiceImpl;
+import org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassEnUSGenApiService;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSApiServiceImpl;
 import org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeEnUSGenApiService;
@@ -587,43 +590,47 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
 
 			SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
 			initializeApiService(apiSitePage);
-			AiClusterEnUSApiServiceImpl apiAiCluster = new AiClusterEnUSApiServiceImpl();
-			initializeApiService(apiAiCluster);
 			AiNodeEnUSApiServiceImpl apiAiNode = new AiNodeEnUSApiServiceImpl();
 			initializeApiService(apiAiNode);
+			HubEnUSApiServiceImpl apiHub = new HubEnUSApiServiceImpl();
+			initializeApiService(apiHub);
+			ClusterEnUSApiServiceImpl apiCluster = new ClusterEnUSApiServiceImpl();
+			initializeApiService(apiCluster);
 			GpuDeviceEnUSApiServiceImpl apiGpuDevice = new GpuDeviceEnUSApiServiceImpl();
 			initializeApiService(apiGpuDevice);
-			AiProjectEnUSApiServiceImpl apiAiProject = new AiProjectEnUSApiServiceImpl();
-			initializeApiService(apiAiProject);
-			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
-			initializeApiService(apiClusterTemplate);
+			ProjectEnUSApiServiceImpl apiProject = new ProjectEnUSApiServiceImpl();
+			initializeApiService(apiProject);
 			ClusterOrderEnUSApiServiceImpl apiClusterOrder = new ClusterOrderEnUSApiServiceImpl();
 			initializeApiService(apiClusterOrder);
+			ClusterTemplateEnUSApiServiceImpl apiClusterTemplate = new ClusterTemplateEnUSApiServiceImpl();
+			initializeApiService(apiClusterTemplate);
 			ManagedClusterEnUSApiServiceImpl apiManagedCluster = new ManagedClusterEnUSApiServiceImpl();
 			initializeApiService(apiManagedCluster);
-			BareMetalResourceClassEnUSApiServiceImpl apiBareMetalResourceClass = new BareMetalResourceClassEnUSApiServiceImpl();
-			initializeApiService(apiBareMetalResourceClass);
 			ClusterRequestEnUSApiServiceImpl apiClusterRequest = new ClusterRequestEnUSApiServiceImpl();
 			initializeApiService(apiClusterRequest);
 			BareMetalNetworkEnUSApiServiceImpl apiBareMetalNetwork = new BareMetalNetworkEnUSApiServiceImpl();
 			initializeApiService(apiBareMetalNetwork);
+			BareMetalResourceClassEnUSApiServiceImpl apiBareMetalResourceClass = new BareMetalResourceClassEnUSApiServiceImpl();
+			initializeApiService(apiBareMetalResourceClass);
 			BareMetalNodeEnUSApiServiceImpl apiBareMetalNode = new BareMetalNodeEnUSApiServiceImpl();
 			initializeApiService(apiBareMetalNode);
 
-			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, "pageId", "userPage", "download").onSuccess(q1 -> {
-				apiAiCluster.importTimer(Paths.get(templatePath, "/en-us/user/ai-cluster"), vertx, siteRequest, AiCluster.CLASS_CANONICAL_NAME, AiCluster.CLASS_SIMPLE_NAME, AiCluster.CLASS_API_ADDRESS_AiCluster, "clusterName", "userPage", "download").onSuccess(q2 -> {
-					apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, "nodeId", "userPage", "download").onSuccess(q3 -> {
-						apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_CANONICAL_NAME, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice, "gpuDeviceId", "userPage", "download").onSuccess(q4 -> {
-							apiAiProject.importTimer(Paths.get(templatePath, "/en-us/user/ai-project"), vertx, siteRequest, AiProject.CLASS_CANONICAL_NAME, AiProject.CLASS_SIMPLE_NAME, AiProject.CLASS_API_ADDRESS_AiProject, "projectId", "userPage", "download").onSuccess(q5 -> {
-								apiClusterTemplate.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ClusterTemplate.CLASS_CANONICAL_NAME, ClusterTemplate.CLASS_SIMPLE_NAME, ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate, "id", "userPage", "download").onSuccess(q6 -> {
-									apiClusterOrder.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ClusterOrder.CLASS_CANONICAL_NAME, ClusterOrder.CLASS_SIMPLE_NAME, ClusterOrder.CLASS_API_ADDRESS_ClusterOrder, "id", "userPage", "download").onSuccess(q7 -> {
-										apiManagedCluster.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ManagedCluster.CLASS_CANONICAL_NAME, ManagedCluster.CLASS_SIMPLE_NAME, ManagedCluster.CLASS_API_ADDRESS_ManagedCluster, "id", "userPage", "download").onSuccess(q8 -> {
-											apiBareMetalResourceClass.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalResourceClass.CLASS_CANONICAL_NAME, BareMetalResourceClass.CLASS_SIMPLE_NAME, BareMetalResourceClass.CLASS_API_ADDRESS_BareMetalResourceClass, "name", "userPage", "download").onSuccess(q9 -> {
-												apiClusterRequest.importTimer(Paths.get(templatePath, "/en-us/user/cluster-request"), vertx, siteRequest, ClusterRequest.CLASS_CANONICAL_NAME, ClusterRequest.CLASS_SIMPLE_NAME, ClusterRequest.CLASS_API_ADDRESS_ClusterRequest, "name", "userPage", "download").onSuccess(q10 -> {
-													apiBareMetalNetwork.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalNetwork.CLASS_CANONICAL_NAME, BareMetalNetwork.CLASS_SIMPLE_NAME, BareMetalNetwork.CLASS_API_ADDRESS_BareMetalNetwork, "id", "userPage", "download").onSuccess(q11 -> {
-														apiBareMetalNode.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalNode.CLASS_CANONICAL_NAME, BareMetalNode.CLASS_SIMPLE_NAME, BareMetalNode.CLASS_API_ADDRESS_BareMetalNode, "nodeId", "userPage", "download").onSuccess(q12 -> {
-															LOG.info("data import complete");
-															promise.complete();
+			apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, SitePage.CLASS_AUTH_RESOURCE, "pageId", "userPage", "download").onSuccess(q1 -> {
+				apiAiNode.importTimer(Paths.get(templatePath, "/en-us/user/ai-node"), vertx, siteRequest, AiNode.CLASS_CANONICAL_NAME, AiNode.CLASS_SIMPLE_NAME, AiNode.CLASS_API_ADDRESS_AiNode, AiNode.CLASS_AUTH_RESOURCE, "nodeId", "userPage", "download").onSuccess(q2 -> {
+					apiHub.importTimer(Paths.get(templatePath, "/en-us/view/hub"), vertx, siteRequest, Hub.CLASS_CANONICAL_NAME, Hub.CLASS_SIMPLE_NAME, Hub.CLASS_API_ADDRESS_Hub, Hub.CLASS_AUTH_RESOURCE, "hubId", "userPage", "download").onSuccess(q3 -> {
+						apiCluster.importTimer(Paths.get(templatePath, "/en-us/user/cluster"), vertx, siteRequest, Cluster.CLASS_CANONICAL_NAME, Cluster.CLASS_SIMPLE_NAME, Cluster.CLASS_API_ADDRESS_Cluster, Cluster.CLASS_AUTH_RESOURCE, "clusterName", "userPage", "download").onSuccess(q4 -> {
+							apiGpuDevice.importTimer(Paths.get(templatePath, "/en-us/user/gpu-device"), vertx, siteRequest, GpuDevice.CLASS_CANONICAL_NAME, GpuDevice.CLASS_SIMPLE_NAME, GpuDevice.CLASS_API_ADDRESS_GpuDevice, GpuDevice.CLASS_AUTH_RESOURCE, "gpuDeviceId", "userPage", "download").onSuccess(q5 -> {
+								apiProject.importTimer(Paths.get(templatePath, "/en-us/user/project"), vertx, siteRequest, Project.CLASS_CANONICAL_NAME, Project.CLASS_SIMPLE_NAME, Project.CLASS_API_ADDRESS_Project, Project.CLASS_AUTH_RESOURCE, "projectId", "userPage", "download").onSuccess(q6 -> {
+									apiClusterOrder.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ClusterOrder.CLASS_CANONICAL_NAME, ClusterOrder.CLASS_SIMPLE_NAME, ClusterOrder.CLASS_API_ADDRESS_ClusterOrder, ClusterOrder.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q7 -> {
+										apiClusterTemplate.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ClusterTemplate.CLASS_CANONICAL_NAME, ClusterTemplate.CLASS_SIMPLE_NAME, ClusterTemplate.CLASS_API_ADDRESS_ClusterTemplate, ClusterTemplate.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q8 -> {
+											apiManagedCluster.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, ManagedCluster.CLASS_CANONICAL_NAME, ManagedCluster.CLASS_SIMPLE_NAME, ManagedCluster.CLASS_API_ADDRESS_ManagedCluster, ManagedCluster.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q9 -> {
+												apiClusterRequest.importTimer(Paths.get(templatePath, "/en-us/user/cluster-request"), vertx, siteRequest, ClusterRequest.CLASS_CANONICAL_NAME, ClusterRequest.CLASS_SIMPLE_NAME, ClusterRequest.CLASS_API_ADDRESS_ClusterRequest, ClusterRequest.CLASS_AUTH_RESOURCE, "name", "userPage", "download").onSuccess(q10 -> {
+													apiBareMetalNetwork.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalNetwork.CLASS_CANONICAL_NAME, BareMetalNetwork.CLASS_SIMPLE_NAME, BareMetalNetwork.CLASS_API_ADDRESS_BareMetalNetwork, BareMetalNetwork.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q11 -> {
+														apiBareMetalResourceClass.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalResourceClass.CLASS_CANONICAL_NAME, BareMetalResourceClass.CLASS_SIMPLE_NAME, BareMetalResourceClass.CLASS_API_ADDRESS_BareMetalResourceClass, BareMetalResourceClass.CLASS_AUTH_RESOURCE, "name", "userPage", "download").onSuccess(q12 -> {
+															apiBareMetalNode.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, BareMetalNode.CLASS_CANONICAL_NAME, BareMetalNode.CLASS_SIMPLE_NAME, BareMetalNode.CLASS_API_ADDRESS_BareMetalNode, BareMetalNode.CLASS_AUTH_RESOURCE, "nodeId", "userPage", "download").onSuccess(q13 -> {
+																LOG.info("data import complete");
+																promise.complete();
+															}).onFailure(ex -> promise.fail(ex));
 														}).onFailure(ex -> promise.fail(ex));
 													}).onFailure(ex -> promise.fail(ex));
 												}).onFailure(ex -> promise.fail(ex));

@@ -127,15 +127,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -290,15 +290,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -392,15 +392,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "PATCH"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -693,7 +693,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case "setTemplateId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -856,15 +856,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "POST"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1145,7 +1145,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -1304,15 +1304,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1590,7 +1590,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -1674,15 +1674,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "PUT"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1997,15 +1997,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2157,15 +2157,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "GET"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2318,15 +2318,15 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_SIMPLE_NAME, id, "DELETE"));
+				form.add("permission", String.format("%s-%s#%s", ClusterOrder.CLASS_AUTH_RESOURCE, id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2604,7 +2604,7 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 					case ClusterOrder.VAR_templateId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
-								search(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
+								searchModel(siteRequest).query(ClusterTemplate.varIndexedClusterTemplate(ClusterTemplate.VAR_id), ClusterTemplate.class, val).onSuccess(o3 -> {
 									String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
 									if(solrId2 != null) {
 										solrIds.add(solrId2);
@@ -3043,7 +3043,33 @@ public class ClusterOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl implem
 
 	public Future<Void> relateClusterOrder(ClusterOrder o) {
 		Promise<Void> promise = Promise.promise();
-		promise.complete();
+		try {
+			SiteRequest siteRequest = o.getSiteRequest_();
+			SqlConnection sqlConnection = siteRequest.getSqlConnection();
+			sqlConnection.preparedQuery("SELECT id as pk1, 'templateId' from ClusterTemplate where id=$1")
+					.collecting(Collectors.toList())
+					.execute(Tuple.of(o.getTemplateId())
+					).onSuccess(result -> {
+				try {
+					if(result != null) {
+						for(Row definition : result.value()) {
+							o.relateForClass(definition.getString(1), definition.getValue(0));
+						}
+					}
+					promise.complete();
+				} catch(Exception ex) {
+					LOG.error(String.format("relateClusterOrder failed. "), ex);
+					promise.fail(ex);
+				}
+			}).onFailure(ex -> {
+				RuntimeException ex2 = new RuntimeException(ex);
+				LOG.error(String.format("relateClusterOrder failed. "), ex2);
+				promise.fail(ex2);
+			});
+		} catch(Exception ex) {
+			LOG.error(String.format("relateClusterOrder failed. "), ex);
+			promise.fail(ex);
+		}
 		return promise.future();
 	}
 

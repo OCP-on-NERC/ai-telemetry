@@ -4,7 +4,7 @@ import org.computate.search.wrap.Wrap;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
 /**
- * Order: 8
+ * Order: 11
  * Description: An OpenShift tenant cluster
  * AName: a tenant cluster
  * Icon: <i class="fa-regular fa-server"></i>

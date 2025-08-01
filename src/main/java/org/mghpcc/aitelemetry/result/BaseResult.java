@@ -22,7 +22,7 @@ import io.vertx.core.Promise;
  * Indexed: true
  * Keyword: classSimpleNameBaseResult
  * Description: A reusable base class for all non-model search classes
- * Order: 0
+ * Order: 1
  * Promise: true
  */
 public class BaseResult extends BaseResultGen<Object> implements ComputateBaseResult {
@@ -184,7 +184,7 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	 * DisplayName: edit
 	 * Description: Edit this
 	 * Link: true
-	 * Icon: <i class="fa-duotone fa-regular fa-pen-to-square"></i>
+	 * Icon: <i class="fa-regular fa-pen-to-square"></i>
 	 * VarUrlEditPage: true
 	 */
 	protected void _editPage(Wrap<String> w) {

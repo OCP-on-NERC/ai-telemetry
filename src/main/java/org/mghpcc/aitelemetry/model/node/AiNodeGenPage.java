@@ -474,7 +474,7 @@ public class AiNodeGenPage extends AiNodeGenPageGen<PageLayout> {
    * Initialized: false
   **/
   protected void _result(Wrap<AiNode> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("nodeId")).orElse(null) != null)
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("nodeResource")).orElse(null) != null)
       w.o(searchListAiNode_.get(0));
   }
 

@@ -125,11 +125,11 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the BareMetalNetwork class will inherit the helpful inherited class comments from the super class BareMetalNetworkGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 10</h2>
- * <p>This class contains a comment <b>"Order: 10"</b>, which means this class will be sorted by the given number 10 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 13</h2>
+ * <p>This class contains a comment <b>"Order: 13"</b>, which means this class will be sorted by the given number 13 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
- * <h2>SqlOrder: 10</h2>
- * <p>This class contains a comment <b>"SqlOrder: 10"</b>, which means this class will be sorted by the given number 10 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>SqlOrder: 13</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 13"</b>, which means this class will be sorted by the given number 13 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -4006,6 +4006,7 @@ public abstract class BareMetalNetworkGen<DEV> extends BaseModel {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNetwork";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnetwork.BareMetalNetwork";
+	public static final String CLASS_AUTH_RESOURCE = "BAREMETALNETWORK";
 	public static final String CLASS_API_ADDRESS_BareMetalNetwork = "ai-telemetry-enUS-BareMetalNetwork";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_BareMetalNetwork;

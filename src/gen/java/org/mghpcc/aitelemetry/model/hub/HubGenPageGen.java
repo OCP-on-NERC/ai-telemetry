@@ -1,4 +1,4 @@
-package org.mghpcc.aitelemetry.model.cluster;
+package org.mghpcc.aitelemetry.model.hub;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.page.PageLayout;
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import org.computate.vertx.search.list.SearchList;
-import org.mghpcc.aitelemetry.model.cluster.AiCluster;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 import java.lang.String;
 import org.computate.search.response.solr.SolrResponse.Stats;
 import org.computate.search.response.solr.SolrResponse.FacetCounts;
@@ -64,23 +64,23 @@ import io.vertx.core.Future;
 /**
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
- * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these AiClusterGenPage objects in a RESTful API. 
- * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class AiClusterGenPageGen into the class AiClusterGenPage. 
+ * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these HubGenPage objects in a RESTful API. 
+ * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class HubGenPageGen into the class HubGenPage. 
  * </li>
- * <h3>About the AiClusterGenPage class and it's generated class AiClusterGenPageGen&lt;PageLayout&gt;: </h3>extends AiClusterGenPageGen
+ * <h3>About the HubGenPage class and it's generated class HubGenPageGen&lt;PageLayout&gt;: </h3>extends HubGenPageGen
  * <p>
- * This Java class extends a generated Java class AiClusterGenPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class HubGenPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage">Find the class AiClusterGenPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage">Find the class HubGenPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends AiClusterGenPageGen<PageLayout>
- * <p>This <code>class AiClusterGenPage extends AiClusterGenPageGen&lt;PageLayout&gt;</code>, which means it extends a newly generated AiClusterGenPageGen. 
- * The generated <code>class AiClusterGenPageGen extends PageLayout</code> which means that AiClusterGenPage extends AiClusterGenPageGen which extends PageLayout. 
+ * extends HubGenPageGen<PageLayout>
+ * <p>This <code>class HubGenPage extends HubGenPageGen&lt;PageLayout&gt;</code>, which means it extends a newly generated HubGenPageGen. 
+ * The generated <code>class HubGenPageGen extends PageLayout</code> which means that HubGenPage extends HubGenPageGen which extends PageLayout. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -89,7 +89,7 @@ import io.vertx.core.Future;
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
  * <h2>{@inheritDoc}</h2>
- * <p>By adding a class comment "{@inheritDoc}", the AiClusterGenPage class will inherit the helpful inherited class comments from the super class AiClusterGenPageGen. 
+ * <p>By adding a class comment "{@inheritDoc}", the HubGenPage class will inherit the helpful inherited class comments from the super class HubGenPageGen. 
  * </p>
  * <h2>Rows: null</h2>
  * <h2>Model: true</h2>
@@ -99,7 +99,7 @@ import io.vertx.core.Future;
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
- *   This means that the AiClusterGenPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ *   This means that the HubGenPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
  * </p>
  * <p>
  *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
@@ -120,12 +120,12 @@ import io.vertx.core.Future;
  * </p>
  * <h2>AName.enUS: null</h2>
  * <p>
- * Delete the class AiClusterGenPage in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete the class HubGenPage in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
- * Delete  the package org.mghpcc.aitelemetry.model.cluster in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete  the package org.mghpcc.aitelemetry.model.hub in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
@@ -133,103 +133,103 @@ import io.vertx.core.Future;
  * </p>
  * Generated: true
  **/
-public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
-	protected static final Logger LOG = LoggerFactory.getLogger(AiClusterGenPage.class);
+public abstract class HubGenPageGen<DEV> extends PageLayout {
+	protected static final Logger LOG = LoggerFactory.getLogger(HubGenPage.class);
 
-	//////////////////////////
-	// searchListAiCluster_ //
-	//////////////////////////
+	////////////////////
+	// searchListHub_ //
+	////////////////////
 
 
-	/**	 The entity searchListAiCluster_
+	/**	 The entity searchListHub_
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonIgnore
 	@JsonInclude(Include.NON_NULL)
-	protected SearchList<AiCluster> searchListAiCluster_;
+	protected SearchList<Hub> searchListHub_;
 
-	/**	<br> The entity searchListAiCluster_
+	/**	<br> The entity searchListHub_
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:searchListAiCluster_">Find the entity searchListAiCluster_ in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:searchListHub_">Find the entity searchListHub_ in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _searchListAiCluster_(Wrap<SearchList<AiCluster>> w);
+	protected abstract void _searchListHub_(Wrap<SearchList<Hub>> w);
 
-	public SearchList<AiCluster> getSearchListAiCluster_() {
-		return searchListAiCluster_;
+	public SearchList<Hub> getSearchListHub_() {
+		return searchListHub_;
 	}
 
-	public void setSearchListAiCluster_(SearchList<AiCluster> searchListAiCluster_) {
-		this.searchListAiCluster_ = searchListAiCluster_;
+	public void setSearchListHub_(SearchList<Hub> searchListHub_) {
+		this.searchListHub_ = searchListHub_;
 	}
-	public static SearchList<AiCluster> staticSetSearchListAiCluster_(SiteRequest siteRequest_, String o) {
+	public static SearchList<Hub> staticSetSearchListHub_(SiteRequest siteRequest_, String o) {
 		return null;
 	}
-	protected AiClusterGenPage searchListAiCluster_Init() {
-		Wrap<SearchList<AiCluster>> searchListAiCluster_Wrap = new Wrap<SearchList<AiCluster>>().var("searchListAiCluster_");
-		if(searchListAiCluster_ == null) {
-			_searchListAiCluster_(searchListAiCluster_Wrap);
-			Optional.ofNullable(searchListAiCluster_Wrap.getO()).ifPresent(o -> {
-				setSearchListAiCluster_(o);
+	protected HubGenPage searchListHub_Init() {
+		Wrap<SearchList<Hub>> searchListHub_Wrap = new Wrap<SearchList<Hub>>().var("searchListHub_");
+		if(searchListHub_ == null) {
+			_searchListHub_(searchListHub_Wrap);
+			Optional.ofNullable(searchListHub_Wrap.getO()).ifPresent(o -> {
+				setSearchListHub_(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
-	///////////////////
-	// listAiCluster //
-	///////////////////
+	/////////////
+	// listHub //
+	/////////////
 
 
-	/**	 The entity listAiCluster
+	/**	 The entity listHub
 	 *	 It is constructed before being initialized with the constructor by default. 
 	 */
 	@JsonProperty
 	@JsonDeserialize(using = JsonArrayDeserializer.class)
 	@JsonInclude(Include.NON_NULL)
-	protected JsonArray listAiCluster = new JsonArray();
+	protected JsonArray listHub = new JsonArray();
 
-	/**	<br> The entity listAiCluster
+	/**	<br> The entity listHub
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:listAiCluster">Find the entity listAiCluster in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:listHub">Find the entity listHub in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
-	protected abstract void _listAiCluster(JsonArray l);
+	protected abstract void _listHub(JsonArray l);
 
-	public JsonArray getListAiCluster() {
-		return listAiCluster;
+	public JsonArray getListHub() {
+		return listHub;
 	}
 
-	public void setListAiCluster(JsonArray listAiCluster) {
-		this.listAiCluster = listAiCluster;
+	public void setListHub(JsonArray listHub) {
+		this.listHub = listHub;
 	}
 	@JsonIgnore
-	public void setListAiCluster(String o) {
-		this.listAiCluster = AiClusterGenPage.staticSetListAiCluster(siteRequest_, o);
+	public void setListHub(String o) {
+		this.listHub = HubGenPage.staticSetListHub(siteRequest_, o);
 	}
-	public static JsonArray staticSetListAiCluster(SiteRequest siteRequest_, String o) {
+	public static JsonArray staticSetListHub(SiteRequest siteRequest_, String o) {
 		if(o != null) {
 				return new JsonArray(o);
 		}
 		return null;
 	}
-	protected AiClusterGenPage listAiClusterInit() {
-		_listAiCluster(listAiCluster);
-		return (AiClusterGenPage)this;
+	protected HubGenPage listHubInit() {
+		_listHub(listHub);
+		return (HubGenPage)this;
 	}
 
-	public static String staticSearchListAiCluster(SiteRequest siteRequest_, JsonArray o) {
+	public static String staticSearchListHub(SiteRequest siteRequest_, JsonArray o) {
 		return o.toString();
 	}
 
-	public static String staticSearchStrListAiCluster(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrListHub(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqListAiCluster(SiteRequest siteRequest_, String o) {
-		return AiClusterGenPage.staticSearchListAiCluster(siteRequest_, AiClusterGenPage.staticSetListAiCluster(siteRequest_, o)).toString();
+	public static String staticSearchFqListHub(SiteRequest siteRequest_, String o) {
+		return HubGenPage.staticSearchListHub(siteRequest_, HubGenPage.staticSetListHub(siteRequest_, o)).toString();
 	}
 
 	/////////////////
@@ -247,7 +247,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity resultCount
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:resultCount">Find the entity resultCount in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:resultCount">Find the entity resultCount in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -262,14 +262,14 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 	@JsonIgnore
 	public void setResultCount(String o) {
-		this.resultCount = AiClusterGenPage.staticSetResultCount(siteRequest_, o);
+		this.resultCount = HubGenPage.staticSetResultCount(siteRequest_, o);
 	}
 	public static Integer staticSetResultCount(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Integer.parseInt(o);
 		return null;
 	}
-	protected AiClusterGenPage resultCountInit() {
+	protected HubGenPage resultCountInit() {
 		Wrap<Integer> resultCountWrap = new Wrap<Integer>().var("resultCount");
 		if(resultCount == null) {
 			_resultCount(resultCountWrap);
@@ -277,7 +277,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 				setResultCount(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
 	public static Integer staticSearchResultCount(SiteRequest siteRequest_, Integer o) {
@@ -289,7 +289,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String staticSearchFqResultCount(SiteRequest siteRequest_, String o) {
-		return AiClusterGenPage.staticSearchResultCount(siteRequest_, AiClusterGenPage.staticSetResultCount(siteRequest_, o)).toString();
+		return HubGenPage.staticSearchResultCount(siteRequest_, HubGenPage.staticSetResultCount(siteRequest_, o)).toString();
 	}
 
 	////////////
@@ -302,35 +302,35 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected AiCluster result;
+	protected Hub result;
 
 	/**	<br> The entity result
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:result">Find the entity result in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:result">Find the entity result in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _result(Wrap<AiCluster> w);
+	protected abstract void _result(Wrap<Hub> w);
 
-	public AiCluster getResult() {
+	public Hub getResult() {
 		return result;
 	}
 
-	public void setResult(AiCluster result) {
+	public void setResult(Hub result) {
 		this.result = result;
 	}
-	public static AiCluster staticSetResult(SiteRequest siteRequest_, String o) {
+	public static Hub staticSetResult(SiteRequest siteRequest_, String o) {
 		return null;
 	}
-	protected AiClusterGenPage resultInit() {
-		Wrap<AiCluster> resultWrap = new Wrap<AiCluster>().var("result");
+	protected HubGenPage resultInit() {
+		Wrap<Hub> resultWrap = new Wrap<Hub>().var("result");
 		if(result == null) {
 			_result(resultWrap);
 			Optional.ofNullable(resultWrap.getO()).ifPresent(o -> {
 				setResult(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
 	////////
@@ -348,7 +348,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity pk
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:pk">Find the entity pk in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -363,14 +363,14 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 	@JsonIgnore
 	public void setPk(String o) {
-		this.pk = AiClusterGenPage.staticSetPk(siteRequest_, o);
+		this.pk = HubGenPage.staticSetPk(siteRequest_, o);
 	}
 	public static Long staticSetPk(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Long.parseLong(o);
 		return null;
 	}
-	protected AiClusterGenPage pkInit() {
+	protected HubGenPage pkInit() {
 		Wrap<Long> pkWrap = new Wrap<Long>().var("pk");
 		if(pk == null) {
 			_pk(pkWrap);
@@ -378,7 +378,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 				setPk(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
 	public static Long staticSearchPk(SiteRequest siteRequest_, Long o) {
@@ -390,7 +390,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String staticSearchFqPk(SiteRequest siteRequest_, String o) {
-		return AiClusterGenPage.staticSearchPk(siteRequest_, AiClusterGenPage.staticSetPk(siteRequest_, o)).toString();
+		return HubGenPage.staticSearchPk(siteRequest_, HubGenPage.staticSetPk(siteRequest_, o)).toString();
 	}
 
 	////////////
@@ -407,7 +407,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 
 	/**	<br> The entity solrId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:solrId">Find the entity solrId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:solrId">Find the entity solrId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -417,12 +417,12 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		return solrId;
 	}
 	public void setSolrId(String o) {
-		this.solrId = AiClusterGenPage.staticSetSolrId(siteRequest_, o);
+		this.solrId = HubGenPage.staticSetSolrId(siteRequest_, o);
 	}
 	public static String staticSetSolrId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiClusterGenPage solrIdInit() {
+	protected HubGenPage solrIdInit() {
 		Wrap<String> solrIdWrap = new Wrap<String>().var("solrId");
 		if(solrId == null) {
 			_solrId(solrIdWrap);
@@ -430,7 +430,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 				setSolrId(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
 	public static String staticSearchSolrId(SiteRequest siteRequest_, String o) {
@@ -442,74 +442,74 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String staticSearchFqSolrId(SiteRequest siteRequest_, String o) {
-		return AiClusterGenPage.staticSearchSolrId(siteRequest_, AiClusterGenPage.staticSetSolrId(siteRequest_, o)).toString();
+		return HubGenPage.staticSearchSolrId(siteRequest_, HubGenPage.staticSetSolrId(siteRequest_, o)).toString();
 	}
 
-	//////////////////////
-	// pageUriAiCluster //
-	//////////////////////
+	////////////////
+	// pageUriHub //
+	////////////////
 
 
-	/**	 The entity pageUriAiCluster
+	/**	 The entity pageUriHub
 	 *	 is defined as null before being initialized. 
 	 */
 	@JsonProperty
 	@JsonInclude(Include.NON_NULL)
-	protected String pageUriAiCluster;
+	protected String pageUriHub;
 
-	/**	<br> The entity pageUriAiCluster
+	/**	<br> The entity pageUriHub
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage&fq=entiteVar_enUS_indexed_string:pageUriAiCluster">Find the entity pageUriAiCluster in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubGenPage&fq=entiteVar_enUS_indexed_string:pageUriHub">Find the entity pageUriHub in Solr</a>
 	 * <br>
 	 * @param c is for wrapping a value to assign to this entity during initialization. 
 	 **/
-	protected abstract void _pageUriAiCluster(Wrap<String> c);
+	protected abstract void _pageUriHub(Wrap<String> c);
 
-	public String getPageUriAiCluster() {
-		return pageUriAiCluster;
+	public String getPageUriHub() {
+		return pageUriHub;
 	}
-	public void setPageUriAiCluster(String o) {
-		this.pageUriAiCluster = AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, o);
+	public void setPageUriHub(String o) {
+		this.pageUriHub = HubGenPage.staticSetPageUriHub(siteRequest_, o);
 	}
-	public static String staticSetPageUriAiCluster(SiteRequest siteRequest_, String o) {
+	public static String staticSetPageUriHub(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiClusterGenPage pageUriAiClusterInit() {
-		Wrap<String> pageUriAiClusterWrap = new Wrap<String>().var("pageUriAiCluster");
-		if(pageUriAiCluster == null) {
-			_pageUriAiCluster(pageUriAiClusterWrap);
-			Optional.ofNullable(pageUriAiClusterWrap.getO()).ifPresent(o -> {
-				setPageUriAiCluster(o);
+	protected HubGenPage pageUriHubInit() {
+		Wrap<String> pageUriHubWrap = new Wrap<String>().var("pageUriHub");
+		if(pageUriHub == null) {
+			_pageUriHub(pageUriHubWrap);
+			Optional.ofNullable(pageUriHubWrap.getO()).ifPresent(o -> {
+				setPageUriHub(o);
 			});
 		}
-		return (AiClusterGenPage)this;
+		return (HubGenPage)this;
 	}
 
-	public static String staticSearchPageUriAiCluster(SiteRequest siteRequest_, String o) {
+	public static String staticSearchPageUriHub(SiteRequest siteRequest_, String o) {
 		return o;
 	}
 
-	public static String staticSearchStrPageUriAiCluster(SiteRequest siteRequest_, String o) {
+	public static String staticSearchStrPageUriHub(SiteRequest siteRequest_, String o) {
 		return o == null ? null : o.toString();
 	}
 
-	public static String staticSearchFqPageUriAiCluster(SiteRequest siteRequest_, String o) {
-		return AiClusterGenPage.staticSearchPageUriAiCluster(siteRequest_, AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, o)).toString();
+	public static String staticSearchFqPageUriHub(SiteRequest siteRequest_, String o) {
+		return HubGenPage.staticSearchPageUriHub(siteRequest_, HubGenPage.staticSetPageUriHub(siteRequest_, o)).toString();
 	}
 
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<AiClusterGenPageGen<DEV>> promiseDeepAiClusterGenPage(SiteRequest siteRequest_) {
+	public Future<HubGenPageGen<DEV>> promiseDeepHubGenPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
-		return promiseDeepAiClusterGenPage();
+		return promiseDeepHubGenPage();
 	}
 
-	public Future<AiClusterGenPageGen<DEV>> promiseDeepAiClusterGenPage() {
-		Promise<AiClusterGenPageGen<DEV>> promise = Promise.promise();
+	public Future<HubGenPageGen<DEV>> promiseDeepHubGenPage() {
+		Promise<HubGenPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
-		promiseAiClusterGenPage(promise2);
+		promiseHubGenPage(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepPageLayout(siteRequest_).onSuccess(b -> {
 				promise.complete(this);
@@ -522,17 +522,17 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		return promise.future();
 	}
 
-	public Future<Void> promiseAiClusterGenPage(Promise<Void> promise) {
+	public Future<Void> promiseHubGenPage(Promise<Void> promise) {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
-				searchListAiCluster_Init();
-				listAiClusterInit();
+				searchListHub_Init();
+				listHubInit();
 				resultCountInit();
 				resultInit();
 				pkInit();
 				solrIdInit();
-				pageUriAiClusterInit();
+				pageUriHubInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -546,20 +546,20 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		return promise.future();
 	}
 
-	@Override public Future<? extends AiClusterGenPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
-		return promiseDeepAiClusterGenPage(siteRequest_);
+	@Override public Future<? extends HubGenPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
+		return promiseDeepHubGenPage(siteRequest_);
 	}
 
 	/////////////////
 	// siteRequest //
 	/////////////////
 
-	public void siteRequestAiClusterGenPage(SiteRequest siteRequest_) {
+	public void siteRequestHubGenPage(SiteRequest siteRequest_) {
 			super.siteRequestPageLayout(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
-		siteRequestAiClusterGenPage(siteRequest_);
+		siteRequestHubGenPage(siteRequest_);
 	}
 
 	/////////////
@@ -571,7 +571,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = obtainAiClusterGenPage(v);
+				o = obtainHubGenPage(v);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.obtainForClass(v);
@@ -583,23 +583,23 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		}
 		return o;
 	}
-	public Object obtainAiClusterGenPage(String var) {
-		AiClusterGenPage oAiClusterGenPage = (AiClusterGenPage)this;
+	public Object obtainHubGenPage(String var) {
+		HubGenPage oHubGenPage = (HubGenPage)this;
 		switch(var) {
-			case "searchListAiCluster_":
-				return oAiClusterGenPage.searchListAiCluster_;
-			case "listAiCluster":
-				return oAiClusterGenPage.listAiCluster;
+			case "searchListHub_":
+				return oHubGenPage.searchListHub_;
+			case "listHub":
+				return oHubGenPage.listHub;
 			case "resultCount":
-				return oAiClusterGenPage.resultCount;
+				return oHubGenPage.resultCount;
 			case "result":
-				return oAiClusterGenPage.result;
+				return oHubGenPage.result;
 			case "pk":
-				return oAiClusterGenPage.pk;
+				return oHubGenPage.pk;
 			case "solrId":
-				return oAiClusterGenPage.solrId;
-			case "pageUriAiCluster":
-				return oAiClusterGenPage.pageUriAiCluster;
+				return oHubGenPage.solrId;
+			case "pageUriHub":
+				return oHubGenPage.pageUriHub;
 			default:
 				return super.obtainPageLayout(var);
 		}
@@ -614,7 +614,7 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = relateAiClusterGenPage(v, val);
+				o = relateHubGenPage(v, val);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.relateForClass(v, val);
@@ -622,8 +622,8 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		}
 		return o != null;
 	}
-	public Object relateAiClusterGenPage(String var, Object val) {
-		AiClusterGenPage oAiClusterGenPage = (AiClusterGenPage)this;
+	public Object relateHubGenPage(String var, Object val) {
+		HubGenPage oHubGenPage = (HubGenPage)this;
 		switch(var) {
 			default:
 				return super.relatePageLayout(var, val);
@@ -634,21 +634,21 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiClusterGenPage o) {
-		return staticSetAiClusterGenPage(entityVar,  siteRequest_, v, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, HubGenPage o) {
+		return staticSetHubGenPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiClusterGenPage(String entityVar, SiteRequest siteRequest_, String v, AiClusterGenPage o) {
+	public static Object staticSetHubGenPage(String entityVar, SiteRequest siteRequest_, String v, HubGenPage o) {
 		switch(entityVar) {
-		case "listAiCluster":
-			return AiClusterGenPage.staticSetListAiCluster(siteRequest_, v);
+		case "listHub":
+			return HubGenPage.staticSetListHub(siteRequest_, v);
 		case "resultCount":
-			return AiClusterGenPage.staticSetResultCount(siteRequest_, v);
+			return HubGenPage.staticSetResultCount(siteRequest_, v);
 		case "pk":
-			return AiClusterGenPage.staticSetPk(siteRequest_, v);
+			return HubGenPage.staticSetPk(siteRequest_, v);
 		case "solrId":
-			return AiClusterGenPage.staticSetSolrId(siteRequest_, v);
-		case "pageUriAiCluster":
-			return AiClusterGenPage.staticSetPageUriAiCluster(siteRequest_, v);
+			return HubGenPage.staticSetSolrId(siteRequest_, v);
+		case "pageUriHub":
+			return HubGenPage.staticSetPageUriHub(siteRequest_, v);
 			default:
 				return PageLayout.staticSetPageLayout(entityVar,  siteRequest_, v, o);
 		}
@@ -659,20 +659,20 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	////////////////
 
 	public static Object staticSearchForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchAiClusterGenPage(entityVar,  siteRequest_, o);
+		return staticSearchHubGenPage(entityVar,  siteRequest_, o);
 	}
-	public static Object staticSearchAiClusterGenPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static Object staticSearchHubGenPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "listAiCluster":
-			return AiClusterGenPage.staticSearchListAiCluster(siteRequest_, (JsonArray)o);
+		case "listHub":
+			return HubGenPage.staticSearchListHub(siteRequest_, (JsonArray)o);
 		case "resultCount":
-			return AiClusterGenPage.staticSearchResultCount(siteRequest_, (Integer)o);
+			return HubGenPage.staticSearchResultCount(siteRequest_, (Integer)o);
 		case "pk":
-			return AiClusterGenPage.staticSearchPk(siteRequest_, (Long)o);
+			return HubGenPage.staticSearchPk(siteRequest_, (Long)o);
 		case "solrId":
-			return AiClusterGenPage.staticSearchSolrId(siteRequest_, (String)o);
-		case "pageUriAiCluster":
-			return AiClusterGenPage.staticSearchPageUriAiCluster(siteRequest_, (String)o);
+			return HubGenPage.staticSearchSolrId(siteRequest_, (String)o);
+		case "pageUriHub":
+			return HubGenPage.staticSearchPageUriHub(siteRequest_, (String)o);
 			default:
 				return PageLayout.staticSearchPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -683,20 +683,20 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	///////////////////
 
 	public static String staticSearchStrForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchStrAiClusterGenPage(entityVar,  siteRequest_, o);
+		return staticSearchStrHubGenPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchStrAiClusterGenPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static String staticSearchStrHubGenPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
-		case "listAiCluster":
-			return AiClusterGenPage.staticSearchStrListAiCluster(siteRequest_, (String)o);
+		case "listHub":
+			return HubGenPage.staticSearchStrListHub(siteRequest_, (String)o);
 		case "resultCount":
-			return AiClusterGenPage.staticSearchStrResultCount(siteRequest_, (Integer)o);
+			return HubGenPage.staticSearchStrResultCount(siteRequest_, (Integer)o);
 		case "pk":
-			return AiClusterGenPage.staticSearchStrPk(siteRequest_, (Long)o);
+			return HubGenPage.staticSearchStrPk(siteRequest_, (Long)o);
 		case "solrId":
-			return AiClusterGenPage.staticSearchStrSolrId(siteRequest_, (String)o);
-		case "pageUriAiCluster":
-			return AiClusterGenPage.staticSearchStrPageUriAiCluster(siteRequest_, (String)o);
+			return HubGenPage.staticSearchStrSolrId(siteRequest_, (String)o);
+		case "pageUriHub":
+			return HubGenPage.staticSearchStrPageUriHub(siteRequest_, (String)o);
 			default:
 				return PageLayout.staticSearchStrPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -707,20 +707,20 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	//////////////////
 
 	public static String staticSearchFqForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSearchFqAiClusterGenPage(entityVar,  siteRequest_, o);
+		return staticSearchFqHubGenPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchFqAiClusterGenPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static String staticSearchFqHubGenPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
-		case "listAiCluster":
-			return AiClusterGenPage.staticSearchFqListAiCluster(siteRequest_, o);
+		case "listHub":
+			return HubGenPage.staticSearchFqListHub(siteRequest_, o);
 		case "resultCount":
-			return AiClusterGenPage.staticSearchFqResultCount(siteRequest_, o);
+			return HubGenPage.staticSearchFqResultCount(siteRequest_, o);
 		case "pk":
-			return AiClusterGenPage.staticSearchFqPk(siteRequest_, o);
+			return HubGenPage.staticSearchFqPk(siteRequest_, o);
 		case "solrId":
-			return AiClusterGenPage.staticSearchFqSolrId(siteRequest_, o);
-		case "pageUriAiCluster":
-			return AiClusterGenPage.staticSearchFqPageUriAiCluster(siteRequest_, o);
+			return HubGenPage.staticSearchFqSolrId(siteRequest_, o);
+		case "pageUriHub":
+			return HubGenPage.staticSearchFqPageUriHub(siteRequest_, o);
 			default:
 				return PageLayout.staticSearchFqPageLayout(entityVar,  siteRequest_, o);
 		}
@@ -736,23 +736,24 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		return sb.toString();
 	}
 
-	public static final String CLASS_SIMPLE_NAME = "AiClusterGenPage";
-	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage";
-	public static final String VAR_searchListAiCluster_ = "searchListAiCluster_";
-	public static final String VAR_listAiCluster = "listAiCluster";
+	public static final String CLASS_SIMPLE_NAME = "HubGenPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.hub.HubGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
+	public static final String VAR_searchListHub_ = "searchListHub_";
+	public static final String VAR_listHub = "listHub";
 	public static final String VAR_resultCount = "resultCount";
 	public static final String VAR_result = "result";
 	public static final String VAR_pk = "pk";
 	public static final String VAR_solrId = "solrId";
-	public static final String VAR_pageUriAiCluster = "pageUriAiCluster";
+	public static final String VAR_pageUriHub = "pageUriHub";
 
-	public static final String DISPLAY_NAME_searchListAiCluster_ = "";
-	public static final String DISPLAY_NAME_listAiCluster = "";
+	public static final String DISPLAY_NAME_searchListHub_ = "";
+	public static final String DISPLAY_NAME_listHub = "";
 	public static final String DISPLAY_NAME_resultCount = "";
 	public static final String DISPLAY_NAME_result = "";
 	public static final String DISPLAY_NAME_pk = "";
 	public static final String DISPLAY_NAME_solrId = "";
-	public static final String DISPLAY_NAME_pageUriAiCluster = "";
+	public static final String DISPLAY_NAME_pageUriHub = "";
 
 	@Override
 	public String idForClass() {
@@ -800,14 +801,14 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 	}
 
 	public static String displayNameForClass(String var) {
-		return AiClusterGenPage.displayNameAiClusterGenPage(var);
+		return HubGenPage.displayNameHubGenPage(var);
 	}
-	public static String displayNameAiClusterGenPage(String var) {
+	public static String displayNameHubGenPage(String var) {
 		switch(var) {
-		case VAR_searchListAiCluster_:
-			return DISPLAY_NAME_searchListAiCluster_;
-		case VAR_listAiCluster:
-			return DISPLAY_NAME_listAiCluster;
+		case VAR_searchListHub_:
+			return DISPLAY_NAME_searchListHub_;
+		case VAR_listHub:
+			return DISPLAY_NAME_listHub;
 		case VAR_resultCount:
 			return DISPLAY_NAME_resultCount;
 		case VAR_result:
@@ -816,14 +817,14 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 			return DISPLAY_NAME_pk;
 		case VAR_solrId:
 			return DISPLAY_NAME_solrId;
-		case VAR_pageUriAiCluster:
-			return DISPLAY_NAME_pageUriAiCluster;
+		case VAR_pageUriHub:
+			return DISPLAY_NAME_pageUriHub;
 		default:
 			return PageLayout.displayNamePageLayout(var);
 		}
 	}
 
-	public static String descriptionAiClusterGenPage(String var) {
+	public static String descriptionHubGenPage(String var) {
 		if(var == null)
 			return null;
 		switch(var) {
@@ -832,70 +833,70 @@ public abstract class AiClusterGenPageGen<DEV> extends PageLayout {
 		}
 	}
 
-	public static String classSimpleNameAiClusterGenPage(String var) {
+	public static String classSimpleNameHubGenPage(String var) {
 		switch(var) {
-		case VAR_searchListAiCluster_:
+		case VAR_searchListHub_:
 			return "SearchList";
-		case VAR_listAiCluster:
+		case VAR_listHub:
 			return "JsonArray";
 		case VAR_resultCount:
 			return "Integer";
 		case VAR_result:
-			return "AiCluster";
+			return "Hub";
 		case VAR_pk:
 			return "Long";
 		case VAR_solrId:
 			return "String";
-		case VAR_pageUriAiCluster:
+		case VAR_pageUriHub:
 			return "String";
 			default:
 				return PageLayout.classSimpleNamePageLayout(var);
 		}
 	}
 
-	public static Integer htmColumnAiClusterGenPage(String var) {
+	public static Integer htmColumnHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.htmColumnPageLayout(var);
 		}
 	}
 
-	public static Integer htmRowAiClusterGenPage(String var) {
+	public static Integer htmRowHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.htmRowPageLayout(var);
 		}
 	}
 
-	public static Integer htmCellAiClusterGenPage(String var) {
+	public static Integer htmCellHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.htmCellPageLayout(var);
 		}
 	}
 
-	public static Integer lengthMinAiClusterGenPage(String var) {
+	public static Integer lengthMinHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.lengthMinPageLayout(var);
 		}
 	}
 
-	public static Integer lengthMaxAiClusterGenPage(String var) {
+	public static Integer lengthMaxHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.lengthMaxPageLayout(var);
 		}
 	}
 
-	public static Integer maxAiClusterGenPage(String var) {
+	public static Integer maxHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.maxPageLayout(var);
 		}
 	}
 
-	public static Integer minAiClusterGenPage(String var) {
+	public static Integer minHubGenPage(String var) {
 		switch(var) {
 			default:
 				return PageLayout.minPageLayout(var);

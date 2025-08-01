@@ -738,6 +738,7 @@ public abstract class ClusterOrderGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterOrderGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clusterorder.ClusterOrderGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListClusterOrder_ = "searchListClusterOrder_";
 	public static final String VAR_listClusterOrder = "listClusterOrder";
 	public static final String VAR_resultCount = "resultCount";

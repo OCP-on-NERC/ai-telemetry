@@ -1,6 +1,6 @@
 package org.mghpcc.aitelemetry.model.project;
 
-import org.mghpcc.aitelemetry.model.project.AiProject;
+import org.mghpcc.aitelemetry.model.project.Project;
 import java.lang.String;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
@@ -49,37 +49,37 @@ import io.vertx.pgclient.data.Point;
  * Translate: false
  * Generated: true
  **/
-public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
+public class ProjectGenPage extends ProjectGenPageGen<PageLayout> {
 
   /**
    * {@inheritDoc}
    * Ignore: true
    **/
-  protected void _searchListAiProject_(Wrap<SearchList<AiProject>> w) {
+  protected void _searchListProject_(Wrap<SearchList<Project>> w) {
   }
 
   @Override
   protected void _pageResponse(Wrap<String> w) {
-    if(searchListAiProject_ != null)
-      w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
+    if(searchListProject_ != null)
+      w.o(Optional.ofNullable(searchListProject_.getResponse()).map(response -> JsonObject.mapFrom(response).toString()).orElse(null));
   }
 
   @Override
   protected void _stats(Wrap<SolrResponse.Stats> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getStats()).orElse(null));
+    w.o(Optional.ofNullable(searchListProject_.getResponse()).map(response -> response.getStats()).orElse(null));
   }
 
   @Override
   protected void _facetCounts(Wrap<SolrResponse.FacetCounts> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
+    w.o(Optional.ofNullable(searchListProject_.getResponse()).map(response -> response.getFacetCounts()).orElse(null));
   }
 
   @Override
   protected void _pagination(JsonObject pagination) {
     JsonArray pages = new JsonArray();
-    Long start = searchListAiProject_.getStart().longValue();
-    Long rows = searchListAiProject_.getRows().longValue();
-    Long foundNum = Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiProject_.getList().size()));
+    Long start = searchListProject_.getStart().longValue();
+    Long rows = searchListProject_.getRows().longValue();
+    Long foundNum = Optional.ofNullable(searchListProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListProject_.getList().size()));
     Long startNum = start + 1L;
     Long endNum = start + rows;
     Long floorMod = (rows == 0L ? 0L : Math.floorMod(foundNum, rows));
@@ -121,12 +121,12 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _varsQ(JsonObject vars) {
-    AiProject.varsQForClass().forEach(var -> {
+    Project.varsQForClass().forEach(var -> {
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiProject.displayNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiProject.classSimpleNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", Optional.ofNullable(searchListAiProject_.getRequest().getQuery()).filter(fq -> fq.startsWith(AiProject.varIndexedAiProject(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(Project.displayNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Project.classSimpleNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", Optional.ofNullable(searchListProject_.getRequest().getQuery()).filter(fq -> fq.startsWith(Project.varIndexedProject(var) + ":")).map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -139,17 +139,17 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
   protected void _varsFq(JsonObject vars) {
     Map<String, SolrResponse.FacetField> facetFields = Optional.ofNullable(facetCounts).map(c -> c.getFacetFields()).map(f -> f.getFacets()).orElse(new HashMap<String,SolrResponse.FacetField>());
     varsFqCount = 0;
-    for(String var : AiProject.varsFqForClass()) {
-      String varIndexed = AiProject.varIndexedAiProject(var);
-      String varStored = AiProject.varStoredAiProject(var);
+    for(String var : Project.varsFqForClass()) {
+      String varIndexed = Project.varIndexedProject(var);
+      String varStored = Project.varStoredProject(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
       json.put("varStored", varStored);
       json.put("varIndexed", varIndexed);
       String type = StringUtils.substringAfterLast(varIndexed, "_");
-      json.put("displayName", Optional.ofNullable(AiProject.displayNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiProject.classSimpleNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      Object v = searchListAiProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiProject.varIndexedAiProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
+      json.put("displayName", Optional.ofNullable(Project.displayNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Project.classSimpleNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      Object v = searchListProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Project.varIndexedProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null);
       if(v != null) {
         json.put("val", v);
         varsFqCount++;
@@ -215,13 +215,13 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _varsRange(JsonObject vars) {
-    AiProject.varsRangeForClass().forEach(var -> {
-      String varIndexed = AiProject.varIndexedAiProject(var);
+    Project.varsRangeForClass().forEach(var -> {
+      String varIndexed = Project.varIndexedProject(var);
       JsonObject json = new JsonObject();
       json.put("var", var);
-      json.put("displayName", Optional.ofNullable(AiProject.displayNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("classSimpleName", Optional.ofNullable(AiProject.classSimpleNameAiProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
-      json.put("val", searchListAiProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(AiProject.varIndexedAiProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
+      json.put("displayName", Optional.ofNullable(Project.displayNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("classSimpleName", Optional.ofNullable(Project.classSimpleNameProject(var)).map(d -> StringUtils.isBlank(d) ? var : d).orElse(var));
+      json.put("val", searchListProject_.getRequest().getFilterQueries().stream().filter(fq -> fq.startsWith(Project.varIndexedProject(var) + ":")).findFirst().map(s -> SearchTool.unescapeQueryChars(StringUtils.substringAfter(s, ":"))).orElse(null));
       vars.put(var, json);
     });
   }
@@ -232,7 +232,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
     JsonObject params = serviceRequest.getParams();
 
     JsonObject queryParams = Optional.ofNullable(serviceRequest).map(ServiceRequest::getParams).map(or -> or.getJsonObject("query")).orElse(new JsonObject());
-    Long num = Optional.ofNullable(searchListAiProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListAiProject_.getList().size()));
+    Long num = Optional.ofNullable(searchListProject_.getResponse()).map(response -> response.getResponse().getNumFound().longValue()).orElse(Long.valueOf(searchListProject_.getList().size()));
     String q = "*:*";
     String q1 = "objectText";
     String q2 = "";
@@ -260,28 +260,28 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
     }
     query.put("q", q);
 
-    Long rows1 = Optional.ofNullable(searchListAiProject_).map(l -> l.getRows()).orElse(10L);
-    Long start1 = Optional.ofNullable(searchListAiProject_).map(l -> l.getStart()).orElse(1L);
+    Long rows1 = Optional.ofNullable(searchListProject_).map(l -> l.getRows()).orElse(10L);
+    Long start1 = Optional.ofNullable(searchListProject_).map(l -> l.getStart()).orElse(1L);
     Long start2 = start1 - rows1;
     Long start3 = start1 + rows1;
     Long rows2 = rows1 / 2;
     Long rows3 = rows1 * 2;
     start2 = start2 < 0 ? 0 : start2;
     JsonObject fqs = new JsonObject();
-    for(String fq : Optional.ofNullable(searchListAiProject_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
+    for(String fq : Optional.ofNullable(searchListProject_).map(l -> l.getFilterQueries()).orElse(Arrays.asList())) {
       if(!StringUtils.contains(fq, "(")) {
-        String fq1 = AiProject.searchVarAiProject(StringUtils.substringBefore(fq, ":"));
+        String fq1 = Project.searchVarProject(StringUtils.substringBefore(fq, ":"));
         String fq2 = StringUtils.substringAfter(fq, ":");
         if(!StringUtils.startsWithAny(fq, "classCanonicalNames_", "archived_", "sessionId", "userKeys"))
-          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", AiProject.displayNameForClass(fq1)));
+          fqs.put(fq1, new JsonObject().put("var", fq1).put("val", fq2).put("displayName", Project.displayNameForClass(fq1)));
         }
       }
     query.put("fq", fqs);
 
     JsonArray sorts = new JsonArray();
-    for(String sort : Optional.ofNullable(searchListAiProject_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
-      String sort1 = AiProject.searchVarAiProject(StringUtils.substringBefore(sort, " "));
-      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", AiProject.displayNameForClass(sort1)));
+    for(String sort : Optional.ofNullable(searchListProject_).map(l -> l.getSorts()).orElse(Arrays.asList())) {
+      String sort1 = Project.searchVarProject(StringUtils.substringBefore(sort, " "));
+      sorts.add(new JsonObject().put("var", sort1).put("order", StringUtils.substringAfter(sort, " ")).put("displayName", Project.displayNameForClass(sort1)));
     }
     query.put("sort", sorts);
   }
@@ -315,31 +315,31 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
   @Override
   protected void _rows(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("rows", null) != null)
-      w.o(searchListAiProject_.getRows());
+      w.o(searchListProject_.getRows());
   }
 
   @Override
   protected void _start(Wrap<Long> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("start", null) != null)
-      w.o(searchListAiProject_.getStart());
+      w.o(searchListProject_.getStart());
   }
 
   @Override
   protected void _rangeGap(Wrap<String> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.gap", null) != null)
-      w.o(Optional.ofNullable(searchListAiProject_.getFacetRangeGap()).orElse(null));
+      w.o(Optional.ofNullable(searchListProject_.getFacetRangeGap()).orElse(null));
   }
 
   @Override
   protected void _rangeEnd(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.end", null) != null)
-      w.o(Optional.ofNullable(searchListAiProject_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListProject_.getFacetRangeEnd()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
   protected void _rangeStart(Wrap<ZonedDateTime> w) {
     if(serviceRequest.getParams().getJsonObject("query").getString("facet.range.start", null) != null)
-      w.o(Optional.ofNullable(searchListAiProject_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
+      w.o(Optional.ofNullable(searchListProject_.getFacetRangeStart()).map(s -> TimeTool.parseZonedDateTime(defaultTimeZone, s)).orElse(null));
   }
 
   @Override
@@ -359,27 +359,27 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeVar(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return AiProject.searchVarAiProject(v); }).orElse("created"));
+    w.o(Optional.ofNullable(searchListProject_.getFacetRanges()).orElse(Optional.ofNullable(defaultRangeStats).map(s -> Arrays.asList(s.getString("defaultRangeVar"))).orElse(Arrays.asList())).stream().findFirst().map(v -> { if(v.contains("}")) return StringUtils.substringBefore(StringUtils.substringAfterLast(v, "}"), "_"); else return Project.searchVarProject(v); }).orElse("created"));
   }
 
   @Override
   protected void _defaultFacetSort(Wrap<String> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getFacetSort()).orElse("index"));
+    w.o(Optional.ofNullable(searchListProject_.getFacetSort()).orElse("index"));
   }
 
   @Override
   protected void _defaultFacetLimit(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getFacetLimit()).orElse(1));
+    w.o(Optional.ofNullable(searchListProject_.getFacetLimit()).orElse(1));
   }
 
   @Override
   protected void _defaultFacetMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getFacetMinCount()).orElse(1));
+    w.o(Optional.ofNullable(searchListProject_.getFacetMinCount()).orElse(1));
   }
 
   @Override
   protected void _defaultPivotMinCount(Wrap<Integer> w) {
-    w.o(Optional.ofNullable(searchListAiProject_.getFacetPivotMinCount()).orElse(0));
+    w.o(Optional.ofNullable(searchListProject_.getFacetPivotMinCount()).orElse(0));
   }
 
   @Override
@@ -395,10 +395,10 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultSortVars(List<String> l) {
-    if(!searchListAiProject_.getDefaultSort()) {
-      Optional.ofNullable(searchListAiProject_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
+    if(!searchListProject_.getDefaultSort()) {
+      Optional.ofNullable(searchListProject_.getSorts()).orElse(Arrays.asList()).forEach(varSortStr -> {
         String varSortParts[] = varSortStr.split(" ");
-        String varSort = AiProject.searchVarAiProject(varSortParts[0]);
+        String varSort = Project.searchVarProject(varSortParts[0]);
         String varSortDirection = varSortParts[1];
         l.add(String.format("%s %s", varSort, varSortDirection));
       });
@@ -407,14 +407,14 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultFieldListVars(List<String> l) {
-    Optional.ofNullable(searchListAiProject_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
+    Optional.ofNullable(searchListProject_.getFields()).orElse(Arrays.asList()).forEach(varStored -> {
       String varStored2 = varStored;
       if(StringUtils.contains(varStored2, "}"))
         varStored2 = StringUtils.substringAfterLast(varStored2, "}");
       String[] parts = varStored2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiProject.searchVarAiProject(part);
+          String var = Project.searchVarProject(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -424,14 +424,14 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultStatsVars(List<String> l) {
-    Optional.ofNullable(searchListAiProject_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
+    Optional.ofNullable(searchListProject_.getStatsFields()).orElse(Arrays.asList()).forEach(varIndexed -> {
       String varIndexed2 = varIndexed;
       if(StringUtils.contains(varIndexed2, "}"))
         varIndexed2 = StringUtils.substringAfterLast(varIndexed2, "}");
       String[] parts = varIndexed2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiProject.searchVarAiProject(part);
+          String var = Project.searchVarProject(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -441,14 +441,14 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultPivotVars(List<String> l) {
-    Optional.ofNullable(searchListAiProject_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
+    Optional.ofNullable(searchListProject_.getFacetPivots()).orElse(Arrays.asList()).forEach(facetPivot -> {
       String facetPivot2 = facetPivot;
       if(StringUtils.contains(facetPivot2, "}"))
         facetPivot2 = StringUtils.substringAfterLast(facetPivot2, "}");
       String[] parts = facetPivot2.split(",");
       for(String part : parts) {
         if(StringUtils.isNotBlank(part)) {
-          String var = AiProject.searchVarAiProject(part);
+          String var = Project.searchVarProject(part);
           if(StringUtils.isNotBlank(var))
             l.add(var);
         }
@@ -459,20 +459,20 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
   /**
    * {@inheritDoc}
    **/
-  protected void _listAiProject(JsonArray l) {
-    Optional.ofNullable(searchListAiProject_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
+  protected void _listProject(JsonArray l) {
+    Optional.ofNullable(searchListProject_).map(o -> o.getList()).orElse(Arrays.asList()).stream().map(o -> JsonObject.mapFrom(o)).forEach(o -> l.add(o));
   }
 
   protected void _resultCount(Wrap<Integer> w) {
-    w.o(searchListAiProject_ == null ? 0 : searchListAiProject_.size());
+    w.o(searchListProject_ == null ? 0 : searchListProject_.size());
   }
 
   /**
    * Initialized: false
   **/
-  protected void _result(Wrap<AiProject> w) {
-    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("projectId")).orElse(null) != null)
-      w.o(searchListAiProject_.get(0));
+  protected void _result(Wrap<Project> w) {
+    if(resultCount >= 1 && Optional.ofNullable(siteRequest_.getServiceRequest().getParams().getJsonObject("path")).map(o -> o.getString("projectResource")).orElse(null) != null)
+      w.o(searchListProject_.get(0));
   }
 
   protected void _pk(Wrap<Long> w) {
@@ -492,7 +492,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _classSimpleName(Wrap<String> w) {
-    w.o("AiProject");
+    w.o("Project");
   }
 
   @Override
@@ -500,21 +500,21 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
     if(result != null && result.getObjectTitle() != null)
       c.o(result.getObjectTitle());
     else if(result != null)
-      c.o("AI projects");
-    else if(searchListAiProject_ == null || resultCount == 0)
-      c.o("no AI project found");
+      c.o("projects");
+    else if(searchListProject_ == null || resultCount == 0)
+      c.o("no project found");
     else
-      c.o("AI projects");
+      c.o("projects");
   }
 
   @Override
   protected void _pageUri(Wrap<String> c) {
-    c.o("/en-us/search/ai-project");
+    c.o("/en-us/search/project");
   }
 
   @Override
   protected void _apiUri(Wrap<String> c) {
-    c.o("/en-us/api/ai-project");
+    c.o("/en-us/api/project");
   }
 
   @Override
@@ -529,7 +529,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _pageImageUri(Wrap<String> c) {
-      c.o("/png/en-us/search/ai-project-999.png");
+      c.o("/png/en-us/search/project-999.png");
   }
 
   @Override
@@ -537,7 +537,7 @@ public class AiProjectGenPage extends AiProjectGenPageGen<PageLayout> {
       c.o("<i class=\"fa-regular fa-school\"></i>");
   }
 
-  protected void _pageUriAiProject(Wrap<String> c) {
-      c.o("/en-us/search/ai-project");
+  protected void _pageUriProject(Wrap<String> c) {
+      c.o("/en-us/search/project");
   }
 }

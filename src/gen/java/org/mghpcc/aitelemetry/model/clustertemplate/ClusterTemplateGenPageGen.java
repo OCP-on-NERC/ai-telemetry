@@ -738,6 +738,7 @@ public abstract class ClusterTemplateGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterTemplateGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplateGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListClusterTemplate_ = "searchListClusterTemplate_";
 	public static final String VAR_listClusterTemplate = "listClusterTemplate";
 	public static final String VAR_resultCount = "resultCount";

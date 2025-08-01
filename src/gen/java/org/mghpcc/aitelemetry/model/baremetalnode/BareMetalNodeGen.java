@@ -114,11 +114,11 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the BareMetalNode class will inherit the helpful inherited class comments from the super class BareMetalNodeGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 11</h2>
- * <p>This class contains a comment <b>"Order: 11"</b>, which means this class will be sorted by the given number 11 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 15</h2>
+ * <p>This class contains a comment <b>"Order: 15"</b>, which means this class will be sorted by the given number 15 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
- * <h2>SqlOrder: 11</h2>
- * <p>This class contains a comment <b>"SqlOrder: 11"</b>, which means this class will be sorted by the given number 11 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>SqlOrder: 15</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 15"</b>, which means this class will be sorted by the given number 15 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -228,7 +228,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/bare-metal-node";
 	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/bare-metal-node";
 
-	public static final String Icon = "<i class=\"fa-duotone fa-regular fa-hexagon-nodes\"></i>";
+	public static final String Icon = "<i class=\"fa-regular fa-hexagon-nodes\"></i>";
 
 	///////////////
 	// leaseInfo //
@@ -1411,6 +1411,7 @@ public abstract class BareMetalNodeGen<DEV> extends BaseModel {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNode";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNode";
+	public static final String CLASS_AUTH_RESOURCE = "BAREMETALNODE";
 	public static final String CLASS_API_ADDRESS_BareMetalNode = "ai-telemetry-enUS-BareMetalNode";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_BareMetalNode;

@@ -738,6 +738,7 @@ public abstract class BareMetalResourceClassGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalResourceClassGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalresourceclass.BareMetalResourceClassGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListBareMetalResourceClass_ = "searchListBareMetalResourceClass_";
 	public static final String VAR_listBareMetalResourceClass = "listBareMetalResourceClass";
 	public static final String VAR_resultCount = "resultCount";

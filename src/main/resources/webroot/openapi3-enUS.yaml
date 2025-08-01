@@ -24,6 +24,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -203,6 +215,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -260,6 +284,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -291,6 +327,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -365,6 +413,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -423,6 +483,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -453,6 +525,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -533,6 +617,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -564,6 +660,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -747,6 +855,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -926,6 +1046,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -983,6 +1115,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -1014,6 +1158,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -1088,6 +1244,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -1146,6 +1314,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: nodeId
           in: path
           description: >+
@@ -1176,6 +1356,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -1256,6 +1448,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: nodeId
           in: path
           description: >+
@@ -1287,6 +1491,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -1470,6 +1686,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -1649,6 +1877,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -1706,6 +1946,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -1737,6 +1989,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -1811,6 +2075,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pk
           in: path
           description: >+
@@ -1841,6 +2117,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -1921,6 +2209,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pk
           in: path
           description: >+
@@ -1952,6 +2252,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2135,6 +2447,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pk
           in: path
           description: >+
@@ -2162,6 +2486,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2344,6 +2680,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -2401,6 +2749,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -2432,6 +2792,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2506,6 +2878,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -2560,6 +2944,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: name
           in: path
           description: >+
@@ -2590,6 +2986,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2670,6 +3078,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: name
           in: path
           description: >+
@@ -2697,6 +3117,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2859,10 +3291,10 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageBareMetalResourceClassResponse'
-  /en-us/api/ai-cluster:
+  /en-us/api/cluster:
     get:
-      operationId: searchAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: searchCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -2870,13 +3302,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -2931,7 +3375,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -3038,10 +3482,10 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchAiClusterResponse'
+                $ref: '#/components/schemas/SearchClusterResponse'
     patch:
-      operationId: patchAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: patchCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3049,13 +3493,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3088,17 +3544,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PATCHAiClusterRequest'
+              $ref: '#/components/schemas/PATCHClusterRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/PATCHAiClusterResponse'
+                $ref: '#/components/schemas/PATCHClusterResponse'
     post:
-      operationId: postAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: postCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3106,13 +3562,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3122,17 +3590,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/POSTAiClusterRequest'
+              $ref: '#/components/schemas/POSTClusterRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/POSTAiClusterResponse'
+                $ref: '#/components/schemas/POSTClusterResponse'
     delete:
-      operationId: deletefilterAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: deletefilterCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3140,13 +3608,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3191,7 +3671,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -3199,11 +3679,11 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/DELETEFilterAiClusterResponse'
-  /en-us/api/ai-cluster-import:
+                $ref: '#/components/schemas/DELETEFilterClusterResponse'
+  /en-us/api/cluster-import:
     put:
-      operationId: putimportAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: putimportCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3211,13 +3691,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3250,18 +3742,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PUTImportAiClusterRequest'
+              $ref: '#/components/schemas/PUTImportClusterRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/PUTImportAiClusterResponse'
-  /en-us/api/ai-cluster/{clusterName}:
+                $ref: '#/components/schemas/PUTImportClusterResponse'
+  /en-us/api/cluster/{clusterResource}:
     get:
-      operationId: getAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: getCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3269,7 +3761,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3279,7 +3771,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: clusterName
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: clusterResource
           in: path
           description: >+
           required: true
@@ -3291,10 +3795,10 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/GETAiClusterResponse'
+                $ref: '#/components/schemas/GETClusterResponse'
     delete:
-      operationId: deleteAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: deleteCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3302,7 +3806,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3312,7 +3816,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: clusterName
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: clusterResource
           in: path
           description: >+
           required: true
@@ -3359,7 +3875,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -3367,11 +3883,11 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/DELETEAiClusterResponse'
-  /en-us/edit/ai-cluster/{clusterName}:
+                $ref: '#/components/schemas/DELETEClusterResponse'
+  /en-us/edit/cluster/{clusterResource}:
     get:
-      operationId: editpageAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: editpageCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3379,7 +3895,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3389,7 +3905,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: clusterName
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: clusterResource
           in: path
           description: >+
           required: true
@@ -3401,11 +3929,11 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EditPageAiClusterResponse'
-  /en-us/search/ai-cluster:
+                $ref: '#/components/schemas/EditPageClusterResponse'
+  /en-us/search/cluster:
     get:
-      operationId: searchpageAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: searchpageCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3413,13 +3941,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3474,7 +4014,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -3581,11 +4121,11 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageAiClusterResponse'
-  /en-us/user/ai-cluster/{clusterName}:
+                $ref: '#/components/schemas/SearchPageClusterResponse'
+  /en-us/user/cluster/{clusterResource}:
     get:
-      operationId: userpageAiCluster
-      x-vertx-event-bus: ai-telemetry-enUS-AiCluster
+      operationId: userpageCluster
+      x-vertx-event-bus: ai-telemetry-enUS-Cluster
       security:
         - openIdConnect:
           - openid
@@ -3593,7 +4133,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI clusters
+        - OpenShift clusters
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -3603,7 +4143,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: clusterName
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: clusterResource
           in: path
           description: >+
           required: true
@@ -3615,7 +4167,7 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/UserPageAiClusterResponse'
+                $ref: '#/components/schemas/UserPageClusterResponse'
   /en-us/api/cluster-order:
     get:
       operationId: searchClusterOrder
@@ -3634,6 +4186,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3816,6 +4380,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -3873,6 +4449,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -3904,6 +4492,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -3978,6 +4578,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -4036,6 +4648,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -4066,6 +4690,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -4146,6 +4782,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -4177,6 +4825,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -4356,6 +5016,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -4531,6 +5203,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -4584,6 +5268,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -4615,6 +5311,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -4689,6 +5397,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -4743,6 +5463,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: name
           in: path
           description: >+
@@ -4773,6 +5505,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -4853,6 +5597,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: name
           in: path
           description: >+
@@ -4880,6 +5636,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -5063,6 +5831,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: name
           in: path
           description: >+
@@ -5090,6 +5870,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -5272,6 +6064,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -5329,6 +6133,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -5360,6 +6176,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -5434,6 +6262,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -5488,6 +6328,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -5518,6 +6370,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -5598,6 +6462,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -5625,6 +6501,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -5808,6 +6696,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -5987,6 +6887,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -6044,6 +6956,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -6075,6 +6999,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -6149,6 +7085,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -6186,7 +7134,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportGpuDeviceResponse'
-  /en-us/api/gpu-device/{gpuDeviceId}:
+  /en-us/api/gpu-device/{gpuDeviceResource}:
     get:
       operationId: getGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -6207,7 +7155,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: gpuDeviceId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: gpuDeviceResource
           in: path
           description: >+
           required: true
@@ -6240,7 +7200,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: gpuDeviceId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: gpuDeviceResource
           in: path
           description: >+
           required: true
@@ -6296,7 +7268,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEGpuDeviceResponse'
-  /en-us/edit/gpu-device/{gpuDeviceId}:
+  /en-us/edit/gpu-device/{gpuDeviceResource}:
     get:
       operationId: editpageGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -6317,7 +7289,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: gpuDeviceId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: gpuDeviceResource
           in: path
           description: >+
           required: true
@@ -6348,6 +7332,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -6510,7 +7506,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageGpuDeviceResponse'
-  /en-us/user/gpu-device/{gpuDeviceId}:
+  /en-us/user/gpu-device/{gpuDeviceResource}:
     get:
       operationId: userpageGpuDevice
       x-vertx-event-bus: ai-telemetry-enUS-GpuDevice
@@ -6531,7 +7527,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: gpuDeviceId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: gpuDeviceResource
           in: path
           description: >+
           required: true
@@ -6544,6 +7552,925 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/UserPageGpuDeviceResponse'
+  /en-us/api/hub:
+    get:
+      operationId: searchHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchHubResponse'
+    patch:
+      operationId: patchHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PATCHHubRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PATCHHubResponse'
+    post:
+      operationId: postHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSTHubRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/POSTHubResponse'
+    delete:
+      operationId: deletefilterHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEFilterHubResponse'
+  /en-us/api/hub-import:
+    put:
+      operationId: putimportHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+      requestBody:
+        description: >+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PUTImportHubRequest'
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PUTImportHubResponse'
+  /en-us/api/hub/{hubResource}:
+    get:
+      operationId: getHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: hubResource
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GETHubResponse'
+    delete:
+      operationId: deleteHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: hubResource
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: commitWithin
+          description: 'The number of milliseconds to commit the record to Solr. '
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: softCommit
+          description: 'Does a soft commit for the record in Solr immediately. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+      responses:
+        '200':
+          description: >+
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DELETEHubResponse'
+  /en-us/edit/hub/{authResource}:
+    get:
+      operationId: editpageHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: authResource
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/EditPageHubResponse'
+  /en-us/search/hub:
+    get:
+      operationId: searchpageHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
+          required: false
+          schema:
+            type: string
+            default: '*:*'
+        - in: query
+          name: fq
+          description: 'The filter query parameter defines a query that can be used to restrict the superset of documents that can be returned, without influencing score. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: var
+          description: 'The var parameters are additional optional variables and values to pass into the application. '
+          required: false
+          schema:
+            type: array
+            items:
+                type: string
+        - in: query
+          name: fl
+          description: 'The field list parameter limits the information included in a query response to a specified list of fields. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sort
+          description: 'The sort parameter arranges search results in either ascending (asc) or descending (desc) order. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: start
+          description: 'The start parameter specifies an offset into a query result set and instructs Solr to begin displaying results from this offset. '
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - in: query
+          name: rows
+          description: 'The rows parameter specifies the maximum number of documents from the complete result set that Solr should return to the client at one time. '
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 0
+        - in: query
+          name: facet
+          description: 'The facet parameter enables facet counts in the query response. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.field
+          description: 'The facet.field parameter identifies a field that should be treated as a facet. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: d
+          description: 'The radial distance, usually in kilometers. '
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: pt
+          description: 'he center point using the format lat,lon if latitude & longitude. Otherwise, x,y for PointType or x y for RPT field types. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: sfield
+          description: 'A spatial indexed field. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: score
+          description: '(Advanced option; not supported by LatLonType (deprecated) or PointType) If the query is used in a scoring context (e.g., as the main query in q), this local parameter determines what scores will be produced. Valid values are: none, kilometers, miles, degrees, distance, recipDistance, overlapRatio, area, area2D'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distanceUnits
+          description: 'This is used to specify the units for distance measurements used throughout the use of this field. This can be degrees, kilometers or miles. '
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: stats
+          description: 'The Stats component returns simple statistics for numeric, string, and date fields within the document set. '
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: stats.field
+          description: 'Specifies a field for which statistics should be generated. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SearchPageHubResponse'
+  /en-us/user/hub/{authResource}:
+    get:
+      operationId: userpageHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      security:
+        - openIdConnect:
+          - openid
+          - profile
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: authResource
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/UserPageHubResponse'
+  /en-us/view/hub/{authResource}:
+    get:
+      operationId: displaypageHub
+      x-vertx-event-bus: ai-telemetry-enUS-Hub
+      description: >+
+      summary: >+
+      tags:
+        - hubs
+      parameters:
+        - name: vertx-web.session
+          in: cookie
+          schema:
+            type: string
+        - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: authResource
+          in: path
+          description: >+
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >+
+          content:
+            text/html; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DisplayPageHubResponse'
   /en-us/api/managed-cluster:
     get:
       operationId: searchManagedCluster
@@ -6562,6 +8489,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -6744,6 +8683,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -6801,6 +8752,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -6832,6 +8795,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -6906,6 +8881,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -6964,6 +8951,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -6994,6 +8993,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -7074,6 +9085,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -7108,6 +9131,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: id
           in: path
           description: >+
@@ -7139,6 +9174,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -7322,6 +9369,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -7501,6 +9560,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -7558,6 +9629,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -7589,6 +9672,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -7663,6 +9758,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -7700,7 +9807,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/PUTImportAiNodeResponse'
-  /en-us/api/ai-node/{nodeId}:
+  /en-us/api/ai-node/{nodeResource}:
     get:
       operationId: getAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -7721,7 +9828,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: nodeId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: nodeResource
           in: path
           description: >+
           required: true
@@ -7754,7 +9873,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: nodeId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: nodeResource
           in: path
           description: >+
           required: true
@@ -7810,7 +9941,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEAiNodeResponse'
-  /en-us/edit/ai-node/{nodeId}:
+  /en-us/edit/ai-node/{nodeResource}:
     get:
       operationId: editpageAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -7831,7 +9962,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: nodeId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: nodeResource
           in: path
           description: >+
           required: true
@@ -7862,6 +10005,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8024,7 +10179,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageAiNodeResponse'
-  /en-us/user/ai-node/{nodeId}:
+  /en-us/user/ai-node/{nodeResource}:
     get:
       operationId: userpageAiNode
       x-vertx-event-bus: ai-telemetry-enUS-AiNode
@@ -8045,7 +10200,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: nodeId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: nodeResource
           in: path
           description: >+
           required: true
@@ -8058,10 +10225,10 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/UserPageAiNodeResponse'
-  /en-us/api/ai-project:
+  /en-us/api/project:
     get:
-      operationId: searchAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: searchProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8069,13 +10236,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8130,7 +10309,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -8237,10 +10416,10 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchAiProjectResponse'
+                $ref: '#/components/schemas/SearchProjectResponse'
     patch:
-      operationId: patchAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: patchProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8248,13 +10427,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8287,17 +10478,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PATCHAiProjectRequest'
+              $ref: '#/components/schemas/PATCHProjectRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/PATCHAiProjectResponse'
+                $ref: '#/components/schemas/PATCHProjectResponse'
     post:
-      operationId: postAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: postProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8305,13 +10496,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8321,17 +10524,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/POSTAiProjectRequest'
+              $ref: '#/components/schemas/POSTProjectRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/POSTAiProjectResponse'
+                $ref: '#/components/schemas/POSTProjectResponse'
     delete:
-      operationId: deletefilterAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: deletefilterProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8339,13 +10542,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8390,7 +10605,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -8398,11 +10613,11 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/DELETEFilterAiProjectResponse'
-  /en-us/api/ai-project-import:
+                $ref: '#/components/schemas/DELETEFilterProjectResponse'
+  /en-us/api/project-import:
     put:
-      operationId: putimportAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: putimportProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8410,13 +10625,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8449,18 +10676,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PUTImportAiProjectRequest'
+              $ref: '#/components/schemas/PUTImportProjectRequest'
       responses:
         '200':
           description: >+
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/PUTImportAiProjectResponse'
-  /en-us/api/ai-project/{projectId}:
+                $ref: '#/components/schemas/PUTImportProjectResponse'
+  /en-us/api/project/{projectResource}:
     get:
-      operationId: getAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: getProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8468,7 +10695,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -8478,7 +10705,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: projectId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: projectResource
           in: path
           description: >+
           required: true
@@ -8490,10 +10729,10 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/GETAiProjectResponse'
+                $ref: '#/components/schemas/GETProjectResponse'
     delete:
-      operationId: deleteAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: deleteProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8501,7 +10740,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -8511,7 +10750,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: projectId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: projectResource
           in: path
           description: >+
           required: true
@@ -8558,7 +10809,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -8566,11 +10817,11 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/DELETEAiProjectResponse'
-  /en-us/edit/ai-project/{projectId}:
+                $ref: '#/components/schemas/DELETEProjectResponse'
+  /en-us/edit/project/{projectResource}:
     get:
-      operationId: editpageAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: editpageProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8578,7 +10829,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -8588,7 +10839,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: projectId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: projectResource
           in: path
           description: >+
           required: true
@@ -8600,11 +10863,11 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/EditPageAiProjectResponse'
-  /en-us/search/ai-project:
+                $ref: '#/components/schemas/EditPageProjectResponse'
+  /en-us/search/project:
     get:
-      operationId: searchpageAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: searchpageProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8612,13 +10875,25 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -8673,7 +10948,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -8780,11 +11055,11 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/SearchPageAiProjectResponse'
-  /en-us/user/ai-project/{projectId}:
+                $ref: '#/components/schemas/SearchPageProjectResponse'
+  /en-us/user/project/{projectResource}:
     get:
-      operationId: userpageAiProject
-      x-vertx-event-bus: ai-telemetry-enUS-AiProject
+      operationId: userpageProject
+      x-vertx-event-bus: ai-telemetry-enUS-Project
       security:
         - openIdConnect:
           - openid
@@ -8792,7 +11067,7 @@ paths:
       description: >+
       summary: >+
       tags:
-        - AI projects
+        - projects
       parameters:
         - name: vertx-web.session
           in: cookie
@@ -8802,7 +11077,19 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: projectId
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: projectResource
           in: path
           description: >+
           required: true
@@ -8814,7 +11101,7 @@ paths:
           content:
             text/html; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/UserPageAiProjectResponse'
+                $ref: '#/components/schemas/UserPageProjectResponse'
   /en-us/api/article:
     get:
       operationId: searchSitePage
@@ -8829,6 +11116,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -9011,6 +11310,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -9068,6 +11379,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -9100,6 +11423,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -9157,6 +11492,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pageId
           in: path
           description: >+
@@ -9191,6 +11538,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pageId
           in: path
           description: >+
@@ -9218,6 +11577,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -9397,6 +11768,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: pageId
           in: path
           description: >+
@@ -9428,6 +11811,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -9610,6 +12005,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - in: query
           name: q
           description: 'The query parameter defines a query using standard query syntax. This parameter is mandatory.'
@@ -9667,6 +12074,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
       requestBody:
         description: >+
         required: true
@@ -9702,6 +12121,18 @@ paths:
           in: cookie
           schema:
             type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
+          in: cookie
+          schema:
+            type: string
         - name: userId
           in: path
           description: >+
@@ -9733,6 +12164,18 @@ paths:
           schema:
             type: string
         - name: sessionIdBefore
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_FONT_SIZE
+          in: cookie
+          schema:
+            type: string
+        - name: SITE_THEME
+          in: cookie
+          schema:
+            type: string
+        - name: WEB_COMPONENTS_THEME
           in: cookie
           schema:
             type: string
@@ -10162,71 +12605,71 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/SearchPageBareMetalResourceClassResponse'
-    SearchAiClusterResponse:
+    SearchClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/SearchAiClusterResponse'
-    PATCHAiClusterRequest:
+            $ref: '#/components/schemas/SearchClusterResponse'
+    PATCHClusterRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PATCHAiClusterRequest'
-    PATCHAiClusterResponse:
+            $ref: '#/components/schemas/PATCHClusterRequest'
+    PATCHClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/PATCHAiClusterResponse'
-    POSTAiClusterRequest:
+            $ref: '#/components/schemas/PATCHClusterResponse'
+    POSTClusterRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/POSTAiClusterRequest'
-    POSTAiClusterResponse:
+            $ref: '#/components/schemas/POSTClusterRequest'
+    POSTClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/POSTAiClusterResponse'
-    DELETEFilterAiClusterResponse:
+            $ref: '#/components/schemas/POSTClusterResponse'
+    DELETEFilterClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/DELETEFilterAiClusterResponse'
-    PUTImportAiClusterRequest:
+            $ref: '#/components/schemas/DELETEFilterClusterResponse'
+    PUTImportClusterRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PUTImportAiClusterRequest'
-    PUTImportAiClusterResponse:
+            $ref: '#/components/schemas/PUTImportClusterRequest'
+    PUTImportClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/PUTImportAiClusterResponse'
-    GETAiClusterResponse:
+            $ref: '#/components/schemas/PUTImportClusterResponse'
+    GETClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/GETAiClusterResponse'
-    DELETEAiClusterResponse:
+            $ref: '#/components/schemas/GETClusterResponse'
+    DELETEClusterResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/DELETEAiClusterResponse'
-    EditPageAiClusterResponse:
+            $ref: '#/components/schemas/DELETEClusterResponse'
+    EditPageClusterResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/EditPageAiClusterResponse'
-    SearchPageAiClusterResponse:
+            $ref: '#/components/schemas/EditPageClusterResponse'
+    SearchPageClusterResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/SearchPageAiClusterResponse'
-    UserPageAiClusterResponse:
+            $ref: '#/components/schemas/SearchPageClusterResponse'
+    UserPageClusterResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/UserPageAiClusterResponse'
+            $ref: '#/components/schemas/UserPageClusterResponse'
     SearchClusterOrderResponse:
       content:
         application/json; charset=utf-8:
@@ -10477,6 +12920,76 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/UserPageGpuDeviceResponse'
+    SearchHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchHubResponse'
+    PATCHHubRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PATCHHubRequest'
+    PATCHHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PATCHHubResponse'
+    POSTHubRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/POSTHubRequest'
+    POSTHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/POSTHubResponse'
+    DELETEFilterHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEFilterHubResponse'
+    PUTImportHubRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PUTImportHubRequest'
+    PUTImportHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/PUTImportHubResponse'
+    GETHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/GETHubResponse'
+    DELETEHubResponse:
+      content:
+        application/json; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DELETEHubResponse'
+    EditPageHubResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/EditPageHubResponse'
+    SearchPageHubResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/SearchPageHubResponse'
+    UserPageHubResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/UserPageHubResponse'
+    DisplayPageHubResponse:
+      content:
+        text/html; charset=utf-8:
+          schema:
+            $ref: '#/components/schemas/DisplayPageHubResponse'
     SearchManagedClusterResponse:
       content:
         application/json; charset=utf-8:
@@ -10607,71 +13120,71 @@ components:
         text/html; charset=utf-8:
           schema:
             $ref: '#/components/schemas/UserPageAiNodeResponse'
-    SearchAiProjectResponse:
+    SearchProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/SearchAiProjectResponse'
-    PATCHAiProjectRequest:
+            $ref: '#/components/schemas/SearchProjectResponse'
+    PATCHProjectRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PATCHAiProjectRequest'
-    PATCHAiProjectResponse:
+            $ref: '#/components/schemas/PATCHProjectRequest'
+    PATCHProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/PATCHAiProjectResponse'
-    POSTAiProjectRequest:
+            $ref: '#/components/schemas/PATCHProjectResponse'
+    POSTProjectRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/POSTAiProjectRequest'
-    POSTAiProjectResponse:
+            $ref: '#/components/schemas/POSTProjectRequest'
+    POSTProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/POSTAiProjectResponse'
-    DELETEFilterAiProjectResponse:
+            $ref: '#/components/schemas/POSTProjectResponse'
+    DELETEFilterProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/DELETEFilterAiProjectResponse'
-    PUTImportAiProjectRequest:
+            $ref: '#/components/schemas/DELETEFilterProjectResponse'
+    PUTImportProjectRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PUTImportAiProjectRequest'
-    PUTImportAiProjectResponse:
+            $ref: '#/components/schemas/PUTImportProjectRequest'
+    PUTImportProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/PUTImportAiProjectResponse'
-    GETAiProjectResponse:
+            $ref: '#/components/schemas/PUTImportProjectResponse'
+    GETProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/GETAiProjectResponse'
-    DELETEAiProjectResponse:
+            $ref: '#/components/schemas/GETProjectResponse'
+    DELETEProjectResponse:
       content:
         application/json; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/DELETEAiProjectResponse'
-    EditPageAiProjectResponse:
+            $ref: '#/components/schemas/DELETEProjectResponse'
+    EditPageProjectResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/EditPageAiProjectResponse'
-    SearchPageAiProjectResponse:
+            $ref: '#/components/schemas/EditPageProjectResponse'
+    SearchPageProjectResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/SearchPageAiProjectResponse'
-    UserPageAiProjectResponse:
+            $ref: '#/components/schemas/SearchPageProjectResponse'
+    UserPageProjectResponse:
       content:
         text/html; charset=utf-8:
           schema:
-            $ref: '#/components/schemas/UserPageAiProjectResponse'
+            $ref: '#/components/schemas/UserPageProjectResponse'
     SearchSitePageResponse:
       content:
         application/json; charset=utf-8:
@@ -13171,7 +15684,7 @@ components:
     SearchPageBareMetalResourceClassResponse:
       allOf:
         - type: string
-    SearchAiClusterResponse:
+    SearchClusterResponse:
       allOf:
         - type: object
           properties:
@@ -13189,7 +15702,15 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
+                    type: string
+                  uniqueName:
                     type: string
                   description:
                     type: string
@@ -13227,16 +15748,44 @@ components:
                     type: string
                   modified:
                     type: string
-    PATCHAiClusterRequest:
+    PATCHClusterRequest:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
+              type: string
+            setUniqueName:
+              type: string
+              nullable: true
+            removeUniqueName:
+              type: string
+            removeAllUniqueName:
               type: string
             setDescription:
               type: string
@@ -13373,16 +15922,44 @@ components:
               type: string
             removeAllModified:
               type: string
-    PATCHAiClusterResponse:
+    PATCHClusterResponse:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
+              type: string
+            setUniqueName:
+              type: string
+              nullable: true
+            removeUniqueName:
+              type: string
+            removeAllUniqueName:
               type: string
             setDescription:
               type: string
@@ -13519,11 +16096,19 @@ components:
               type: string
             removeAllModified:
               type: string
-    POSTAiClusterRequest:
+    POSTClusterRequest:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
+              type: string
+            uniqueName:
               type: string
             description:
               type: string
@@ -13561,11 +16146,19 @@ components:
               type: string
             modified:
               type: string
-    POSTAiClusterResponse:
+    POSTClusterResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
+              type: string
+            uniqueName:
               type: string
             description:
               type: string
@@ -13603,11 +16196,19 @@ components:
               type: string
             modified:
               type: string
-    DELETEFilterAiClusterResponse:
+    DELETEFilterClusterResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
+              type: string
+            uniqueName:
               type: string
             description:
               type: string
@@ -13645,7 +16246,7 @@ components:
               type: string
             modified:
               type: string
-    PUTImportAiClusterRequest:
+    PUTImportClusterRequest:
       allOf:
         - type: object
           properties:
@@ -13654,7 +16255,15 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
+                    type: string
+                  uniqueName:
                     type: string
                   description:
                     type: string
@@ -13692,11 +16301,19 @@ components:
                     type: string
                   modified:
                     type: string
-    PUTImportAiClusterResponse:
+    PUTImportClusterResponse:
       allOf:
         - type: object
           properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
+                    type: string
+                  uniqueName:
                     type: string
                   description:
                     type: string
@@ -13734,11 +16351,19 @@ components:
                     type: string
                   modified:
                     type: string
-    GETAiClusterResponse:
+    GETClusterResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
+              type: string
+            uniqueName:
               type: string
             description:
               type: string
@@ -13776,11 +16401,19 @@ components:
               type: string
             modified:
               type: string
-    DELETEAiClusterResponse:
+    DELETEClusterResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
+              type: string
+            uniqueName:
               type: string
             description:
               type: string
@@ -13818,13 +16451,13 @@ components:
               type: string
             modified:
               type: string
-    EditPageAiClusterResponse:
+    EditPageClusterResponse:
       allOf:
         - type: string
-    SearchPageAiClusterResponse:
+    SearchPageClusterResponse:
       allOf:
         - type: string
-    UserPageAiClusterResponse:
+    UserPageClusterResponse:
       allOf:
         - type: string
     SearchClusterOrderResponse:
@@ -14487,13 +17120,23 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
+                  nodeResource:
+                    type: string
                   gpuDeviceNumber:
                     type: string
-                  gpuDeviceId:
+                  gpuDeviceResource:
+                    type: string
+                  gpuDeviceDisplayName:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -14529,12 +17172,33 @@ components:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setNodeName:
               type: string
@@ -14543,6 +17207,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeResource:
+              type: string
+              nullable: true
+            removeNodeResource:
+              type: string
+            removeAllNodeResource:
+              type: string
             setGpuDeviceNumber:
               type: string
               nullable: true
@@ -14550,12 +17221,19 @@ components:
               type: string
             removeAllGpuDeviceNumber:
               type: string
-            setGpuDeviceId:
+            setGpuDeviceResource:
               type: string
               nullable: true
-            removeGpuDeviceId:
+            removeGpuDeviceResource:
               type: string
-            removeAllGpuDeviceId:
+            removeAllGpuDeviceResource:
+              type: string
+            setGpuDeviceDisplayName:
+              type: string
+              nullable: true
+            removeGpuDeviceDisplayName:
+              type: string
+            removeAllGpuDeviceDisplayName:
               type: string
             setGpuDeviceUtilization:
               type: string
@@ -14675,12 +17353,33 @@ components:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setNodeName:
               type: string
@@ -14689,6 +17388,13 @@ components:
               type: string
             removeAllNodeName:
               type: string
+            setNodeResource:
+              type: string
+              nullable: true
+            removeNodeResource:
+              type: string
+            removeAllNodeResource:
+              type: string
             setGpuDeviceNumber:
               type: string
               nullable: true
@@ -14696,12 +17402,19 @@ components:
               type: string
             removeAllGpuDeviceNumber:
               type: string
-            setGpuDeviceId:
+            setGpuDeviceResource:
               type: string
               nullable: true
-            removeGpuDeviceId:
+            removeGpuDeviceResource:
               type: string
-            removeAllGpuDeviceId:
+            removeAllGpuDeviceResource:
+              type: string
+            setGpuDeviceDisplayName:
+              type: string
+              nullable: true
+            removeGpuDeviceDisplayName:
+              type: string
+            removeAllGpuDeviceDisplayName:
               type: string
             setGpuDeviceUtilization:
               type: string
@@ -14821,13 +17534,23 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
+            nodeResource:
+              type: string
             gpuDeviceNumber:
               type: string
-            gpuDeviceId:
+            gpuDeviceResource:
+              type: string
+            gpuDeviceDisplayName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -14863,13 +17586,23 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
+            nodeResource:
+              type: string
             gpuDeviceNumber:
               type: string
-            gpuDeviceId:
+            gpuDeviceResource:
+              type: string
+            gpuDeviceDisplayName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -14905,13 +17638,23 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
+            nodeResource:
+              type: string
             gpuDeviceNumber:
               type: string
-            gpuDeviceId:
+            gpuDeviceResource:
+              type: string
+            gpuDeviceDisplayName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -14952,13 +17695,23 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
+                  nodeResource:
+                    type: string
                   gpuDeviceNumber:
                     type: string
-                  gpuDeviceId:
+                  gpuDeviceResource:
+                    type: string
+                  gpuDeviceDisplayName:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -14994,13 +17747,23 @@ components:
       allOf:
         - type: object
           properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
+                  nodeResource:
+                    type: string
                   gpuDeviceNumber:
                     type: string
-                  gpuDeviceId:
+                  gpuDeviceResource:
+                    type: string
+                  gpuDeviceDisplayName:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -15036,13 +17799,23 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
+            nodeResource:
+              type: string
             gpuDeviceNumber:
               type: string
-            gpuDeviceId:
+            gpuDeviceResource:
+              type: string
+            gpuDeviceDisplayName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -15078,13 +17851,23 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
+            nodeResource:
+              type: string
             gpuDeviceNumber:
               type: string
-            gpuDeviceId:
+            gpuDeviceResource:
+              type: string
+            gpuDeviceDisplayName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -15123,6 +17906,227 @@ components:
       allOf:
         - type: string
     UserPageGpuDeviceResponse:
+      allOf:
+        - type: string
+    SearchHubResponse:
+      allOf:
+        - type: object
+          properties:
+            startNum:
+              type: integer
+              minimum: 0
+            foundNum:
+              type: integer
+              minimum: 0
+            returnedNum:
+              type: integer
+              minimum: 0
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  hubName:
+                    type: string
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
+                  pageId:
+                    type: string
+                  description:
+                    type: string
+    PATCHHubRequest:
+      allOf:
+        - type: object
+          properties:
+            setHubName:
+              type: string
+              nullable: true
+            removeHubName:
+              type: string
+            removeAllHubName:
+              type: string
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
+            setPageId:
+              type: string
+              nullable: true
+            removePageId:
+              type: string
+            removeAllPageId:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+    PATCHHubResponse:
+      allOf:
+        - type: object
+          properties:
+            setHubName:
+              type: string
+              nullable: true
+            removeHubName:
+              type: string
+            removeAllHubName:
+              type: string
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
+            setPageId:
+              type: string
+              nullable: true
+            removePageId:
+              type: string
+            removeAllPageId:
+              type: string
+            setDescription:
+              type: string
+              nullable: true
+            removeDescription:
+              type: string
+            removeAllDescription:
+              type: string
+    POSTHubRequest:
+      allOf:
+        - type: object
+          properties:
+            hubName:
+              type: string
+            hubId:
+              type: string
+            hubResource:
+              type: string
+            pageId:
+              type: string
+            description:
+              type: string
+    POSTHubResponse:
+      allOf:
+        - type: object
+          properties:
+            hubName:
+              type: string
+            hubId:
+              type: string
+            hubResource:
+              type: string
+            pageId:
+              type: string
+            description:
+              type: string
+    DELETEFilterHubResponse:
+      allOf:
+        - type: object
+          properties:
+            hubName:
+              type: string
+            hubId:
+              type: string
+            hubResource:
+              type: string
+            pageId:
+              type: string
+            description:
+              type: string
+    PUTImportHubRequest:
+      allOf:
+        - type: object
+          properties:
+            list:
+              type: array
+              items:
+                type: object
+                properties:
+                  hubName:
+                    type: string
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
+                  pageId:
+                    type: string
+                  description:
+                    type: string
+    PUTImportHubResponse:
+      allOf:
+        - type: object
+          properties:
+                  hubName:
+                    type: string
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
+                  pageId:
+                    type: string
+                  description:
+                    type: string
+    GETHubResponse:
+      allOf:
+        - type: object
+          properties:
+            hubName:
+              type: string
+            hubId:
+              type: string
+            hubResource:
+              type: string
+            pageId:
+              type: string
+            description:
+              type: string
+    DELETEHubResponse:
+      allOf:
+        - type: object
+          properties:
+            hubName:
+              type: string
+            hubId:
+              type: string
+            hubResource:
+              type: string
+            pageId:
+              type: string
+            description:
+              type: string
+    EditPageHubResponse:
+      allOf:
+        - type: string
+    SearchPageHubResponse:
+      allOf:
+        - type: string
+    UserPageHubResponse:
+      allOf:
+        - type: string
+    DisplayPageHubResponse:
       allOf:
         - type: string
     SearchManagedClusterResponse:
@@ -15340,11 +18344,19 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
-                  nodeId:
+                  nodeResource:
+                    type: string
+                  nodeDisplayName:
                     type: string
                   description:
                     type: string
@@ -15380,12 +18392,33 @@ components:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setNodeName:
               type: string
@@ -15394,12 +18427,19 @@ components:
               type: string
             removeAllNodeName:
               type: string
-            setNodeId:
+            setNodeResource:
               type: string
               nullable: true
-            removeNodeId:
+            removeNodeResource:
               type: string
-            removeAllNodeId:
+            removeAllNodeResource:
+              type: string
+            setNodeDisplayName:
+              type: string
+              nullable: true
+            removeNodeDisplayName:
+              type: string
+            removeAllNodeDisplayName:
               type: string
             setDescription:
               type: string
@@ -15519,12 +18559,33 @@ components:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setNodeName:
               type: string
@@ -15533,12 +18594,19 @@ components:
               type: string
             removeAllNodeName:
               type: string
-            setNodeId:
+            setNodeResource:
               type: string
               nullable: true
-            removeNodeId:
+            removeNodeResource:
               type: string
-            removeAllNodeId:
+            removeAllNodeResource:
+              type: string
+            setNodeDisplayName:
+              type: string
+              nullable: true
+            removeNodeDisplayName:
+              type: string
+            removeAllNodeDisplayName:
               type: string
             setDescription:
               type: string
@@ -15658,11 +18726,19 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
-            nodeId:
+            nodeResource:
+              type: string
+            nodeDisplayName:
               type: string
             description:
               type: string
@@ -15698,11 +18774,19 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
-            nodeId:
+            nodeResource:
+              type: string
+            nodeDisplayName:
               type: string
             description:
               type: string
@@ -15738,11 +18822,19 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
-            nodeId:
+            nodeResource:
+              type: string
+            nodeDisplayName:
               type: string
             description:
               type: string
@@ -15783,11 +18875,19 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
-                  nodeId:
+                  nodeResource:
+                    type: string
+                  nodeDisplayName:
                     type: string
                   description:
                     type: string
@@ -15823,11 +18923,19 @@ components:
       allOf:
         - type: object
           properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   nodeName:
                     type: string
-                  nodeId:
+                  nodeResource:
+                    type: string
+                  nodeDisplayName:
                     type: string
                   description:
                     type: string
@@ -15863,11 +18971,19 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
-            nodeId:
+            nodeResource:
+              type: string
+            nodeDisplayName:
               type: string
             description:
               type: string
@@ -15903,11 +19019,19 @@ components:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             nodeName:
               type: string
-            nodeId:
+            nodeResource:
+              type: string
+            nodeDisplayName:
               type: string
             description:
               type: string
@@ -15948,7 +19072,7 @@ components:
     UserPageAiNodeResponse:
       allOf:
         - type: string
-    SearchAiProjectResponse:
+    SearchProjectResponse:
       allOf:
         - type: object
           properties:
@@ -15966,26 +19090,53 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   projectName:
                     type: string
-                  projectDisplayName:
+                  projectResource:
                     type: string
-                  projectId:
+                  projectDisplayName:
                     type: string
                   description:
                     type: string
-    PATCHAiProjectRequest:
+    PATCHProjectRequest:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setProjectName:
               type: string
@@ -15994,19 +19145,19 @@ components:
               type: string
             removeAllProjectName:
               type: string
+            setProjectResource:
+              type: string
+              nullable: true
+            removeProjectResource:
+              type: string
+            removeAllProjectResource:
+              type: string
             setProjectDisplayName:
               type: string
               nullable: true
             removeProjectDisplayName:
               type: string
             removeAllProjectDisplayName:
-              type: string
-            setProjectId:
-              type: string
-              nullable: true
-            removeProjectId:
-              type: string
-            removeAllProjectId:
               type: string
             setDescription:
               type: string
@@ -16015,16 +19166,37 @@ components:
               type: string
             removeAllDescription:
               type: string
-    PATCHAiProjectResponse:
+    PATCHProjectResponse:
       allOf:
         - type: object
           properties:
+            setHubId:
+              type: string
+              nullable: true
+            removeHubId:
+              type: string
+            removeAllHubId:
+              type: string
+            setHubResource:
+              type: string
+              nullable: true
+            removeHubResource:
+              type: string
+            removeAllHubResource:
+              type: string
             setClusterName:
               type: string
               nullable: true
             removeClusterName:
               type: string
             removeAllClusterName:
+              type: string
+            setClusterResource:
+              type: string
+              nullable: true
+            removeClusterResource:
+              type: string
+            removeAllClusterResource:
               type: string
             setProjectName:
               type: string
@@ -16033,19 +19205,19 @@ components:
               type: string
             removeAllProjectName:
               type: string
+            setProjectResource:
+              type: string
+              nullable: true
+            removeProjectResource:
+              type: string
+            removeAllProjectResource:
+              type: string
             setProjectDisplayName:
               type: string
               nullable: true
             removeProjectDisplayName:
               type: string
             removeAllProjectDisplayName:
-              type: string
-            setProjectId:
-              type: string
-              nullable: true
-            removeProjectId:
-              type: string
-            removeAllProjectId:
               type: string
             setDescription:
               type: string
@@ -16054,49 +19226,67 @@ components:
               type: string
             removeAllDescription:
               type: string
-    POSTAiProjectRequest:
+    POSTProjectRequest:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             projectName:
               type: string
-            projectDisplayName:
+            projectResource:
               type: string
-            projectId:
+            projectDisplayName:
               type: string
             description:
               type: string
-    POSTAiProjectResponse:
+    POSTProjectResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             projectName:
               type: string
-            projectDisplayName:
+            projectResource:
               type: string
-            projectId:
+            projectDisplayName:
               type: string
             description:
               type: string
-    DELETEFilterAiProjectResponse:
+    DELETEFilterProjectResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             projectName:
               type: string
-            projectDisplayName:
+            projectResource:
               type: string
-            projectId:
+            projectDisplayName:
               type: string
             description:
               type: string
-    PUTImportAiProjectRequest:
+    PUTImportProjectRequest:
       allOf:
         - type: object
           properties:
@@ -16105,65 +19295,89 @@ components:
               items:
                 type: object
                 properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   projectName:
                     type: string
-                  projectDisplayName:
+                  projectResource:
                     type: string
-                  projectId:
+                  projectDisplayName:
                     type: string
                   description:
                     type: string
-    PUTImportAiProjectResponse:
+    PUTImportProjectResponse:
       allOf:
         - type: object
           properties:
+                  hubId:
+                    type: string
+                  hubResource:
+                    type: string
                   clusterName:
+                    type: string
+                  clusterResource:
                     type: string
                   projectName:
                     type: string
-                  projectDisplayName:
+                  projectResource:
                     type: string
-                  projectId:
+                  projectDisplayName:
                     type: string
                   description:
                     type: string
-    GETAiProjectResponse:
+    GETProjectResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             projectName:
               type: string
-            projectDisplayName:
+            projectResource:
               type: string
-            projectId:
+            projectDisplayName:
               type: string
             description:
               type: string
-    DELETEAiProjectResponse:
+    DELETEProjectResponse:
       allOf:
         - type: object
           properties:
+            hubId:
+              type: string
+            hubResource:
+              type: string
             clusterName:
+              type: string
+            clusterResource:
               type: string
             projectName:
               type: string
-            projectDisplayName:
+            projectResource:
               type: string
-            projectId:
+            projectDisplayName:
               type: string
             description:
               type: string
-    EditPageAiProjectResponse:
+    EditPageProjectResponse:
       allOf:
         - type: string
-    SearchPageAiProjectResponse:
+    SearchPageProjectResponse:
       allOf:
         - type: string
-    UserPageAiProjectResponse:
+    UserPageProjectResponse:
       allOf:
         - type: string
     SearchSitePageResponse:

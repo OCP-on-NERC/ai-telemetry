@@ -1,7 +1,7 @@
-package org.mghpcc.aitelemetry.model.project;
+package org.mghpcc.aitelemetry.model.cluster;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.model.project.AiProjectGenPage;
+import org.mghpcc.aitelemetry.model.cluster.ClusterGenPage;
 import org.mghpcc.aitelemetry.model.BaseModel;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
@@ -41,23 +41,23 @@ import io.vertx.core.json.JsonArray;
 /**
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
- * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these AiProjectPage objects in a RESTful API. 
- * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class AiProjectPageGen into the class AiProjectPage. 
+ * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these ClusterPage objects in a RESTful API. 
+ * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ClusterPageGen into the class ClusterPage. 
  * </li>
- * <h3>About the AiProjectPage class and it's generated class AiProjectPageGen&lt;AiProjectGenPage&gt;: </h3>extends AiProjectPageGen
+ * <h3>About the ClusterPage class and it's generated class ClusterPageGen&lt;ClusterGenPage&gt;: </h3>extends ClusterPageGen
  * <p>
- * This Java class extends a generated Java class AiProjectPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class ClusterPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProjectPage">Find the class AiProjectPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.ClusterPage">Find the class ClusterPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends AiProjectPageGen<AiProjectGenPage>
- * <p>This <code>class AiProjectPage extends AiProjectPageGen&lt;AiProjectGenPage&gt;</code>, which means it extends a newly generated AiProjectPageGen. 
- * The generated <code>class AiProjectPageGen extends AiProjectGenPage</code> which means that AiProjectPage extends AiProjectPageGen which extends AiProjectGenPage. 
+ * extends ClusterPageGen<ClusterGenPage>
+ * <p>This <code>class ClusterPage extends ClusterPageGen&lt;ClusterGenPage&gt;</code>, which means it extends a newly generated ClusterPageGen. 
+ * The generated <code>class ClusterPageGen extends ClusterGenPage</code> which means that ClusterPage extends ClusterPageGen which extends ClusterGenPage. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -66,7 +66,7 @@ import io.vertx.core.json.JsonArray;
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
  * <h2>{@inheritDoc}</h2>
- * <p>By adding a class comment "{@inheritDoc}", the AiProjectPage class will inherit the helpful inherited class comments from the super class AiProjectPageGen. 
+ * <p>By adding a class comment "{@inheritDoc}", the ClusterPage class will inherit the helpful inherited class comments from the super class ClusterPageGen. 
  * </p>
  * <h2>Rows: null</h2>
  * <h2>Model: true</h2>
@@ -76,7 +76,7 @@ import io.vertx.core.json.JsonArray;
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
- *   This means that the AiProjectPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ *   This means that the ClusterPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
  * </p>
  * <p>
  *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
@@ -97,12 +97,12 @@ import io.vertx.core.json.JsonArray;
  * </p>
  * <h2>AName.enUS: null</h2>
  * <p>
- * Delete the class AiProjectPage in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.AiProjectPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete the class ClusterPage in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.ClusterPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
- * Delete  the package org.mghpcc.aitelemetry.model.project in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.project&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete  the package org.mghpcc.aitelemetry.model.cluster in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
@@ -110,24 +110,24 @@ import io.vertx.core.json.JsonArray;
  * </p>
  * Generated: true
  **/
-public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
-	protected static final Logger LOG = LoggerFactory.getLogger(AiProjectPage.class);
+public abstract class ClusterPageGen<DEV> extends ClusterGenPage {
+	protected static final Logger LOG = LoggerFactory.getLogger(ClusterPage.class);
 
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<AiProjectPageGen<DEV>> promiseDeepAiProjectPage(SiteRequest siteRequest_) {
+	public Future<ClusterPageGen<DEV>> promiseDeepClusterPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
-		return promiseDeepAiProjectPage();
+		return promiseDeepClusterPage();
 	}
 
-	public Future<AiProjectPageGen<DEV>> promiseDeepAiProjectPage() {
-		Promise<AiProjectPageGen<DEV>> promise = Promise.promise();
+	public Future<ClusterPageGen<DEV>> promiseDeepClusterPage() {
+		Promise<ClusterPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
-		promiseAiProjectPage(promise2);
+		promiseClusterPage(promise2);
 		promise2.future().onSuccess(a -> {
-			super.promiseDeepAiProjectGenPage(siteRequest_).onSuccess(b -> {
+			super.promiseDeepClusterGenPage(siteRequest_).onSuccess(b -> {
 				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
@@ -138,7 +138,7 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		return promise.future();
 	}
 
-	public Future<Void> promiseAiProjectPage(Promise<Void> promise) {
+	public Future<Void> promiseClusterPage(Promise<Void> promise) {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
@@ -155,20 +155,20 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<? extends AiProjectPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
-		return promiseDeepAiProjectPage(siteRequest_);
+	@Override public Future<? extends ClusterPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
+		return promiseDeepClusterPage(siteRequest_);
 	}
 
 	/////////////////
 	// siteRequest //
 	/////////////////
 
-	public void siteRequestAiProjectPage(SiteRequest siteRequest_) {
-			super.siteRequestAiProjectGenPage(siteRequest_);
+	public void siteRequestClusterPage(SiteRequest siteRequest_) {
+			super.siteRequestClusterGenPage(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
-		siteRequestAiProjectPage(siteRequest_);
+		siteRequestClusterPage(siteRequest_);
 	}
 
 	/////////////
@@ -180,7 +180,7 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = obtainAiProjectPage(v);
+				o = obtainClusterPage(v);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.obtainForClass(v);
@@ -192,11 +192,11 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		}
 		return o;
 	}
-	public Object obtainAiProjectPage(String var) {
-		AiProjectPage oAiProjectPage = (AiProjectPage)this;
+	public Object obtainClusterPage(String var) {
+		ClusterPage oClusterPage = (ClusterPage)this;
 		switch(var) {
 			default:
-				return super.obtainAiProjectGenPage(var);
+				return super.obtainClusterGenPage(var);
 		}
 	}
 
@@ -209,7 +209,7 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = relateAiProjectPage(v, val);
+				o = relateClusterPage(v, val);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.relateForClass(v, val);
@@ -217,11 +217,11 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		}
 		return o != null;
 	}
-	public Object relateAiProjectPage(String var, Object val) {
-		AiProjectPage oAiProjectPage = (AiProjectPage)this;
+	public Object relateClusterPage(String var, Object val) {
+		ClusterPage oClusterPage = (ClusterPage)this;
 		switch(var) {
 			default:
-				return super.relateAiProjectGenPage(var, val);
+				return super.relateClusterGenPage(var, val);
 		}
 	}
 
@@ -229,13 +229,13 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiProjectPage o) {
-		return staticSetAiProjectPage(entityVar,  siteRequest_, v, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, ClusterPage o) {
+		return staticSetClusterPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiProjectPage(String entityVar, SiteRequest siteRequest_, String v, AiProjectPage o) {
+	public static Object staticSetClusterPage(String entityVar, SiteRequest siteRequest_, String v, ClusterPage o) {
 		switch(entityVar) {
 			default:
-				return AiProjectGenPage.staticSetAiProjectGenPage(entityVar,  siteRequest_, v, o);
+				return ClusterGenPage.staticSetClusterGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -244,12 +244,12 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	////////////////
 
 	public static Object staticSearchForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchAiProjectPage(entityVar,  siteRequest_, o);
+		return staticSearchClusterPage(entityVar,  siteRequest_, o);
 	}
-	public static Object staticSearchAiProjectPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static Object staticSearchClusterPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return AiProjectGenPage.staticSearchAiProjectGenPage(entityVar,  siteRequest_, o);
+				return ClusterGenPage.staticSearchClusterGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -258,12 +258,12 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	///////////////////
 
 	public static String staticSearchStrForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchStrAiProjectPage(entityVar,  siteRequest_, o);
+		return staticSearchStrClusterPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchStrAiProjectPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static String staticSearchStrClusterPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return AiProjectGenPage.staticSearchStrAiProjectGenPage(entityVar,  siteRequest_, o);
+				return ClusterGenPage.staticSearchStrClusterGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -272,12 +272,12 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	//////////////////
 
 	public static String staticSearchFqForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSearchFqAiProjectPage(entityVar,  siteRequest_, o);
+		return staticSearchFqClusterPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchFqAiProjectPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static String staticSearchFqClusterPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return AiProjectGenPage.staticSearchFqAiProjectGenPage(entityVar,  siteRequest_, o);
+				return ClusterGenPage.staticSearchFqClusterGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -291,8 +291,9 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 		return sb.toString();
 	}
 
-	public static final String CLASS_SIMPLE_NAME = "AiProjectPage";
-	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.project.AiProjectPage";
+	public static final String CLASS_SIMPLE_NAME = "ClusterPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.ClusterPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override
@@ -341,77 +342,77 @@ public abstract class AiProjectPageGen<DEV> extends AiProjectGenPage {
 	}
 
 	public static String displayNameForClass(String var) {
-		return AiProjectPage.displayNameAiProjectPage(var);
+		return ClusterPage.displayNameClusterPage(var);
 	}
-	public static String displayNameAiProjectPage(String var) {
+	public static String displayNameClusterPage(String var) {
 		switch(var) {
 		default:
-			return AiProjectGenPage.displayNameAiProjectGenPage(var);
+			return ClusterGenPage.displayNameClusterGenPage(var);
 		}
 	}
 
-	public static String descriptionAiProjectPage(String var) {
+	public static String descriptionClusterPage(String var) {
 		if(var == null)
 			return null;
 		switch(var) {
 			default:
-				return AiProjectGenPage.descriptionAiProjectGenPage(var);
+				return ClusterGenPage.descriptionClusterGenPage(var);
 		}
 	}
 
-	public static String classSimpleNameAiProjectPage(String var) {
+	public static String classSimpleNameClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.classSimpleNameAiProjectGenPage(var);
+				return ClusterGenPage.classSimpleNameClusterGenPage(var);
 		}
 	}
 
-	public static Integer htmColumnAiProjectPage(String var) {
+	public static Integer htmColumnClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.htmColumnAiProjectGenPage(var);
+				return ClusterGenPage.htmColumnClusterGenPage(var);
 		}
 	}
 
-	public static Integer htmRowAiProjectPage(String var) {
+	public static Integer htmRowClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.htmRowAiProjectGenPage(var);
+				return ClusterGenPage.htmRowClusterGenPage(var);
 		}
 	}
 
-	public static Integer htmCellAiProjectPage(String var) {
+	public static Integer htmCellClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.htmCellAiProjectGenPage(var);
+				return ClusterGenPage.htmCellClusterGenPage(var);
 		}
 	}
 
-	public static Integer lengthMinAiProjectPage(String var) {
+	public static Integer lengthMinClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.lengthMinAiProjectGenPage(var);
+				return ClusterGenPage.lengthMinClusterGenPage(var);
 		}
 	}
 
-	public static Integer lengthMaxAiProjectPage(String var) {
+	public static Integer lengthMaxClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.lengthMaxAiProjectGenPage(var);
+				return ClusterGenPage.lengthMaxClusterGenPage(var);
 		}
 	}
 
-	public static Integer maxAiProjectPage(String var) {
+	public static Integer maxClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.maxAiProjectGenPage(var);
+				return ClusterGenPage.maxClusterGenPage(var);
 		}
 	}
 
-	public static Integer minAiProjectPage(String var) {
+	public static Integer minClusterPage(String var) {
 		switch(var) {
 			default:
-				return AiProjectGenPage.minAiProjectGenPage(var);
+				return ClusterGenPage.minClusterGenPage(var);
 		}
 	}
 }

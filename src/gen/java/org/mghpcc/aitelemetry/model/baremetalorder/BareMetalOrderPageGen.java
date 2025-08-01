@@ -439,6 +439,7 @@ public abstract class BareMetalOrderPageGen<DEV> extends BareMetalOrderGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalOrderPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalorder.BareMetalOrderPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_resourceClassSearch = "resourceClassSearch";
 	public static final String VAR_resourceClasses = "resourceClasses";
 

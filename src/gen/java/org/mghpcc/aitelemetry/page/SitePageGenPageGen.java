@@ -667,6 +667,7 @@ public abstract class SitePageGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "SitePageGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.page.SitePageGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListSitePage_ = "searchListSitePage_";
 	public static final String VAR_listSitePage = "listSitePage";
 	public static final String VAR_resultCount = "resultCount";

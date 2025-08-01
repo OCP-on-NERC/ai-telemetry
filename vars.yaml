@@ -190,7 +190,7 @@ CONTAINER_URI: "{{ CONTAINER_REGISTRY }}/{{ CONTAINER_ORG }}/{{ CONTAINER_NAME }
 # An optional FontAwesome Pro Kit for additional FontAwesome icons. 
 FONTAWESOME_KIT: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='font-awesome', namespace=SITE_NAMESPACE)[0].data['FONTAWESOME_KIT'] | b64decode }}"
 # A default FontAwesome style. 
-FONTAWESOME_STYLE: "fa-duotone fa-regular "
+FONTAWESOME_STYLE: "fa-regular "
 # Switch between Shoelace "sl-" and Web Awesome "wa-" element prefixes. 
 WEB_COMPONENTS_PREFIX: "wa-"
 # An optional link element to either a Shoelace web components stylesheet or a Web Awesome Backer web components stylesheet. 
@@ -244,7 +244,7 @@ SITE_SYSTEMD: "{{ '/usr/lib/systemd/system' if ansible_distribution_file_variety
 # The name of the cloud provider where the public site is deployed. 
 SITE_POWERED_BY_NAME: "{{ lookup('env', 'SITE_POWERED_BY_NAME') | default('Mass Open Cloud', true) }}"
 # The URL of the cloud provider where the public site is deployed. 
-SITE_POWERED_BY_URL: "{{ lookup('env', 'SITE_POWERED_BY_URL') | default('https://nerc.mghpcc.org/', true) }}"
+SITE_POWERED_BY_URL: "{{ lookup('env', 'SITE_POWERED_BY_URL') | default('https://research.redhat.com/mass-open-cloud/', true) }}"
 # The static path to the logo of the cloud provider where the public site is deployed. 
 SITE_POWERED_BY_IMAGE: "{{ lookup('env', 'SITE_POWERED_BY_IMAGE') | default('<img class=\"footer-img\" alt=\"' + SITE_POWERED_BY_NAME + '\" src=\"' + STATIC_BASE_URL + '/png/nerc-logo.png\"/>', true) }}"
 
@@ -649,12 +649,12 @@ IMPORT_DATA_PERIOD_BareMetalNode: 30 seconds
 # Ensure BareMetalResourceClass is updated frequently
 IMPORT_DATA_START_TIME_BareMetalResourceClass: 12:00 America/New_York
 IMPORT_DATA_PERIOD_BareMetalResourceClass: 1 minute
-IMPORT_DATA_START_TIME_AiProject: 12:00 America/New_York
-IMPORT_DATA_PERIOD_AiProject: 1 minute
+IMPORT_DATA_START_TIME_Project: 12:00 America/New_York
+IMPORT_DATA_PERIOD_Project: 1 minute
 
-ENABLE_IMPORT_DATA_AiCluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiCluster') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_Cluster: "{{ lookup('env', 'ENABLE_IMPORT_DATA_Cluster') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_AiNode: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiNode') | default('true', true) | bool }}"
-ENABLE_IMPORT_DATA_AiProject: "{{ lookup('env', 'ENABLE_IMPORT_DATA_AiProject') | default('true', true) | bool }}"
+ENABLE_IMPORT_DATA_Project: "{{ lookup('env', 'ENABLE_IMPORT_DATA_Project') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_GpuDevice: "{{ lookup('env', 'ENABLE_IMPORT_DATA_GpuDevice') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_ClusterOrder: "{{ lookup('env', 'ENABLE_IMPORT_DATA_ClusterOrder') | default('true', true) | bool }}"
 ENABLE_IMPORT_DATA_ClusterTemplate: "{{ lookup('env', 'ENABLE_IMPORT_DATA_ClusterTemplate') | default('true', true) | bool }}"

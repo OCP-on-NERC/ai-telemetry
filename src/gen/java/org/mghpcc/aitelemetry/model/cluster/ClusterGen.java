@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import java.math.RoundingMode;
 import java.util.Map;
 import java.lang.String;
+import org.mghpcc.aitelemetry.model.hub.Hub;
 import io.vertx.core.json.JsonArray;
 import io.vertx.pgclient.data.Point;
 import org.computate.vertx.serialize.pgclient.PgClientPointSerializer;
@@ -69,25 +70,22 @@ import org.computate.search.response.solr.SolrResponse;
 /**
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
- * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class AiClusterGen into the class AiCluster. 
- * </li><li>You can add a class comment "Rows: 100" if you wish the AiCluster API to return more or less than 10 records by default. 
- * In this case, the API will return 100 records from the API instead of 10 by default. 
- * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class ClusterGen into the class Cluster. 
  * </li>
- * <h3>About the AiCluster class and it's generated class AiClusterGen&lt;BaseModel&gt;: </h3>extends AiClusterGen
+ * <h3>About the Cluster class and it's generated class ClusterGen&lt;BaseModel&gt;: </h3>extends ClusterGen
  * <p>
- * This Java class extends a generated Java class AiClusterGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class ClusterGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster">Find the class AiCluster in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster">Find the class Cluster in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends AiClusterGen<BaseModel>
- * <p>This <code>class AiCluster extends AiClusterGen&lt;BaseModel&gt;</code>, which means it extends a newly generated AiClusterGen. 
- * The generated <code>class AiClusterGen extends BaseModel</code> which means that AiCluster extends AiClusterGen which extends BaseModel. 
+ * extends ClusterGen<BaseModel>
+ * <p>This <code>class Cluster extends ClusterGen&lt;BaseModel&gt;</code>, which means it extends a newly generated ClusterGen. 
+ * The generated <code>class ClusterGen extends BaseModel</code> which means that Cluster extends ClusterGen which extends BaseModel. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -124,10 +122,10 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>This class contains a comment <b>"ApiMethod: DELETEFilter"</b>, which creates an API "DELETEFilter". 
  * </p>
  * <h2>ApiTag.enUS: true</h2>
- * <p>This class contains a comment <b>"ApiTag: AI clusters"</b>, which groups all of the OpenAPIs for AiCluster objects under the tag "AI clusters". 
+ * <p>This class contains a comment <b>"ApiTag: OpenShift clusters"</b>, which groups all of the OpenAPIs for Cluster objects under the tag "OpenShift clusters". 
  * </p>
- * <h2>ApiUri.enUS: /en-us/api/ai-cluster</h2>
- * <p>This class contains a comment <b>"ApiUri: /en-us/api/ai-cluster"</b>, which defines the base API URI for AiCluster objects as "/en-us/api/ai-cluster" in the OpenAPI spec. 
+ * <h2>ApiUri.enUS: /en-us/api/cluster</h2>
+ * <p>This class contains a comment <b>"ApiUri: /en-us/api/cluster"</b>, which defines the base API URI for Cluster objects as "/en-us/api/cluster" in the OpenAPI spec. 
  * </p>
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
@@ -135,14 +133,17 @@ import org.computate.search.response.solr.SolrResponse;
  * Every protected void method that begins with "_" that is marked to be searched with a comment like "Indexed: true", "Stored: true", or "DocValues: true" will be indexed in the search engine. 
  * </p>
  * <h2>{@inheritDoc}</h2>
- * <p>By adding a class comment "{@inheritDoc}", the AiCluster class will inherit the helpful inherited class comments from the super class AiClusterGen. 
+ * <p>By adding a class comment "{@inheritDoc}", the Cluster class will inherit the helpful inherited class comments from the super class ClusterGen. 
  * </p>
- * <h2>Rows: null</h2>
- * <h2>Order: 3</h2>
- * <p>This class contains a comment <b>"Order: 3"</b>, which means this class will be sorted by the given number 3 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Rows: 100</h2>
+ * <p>This class contains a comment <b>"Rows: 100"</b>, which means the Cluster API will return a default of 100 records instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
  * </p>
- * <h2>SqlOrder: 3</h2>
- * <p>This class contains a comment <b>"SqlOrder: 3"</b>, which means this class will be sorted by the given number 3 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>Order: 5</h2>
+ * <p>This class contains a comment <b>"Order: 5"</b>, which means this class will be sorted by the given number 5 ascending when code that relates to multiple classes at the same time is generated. 
+ * </p>
+ * <h2>SqlOrder: 5</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 5"</b>, which means this class will be sorted by the given number 5 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -151,17 +152,17 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>Page: true</h2>
  * <p>This class contains a comment <b>"Page: true"</b>, which means this class will have webpage code generated for these objects. 
  * Java Vert.x backend API code, Handlebars HTML template frontend code, and JavaScript code will all generated and can be extended. 
- * This creates a new Java class org.mghpcc.aitelemetry.model.cluster.AiClusterPage. 
+ * This creates a new Java class org.mghpcc.aitelemetry.model.cluster.ClusterPage. 
  * </p>
  * <h2>SuperPage.enUS: PageLayout</h2>
  * <p>This class contains a comment <b>"SuperPage.enUS: PageLayout"</b>, which identifies the Java super class of the page code by it's class simple name "PageLayout". 
- * This means that the newly created class org.mghpcc.aitelemetry.model.cluster.AiClusterPage extends org.mghpcc.aitelemetry.page.PageLayout. 
+ * This means that the newly created class org.mghpcc.aitelemetry.model.cluster.ClusterPage extends org.mghpcc.aitelemetry.page.PageLayout. 
  * </p>
  * <h2>Promise: true</h2>
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
- *   This means that the AiCluster Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ *   This means that the Cluster Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
  * </p>
  * <p>
  *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
@@ -180,12 +181,12 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>
  *   If a super class of this Java class with `Model: true`, then the child class will also inherit `Promise: true`. 
  * </p>
- * <h2>AName.enUS: an AI cluster</h2>
- * <p>This class contains a comment <b>"AName.enUS: an AI cluster"</b>, which identifies the language context to describe a AiCluster as "an AI cluster". 
+ * <h2>AName.enUS: an OpenShift cluster</h2>
+ * <p>This class contains a comment <b>"AName.enUS: an OpenShift cluster"</b>, which identifies the language context to describe a Cluster as "an OpenShift cluster". 
  * </p>
  * <p>
- * Delete the class AiCluster in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete the class Cluster in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the package org.mghpcc.aitelemetry.model.cluster in Solr: 
@@ -197,63 +198,176 @@ import org.computate.search.response.solr.SolrResponse;
  * </p>
  * Generated: true
  **/
-public abstract class AiClusterGen<DEV> extends BaseModel {
-	protected static final Logger LOG = LoggerFactory.getLogger(AiCluster.class);
+public abstract class ClusterGen<DEV> extends BaseModel {
+	protected static final Logger LOG = LoggerFactory.getLogger(Cluster.class);
 
 	public static final String Description_enUS = "A Red Hat OpenShift cluster containing GPUs";
-	public static final String AName_enUS = "an AI cluster";
+	public static final String AName_enUS = "an OpenShift cluster";
 	public static final String This_enUS = "this ";
-	public static final String ThisName_enUS = "this AI cluster";
+	public static final String ThisName_enUS = "this OpenShift cluster";
 	public static final String A_enUS = "a ";
-	public static final String TheName_enUS = "theAI cluster";
-	public static final String SingularName_enUS = "AI cluster";
-	public static final String PluralName_enUS = "AI clusters";
-	public static final String NameActual_enUS = "current AI cluster";
-	public static final String AllName_enUS = "all AI clusters";
-	public static final String SearchAllNameBy_enUS = "search AI clusters by ";
-	public static final String SearchAllName_enUS = "search AI clusters";
-	public static final String Title_enUS = "AI clusters";
-	public static final String ThePluralName_enUS = "the AI clusters";
-	public static final String NoNameFound_enUS = "no AI cluster found";
-	public static final String ApiUri_enUS = "/en-us/api/ai-cluster";
-	public static final String ApiUriSearchPage_enUS = "/en-us/search/ai-cluster";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/ai-cluster/{clusterName}";
-	public static final String OfName_enUS = "of AI cluster";
-	public static final String ANameAdjective_enUS = "an AI cluster";
-	public static final String NameAdjectiveSingular_enUS = "AI cluster";
-	public static final String NameAdjectivePlural_enUS = "AI clusters";
-	public static final String Search_enUS_OpenApiUri = "/en-us/api/ai-cluster";
-	public static final String Search_enUS_StringFormatUri = "/en-us/api/ai-cluster";
-	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
-	public static final String GET_enUS_OpenApiUri = "/en-us/api/ai-cluster/{clusterName}";
-	public static final String GET_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
-	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
-	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/ai-cluster";
-	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/ai-cluster";
-	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
-	public static final String POST_enUS_OpenApiUri = "/en-us/api/ai-cluster";
-	public static final String POST_enUS_StringFormatUri = "/en-us/api/ai-cluster";
-	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
-	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/ai-cluster/{clusterName}";
-	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/ai-cluster/%s";
-	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster/%s";
-	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/ai-cluster-import";
-	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/ai-cluster-import";
-	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster-import";
-	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/ai-cluster";
-	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/ai-cluster";
-	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/ai-cluster";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/ai-cluster/{clusterName}";
-	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/ai-cluster/%s";
-	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/ai-cluster/%s";
-	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/ai-cluster/{clusterName}";
-	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/ai-cluster/%s";
-	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/ai-cluster/%s";
-	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/ai-cluster";
-	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/ai-cluster";
-	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/ai-cluster";
+	public static final String TheName_enUS = "theOpenShift cluster";
+	public static final String SingularName_enUS = "OpenShift cluster";
+	public static final String PluralName_enUS = "OpenShift clusters";
+	public static final String NameActual_enUS = "current OpenShift cluster";
+	public static final String AllName_enUS = "all OpenShift clusters";
+	public static final String SearchAllNameBy_enUS = "search OpenShift clusters by ";
+	public static final String SearchAllName_enUS = "search OpenShift clusters";
+	public static final String Title_enUS = "OpenShift clusters";
+	public static final String ThePluralName_enUS = "the OpenShift clusters";
+	public static final String NoNameFound_enUS = "no OpenShift cluster found";
+	public static final String ApiUri_enUS = "/en-us/api/cluster";
+	public static final String ApiUriSearchPage_enUS = "/en-us/search/cluster";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/cluster/{clusterResource}";
+	public static final String OfName_enUS = "of OpenShift cluster";
+	public static final String ANameAdjective_enUS = "an OpenShift cluster";
+	public static final String NameAdjectiveSingular_enUS = "OpenShift cluster";
+	public static final String NameAdjectivePlural_enUS = "OpenShift clusters";
+	public static final String Search_enUS_OpenApiUri = "/en-us/api/cluster";
+	public static final String Search_enUS_StringFormatUri = "/en-us/api/cluster";
+	public static final String Search_enUS_StringFormatUrl = "%s/en-us/api/cluster";
+	public static final String GET_enUS_OpenApiUri = "/en-us/api/cluster/{clusterResource}";
+	public static final String GET_enUS_StringFormatUri = "/en-us/api/cluster/%s";
+	public static final String GET_enUS_StringFormatUrl = "%s/en-us/api/cluster/%s";
+	public static final String PATCH_enUS_OpenApiUri = "/en-us/api/cluster";
+	public static final String PATCH_enUS_StringFormatUri = "/en-us/api/cluster";
+	public static final String PATCH_enUS_StringFormatUrl = "%s/en-us/api/cluster";
+	public static final String POST_enUS_OpenApiUri = "/en-us/api/cluster";
+	public static final String POST_enUS_StringFormatUri = "/en-us/api/cluster";
+	public static final String POST_enUS_StringFormatUrl = "%s/en-us/api/cluster";
+	public static final String DELETE_enUS_OpenApiUri = "/en-us/api/cluster/{clusterResource}";
+	public static final String DELETE_enUS_StringFormatUri = "/en-us/api/cluster/%s";
+	public static final String DELETE_enUS_StringFormatUrl = "%s/en-us/api/cluster/%s";
+	public static final String PUTImport_enUS_OpenApiUri = "/en-us/api/cluster-import";
+	public static final String PUTImport_enUS_StringFormatUri = "/en-us/api/cluster-import";
+	public static final String PUTImport_enUS_StringFormatUrl = "%s/en-us/api/cluster-import";
+	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/cluster";
+	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/cluster";
+	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/cluster";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/cluster/{clusterResource}";
+	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/cluster/%s";
+	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/cluster/%s";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/cluster/{clusterResource}";
+	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/cluster/%s";
+	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/cluster/%s";
+	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/cluster";
+	public static final String DELETEFilter_enUS_StringFormatUri = "/en-us/api/cluster";
+	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/cluster";
 
 	public static final String Icon = "<i class=\"fa-regular fa-server\"></i>";
+	public static final Integer Rows = 100;
+
+	///////////
+	// hubId //
+	///////////
+
+
+	/**	 The entity hubId
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String hubId;
+
+	/**	<br> The entity hubId
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:hubId">Find the entity hubId in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _hubId(Wrap<String> w);
+
+	public String getHubId() {
+		return hubId;
+	}
+	public void setHubId(String o) {
+		this.hubId = Cluster.staticSetHubId(siteRequest_, o);
+	}
+	public static String staticSetHubId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected Cluster hubIdInit() {
+		Wrap<String> hubIdWrap = new Wrap<String>().var("hubId");
+		if(hubId == null) {
+			_hubId(hubIdWrap);
+			Optional.ofNullable(hubIdWrap.getO()).ifPresent(o -> {
+				setHubId(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static String staticSearchHubId(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrHubId(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqHubId(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchHubId(siteRequest_, Cluster.staticSetHubId(siteRequest_, o)).toString();
+	}
+
+	public String sqlHubId() {
+		return hubId;
+	}
+
+	/////////////////
+	// hubResource //
+	/////////////////
+
+
+	/**	 The entity hubResource
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String hubResource;
+
+	/**	<br> The entity hubResource
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:hubResource">Find the entity hubResource in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _hubResource(Wrap<String> w);
+
+	public String getHubResource() {
+		return hubResource;
+	}
+	public void setHubResource(String o) {
+		this.hubResource = Cluster.staticSetHubResource(siteRequest_, o);
+	}
+	public static String staticSetHubResource(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected Cluster hubResourceInit() {
+		Wrap<String> hubResourceWrap = new Wrap<String>().var("hubResource");
+		if(hubResource == null) {
+			_hubResource(hubResourceWrap);
+			Optional.ofNullable(hubResourceWrap.getO()).ifPresent(o -> {
+				setHubResource(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static String staticSearchHubResource(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrHubResource(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqHubResource(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchHubResource(siteRequest_, Cluster.staticSetHubResource(siteRequest_, o)).toString();
+	}
+
+	public String sqlHubResource() {
+		return hubResource;
+	}
 
 	/////////////////
 	// clusterName //
@@ -269,7 +383,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity clusterName
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:clusterName">Find the entity clusterName in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:clusterName">Find the entity clusterName in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -279,12 +393,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return clusterName;
 	}
 	public void setClusterName(String o) {
-		this.clusterName = AiCluster.staticSetClusterName(siteRequest_, o);
+		this.clusterName = Cluster.staticSetClusterName(siteRequest_, o);
 	}
 	public static String staticSetClusterName(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster clusterNameInit() {
+	protected Cluster clusterNameInit() {
 		Wrap<String> clusterNameWrap = new Wrap<String>().var("clusterName");
 		if(clusterName == null) {
 			_clusterName(clusterNameWrap);
@@ -292,7 +406,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setClusterName(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchClusterName(SiteRequest siteRequest_, String o) {
@@ -304,11 +418,119 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqClusterName(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchClusterName(siteRequest_, AiCluster.staticSetClusterName(siteRequest_, o)).toString();
+		return Cluster.staticSearchClusterName(siteRequest_, Cluster.staticSetClusterName(siteRequest_, o)).toString();
 	}
 
 	public String sqlClusterName() {
 		return clusterName;
+	}
+
+	/////////////////////
+	// clusterResource //
+	/////////////////////
+
+
+	/**	 The entity clusterResource
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String clusterResource;
+
+	/**	<br> The entity clusterResource
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:clusterResource">Find the entity clusterResource in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _clusterResource(Wrap<String> w);
+
+	public String getClusterResource() {
+		return clusterResource;
+	}
+	public void setClusterResource(String o) {
+		this.clusterResource = Cluster.staticSetClusterResource(siteRequest_, o);
+	}
+	public static String staticSetClusterResource(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected Cluster clusterResourceInit() {
+		Wrap<String> clusterResourceWrap = new Wrap<String>().var("clusterResource");
+		if(clusterResource == null) {
+			_clusterResource(clusterResourceWrap);
+			Optional.ofNullable(clusterResourceWrap.getO()).ifPresent(o -> {
+				setClusterResource(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static String staticSearchClusterResource(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrClusterResource(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqClusterResource(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchClusterResource(siteRequest_, Cluster.staticSetClusterResource(siteRequest_, o)).toString();
+	}
+
+	public String sqlClusterResource() {
+		return clusterResource;
+	}
+
+	////////////////
+	// uniqueName //
+	////////////////
+
+
+	/**	 The entity uniqueName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String uniqueName;
+
+	/**	<br> The entity uniqueName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:uniqueName">Find the entity uniqueName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _uniqueName(Wrap<String> w);
+
+	public String getUniqueName() {
+		return uniqueName;
+	}
+	public void setUniqueName(String o) {
+		this.uniqueName = Cluster.staticSetUniqueName(siteRequest_, o);
+	}
+	public static String staticSetUniqueName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected Cluster uniqueNameInit() {
+		Wrap<String> uniqueNameWrap = new Wrap<String>().var("uniqueName");
+		if(uniqueName == null) {
+			_uniqueName(uniqueNameWrap);
+			Optional.ofNullable(uniqueNameWrap.getO()).ifPresent(o -> {
+				setUniqueName(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static String staticSearchUniqueName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrUniqueName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqUniqueName(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchUniqueName(siteRequest_, Cluster.staticSetUniqueName(siteRequest_, o)).toString();
 	}
 
 	/////////////////
@@ -325,7 +547,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity description
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:description">Find the entity description in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -335,12 +557,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return description;
 	}
 	public void setDescription(String o) {
-		this.description = AiCluster.staticSetDescription(siteRequest_, o);
+		this.description = Cluster.staticSetDescription(siteRequest_, o);
 	}
 	public static String staticSetDescription(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster descriptionInit() {
+	protected Cluster descriptionInit() {
 		Wrap<String> descriptionWrap = new Wrap<String>().var("description");
 		if(description == null) {
 			_description(descriptionWrap);
@@ -348,7 +570,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setDescription(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchDescription(SiteRequest siteRequest_, String o) {
@@ -360,7 +582,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqDescription(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchDescription(siteRequest_, AiCluster.staticSetDescription(siteRequest_, o)).toString();
+		return Cluster.staticSearchDescription(siteRequest_, Cluster.staticSetDescription(siteRequest_, o)).toString();
 	}
 
 	public String sqlDescription() {
@@ -382,7 +604,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationColors
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:locationColors">Find the entity locationColors in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -397,23 +619,23 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setLocationColors(String o) {
-		String l = AiCluster.staticSetLocationColors(siteRequest_, o);
+		String l = Cluster.staticSetLocationColors(siteRequest_, o);
 		if(l != null)
 			addLocationColors(l);
 	}
 	public static String staticSetLocationColors(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	public AiCluster addLocationColors(String...objects) {
+	public Cluster addLocationColors(String...objects) {
 		for(String o : objects) {
 			addLocationColors(o);
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
-	public AiCluster addLocationColors(String o) {
+	public Cluster addLocationColors(String o) {
 		if(o != null)
 			this.locationColors.add(o);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 	@JsonIgnore
 	public void setLocationColors(JsonArray objects) {
@@ -425,9 +647,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			addLocationColors(o);
 		}
 	}
-	protected AiCluster locationColorsInit() {
+	protected Cluster locationColorsInit() {
 		_locationColors(locationColors);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchLocationColors(SiteRequest siteRequest_, String o) {
@@ -439,7 +661,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqLocationColors(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchLocationColors(siteRequest_, AiCluster.staticSetLocationColors(siteRequest_, o)).toString();
+		return Cluster.staticSearchLocationColors(siteRequest_, Cluster.staticSetLocationColors(siteRequest_, o)).toString();
 	}
 
 	////////////////////
@@ -457,7 +679,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationTitles
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:locationTitles">Find the entity locationTitles in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -472,23 +694,23 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setLocationTitles(String o) {
-		String l = AiCluster.staticSetLocationTitles(siteRequest_, o);
+		String l = Cluster.staticSetLocationTitles(siteRequest_, o);
 		if(l != null)
 			addLocationTitles(l);
 	}
 	public static String staticSetLocationTitles(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	public AiCluster addLocationTitles(String...objects) {
+	public Cluster addLocationTitles(String...objects) {
 		for(String o : objects) {
 			addLocationTitles(o);
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
-	public AiCluster addLocationTitles(String o) {
+	public Cluster addLocationTitles(String o) {
 		if(o != null)
 			this.locationTitles.add(o);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 	@JsonIgnore
 	public void setLocationTitles(JsonArray objects) {
@@ -500,9 +722,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			addLocationTitles(o);
 		}
 	}
-	protected AiCluster locationTitlesInit() {
+	protected Cluster locationTitlesInit() {
 		_locationTitles(locationTitles);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchLocationTitles(SiteRequest siteRequest_, String o) {
@@ -514,7 +736,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqLocationTitles(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchLocationTitles(siteRequest_, AiCluster.staticSetLocationTitles(siteRequest_, o)).toString();
+		return Cluster.staticSearchLocationTitles(siteRequest_, Cluster.staticSetLocationTitles(siteRequest_, o)).toString();
 	}
 
 	///////////////////
@@ -532,7 +754,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity locationLinks
 	 *  It is constructed before being initialized with the constructor by default. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:locationLinks">Find the entity locationLinks in Solr</a>
 	 * <br>
 	 * @param l is the entity already constructed. 
 	 **/
@@ -547,23 +769,23 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setLocationLinks(String o) {
-		String l = AiCluster.staticSetLocationLinks(siteRequest_, o);
+		String l = Cluster.staticSetLocationLinks(siteRequest_, o);
 		if(l != null)
 			addLocationLinks(l);
 	}
 	public static String staticSetLocationLinks(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	public AiCluster addLocationLinks(String...objects) {
+	public Cluster addLocationLinks(String...objects) {
 		for(String o : objects) {
 			addLocationLinks(o);
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
-	public AiCluster addLocationLinks(String o) {
+	public Cluster addLocationLinks(String o) {
 		if(o != null)
 			this.locationLinks.add(o);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 	@JsonIgnore
 	public void setLocationLinks(JsonArray objects) {
@@ -575,9 +797,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			addLocationLinks(o);
 		}
 	}
-	protected AiCluster locationLinksInit() {
+	protected Cluster locationLinksInit() {
 		_locationLinks(locationLinks);
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchLocationLinks(SiteRequest siteRequest_, String o) {
@@ -589,7 +811,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqLocationLinks(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchLocationLinks(siteRequest_, AiCluster.staticSetLocationLinks(siteRequest_, o)).toString();
+		return Cluster.staticSearchLocationLinks(siteRequest_, Cluster.staticSetLocationLinks(siteRequest_, o)).toString();
 	}
 
 	//////////////
@@ -608,7 +830,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity location
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:location">Find the entity location in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -623,7 +845,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setLocation(String o) {
-		this.location = AiCluster.staticSetLocation(siteRequest_, o);
+		this.location = Cluster.staticSetLocation(siteRequest_, o);
 	}
 	public static Point staticSetLocation(SiteRequest siteRequest_, String o) {
 		if(o != null) {
@@ -653,7 +875,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setLocation(JsonObject o) {
-		this.location = AiCluster.staticSetLocation(siteRequest_, o);
+		this.location = Cluster.staticSetLocation(siteRequest_, o);
 	}
 	public static Point staticSetLocation(SiteRequest siteRequest_, JsonObject o) {
 		if(o != null) {
@@ -669,7 +891,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
-	protected AiCluster locationInit() {
+	protected Cluster locationInit() {
 		Wrap<Point> locationWrap = new Wrap<Point>().var("location");
 		if(location == null) {
 			_location(locationWrap);
@@ -677,7 +899,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setLocation(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static Point staticSearchLocation(SiteRequest siteRequest_, Point o) {
@@ -689,7 +911,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqLocation(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchLocation(siteRequest_, AiCluster.staticSetLocation(siteRequest_, o)).toString();
+		return Cluster.staticSearchLocation(siteRequest_, Cluster.staticSetLocation(siteRequest_, o)).toString();
 	}
 
 	public Point sqlLocation() {
@@ -710,7 +932,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity id
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:id">Find the entity id in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -720,12 +942,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return id;
 	}
 	public void setId(String o) {
-		this.id = AiCluster.staticSetId(siteRequest_, o);
+		this.id = Cluster.staticSetId(siteRequest_, o);
 	}
 	public static String staticSetId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster idInit() {
+	protected Cluster idInit() {
 		Wrap<String> idWrap = new Wrap<String>().var("id");
 		if(id == null) {
 			_id(idWrap);
@@ -733,7 +955,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setId(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchId(SiteRequest siteRequest_, String o) {
@@ -745,7 +967,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqId(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchId(siteRequest_, AiCluster.staticSetId(siteRequest_, o)).toString();
+		return Cluster.staticSearchId(siteRequest_, Cluster.staticSetId(siteRequest_, o)).toString();
 	}
 
 	public String sqlId() {
@@ -766,7 +988,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity entityShortId
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:entityShortId">Find the entity entityShortId in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -776,12 +998,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return entityShortId;
 	}
 	public void setEntityShortId(String o) {
-		this.entityShortId = AiCluster.staticSetEntityShortId(siteRequest_, o);
+		this.entityShortId = Cluster.staticSetEntityShortId(siteRequest_, o);
 	}
 	public static String staticSetEntityShortId(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster entityShortIdInit() {
+	protected Cluster entityShortIdInit() {
 		Wrap<String> entityShortIdWrap = new Wrap<String>().var("entityShortId");
 		if(entityShortId == null) {
 			_entityShortId(entityShortIdWrap);
@@ -789,7 +1011,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setEntityShortId(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchEntityShortId(SiteRequest siteRequest_, String o) {
@@ -801,7 +1023,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqEntityShortId(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchEntityShortId(siteRequest_, AiCluster.staticSetEntityShortId(siteRequest_, o)).toString();
+		return Cluster.staticSearchEntityShortId(siteRequest_, Cluster.staticSetEntityShortId(siteRequest_, o)).toString();
 	}
 
 	//////////////////
@@ -818,7 +1040,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity ngsildTenant
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildTenant">Find the entity ngsildTenant in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:ngsildTenant">Find the entity ngsildTenant in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -828,12 +1050,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return ngsildTenant;
 	}
 	public void setNgsildTenant(String o) {
-		this.ngsildTenant = AiCluster.staticSetNgsildTenant(siteRequest_, o);
+		this.ngsildTenant = Cluster.staticSetNgsildTenant(siteRequest_, o);
 	}
 	public static String staticSetNgsildTenant(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster ngsildTenantInit() {
+	protected Cluster ngsildTenantInit() {
 		Wrap<String> ngsildTenantWrap = new Wrap<String>().var("ngsildTenant");
 		if(ngsildTenant == null) {
 			_ngsildTenant(ngsildTenantWrap);
@@ -841,7 +1063,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setNgsildTenant(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchNgsildTenant(SiteRequest siteRequest_, String o) {
@@ -853,7 +1075,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqNgsildTenant(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchNgsildTenant(siteRequest_, AiCluster.staticSetNgsildTenant(siteRequest_, o)).toString();
+		return Cluster.staticSearchNgsildTenant(siteRequest_, Cluster.staticSetNgsildTenant(siteRequest_, o)).toString();
 	}
 
 	public String sqlNgsildTenant() {
@@ -874,7 +1096,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity ngsildPath
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildPath">Find the entity ngsildPath in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:ngsildPath">Find the entity ngsildPath in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -884,12 +1106,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return ngsildPath;
 	}
 	public void setNgsildPath(String o) {
-		this.ngsildPath = AiCluster.staticSetNgsildPath(siteRequest_, o);
+		this.ngsildPath = Cluster.staticSetNgsildPath(siteRequest_, o);
 	}
 	public static String staticSetNgsildPath(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster ngsildPathInit() {
+	protected Cluster ngsildPathInit() {
 		Wrap<String> ngsildPathWrap = new Wrap<String>().var("ngsildPath");
 		if(ngsildPath == null) {
 			_ngsildPath(ngsildPathWrap);
@@ -897,7 +1119,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setNgsildPath(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchNgsildPath(SiteRequest siteRequest_, String o) {
@@ -909,7 +1131,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqNgsildPath(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchNgsildPath(siteRequest_, AiCluster.staticSetNgsildPath(siteRequest_, o)).toString();
+		return Cluster.staticSearchNgsildPath(siteRequest_, Cluster.staticSetNgsildPath(siteRequest_, o)).toString();
 	}
 
 	public String sqlNgsildPath() {
@@ -930,7 +1152,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity ngsildContext
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildContext">Find the entity ngsildContext in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:ngsildContext">Find the entity ngsildContext in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -940,12 +1162,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return ngsildContext;
 	}
 	public void setNgsildContext(String o) {
-		this.ngsildContext = AiCluster.staticSetNgsildContext(siteRequest_, o);
+		this.ngsildContext = Cluster.staticSetNgsildContext(siteRequest_, o);
 	}
 	public static String staticSetNgsildContext(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster ngsildContextInit() {
+	protected Cluster ngsildContextInit() {
 		Wrap<String> ngsildContextWrap = new Wrap<String>().var("ngsildContext");
 		if(ngsildContext == null) {
 			_ngsildContext(ngsildContextWrap);
@@ -953,7 +1175,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setNgsildContext(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchNgsildContext(SiteRequest siteRequest_, String o) {
@@ -965,7 +1187,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqNgsildContext(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchNgsildContext(siteRequest_, AiCluster.staticSetNgsildContext(siteRequest_, o)).toString();
+		return Cluster.staticSearchNgsildContext(siteRequest_, Cluster.staticSetNgsildContext(siteRequest_, o)).toString();
 	}
 
 	public String sqlNgsildContext() {
@@ -987,7 +1209,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity ngsildData
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:ngsildData">Find the entity ngsildData in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:ngsildData">Find the entity ngsildData in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1002,7 +1224,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setNgsildData(String o) {
-		this.ngsildData = AiCluster.staticSetNgsildData(siteRequest_, o);
+		this.ngsildData = Cluster.staticSetNgsildData(siteRequest_, o);
 	}
 	public static JsonObject staticSetNgsildData(SiteRequest siteRequest_, String o) {
 		if(o != null) {
@@ -1010,7 +1232,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return null;
 	}
-	protected AiCluster ngsildDataInit() {
+	protected Cluster ngsildDataInit() {
 		Wrap<JsonObject> ngsildDataWrap = new Wrap<JsonObject>().var("ngsildData");
 		if(ngsildData == null) {
 			_ngsildData(ngsildDataWrap);
@@ -1018,7 +1240,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setNgsildData(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchNgsildData(SiteRequest siteRequest_, JsonObject o) {
@@ -1030,7 +1252,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqNgsildData(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchNgsildData(siteRequest_, AiCluster.staticSetNgsildData(siteRequest_, o)).toString();
+		return Cluster.staticSearchNgsildData(siteRequest_, Cluster.staticSetNgsildData(siteRequest_, o)).toString();
 	}
 
 	public JsonObject sqlNgsildData() {
@@ -1052,7 +1274,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity aiNodesTotal
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:aiNodesTotal">Find the entity aiNodesTotal in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:aiNodesTotal">Find the entity aiNodesTotal in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1067,14 +1289,14 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setAiNodesTotal(String o) {
-		this.aiNodesTotal = AiCluster.staticSetAiNodesTotal(siteRequest_, o);
+		this.aiNodesTotal = Cluster.staticSetAiNodesTotal(siteRequest_, o);
 	}
 	public static Integer staticSetAiNodesTotal(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Integer.parseInt(o);
 		return null;
 	}
-	protected AiCluster aiNodesTotalInit() {
+	protected Cluster aiNodesTotalInit() {
 		Wrap<Integer> aiNodesTotalWrap = new Wrap<Integer>().var("aiNodesTotal");
 		if(aiNodesTotal == null) {
 			_aiNodesTotal(aiNodesTotalWrap);
@@ -1082,7 +1304,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setAiNodesTotal(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static Integer staticSearchAiNodesTotal(SiteRequest siteRequest_, Integer o) {
@@ -1094,7 +1316,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqAiNodesTotal(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchAiNodesTotal(siteRequest_, AiCluster.staticSetAiNodesTotal(siteRequest_, o)).toString();
+		return Cluster.staticSearchAiNodesTotal(siteRequest_, Cluster.staticSetAiNodesTotal(siteRequest_, o)).toString();
 	}
 
 	public Integer sqlAiNodesTotal() {
@@ -1116,7 +1338,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity gpuDevicesTotal
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:gpuDevicesTotal">Find the entity gpuDevicesTotal in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:gpuDevicesTotal">Find the entity gpuDevicesTotal in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1131,14 +1353,14 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 	@JsonIgnore
 	public void setGpuDevicesTotal(String o) {
-		this.gpuDevicesTotal = AiCluster.staticSetGpuDevicesTotal(siteRequest_, o);
+		this.gpuDevicesTotal = Cluster.staticSetGpuDevicesTotal(siteRequest_, o);
 	}
 	public static Integer staticSetGpuDevicesTotal(SiteRequest siteRequest_, String o) {
 		if(NumberUtils.isParsable(o))
 			return Integer.parseInt(o);
 		return null;
 	}
-	protected AiCluster gpuDevicesTotalInit() {
+	protected Cluster gpuDevicesTotalInit() {
 		Wrap<Integer> gpuDevicesTotalWrap = new Wrap<Integer>().var("gpuDevicesTotal");
 		if(gpuDevicesTotal == null) {
 			_gpuDevicesTotal(gpuDevicesTotalWrap);
@@ -1146,7 +1368,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setGpuDevicesTotal(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static Integer staticSearchGpuDevicesTotal(SiteRequest siteRequest_, Integer o) {
@@ -1158,7 +1380,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqGpuDevicesTotal(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchGpuDevicesTotal(siteRequest_, AiCluster.staticSetGpuDevicesTotal(siteRequest_, o)).toString();
+		return Cluster.staticSearchGpuDevicesTotal(siteRequest_, Cluster.staticSetGpuDevicesTotal(siteRequest_, o)).toString();
 	}
 
 	public Integer sqlGpuDevicesTotal() {
@@ -1179,7 +1401,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	/**	<br> The entity grafanaUrl
 	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiCluster&fq=entiteVar_enUS_indexed_string:grafanaUrl">Find the entity grafanaUrl in Solr</a>
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:grafanaUrl">Find the entity grafanaUrl in Solr</a>
 	 * <br>
 	 * @param w is for wrapping a value to assign to this entity during initialization. 
 	 **/
@@ -1189,12 +1411,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return grafanaUrl;
 	}
 	public void setGrafanaUrl(String o) {
-		this.grafanaUrl = AiCluster.staticSetGrafanaUrl(siteRequest_, o);
+		this.grafanaUrl = Cluster.staticSetGrafanaUrl(siteRequest_, o);
 	}
 	public static String staticSetGrafanaUrl(SiteRequest siteRequest_, String o) {
 		return o;
 	}
-	protected AiCluster grafanaUrlInit() {
+	protected Cluster grafanaUrlInit() {
 		Wrap<String> grafanaUrlWrap = new Wrap<String>().var("grafanaUrl");
 		if(grafanaUrl == null) {
 			_grafanaUrl(grafanaUrlWrap);
@@ -1202,7 +1424,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				setGrafanaUrl(o);
 			});
 		}
-		return (AiCluster)this;
+		return (Cluster)this;
 	}
 
 	public static String staticSearchGrafanaUrl(SiteRequest siteRequest_, String o) {
@@ -1214,22 +1436,22 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String staticSearchFqGrafanaUrl(SiteRequest siteRequest_, String o) {
-		return AiCluster.staticSearchGrafanaUrl(siteRequest_, AiCluster.staticSetGrafanaUrl(siteRequest_, o)).toString();
+		return Cluster.staticSearchGrafanaUrl(siteRequest_, Cluster.staticSetGrafanaUrl(siteRequest_, o)).toString();
 	}
 
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<AiClusterGen<DEV>> promiseDeepAiCluster(SiteRequest siteRequest_) {
+	public Future<ClusterGen<DEV>> promiseDeepCluster(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
-		return promiseDeepAiCluster();
+		return promiseDeepCluster();
 	}
 
-	public Future<AiClusterGen<DEV>> promiseDeepAiCluster() {
-		Promise<AiClusterGen<DEV>> promise = Promise.promise();
+	public Future<ClusterGen<DEV>> promiseDeepCluster() {
+		Promise<ClusterGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
-		promiseAiCluster(promise2);
+		promiseCluster(promise2);
 		promise2.future().onSuccess(a -> {
 			super.promiseDeepBaseModel(siteRequest_).onSuccess(b -> {
 				promise.complete(this);
@@ -1242,11 +1464,15 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	public Future<Void> promiseAiCluster(Promise<Void> promise) {
+	public Future<Void> promiseCluster(Promise<Void> promise) {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
+				hubIdInit();
+				hubResourceInit();
 				clusterNameInit();
+				clusterResourceInit();
+				uniqueNameInit();
 				descriptionInit();
 				locationColorsInit();
 				locationTitlesInit();
@@ -1274,20 +1500,20 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return promise.future();
 	}
 
-	@Override public Future<? extends AiClusterGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
-		return promiseDeepAiCluster(siteRequest_);
+	@Override public Future<? extends ClusterGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
+		return promiseDeepCluster(siteRequest_);
 	}
 
 	/////////////////
 	// siteRequest //
 	/////////////////
 
-	public void siteRequestAiCluster(SiteRequest siteRequest_) {
+	public void siteRequestCluster(SiteRequest siteRequest_) {
 			super.siteRequestBaseModel(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
-		siteRequestAiCluster(siteRequest_);
+		siteRequestCluster(siteRequest_);
 	}
 
 	/////////////
@@ -1299,7 +1525,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = obtainAiCluster(v);
+				o = obtainCluster(v);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.obtainForClass(v);
@@ -1311,39 +1537,47 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return o;
 	}
-	public Object obtainAiCluster(String var) {
-		AiCluster oAiCluster = (AiCluster)this;
+	public Object obtainCluster(String var) {
+		Cluster oCluster = (Cluster)this;
 		switch(var) {
+			case "hubId":
+				return oCluster.hubId;
+			case "hubResource":
+				return oCluster.hubResource;
 			case "clusterName":
-				return oAiCluster.clusterName;
+				return oCluster.clusterName;
+			case "clusterResource":
+				return oCluster.clusterResource;
+			case "uniqueName":
+				return oCluster.uniqueName;
 			case "description":
-				return oAiCluster.description;
+				return oCluster.description;
 			case "locationColors":
-				return oAiCluster.locationColors;
+				return oCluster.locationColors;
 			case "locationTitles":
-				return oAiCluster.locationTitles;
+				return oCluster.locationTitles;
 			case "locationLinks":
-				return oAiCluster.locationLinks;
+				return oCluster.locationLinks;
 			case "location":
-				return oAiCluster.location;
+				return oCluster.location;
 			case "id":
-				return oAiCluster.id;
+				return oCluster.id;
 			case "entityShortId":
-				return oAiCluster.entityShortId;
+				return oCluster.entityShortId;
 			case "ngsildTenant":
-				return oAiCluster.ngsildTenant;
+				return oCluster.ngsildTenant;
 			case "ngsildPath":
-				return oAiCluster.ngsildPath;
+				return oCluster.ngsildPath;
 			case "ngsildContext":
-				return oAiCluster.ngsildContext;
+				return oCluster.ngsildContext;
 			case "ngsildData":
-				return oAiCluster.ngsildData;
+				return oCluster.ngsildData;
 			case "aiNodesTotal":
-				return oAiCluster.aiNodesTotal;
+				return oCluster.aiNodesTotal;
 			case "gpuDevicesTotal":
-				return oAiCluster.gpuDevicesTotal;
+				return oCluster.gpuDevicesTotal;
 			case "grafanaUrl":
-				return oAiCluster.grafanaUrl;
+				return oCluster.grafanaUrl;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1358,7 +1592,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = relateAiCluster(v, val);
+				o = relateCluster(v, val);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.relateForClass(v, val);
@@ -1366,9 +1600,15 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return o != null;
 	}
-	public Object relateAiCluster(String var, Object val) {
-		AiCluster oAiCluster = (AiCluster)this;
+	public Object relateCluster(String var, Object val) {
+		Cluster oCluster = (Cluster)this;
 		switch(var) {
+			case "hubResource":
+				if(oCluster.getHubResource() == null)
+					oCluster.setHubResource(Optional.ofNullable(val).map(v -> v.toString()).orElse(null));
+				if(!saves.contains("hubResource"))
+					saves.add("hubResource");
+				return val;
 			default:
 				return super.relateBaseModel(var, val);
 		}
@@ -1378,41 +1618,49 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiCluster o) {
-		return staticSetAiCluster(entityVar,  siteRequest_, v, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, Cluster o) {
+		return staticSetCluster(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiCluster(String entityVar, SiteRequest siteRequest_, String v, AiCluster o) {
+	public static Object staticSetCluster(String entityVar, SiteRequest siteRequest_, String v, Cluster o) {
 		switch(entityVar) {
+		case "hubId":
+			return Cluster.staticSetHubId(siteRequest_, v);
+		case "hubResource":
+			return Cluster.staticSetHubResource(siteRequest_, v);
 		case "clusterName":
-			return AiCluster.staticSetClusterName(siteRequest_, v);
+			return Cluster.staticSetClusterName(siteRequest_, v);
+		case "clusterResource":
+			return Cluster.staticSetClusterResource(siteRequest_, v);
+		case "uniqueName":
+			return Cluster.staticSetUniqueName(siteRequest_, v);
 		case "description":
-			return AiCluster.staticSetDescription(siteRequest_, v);
+			return Cluster.staticSetDescription(siteRequest_, v);
 		case "locationColors":
-			return AiCluster.staticSetLocationColors(siteRequest_, v);
+			return Cluster.staticSetLocationColors(siteRequest_, v);
 		case "locationTitles":
-			return AiCluster.staticSetLocationTitles(siteRequest_, v);
+			return Cluster.staticSetLocationTitles(siteRequest_, v);
 		case "locationLinks":
-			return AiCluster.staticSetLocationLinks(siteRequest_, v);
+			return Cluster.staticSetLocationLinks(siteRequest_, v);
 		case "location":
-			return AiCluster.staticSetLocation(siteRequest_, v);
+			return Cluster.staticSetLocation(siteRequest_, v);
 		case "id":
-			return AiCluster.staticSetId(siteRequest_, v);
+			return Cluster.staticSetId(siteRequest_, v);
 		case "entityShortId":
-			return AiCluster.staticSetEntityShortId(siteRequest_, v);
+			return Cluster.staticSetEntityShortId(siteRequest_, v);
 		case "ngsildTenant":
-			return AiCluster.staticSetNgsildTenant(siteRequest_, v);
+			return Cluster.staticSetNgsildTenant(siteRequest_, v);
 		case "ngsildPath":
-			return AiCluster.staticSetNgsildPath(siteRequest_, v);
+			return Cluster.staticSetNgsildPath(siteRequest_, v);
 		case "ngsildContext":
-			return AiCluster.staticSetNgsildContext(siteRequest_, v);
+			return Cluster.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
-			return AiCluster.staticSetNgsildData(siteRequest_, v);
+			return Cluster.staticSetNgsildData(siteRequest_, v);
 		case "aiNodesTotal":
-			return AiCluster.staticSetAiNodesTotal(siteRequest_, v);
+			return Cluster.staticSetAiNodesTotal(siteRequest_, v);
 		case "gpuDevicesTotal":
-			return AiCluster.staticSetGpuDevicesTotal(siteRequest_, v);
+			return Cluster.staticSetGpuDevicesTotal(siteRequest_, v);
 		case "grafanaUrl":
-			return AiCluster.staticSetGrafanaUrl(siteRequest_, v);
+			return Cluster.staticSetGrafanaUrl(siteRequest_, v);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
@@ -1423,40 +1671,48 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	////////////////
 
 	public static Object staticSearchForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchAiCluster(entityVar,  siteRequest_, o);
+		return staticSearchCluster(entityVar,  siteRequest_, o);
 	}
-	public static Object staticSearchAiCluster(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static Object staticSearchCluster(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "hubId":
+			return Cluster.staticSearchHubId(siteRequest_, (String)o);
+		case "hubResource":
+			return Cluster.staticSearchHubResource(siteRequest_, (String)o);
 		case "clusterName":
-			return AiCluster.staticSearchClusterName(siteRequest_, (String)o);
+			return Cluster.staticSearchClusterName(siteRequest_, (String)o);
+		case "clusterResource":
+			return Cluster.staticSearchClusterResource(siteRequest_, (String)o);
+		case "uniqueName":
+			return Cluster.staticSearchUniqueName(siteRequest_, (String)o);
 		case "description":
-			return AiCluster.staticSearchDescription(siteRequest_, (String)o);
+			return Cluster.staticSearchDescription(siteRequest_, (String)o);
 		case "locationColors":
-			return AiCluster.staticSearchLocationColors(siteRequest_, (String)o);
+			return Cluster.staticSearchLocationColors(siteRequest_, (String)o);
 		case "locationTitles":
-			return AiCluster.staticSearchLocationTitles(siteRequest_, (String)o);
+			return Cluster.staticSearchLocationTitles(siteRequest_, (String)o);
 		case "locationLinks":
-			return AiCluster.staticSearchLocationLinks(siteRequest_, (String)o);
+			return Cluster.staticSearchLocationLinks(siteRequest_, (String)o);
 		case "location":
-			return AiCluster.staticSearchLocation(siteRequest_, (Point)o);
+			return Cluster.staticSearchLocation(siteRequest_, (Point)o);
 		case "id":
-			return AiCluster.staticSearchId(siteRequest_, (String)o);
+			return Cluster.staticSearchId(siteRequest_, (String)o);
 		case "entityShortId":
-			return AiCluster.staticSearchEntityShortId(siteRequest_, (String)o);
+			return Cluster.staticSearchEntityShortId(siteRequest_, (String)o);
 		case "ngsildTenant":
-			return AiCluster.staticSearchNgsildTenant(siteRequest_, (String)o);
+			return Cluster.staticSearchNgsildTenant(siteRequest_, (String)o);
 		case "ngsildPath":
-			return AiCluster.staticSearchNgsildPath(siteRequest_, (String)o);
+			return Cluster.staticSearchNgsildPath(siteRequest_, (String)o);
 		case "ngsildContext":
-			return AiCluster.staticSearchNgsildContext(siteRequest_, (String)o);
+			return Cluster.staticSearchNgsildContext(siteRequest_, (String)o);
 		case "ngsildData":
-			return AiCluster.staticSearchNgsildData(siteRequest_, (JsonObject)o);
+			return Cluster.staticSearchNgsildData(siteRequest_, (JsonObject)o);
 		case "aiNodesTotal":
-			return AiCluster.staticSearchAiNodesTotal(siteRequest_, (Integer)o);
+			return Cluster.staticSearchAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
-			return AiCluster.staticSearchGpuDevicesTotal(siteRequest_, (Integer)o);
+			return Cluster.staticSearchGpuDevicesTotal(siteRequest_, (Integer)o);
 		case "grafanaUrl":
-			return AiCluster.staticSearchGrafanaUrl(siteRequest_, (String)o);
+			return Cluster.staticSearchGrafanaUrl(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1467,40 +1723,48 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	///////////////////
 
 	public static String staticSearchStrForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchStrAiCluster(entityVar,  siteRequest_, o);
+		return staticSearchStrCluster(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchStrAiCluster(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static String staticSearchStrCluster(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
+		case "hubId":
+			return Cluster.staticSearchStrHubId(siteRequest_, (String)o);
+		case "hubResource":
+			return Cluster.staticSearchStrHubResource(siteRequest_, (String)o);
 		case "clusterName":
-			return AiCluster.staticSearchStrClusterName(siteRequest_, (String)o);
+			return Cluster.staticSearchStrClusterName(siteRequest_, (String)o);
+		case "clusterResource":
+			return Cluster.staticSearchStrClusterResource(siteRequest_, (String)o);
+		case "uniqueName":
+			return Cluster.staticSearchStrUniqueName(siteRequest_, (String)o);
 		case "description":
-			return AiCluster.staticSearchStrDescription(siteRequest_, (String)o);
+			return Cluster.staticSearchStrDescription(siteRequest_, (String)o);
 		case "locationColors":
-			return AiCluster.staticSearchStrLocationColors(siteRequest_, (String)o);
+			return Cluster.staticSearchStrLocationColors(siteRequest_, (String)o);
 		case "locationTitles":
-			return AiCluster.staticSearchStrLocationTitles(siteRequest_, (String)o);
+			return Cluster.staticSearchStrLocationTitles(siteRequest_, (String)o);
 		case "locationLinks":
-			return AiCluster.staticSearchStrLocationLinks(siteRequest_, (String)o);
+			return Cluster.staticSearchStrLocationLinks(siteRequest_, (String)o);
 		case "location":
-			return AiCluster.staticSearchStrLocation(siteRequest_, (Point)o);
+			return Cluster.staticSearchStrLocation(siteRequest_, (Point)o);
 		case "id":
-			return AiCluster.staticSearchStrId(siteRequest_, (String)o);
+			return Cluster.staticSearchStrId(siteRequest_, (String)o);
 		case "entityShortId":
-			return AiCluster.staticSearchStrEntityShortId(siteRequest_, (String)o);
+			return Cluster.staticSearchStrEntityShortId(siteRequest_, (String)o);
 		case "ngsildTenant":
-			return AiCluster.staticSearchStrNgsildTenant(siteRequest_, (String)o);
+			return Cluster.staticSearchStrNgsildTenant(siteRequest_, (String)o);
 		case "ngsildPath":
-			return AiCluster.staticSearchStrNgsildPath(siteRequest_, (String)o);
+			return Cluster.staticSearchStrNgsildPath(siteRequest_, (String)o);
 		case "ngsildContext":
-			return AiCluster.staticSearchStrNgsildContext(siteRequest_, (String)o);
+			return Cluster.staticSearchStrNgsildContext(siteRequest_, (String)o);
 		case "ngsildData":
-			return AiCluster.staticSearchStrNgsildData(siteRequest_, (String)o);
+			return Cluster.staticSearchStrNgsildData(siteRequest_, (String)o);
 		case "aiNodesTotal":
-			return AiCluster.staticSearchStrAiNodesTotal(siteRequest_, (Integer)o);
+			return Cluster.staticSearchStrAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
-			return AiCluster.staticSearchStrGpuDevicesTotal(siteRequest_, (Integer)o);
+			return Cluster.staticSearchStrGpuDevicesTotal(siteRequest_, (Integer)o);
 		case "grafanaUrl":
-			return AiCluster.staticSearchStrGrafanaUrl(siteRequest_, (String)o);
+			return Cluster.staticSearchStrGrafanaUrl(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1511,40 +1775,48 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	//////////////////
 
 	public static String staticSearchFqForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSearchFqAiCluster(entityVar,  siteRequest_, o);
+		return staticSearchFqCluster(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchFqAiCluster(String entityVar, SiteRequest siteRequest_, String o) {
+	public static String staticSearchFqCluster(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
+		case "hubId":
+			return Cluster.staticSearchFqHubId(siteRequest_, o);
+		case "hubResource":
+			return Cluster.staticSearchFqHubResource(siteRequest_, o);
 		case "clusterName":
-			return AiCluster.staticSearchFqClusterName(siteRequest_, o);
+			return Cluster.staticSearchFqClusterName(siteRequest_, o);
+		case "clusterResource":
+			return Cluster.staticSearchFqClusterResource(siteRequest_, o);
+		case "uniqueName":
+			return Cluster.staticSearchFqUniqueName(siteRequest_, o);
 		case "description":
-			return AiCluster.staticSearchFqDescription(siteRequest_, o);
+			return Cluster.staticSearchFqDescription(siteRequest_, o);
 		case "locationColors":
-			return AiCluster.staticSearchFqLocationColors(siteRequest_, o);
+			return Cluster.staticSearchFqLocationColors(siteRequest_, o);
 		case "locationTitles":
-			return AiCluster.staticSearchFqLocationTitles(siteRequest_, o);
+			return Cluster.staticSearchFqLocationTitles(siteRequest_, o);
 		case "locationLinks":
-			return AiCluster.staticSearchFqLocationLinks(siteRequest_, o);
+			return Cluster.staticSearchFqLocationLinks(siteRequest_, o);
 		case "location":
-			return AiCluster.staticSearchFqLocation(siteRequest_, o);
+			return Cluster.staticSearchFqLocation(siteRequest_, o);
 		case "id":
-			return AiCluster.staticSearchFqId(siteRequest_, o);
+			return Cluster.staticSearchFqId(siteRequest_, o);
 		case "entityShortId":
-			return AiCluster.staticSearchFqEntityShortId(siteRequest_, o);
+			return Cluster.staticSearchFqEntityShortId(siteRequest_, o);
 		case "ngsildTenant":
-			return AiCluster.staticSearchFqNgsildTenant(siteRequest_, o);
+			return Cluster.staticSearchFqNgsildTenant(siteRequest_, o);
 		case "ngsildPath":
-			return AiCluster.staticSearchFqNgsildPath(siteRequest_, o);
+			return Cluster.staticSearchFqNgsildPath(siteRequest_, o);
 		case "ngsildContext":
-			return AiCluster.staticSearchFqNgsildContext(siteRequest_, o);
+			return Cluster.staticSearchFqNgsildContext(siteRequest_, o);
 		case "ngsildData":
-			return AiCluster.staticSearchFqNgsildData(siteRequest_, o);
+			return Cluster.staticSearchFqNgsildData(siteRequest_, o);
 		case "aiNodesTotal":
-			return AiCluster.staticSearchFqAiNodesTotal(siteRequest_, o);
+			return Cluster.staticSearchFqAiNodesTotal(siteRequest_, o);
 		case "gpuDevicesTotal":
-			return AiCluster.staticSearchFqGpuDevicesTotal(siteRequest_, o);
+			return Cluster.staticSearchFqGpuDevicesTotal(siteRequest_, o);
 		case "grafanaUrl":
-			return AiCluster.staticSearchFqGrafanaUrl(siteRequest_, o);
+			return Cluster.staticSearchFqGrafanaUrl(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1560,7 +1832,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		if(val != null) {
 			for(String v : vars) {
 				if(o == null)
-					o = persistAiCluster(v, val);
+					o = persistCluster(v, val);
 				else if(o instanceof BaseModel) {
 					BaseModel oBaseModel = (BaseModel)o;
 					o = oBaseModel.persistForClass(v, val);
@@ -1569,13 +1841,31 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 		return o != null;
 	}
-	public Object persistAiCluster(String var, Object val) {
+	public Object persistCluster(String var, Object val) {
 		String varLower = var.toLowerCase();
-			if("clustername".equals(varLower)) {
+			if("hubid".equals(varLower)) {
+				if(val instanceof String) {
+					setHubId((String)val);
+				}
+				saves.add("hubId");
+				return val;
+			} else if("hubresource".equals(varLower)) {
+				if(val instanceof String) {
+					setHubResource((String)val);
+				}
+				saves.add("hubResource");
+				return val;
+			} else if("clustername".equals(varLower)) {
 				if(val instanceof String) {
 					setClusterName((String)val);
 				}
 				saves.add("clusterName");
+				return val;
+			} else if("clusterresource".equals(varLower)) {
+				if(val instanceof String) {
+					setClusterResource((String)val);
+				}
+				saves.add("clusterResource");
 				return val;
 			} else if("description".equals(varLower)) {
 				if(val instanceof String) {
@@ -1649,30 +1939,52 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	/////////////
 
 	@Override public void populateForClass(SolrResponse.Doc doc) {
-		populateAiCluster(doc);
+		populateCluster(doc);
 	}
-	public void populateAiCluster(SolrResponse.Doc doc) {
-		AiCluster oAiCluster = (AiCluster)this;
+	public void populateCluster(SolrResponse.Doc doc) {
+		Cluster oCluster = (Cluster)this;
 		saves = Optional.ofNullable((ArrayList<String>)doc.get("saves_docvalues_strings")).orElse(new ArrayList<String>());
 		if(saves != null) {
+
+			if(saves.contains("hubId")) {
+				String hubId = (String)doc.get("hubId_docvalues_string");
+				if(hubId != null)
+					oCluster.setHubId(hubId);
+			}
+
+			String hubResource = (String)doc.get("hubResource_docvalues_string");
+			if(hubResource != null)
+				oCluster.setHubResource(hubResource);
 
 			if(saves.contains("clusterName")) {
 				String clusterName = (String)doc.get("clusterName_docvalues_string");
 				if(clusterName != null)
-					oAiCluster.setClusterName(clusterName);
+					oCluster.setClusterName(clusterName);
+			}
+
+			if(saves.contains("clusterResource")) {
+				String clusterResource = (String)doc.get("clusterResource_docvalues_string");
+				if(clusterResource != null)
+					oCluster.setClusterResource(clusterResource);
+			}
+
+			if(saves.contains("uniqueName")) {
+				String uniqueName = (String)doc.get("uniqueName_docvalues_string");
+				if(uniqueName != null)
+					oCluster.setUniqueName(uniqueName);
 			}
 
 			if(saves.contains("description")) {
 				String description = (String)doc.get("description_docvalues_string");
 				if(description != null)
-					oAiCluster.setDescription(description);
+					oCluster.setDescription(description);
 			}
 
 			if(saves.contains("locationColors")) {
 				List<String> locationColors = (List<String>)doc.get("locationColors_indexedstored_strings");
 				if(locationColors != null) {
 					locationColors.stream().forEach( v -> {
-						oAiCluster.locationColors.add(AiCluster.staticSetLocationColors(siteRequest_, v));
+						oCluster.locationColors.add(Cluster.staticSetLocationColors(siteRequest_, v));
 					});
 				}
 			}
@@ -1681,7 +1993,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				List<String> locationTitles = (List<String>)doc.get("locationTitles_indexedstored_strings");
 				if(locationTitles != null) {
 					locationTitles.stream().forEach( v -> {
-						oAiCluster.locationTitles.add(AiCluster.staticSetLocationTitles(siteRequest_, v));
+						oCluster.locationTitles.add(Cluster.staticSetLocationTitles(siteRequest_, v));
 					});
 				}
 			}
@@ -1690,7 +2002,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 				List<String> locationLinks = (List<String>)doc.get("locationLinks_indexedstored_strings");
 				if(locationLinks != null) {
 					locationLinks.stream().forEach( v -> {
-						oAiCluster.locationLinks.add(AiCluster.staticSetLocationLinks(siteRequest_, v));
+						oCluster.locationLinks.add(Cluster.staticSetLocationLinks(siteRequest_, v));
 					});
 				}
 			}
@@ -1698,70 +2010,82 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			if(saves.contains("location")) {
 				Point location = (Point)doc.get("location_docvalues_location");
 				if(location != null)
-					oAiCluster.setLocation(location);
+					oCluster.setLocation(location);
 			}
 
 			if(saves.contains("id")) {
 				String id = (String)doc.get("id_docvalues_string");
 				if(id != null)
-					oAiCluster.setId(id);
+					oCluster.setId(id);
 			}
 
 			if(saves.contains("entityShortId")) {
 				String entityShortId = (String)doc.get("entityShortId_docvalues_string");
 				if(entityShortId != null)
-					oAiCluster.setEntityShortId(entityShortId);
+					oCluster.setEntityShortId(entityShortId);
 			}
 
 			if(saves.contains("ngsildTenant")) {
 				String ngsildTenant = (String)doc.get("ngsildTenant_docvalues_string");
 				if(ngsildTenant != null)
-					oAiCluster.setNgsildTenant(ngsildTenant);
+					oCluster.setNgsildTenant(ngsildTenant);
 			}
 
 			if(saves.contains("ngsildPath")) {
 				String ngsildPath = (String)doc.get("ngsildPath_docvalues_string");
 				if(ngsildPath != null)
-					oAiCluster.setNgsildPath(ngsildPath);
+					oCluster.setNgsildPath(ngsildPath);
 			}
 
 			if(saves.contains("ngsildContext")) {
 				String ngsildContext = (String)doc.get("ngsildContext_docvalues_string");
 				if(ngsildContext != null)
-					oAiCluster.setNgsildContext(ngsildContext);
+					oCluster.setNgsildContext(ngsildContext);
 			}
 
 			if(saves.contains("ngsildData")) {
 				String ngsildData = (String)doc.get("ngsildData_docvalues_string");
 				if(ngsildData != null)
-					oAiCluster.setNgsildData(ngsildData);
+					oCluster.setNgsildData(ngsildData);
 			}
 
 			if(saves.contains("aiNodesTotal")) {
 				Integer aiNodesTotal = (Integer)doc.get("aiNodesTotal_docvalues_int");
 				if(aiNodesTotal != null)
-					oAiCluster.setAiNodesTotal(aiNodesTotal);
+					oCluster.setAiNodesTotal(aiNodesTotal);
 			}
 
 			if(saves.contains("gpuDevicesTotal")) {
 				Integer gpuDevicesTotal = (Integer)doc.get("gpuDevicesTotal_docvalues_int");
 				if(gpuDevicesTotal != null)
-					oAiCluster.setGpuDevicesTotal(gpuDevicesTotal);
+					oCluster.setGpuDevicesTotal(gpuDevicesTotal);
 			}
 
 			if(saves.contains("grafanaUrl")) {
 				String grafanaUrl = (String)doc.get("grafanaUrl_docvalues_string");
 				if(grafanaUrl != null)
-					oAiCluster.setGrafanaUrl(grafanaUrl);
+					oCluster.setGrafanaUrl(grafanaUrl);
 			}
 		}
 
 		super.populateBaseModel(doc);
 	}
 
-	public void indexAiCluster(JsonObject doc) {
+	public void indexCluster(JsonObject doc) {
+		if(hubId != null) {
+			doc.put("hubId_docvalues_string", hubId);
+		}
+		if(hubResource != null) {
+			doc.put("hubResource_docvalues_string", hubResource);
+		}
 		if(clusterName != null) {
 			doc.put("clusterName_docvalues_string", clusterName);
+		}
+		if(clusterResource != null) {
+			doc.put("clusterResource_docvalues_string", clusterResource);
+		}
+		if(uniqueName != null) {
+			doc.put("uniqueName_docvalues_string", uniqueName);
 		}
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
@@ -1770,21 +2094,21 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 			JsonArray l = new JsonArray();
 			doc.put("locationColors_indexedstored_strings", l);
 			for(String o : locationColors) {
-				l.add(AiCluster.staticSearchLocationColors(siteRequest_, o));
+				l.add(Cluster.staticSearchLocationColors(siteRequest_, o));
 			}
 		}
 		if(locationTitles != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationTitles_indexedstored_strings", l);
 			for(String o : locationTitles) {
-				l.add(AiCluster.staticSearchLocationTitles(siteRequest_, o));
+				l.add(Cluster.staticSearchLocationTitles(siteRequest_, o));
 			}
 		}
 		if(locationLinks != null) {
 			JsonArray l = new JsonArray();
 			doc.put("locationLinks_indexedstored_strings", l);
 			for(String o : locationLinks) {
-				l.add(AiCluster.staticSearchLocationLinks(siteRequest_, o));
+				l.add(Cluster.staticSearchLocationLinks(siteRequest_, o));
 			}
 		}
 		if(location != null) {
@@ -1821,10 +2145,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	}
 
-	public static String varStoredAiCluster(String entityVar) {
+	public static String varStoredCluster(String entityVar) {
 		switch(entityVar) {
+			case "hubId":
+				return "hubId_docvalues_string";
+			case "hubResource":
+				return "hubResource_docvalues_string";
 			case "clusterName":
 				return "clusterName_docvalues_string";
+			case "clusterResource":
+				return "clusterResource_docvalues_string";
+			case "uniqueName":
+				return "uniqueName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1858,10 +2190,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static String varIndexedAiCluster(String entityVar) {
+	public static String varIndexedCluster(String entityVar) {
 		switch(entityVar) {
+			case "hubId":
+				return "hubId_docvalues_string";
+			case "hubResource":
+				return "hubResource_docvalues_string";
 			case "clusterName":
 				return "clusterName_docvalues_string";
+			case "clusterResource":
+				return "clusterResource_docvalues_string";
+			case "uniqueName":
+				return "uniqueName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
 			case "locationColors":
@@ -1895,10 +2235,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static String searchVarAiCluster(String searchVar) {
+	public static String searchVarCluster(String searchVar) {
 		switch(searchVar) {
+			case "hubId_docvalues_string":
+				return "hubId";
+			case "hubResource_docvalues_string":
+				return "hubResource";
 			case "clusterName_docvalues_string":
 				return "clusterName";
+			case "clusterResource_docvalues_string":
+				return "clusterResource";
+			case "uniqueName_docvalues_string":
+				return "uniqueName";
 			case "description_docvalues_string":
 				return "description";
 			case "locationColors_indexedstored_strings":
@@ -1932,14 +2280,14 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static String varSearchAiCluster(String entityVar) {
+	public static String varSearchCluster(String entityVar) {
 		switch(entityVar) {
 			default:
 				return BaseModel.varSearchBaseModel(entityVar);
 		}
 	}
 
-	public static String varSuggestedAiCluster(String entityVar) {
+	public static String varSuggestedCluster(String entityVar) {
 		switch(entityVar) {
 			default:
 				return BaseModel.varSuggestedBaseModel(entityVar);
@@ -1951,33 +2299,37 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	/////////////
 
 	@Override public void storeForClass(SolrResponse.Doc doc) {
-		storeAiCluster(doc);
+		storeCluster(doc);
 	}
-	public void storeAiCluster(SolrResponse.Doc doc) {
-		AiCluster oAiCluster = (AiCluster)this;
-		SiteRequest siteRequest = oAiCluster.getSiteRequest_();
+	public void storeCluster(SolrResponse.Doc doc) {
+		Cluster oCluster = (Cluster)this;
+		SiteRequest siteRequest = oCluster.getSiteRequest_();
 
-		oAiCluster.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setHubId(Optional.ofNullable(doc.get("hubId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setHubResource(Optional.ofNullable(doc.get("hubResource_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setClusterName(Optional.ofNullable(doc.get("clusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setClusterResource(Optional.ofNullable(doc.get("clusterResource_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setUniqueName(Optional.ofNullable(doc.get("uniqueName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-			oAiCluster.addLocationColors(AiCluster.staticSetLocationColors(siteRequest, v.toString()));
+			oCluster.addLocationColors(Cluster.staticSetLocationColors(siteRequest, v.toString()));
 		});
 		Optional.ofNullable((List<?>)doc.get("locationTitles_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-			oAiCluster.addLocationTitles(AiCluster.staticSetLocationTitles(siteRequest, v.toString()));
+			oCluster.addLocationTitles(Cluster.staticSetLocationTitles(siteRequest, v.toString()));
 		});
 		Optional.ofNullable((List<?>)doc.get("locationLinks_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-			oAiCluster.addLocationLinks(AiCluster.staticSetLocationLinks(siteRequest, v.toString()));
+			oCluster.addLocationLinks(Cluster.staticSetLocationLinks(siteRequest, v.toString()));
 		});
-		oAiCluster.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setId(Optional.ofNullable(doc.get("id_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setEntityShortId(Optional.ofNullable(doc.get("entityShortId_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setNgsildTenant(Optional.ofNullable(doc.get("ngsildTenant_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setAiNodesTotal(Optional.ofNullable(doc.get("aiNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oAiCluster.setGrafanaUrl(Optional.ofNullable(doc.get("grafanaUrl_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setLocation(Optional.ofNullable(doc.get("location_docvalues_location")).map(v -> v.toString()).orElse(null));
+		oCluster.setId(Optional.ofNullable(doc.get("id_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setEntityShortId(Optional.ofNullable(doc.get("entityShortId_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setNgsildTenant(Optional.ofNullable(doc.get("ngsildTenant_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oCluster.setAiNodesTotal(Optional.ofNullable(doc.get("aiNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oCluster.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oCluster.setGrafanaUrl(Optional.ofNullable(doc.get("grafanaUrl_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1986,13 +2338,21 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	// apiRequest //
 	//////////////////
 
-	public void apiRequestAiCluster() {
+	public void apiRequestCluster() {
 		ApiRequest apiRequest = Optional.ofNullable(siteRequest_).map(r -> r.getApiRequest_()).orElse(null);
 		Object o = Optional.ofNullable(apiRequest).map(ApiRequest::getOriginal).orElse(null);
-		if(o != null && o instanceof AiCluster) {
-			AiCluster original = (AiCluster)o;
+		if(o != null && o instanceof Cluster) {
+			Cluster original = (Cluster)o;
+			if(!Objects.equals(hubId, original.getHubId()))
+				apiRequest.addVars("hubId");
+			if(!Objects.equals(hubResource, original.getHubResource()))
+				apiRequest.addVars("hubResource");
 			if(!Objects.equals(clusterName, original.getClusterName()))
 				apiRequest.addVars("clusterName");
+			if(!Objects.equals(clusterResource, original.getClusterResource()))
+				apiRequest.addVars("clusterResource");
+			if(!Objects.equals(uniqueName, original.getUniqueName()))
+				apiRequest.addVars("uniqueName");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
 			if(!Objects.equals(locationColors, original.getLocationColors()))
@@ -2032,7 +2392,11 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(super.toString());
+		sb.append(Optional.ofNullable(hubId).map(v -> "hubId: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(hubResource).map(v -> "hubResource: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(clusterName).map(v -> "clusterName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(clusterResource).map(v -> "clusterResource: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(uniqueName).map(v -> "uniqueName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(locationTitles).map(v -> "locationTitles: " + v + "\n").orElse(""));
@@ -2050,13 +2414,18 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return sb.toString();
 	}
 
-	public static final String CLASS_SIMPLE_NAME = "AiCluster";
-	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiCluster";
-	public static final String CLASS_API_ADDRESS_AiCluster = "ai-telemetry-enUS-AiCluster";
+	public static final String CLASS_SIMPLE_NAME = "Cluster";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.Cluster";
+	public static final String CLASS_AUTH_RESOURCE = "CLUSTER";
+	public static final String CLASS_API_ADDRESS_Cluster = "ai-telemetry-enUS-Cluster";
 	public static String getClassApiAddress() {
-		return CLASS_API_ADDRESS_AiCluster;
+		return CLASS_API_ADDRESS_Cluster;
 	}
+	public static final String VAR_hubId = "hubId";
+	public static final String VAR_hubResource = "hubResource";
 	public static final String VAR_clusterName = "clusterName";
+	public static final String VAR_clusterResource = "clusterResource";
+	public static final String VAR_uniqueName = "uniqueName";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
 	public static final String VAR_locationTitles = "locationTitles";
@@ -2073,18 +2442,22 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	public static final String VAR_grafanaUrl = "grafanaUrl";
 
 	public static List<String> varsQForClass() {
-		return AiCluster.varsQAiCluster(new ArrayList<String>());
+		return Cluster.varsQCluster(new ArrayList<String>());
 	}
-	public static List<String> varsQAiCluster(List<String> vars) {
+	public static List<String> varsQCluster(List<String> vars) {
 		BaseModel.varsQBaseModel(vars);
 		return vars;
 	}
 
 	public static List<String> varsFqForClass() {
-		return AiCluster.varsFqAiCluster(new ArrayList<String>());
+		return Cluster.varsFqCluster(new ArrayList<String>());
 	}
-	public static List<String> varsFqAiCluster(List<String> vars) {
+	public static List<String> varsFqCluster(List<String> vars) {
+		vars.add(VAR_hubId);
+		vars.add(VAR_hubResource);
 		vars.add(VAR_clusterName);
+		vars.add(VAR_clusterResource);
+		vars.add(VAR_uniqueName);
 		vars.add(VAR_location);
 		vars.add(VAR_id);
 		vars.add(VAR_entityShortId);
@@ -2100,9 +2473,9 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static List<String> varsRangeForClass() {
-		return AiCluster.varsRangeAiCluster(new ArrayList<String>());
+		return Cluster.varsRangeCluster(new ArrayList<String>());
 	}
-	public static List<String> varsRangeAiCluster(List<String> vars) {
+	public static List<String> varsRangeCluster(List<String> vars) {
 		vars.add(VAR_location);
 		vars.add(VAR_ngsildData);
 		vars.add(VAR_aiNodesTotal);
@@ -2111,7 +2484,11 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		return vars;
 	}
 
+	public static final String DISPLAY_NAME_hubId = "ACM Hub";
+	public static final String DISPLAY_NAME_hubResource = "hub auth resource";
 	public static final String DISPLAY_NAME_clusterName = "cluster name";
+	public static final String DISPLAY_NAME_clusterResource = "cluster auth resource";
+	public static final String DISPLAY_NAME_uniqueName = "unique name";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
 	public static final String DISPLAY_NAME_locationTitles = "area served titles";
@@ -2129,7 +2506,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String idForClass() {
-		return clusterName;
+		return clusterResource;
 	}
 
 	@Override
@@ -2139,12 +2516,12 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String nameForClass() {
-		return clusterName;
+		return uniqueName;
 	}
 
 	@Override
 	public String classNameAdjectiveSingularForClass() {
-		return AiCluster.NameAdjectiveSingular_enUS;
+		return Cluster.NameAdjectiveSingular_enUS;
 	}
 
 	@Override
@@ -2154,7 +2531,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlEditPageForClass() {
-		return "%s/en-us/edit/ai-cluster/%s";
+		return "%s/en-us/edit/cluster/%s";
 	}
 
 	@Override
@@ -2164,7 +2541,7 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 
 	@Override
 	public String classStringFormatUrlUserPageForClass() {
-		return "%s/en-us/user/ai-cluster/%s";
+		return "%s/en-us/user/cluster/%s";
 	}
 
 	@Override
@@ -2173,12 +2550,20 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 	}
 
 	public static String displayNameForClass(String var) {
-		return AiCluster.displayNameAiCluster(var);
+		return Cluster.displayNameCluster(var);
 	}
-	public static String displayNameAiCluster(String var) {
+	public static String displayNameCluster(String var) {
 		switch(var) {
+		case VAR_hubId:
+			return DISPLAY_NAME_hubId;
+		case VAR_hubResource:
+			return DISPLAY_NAME_hubResource;
 		case VAR_clusterName:
 			return DISPLAY_NAME_clusterName;
+		case VAR_clusterResource:
+			return DISPLAY_NAME_clusterResource;
+		case VAR_uniqueName:
+			return DISPLAY_NAME_uniqueName;
 		case VAR_description:
 			return DISPLAY_NAME_description;
 		case VAR_locationColors:
@@ -2212,12 +2597,20 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static String descriptionAiCluster(String var) {
+	public static String descriptionCluster(String var) {
 		if(var == null)
 			return null;
 		switch(var) {
+		case VAR_hubId:
+			return "The name of the ACM Hub for this cluster in Prometheus Keycloak Proxy. ";
+		case VAR_hubResource:
+			return "The unique authorization resource for the hub for multi-tenancy";
 		case VAR_clusterName:
 			return "The name of this cluster";
+		case VAR_clusterResource:
+			return "The unique authorization resource for the cluster for multi-tenancy";
+		case VAR_uniqueName:
+			return "The unique name of this cluster";
 		case VAR_description:
 			return "A description of this cluster";
 		case VAR_locationColors:
@@ -2251,9 +2644,17 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static String classSimpleNameAiCluster(String var) {
+	public static String classSimpleNameCluster(String var) {
 		switch(var) {
+		case VAR_hubId:
+			return "String";
+		case VAR_hubResource:
+			return "String";
 		case VAR_clusterName:
+			return "String";
+		case VAR_clusterResource:
+			return "String";
+		case VAR_uniqueName:
 			return "String";
 		case VAR_description:
 			return "String";
@@ -2288,27 +2689,31 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static Integer htmColumnAiCluster(String var) {
+	public static Integer htmColumnCluster(String var) {
 		switch(var) {
-		case VAR_clusterName:
+		case VAR_hubId:
 			return 1;
-		case VAR_description:
+		case VAR_clusterName:
 			return 2;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}
 	}
 
-	public static Integer htmRowAiCluster(String var) {
+	public static Integer htmRowCluster(String var) {
 		switch(var) {
+		case VAR_hubId:
+			return 3;
 		case VAR_clusterName:
+			return 3;
+		case VAR_uniqueName:
 			return 3;
 		case VAR_description:
 			return 3;
 		case VAR_location:
 			return 3;
 		case VAR_id:
-			return 3;
+			return 5;
 		case VAR_ngsildTenant:
 			return 5;
 		case VAR_ngsildPath:
@@ -2328,24 +2733,28 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static Integer htmCellAiCluster(String var) {
+	public static Integer htmCellCluster(String var) {
 		switch(var) {
-		case VAR_clusterName:
+		case VAR_hubId:
 			return 1;
+		case VAR_clusterName:
+			return 3;
+		case VAR_uniqueName:
+			return 5;
 		case VAR_description:
-			return 2;
+			return 6;
 		case VAR_location:
 			return 5;
 		case VAR_id:
-			return 4;
-		case VAR_ngsildTenant:
 			return 1;
-		case VAR_ngsildPath:
+		case VAR_ngsildTenant:
 			return 2;
-		case VAR_ngsildContext:
+		case VAR_ngsildPath:
 			return 3;
-		case VAR_ngsildData:
+		case VAR_ngsildContext:
 			return 4;
+		case VAR_ngsildData:
+			return 5;
 		case VAR_aiNodesTotal:
 			return 1;
 		case VAR_gpuDevicesTotal:
@@ -2357,28 +2766,28 @@ public abstract class AiClusterGen<DEV> extends BaseModel {
 		}
 	}
 
-	public static Integer lengthMinAiCluster(String var) {
+	public static Integer lengthMinCluster(String var) {
 		switch(var) {
 			default:
 				return BaseModel.lengthMinBaseModel(var);
 		}
 	}
 
-	public static Integer lengthMaxAiCluster(String var) {
+	public static Integer lengthMaxCluster(String var) {
 		switch(var) {
 			default:
 				return BaseModel.lengthMaxBaseModel(var);
 		}
 	}
 
-	public static Integer maxAiCluster(String var) {
+	public static Integer maxCluster(String var) {
 		switch(var) {
 			default:
 				return BaseModel.maxBaseModel(var);
 		}
 	}
 
-	public static Integer minAiCluster(String var) {
+	public static Integer minCluster(String var) {
 		switch(var) {
 			default:
 				return BaseModel.minBaseModel(var);

@@ -738,6 +738,7 @@ public abstract class ClusterRequestGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterRequestGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequestGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListClusterRequest_ = "searchListClusterRequest_";
 	public static final String VAR_listClusterRequest = "listClusterRequest";
 	public static final String VAR_resultCount = "resultCount";

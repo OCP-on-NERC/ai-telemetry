@@ -50,11 +50,13 @@ KAFKA_SSL_TRUSTSTORE_SECRET: kafka-cluster-ca-cert
 KAFKA_SSL_TRUSTSTORE_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=KAFKA_SSL_KEYSTORE_SECRET, namespace=SITE_NAMESPACE)[0].data['ca.password'] | b64decode }}"
 
 WORKBENCH_NAMES:
-  - USER_NAME: tzumainn
-  - USER_NAME: computate
-    WORKBENCH_ADMIN: true
 #  - USER_NAME: dheeraj
 #  - USER_NAME: rh-csaggin
-  - USER_NAME: isaiahstapleton
-  - USER_NAME: danniesh
-  - USER_NAME: schwesig
+#  - USER_NAME: tzumainn
+#  - USER_NAME: computate
+#    WORKBENCH_ADMIN: true
+#  - USER_NAME: isaiahstapleton
+#  - USER_NAME: danniesh
+#  - USER_NAME: schwesig
+  - USER_NAME: tsisodia10
+  - USER_NAME: ajamias

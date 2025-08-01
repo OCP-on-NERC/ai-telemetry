@@ -293,6 +293,7 @@ public abstract class AiNodePageGen<DEV> extends AiNodeGenPage {
 
 	public static final String CLASS_SIMPLE_NAME = "AiNodePage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.node.AiNodePage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

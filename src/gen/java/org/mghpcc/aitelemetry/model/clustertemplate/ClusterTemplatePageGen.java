@@ -293,6 +293,7 @@ public abstract class ClusterTemplatePageGen<DEV> extends ClusterTemplateGenPage
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterTemplatePage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clustertemplate.ClusterTemplatePage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override

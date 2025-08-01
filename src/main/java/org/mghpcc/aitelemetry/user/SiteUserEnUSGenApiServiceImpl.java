@@ -121,19 +121,20 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
+			String SITEUSER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("SITEUSER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PUT"));
 			if(userId != null)
-				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+				form.add("permission", String.format("%s#%s", userId, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -286,19 +287,20 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
+			String SITEUSER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("SITEUSER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PUT"));
 			if(userId != null)
-				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "PATCH"));
+				form.add("permission", String.format("%s#%s", userId, "PATCH"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -786,19 +788,20 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
+			String SITEUSER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("SITEUSER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PUT"));
 			if(userId != null)
-				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "POST"));
+				form.add("permission", String.format("%s#%s", userId, "POST"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -1296,19 +1299,20 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
+			String SITEUSER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("SITEUSER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PUT"));
 			if(userId != null)
-				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+				form.add("permission", String.format("%s#%s", userId, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
@@ -1457,19 +1461,20 @@ public class SiteUserEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String userId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("userId");
+			String SITEUSER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("SITEUSER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
 			form.add("response_mode", "permissions");
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "GET"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "POST"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "DELETE"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PATCH"));
-			form.add("permission", String.format("%s#%s", SiteUser.CLASS_SIMPLE_NAME, "PUT"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, config.getString(ComputateConfigKeys.AUTH_SCOPE_SUPER_ADMIN)));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "GET"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "POST"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "DELETE"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PATCH"));
+			form.add("permission", String.format("%s#%s", SiteUser.CLASS_AUTH_RESOURCE, "PUT"));
 			if(userId != null)
-				form.add("permission", String.format("%s-%s#%s", SiteUser.CLASS_SIMPLE_NAME, userId, "GET"));
+				form.add("permission", String.format("%s#%s", userId, "GET"));
 			siteRequest.setPublicRead(classPublicRead);
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)

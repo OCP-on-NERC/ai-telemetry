@@ -117,11 +117,11 @@ import org.computate.search.response.solr.SolrResponse;
  * <p>By adding a class comment "{@inheritDoc}", the ClusterRequest class will inherit the helpful inherited class comments from the super class ClusterRequestGen. 
  * </p>
  * <h2>Rows: null</h2>
- * <h2>Order: 9</h2>
- * <p>This class contains a comment <b>"Order: 9"</b>, which means this class will be sorted by the given number 9 ascending when code that relates to multiple classes at the same time is generated. 
+ * <h2>Order: 12</h2>
+ * <p>This class contains a comment <b>"Order: 12"</b>, which means this class will be sorted by the given number 12 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
- * <h2>SqlOrder: 9</h2>
- * <p>This class contains a comment <b>"SqlOrder: 9"</b>, which means this class will be sorted by the given number 9 ascending when SQL code to create and drop the tables is generated. 
+ * <h2>SqlOrder: 12</h2>
+ * <p>This class contains a comment <b>"SqlOrder: 12"</b>, which means this class will be sorted by the given number 12 ascending when SQL code to create and drop the tables is generated. 
  * </p>
  * <h2>Model: true</h2>
  * <p>This class contains a comment <b>"Model: true"</b>, which means this class will be stored in the database. 
@@ -808,6 +808,7 @@ public abstract class ClusterRequestGen<DEV> extends BaseModel {
 
 	public static final String CLASS_SIMPLE_NAME = "ClusterRequest";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.clusterrequest.ClusterRequest";
+	public static final String CLASS_AUTH_RESOURCE = "CLUSTERREQUEST";
 	public static final String CLASS_API_ADDRESS_ClusterRequest = "ai-telemetry-enUS-ClusterRequest";
 	public static String getClassApiAddress() {
 		return CLASS_API_ADDRESS_ClusterRequest;

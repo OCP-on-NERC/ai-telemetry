@@ -738,6 +738,7 @@ public abstract class BareMetalNodeGenPageGen<DEV> extends PageLayout {
 
 	public static final String CLASS_SIMPLE_NAME = "BareMetalNodeGenPage";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.baremetalnode.BareMetalNodeGenPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_searchListBareMetalNode_ = "searchListBareMetalNode_";
 	public static final String VAR_listBareMetalNode = "listBareMetalNode";
 	public static final String VAR_resultCount = "resultCount";

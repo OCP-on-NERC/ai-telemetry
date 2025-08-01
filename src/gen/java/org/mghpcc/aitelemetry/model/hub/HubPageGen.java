@@ -1,7 +1,7 @@
-package org.mghpcc.aitelemetry.model.cluster;
+package org.mghpcc.aitelemetry.model.hub;
 
 import org.mghpcc.aitelemetry.request.SiteRequest;
-import org.mghpcc.aitelemetry.model.cluster.AiClusterGenPage;
+import org.mghpcc.aitelemetry.model.hub.HubGenPage;
 import org.mghpcc.aitelemetry.model.BaseModel;
 import org.computate.vertx.api.ApiRequest;
 import org.mghpcc.aitelemetry.config.ConfigKeys;
@@ -41,23 +41,23 @@ import io.vertx.core.json.JsonArray;
 /**
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
- * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these AiClusterPage objects in a RESTful API. 
- * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class AiClusterPageGen into the class AiClusterPage. 
+ * <li>You can add a class comment <b>"Api: true"</b> if you wish to GET, POST, PATCH or PUT these HubPage objects in a RESTful API. 
+ * </li><li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class HubPageGen into the class HubPage. 
  * </li>
- * <h3>About the AiClusterPage class and it's generated class AiClusterPageGen&lt;AiClusterGenPage&gt;: </h3>extends AiClusterPageGen
+ * <h3>About the HubPage class and it's generated class HubPageGen&lt;HubGenPage&gt;: </h3>extends HubPageGen
  * <p>
- * This Java class extends a generated Java class AiClusterPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
+ * This Java class extends a generated Java class HubPageGen built by the <a href="https://github.com/computate-org/computate">https://github.com/computate-org/computate</a> project. 
  * Whenever this Java class is modified or touched, the watch service installed as described in the README, indexes all the information about this Java class in a local Apache Solr Search Engine. 
  * If you are running the service, you can see the indexed data about this Java Class here: 
  * </p>
- * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage">Find the class AiClusterPage in Solr. </a></p>
+ * <p><a href="https://solr.apps-crc.testing/solr/computate/select?q=*:*&fq=partEstClasse_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubPage">Find the class HubPage in Solr. </a></p>
  * <p>
  * The extended class ending with "Gen" did not exist at first, but was automatically created by the same watch service based on the data retrieved from the local Apache Server search engine. 
  * The extended class contains many generated fields, getters, setters, initialization code, and helper methods to help build a website and API fast, reactive, and scalable. 
  * </p>
- * extends AiClusterPageGen<AiClusterGenPage>
- * <p>This <code>class AiClusterPage extends AiClusterPageGen&lt;AiClusterGenPage&gt;</code>, which means it extends a newly generated AiClusterPageGen. 
- * The generated <code>class AiClusterPageGen extends AiClusterGenPage</code> which means that AiClusterPage extends AiClusterPageGen which extends AiClusterGenPage. 
+ * extends HubPageGen<HubGenPage>
+ * <p>This <code>class HubPage extends HubPageGen&lt;HubGenPage&gt;</code>, which means it extends a newly generated HubPageGen. 
+ * The generated <code>class HubPageGen extends HubGenPage</code> which means that HubPage extends HubPageGen which extends HubGenPage. 
  * This generated inheritance is a powerful feature that allows a lot of boiler plate code to be created for you automatically while still preserving inheritance through the power of Java Generic classes. 
  * </p>
  * <h2>Api: true</h2>
@@ -66,7 +66,7 @@ import io.vertx.core.json.JsonArray;
  * <h2>Color: null</h2>
  * <h2>Indexed: true</h2>
  * <h2>{@inheritDoc}</h2>
- * <p>By adding a class comment "{@inheritDoc}", the AiClusterPage class will inherit the helpful inherited class comments from the super class AiClusterPageGen. 
+ * <p>By adding a class comment "{@inheritDoc}", the HubPage class will inherit the helpful inherited class comments from the super class HubPageGen. 
  * </p>
  * <h2>Rows: null</h2>
  * <h2>Model: true</h2>
@@ -76,7 +76,7 @@ import io.vertx.core.json.JsonArray;
  * <p>
  *   This class contains a comment <b>"Promise: true"</b>
  *   Sometimes a Java class must be initialized asynchronously when it involves calling a blocking API. 
- *   This means that the AiClusterPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
+ *   This means that the HubPage Java class has promiseDeep methods which must be initialized asynchronously as a Vert.x Promise  instead of initDeep methods which are a simple non-asynchronous method. 
  * </p>
  * <p>
  *   Adding protected void methods beginning with an underscore with a Promise as the only parameter will automatically set `Promise: true`. 
@@ -97,12 +97,12 @@ import io.vertx.core.json.JsonArray;
  * </p>
  * <h2>AName.enUS: null</h2>
  * <p>
- * Delete the class AiClusterPage in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.AiClusterPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete the class HubPage in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.HubPage&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
- * Delete  the package org.mghpcc.aitelemetry.model.cluster in Solr: 
- * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
+ * Delete  the package org.mghpcc.aitelemetry.model.hub in Solr: 
+ * curl -k 'https://solr.apps-crc.testing/update?commitWithin=1000&overwrite=true&wt=json' -X POST -H 'Content-type: text/xml' --data-raw '&lt;add&gt;&lt;delete&gt;&lt;query&gt;classeNomEnsemble_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub&lt;/query&gt;&lt;/delete&gt;&lt;/add&gt;'
  * </p>
  * <p>
  * Delete  the project ai-telemetry in Solr: 
@@ -110,24 +110,24 @@ import io.vertx.core.json.JsonArray;
  * </p>
  * Generated: true
  **/
-public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
-	protected static final Logger LOG = LoggerFactory.getLogger(AiClusterPage.class);
+public abstract class HubPageGen<DEV> extends HubGenPage {
+	protected static final Logger LOG = LoggerFactory.getLogger(HubPage.class);
 
 	//////////////
 	// initDeep //
 	//////////////
 
-	public Future<AiClusterPageGen<DEV>> promiseDeepAiClusterPage(SiteRequest siteRequest_) {
+	public Future<HubPageGen<DEV>> promiseDeepHubPage(SiteRequest siteRequest_) {
 		setSiteRequest_(siteRequest_);
-		return promiseDeepAiClusterPage();
+		return promiseDeepHubPage();
 	}
 
-	public Future<AiClusterPageGen<DEV>> promiseDeepAiClusterPage() {
-		Promise<AiClusterPageGen<DEV>> promise = Promise.promise();
+	public Future<HubPageGen<DEV>> promiseDeepHubPage() {
+		Promise<HubPageGen<DEV>> promise = Promise.promise();
 		Promise<Void> promise2 = Promise.promise();
-		promiseAiClusterPage(promise2);
+		promiseHubPage(promise2);
 		promise2.future().onSuccess(a -> {
-			super.promiseDeepAiClusterGenPage(siteRequest_).onSuccess(b -> {
+			super.promiseDeepHubGenPage(siteRequest_).onSuccess(b -> {
 				promise.complete(this);
 			}).onFailure(ex -> {
 				promise.fail(ex);
@@ -138,7 +138,7 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		return promise.future();
 	}
 
-	public Future<Void> promiseAiClusterPage(Promise<Void> promise) {
+	public Future<Void> promiseHubPage(Promise<Void> promise) {
 		Future.future(a -> a.complete()).compose(a -> {
 			Promise<Void> promise2 = Promise.promise();
 			try {
@@ -155,20 +155,20 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		return promise.future();
 	}
 
-	@Override public Future<? extends AiClusterPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
-		return promiseDeepAiClusterPage(siteRequest_);
+	@Override public Future<? extends HubPageGen<DEV>> promiseDeepForClass(SiteRequest siteRequest_) {
+		return promiseDeepHubPage(siteRequest_);
 	}
 
 	/////////////////
 	// siteRequest //
 	/////////////////
 
-	public void siteRequestAiClusterPage(SiteRequest siteRequest_) {
-			super.siteRequestAiClusterGenPage(siteRequest_);
+	public void siteRequestHubPage(SiteRequest siteRequest_) {
+			super.siteRequestHubGenPage(siteRequest_);
 	}
 
 	public void siteRequestForClass(SiteRequest siteRequest_) {
-		siteRequestAiClusterPage(siteRequest_);
+		siteRequestHubPage(siteRequest_);
 	}
 
 	/////////////
@@ -180,7 +180,7 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = obtainAiClusterPage(v);
+				o = obtainHubPage(v);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.obtainForClass(v);
@@ -192,11 +192,11 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		}
 		return o;
 	}
-	public Object obtainAiClusterPage(String var) {
-		AiClusterPage oAiClusterPage = (AiClusterPage)this;
+	public Object obtainHubPage(String var) {
+		HubPage oHubPage = (HubPage)this;
 		switch(var) {
 			default:
-				return super.obtainAiClusterGenPage(var);
+				return super.obtainHubGenPage(var);
 		}
 	}
 
@@ -209,7 +209,7 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		Object o = null;
 		for(String v : vars) {
 			if(o == null)
-				o = relateAiClusterPage(v, val);
+				o = relateHubPage(v, val);
 			else if(o instanceof BaseModel) {
 				BaseModel baseModel = (BaseModel)o;
 				o = baseModel.relateForClass(v, val);
@@ -217,11 +217,11 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		}
 		return o != null;
 	}
-	public Object relateAiClusterPage(String var, Object val) {
-		AiClusterPage oAiClusterPage = (AiClusterPage)this;
+	public Object relateHubPage(String var, Object val) {
+		HubPage oHubPage = (HubPage)this;
 		switch(var) {
 			default:
-				return super.relateAiClusterGenPage(var, val);
+				return super.relateHubGenPage(var, val);
 		}
 	}
 
@@ -229,13 +229,13 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	// staticSet //
 	///////////////
 
-	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, AiClusterPage o) {
-		return staticSetAiClusterPage(entityVar,  siteRequest_, v, o);
+	public static Object staticSetForClass(String entityVar, SiteRequest siteRequest_, String v, HubPage o) {
+		return staticSetHubPage(entityVar,  siteRequest_, v, o);
 	}
-	public static Object staticSetAiClusterPage(String entityVar, SiteRequest siteRequest_, String v, AiClusterPage o) {
+	public static Object staticSetHubPage(String entityVar, SiteRequest siteRequest_, String v, HubPage o) {
 		switch(entityVar) {
 			default:
-				return AiClusterGenPage.staticSetAiClusterGenPage(entityVar,  siteRequest_, v, o);
+				return HubGenPage.staticSetHubGenPage(entityVar,  siteRequest_, v, o);
 		}
 	}
 
@@ -244,12 +244,12 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	////////////////
 
 	public static Object staticSearchForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchAiClusterPage(entityVar,  siteRequest_, o);
+		return staticSearchHubPage(entityVar,  siteRequest_, o);
 	}
-	public static Object staticSearchAiClusterPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static Object staticSearchHubPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return AiClusterGenPage.staticSearchAiClusterGenPage(entityVar,  siteRequest_, o);
+				return HubGenPage.staticSearchHubGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -258,12 +258,12 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	///////////////////
 
 	public static String staticSearchStrForClass(String entityVar, SiteRequest siteRequest_, Object o) {
-		return staticSearchStrAiClusterPage(entityVar,  siteRequest_, o);
+		return staticSearchStrHubPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchStrAiClusterPage(String entityVar, SiteRequest siteRequest_, Object o) {
+	public static String staticSearchStrHubPage(String entityVar, SiteRequest siteRequest_, Object o) {
 		switch(entityVar) {
 			default:
-				return AiClusterGenPage.staticSearchStrAiClusterGenPage(entityVar,  siteRequest_, o);
+				return HubGenPage.staticSearchStrHubGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -272,12 +272,12 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	//////////////////
 
 	public static String staticSearchFqForClass(String entityVar, SiteRequest siteRequest_, String o) {
-		return staticSearchFqAiClusterPage(entityVar,  siteRequest_, o);
+		return staticSearchFqHubPage(entityVar,  siteRequest_, o);
 	}
-	public static String staticSearchFqAiClusterPage(String entityVar, SiteRequest siteRequest_, String o) {
+	public static String staticSearchFqHubPage(String entityVar, SiteRequest siteRequest_, String o) {
 		switch(entityVar) {
 			default:
-				return AiClusterGenPage.staticSearchFqAiClusterGenPage(entityVar,  siteRequest_, o);
+				return HubGenPage.staticSearchFqHubGenPage(entityVar,  siteRequest_, o);
 		}
 	}
 
@@ -291,8 +291,9 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 		return sb.toString();
 	}
 
-	public static final String CLASS_SIMPLE_NAME = "AiClusterPage";
-	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.cluster.AiClusterPage";
+	public static final String CLASS_SIMPLE_NAME = "HubPage";
+	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.model.hub.HubPage";
+	public static final String CLASS_AUTH_RESOURCE = "";
 
 
 	@Override
@@ -341,77 +342,77 @@ public abstract class AiClusterPageGen<DEV> extends AiClusterGenPage {
 	}
 
 	public static String displayNameForClass(String var) {
-		return AiClusterPage.displayNameAiClusterPage(var);
+		return HubPage.displayNameHubPage(var);
 	}
-	public static String displayNameAiClusterPage(String var) {
+	public static String displayNameHubPage(String var) {
 		switch(var) {
 		default:
-			return AiClusterGenPage.displayNameAiClusterGenPage(var);
+			return HubGenPage.displayNameHubGenPage(var);
 		}
 	}
 
-	public static String descriptionAiClusterPage(String var) {
+	public static String descriptionHubPage(String var) {
 		if(var == null)
 			return null;
 		switch(var) {
 			default:
-				return AiClusterGenPage.descriptionAiClusterGenPage(var);
+				return HubGenPage.descriptionHubGenPage(var);
 		}
 	}
 
-	public static String classSimpleNameAiClusterPage(String var) {
+	public static String classSimpleNameHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.classSimpleNameAiClusterGenPage(var);
+				return HubGenPage.classSimpleNameHubGenPage(var);
 		}
 	}
 
-	public static Integer htmColumnAiClusterPage(String var) {
+	public static Integer htmColumnHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.htmColumnAiClusterGenPage(var);
+				return HubGenPage.htmColumnHubGenPage(var);
 		}
 	}
 
-	public static Integer htmRowAiClusterPage(String var) {
+	public static Integer htmRowHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.htmRowAiClusterGenPage(var);
+				return HubGenPage.htmRowHubGenPage(var);
 		}
 	}
 
-	public static Integer htmCellAiClusterPage(String var) {
+	public static Integer htmCellHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.htmCellAiClusterGenPage(var);
+				return HubGenPage.htmCellHubGenPage(var);
 		}
 	}
 
-	public static Integer lengthMinAiClusterPage(String var) {
+	public static Integer lengthMinHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.lengthMinAiClusterGenPage(var);
+				return HubGenPage.lengthMinHubGenPage(var);
 		}
 	}
 
-	public static Integer lengthMaxAiClusterPage(String var) {
+	public static Integer lengthMaxHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.lengthMaxAiClusterGenPage(var);
+				return HubGenPage.lengthMaxHubGenPage(var);
 		}
 	}
 
-	public static Integer maxAiClusterPage(String var) {
+	public static Integer maxHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.maxAiClusterGenPage(var);
+				return HubGenPage.maxHubGenPage(var);
 		}
 	}
 
-	public static Integer minAiClusterPage(String var) {
+	public static Integer minHubPage(String var) {
 		switch(var) {
 			default:
-				return AiClusterGenPage.minAiClusterGenPage(var);
+				return HubGenPage.minHubGenPage(var);
 		}
 	}
 }

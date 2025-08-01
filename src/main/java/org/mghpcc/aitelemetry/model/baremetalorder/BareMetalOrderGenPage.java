@@ -538,7 +538,7 @@ public class BareMetalOrderGenPage extends BareMetalOrderGenPageGen<PageLayout> 
 
   @Override
   protected void _classIcon(Wrap<String> c) {
-      c.o("<i class=\"fa-duotone fa-regular fa-share-nodes\"></i>");
+      c.o("<i class=\"fa-regular fa-share-nodes\"></i>");
   }
 
   protected void _pageUriBareMetalOrder(Wrap<String> c) {
