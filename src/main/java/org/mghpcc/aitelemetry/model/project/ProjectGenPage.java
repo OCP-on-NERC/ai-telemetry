@@ -2,6 +2,8 @@ package org.mghpcc.aitelemetry.model.project;
 
 import org.mghpcc.aitelemetry.model.project.Project;
 import java.lang.String;
+import java.lang.Boolean;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;

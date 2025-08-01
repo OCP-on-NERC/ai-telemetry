@@ -6,6 +6,8 @@ import java.util.List;
 import io.vertx.pgclient.data.Point;
 import io.vertx.core.json.JsonObject;
 import java.lang.Integer;
+import java.lang.Long;
+import java.lang.Boolean;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;

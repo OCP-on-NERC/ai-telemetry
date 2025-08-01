@@ -6,6 +6,7 @@ import java.lang.Integer;
 import java.util.List;
 import io.vertx.pgclient.data.Point;
 import io.vertx.core.json.JsonObject;
+import java.lang.Boolean;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;

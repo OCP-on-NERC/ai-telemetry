@@ -2,6 +2,8 @@ package org.mghpcc.aitelemetry.model.hub;
 
 import org.mghpcc.aitelemetry.model.hub.Hub;
 import java.lang.String;
+import java.lang.Boolean;
+import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;

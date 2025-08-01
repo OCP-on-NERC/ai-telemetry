@@ -314,6 +314,30 @@ public class Cluster extends ClusterGen<BaseModel> {
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: CPU cores total
+	 * Description: The total number of CPU cores on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 4
+	 * Facet: true
+	 */
+	protected void _cpuCoresTotal(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: memory bytes total
+	 * Description: The total number of memory bytes on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 4
+	 * Facet: true
+	 */
+	protected void _memoryBytesTotal(Wrap<Long> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
 	 * DisplayName: Grafana GPU utilization
 	 * Description: Explore this cluster's GPU utilization in Grafana. 
 	 * HtmRow: 4
@@ -331,6 +355,39 @@ public class Cluster extends ClusterGen<BaseModel> {
 						)
 				)
 		));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy SSL
+	 * Description: Whether to enable SSL for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxySsl(Wrap<Boolean> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy Port
+	 * Description: The port for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxyPort(Wrap<Integer> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy host name
+	 * Description: The host name for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxyHostName(Wrap<String> w) {
 	}
 
 	/**

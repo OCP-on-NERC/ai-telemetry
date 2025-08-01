@@ -136,4 +136,48 @@ public class Hub extends HubGen<BaseModel> {
 	 **/
 	protected void _description(Wrap<String> w) {
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: local cluster name
+	 * Description: The actual name of the ACM local cluster. 
+	 * Facet: true
+	 **/
+	protected void _localClusterName(Wrap<String> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy SSL
+	 * Description: Whether to enable SSL for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxySsl(Wrap<Boolean> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy Port
+	 * Description: The port for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxyPort(Wrap<Integer> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: proxy host name
+	 * Description: The host name for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
+	 * Facet: true
+	 **/
+	protected void _promKeycloakProxyHostName(Wrap<String> w) {
+	}
 }

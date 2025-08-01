@@ -888,7 +888,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						});
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(Project.VAR_archived + "=$" + num);
@@ -927,6 +927,14 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
+					case "setPromKeycloakProxySsl":
+							o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Project.VAR_promKeycloakProxySsl + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -934,6 +942,22 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							bSql.append(Project.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
+						break;
+					case "setPromKeycloakProxyPort":
+							o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Project.VAR_promKeycloakProxyPort + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case "setPromKeycloakProxyHostName":
+							o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Project.VAR_promKeycloakProxyHostName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
@@ -1406,7 +1430,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						});
 						break;
 					case Project.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1450,6 +1474,15 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
+					case Project.VAR_promKeycloakProxySsl:
+						o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Project.VAR_promKeycloakProxySsl + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
 					case Project.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1458,6 +1491,24 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						bSql.append(Project.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
+						break;
+					case Project.VAR_promKeycloakProxyPort:
+						o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Project.VAR_promKeycloakProxyPort + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case Project.VAR_promKeycloakProxyHostName:
+						o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Project.VAR_promKeycloakProxyHostName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 					case Project.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
@@ -3707,7 +3758,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, projectName, projectResource, description, sessionId, userKey, objectTitle, displayPage FROM Project WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, projectName, projectResource, description, sessionId, promKeycloakProxySsl, userKey, promKeycloakProxyPort, promKeycloakProxyHostName, objectTitle, displayPage FROM Project WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -4017,7 +4068,10 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			page.persistForClass(Project.VAR_projectResource, Project.staticSetProjectResource(siteRequest2, (String)result.get(Project.VAR_projectResource)));
 			page.persistForClass(Project.VAR_description, Project.staticSetDescription(siteRequest2, (String)result.get(Project.VAR_description)));
 			page.persistForClass(Project.VAR_sessionId, Project.staticSetSessionId(siteRequest2, (String)result.get(Project.VAR_sessionId)));
+			page.persistForClass(Project.VAR_promKeycloakProxySsl, Project.staticSetPromKeycloakProxySsl(siteRequest2, (String)result.get(Project.VAR_promKeycloakProxySsl)));
 			page.persistForClass(Project.VAR_userKey, Project.staticSetUserKey(siteRequest2, (String)result.get(Project.VAR_userKey)));
+			page.persistForClass(Project.VAR_promKeycloakProxyPort, Project.staticSetPromKeycloakProxyPort(siteRequest2, (String)result.get(Project.VAR_promKeycloakProxyPort)));
+			page.persistForClass(Project.VAR_promKeycloakProxyHostName, Project.staticSetPromKeycloakProxyHostName(siteRequest2, (String)result.get(Project.VAR_promKeycloakProxyHostName)));
 			page.persistForClass(Project.VAR_objectTitle, Project.staticSetObjectTitle(siteRequest2, (String)result.get(Project.VAR_objectTitle)));
 			page.persistForClass(Project.VAR_displayPage, Project.staticSetDisplayPage(siteRequest2, (String)result.get(Project.VAR_displayPage)));
 

@@ -845,7 +845,7 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							bParams.add(o2.sqlClusterResource());
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(Cluster.VAR_archived + "=$" + num);
@@ -955,6 +955,46 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 							bSql.append(Cluster.VAR_gpuDevicesTotal + "=$" + num);
 							num++;
 							bParams.add(o2.sqlGpuDevicesTotal());
+						break;
+					case "setCpuCoresTotal":
+							o2.setCpuCoresTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_cpuCoresTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCpuCoresTotal());
+						break;
+					case "setMemoryBytesTotal":
+							o2.setMemoryBytesTotal(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_memoryBytesTotal + "=$" + num);
+							num++;
+							bParams.add(o2.sqlMemoryBytesTotal());
+						break;
+					case "setPromKeycloakProxySsl":
+							o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_promKeycloakProxySsl + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
+					case "setPromKeycloakProxyPort":
+							o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_promKeycloakProxyPort + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case "setPromKeycloakProxyHostName":
+							o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Cluster.VAR_promKeycloakProxyHostName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 				}
 			}
@@ -1394,7 +1434,7 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						bParams.add(o2.sqlClusterResource());
 						break;
 					case Cluster.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1518,6 +1558,51 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						bSql.append(Cluster.VAR_gpuDevicesTotal + "=$" + num);
 						num++;
 						bParams.add(o2.sqlGpuDevicesTotal());
+						break;
+					case Cluster.VAR_cpuCoresTotal:
+						o2.setCpuCoresTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_cpuCoresTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCpuCoresTotal());
+						break;
+					case Cluster.VAR_memoryBytesTotal:
+						o2.setMemoryBytesTotal(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_memoryBytesTotal + "=$" + num);
+						num++;
+						bParams.add(o2.sqlMemoryBytesTotal());
+						break;
+					case Cluster.VAR_promKeycloakProxySsl:
+						o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_promKeycloakProxySsl + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
+					case Cluster.VAR_promKeycloakProxyPort:
+						o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_promKeycloakProxyPort + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case Cluster.VAR_promKeycloakProxyHostName:
+						o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Cluster.VAR_promKeycloakProxyHostName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 					}
 				}
@@ -3672,7 +3757,7 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, description, sessionId, userKey, location, id, objectTitle, ngsildTenant, displayPage, ngsildPath, ngsildContext, ngsildData, aiNodesTotal, gpuDevicesTotal FROM Cluster WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, description, sessionId, userKey, location, id, objectTitle, ngsildTenant, displayPage, ngsildPath, ngsildContext, ngsildData, aiNodesTotal, gpuDevicesTotal, cpuCoresTotal, memoryBytesTotal, promKeycloakProxySsl, promKeycloakProxyPort, promKeycloakProxyHostName FROM Cluster WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3956,6 +4041,11 @@ public class ClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 			page.persistForClass(Cluster.VAR_ngsildData, Cluster.staticSetNgsildData(siteRequest2, (String)result.get(Cluster.VAR_ngsildData)));
 			page.persistForClass(Cluster.VAR_aiNodesTotal, Cluster.staticSetAiNodesTotal(siteRequest2, (String)result.get(Cluster.VAR_aiNodesTotal)));
 			page.persistForClass(Cluster.VAR_gpuDevicesTotal, Cluster.staticSetGpuDevicesTotal(siteRequest2, (String)result.get(Cluster.VAR_gpuDevicesTotal)));
+			page.persistForClass(Cluster.VAR_cpuCoresTotal, Cluster.staticSetCpuCoresTotal(siteRequest2, (String)result.get(Cluster.VAR_cpuCoresTotal)));
+			page.persistForClass(Cluster.VAR_memoryBytesTotal, Cluster.staticSetMemoryBytesTotal(siteRequest2, (String)result.get(Cluster.VAR_memoryBytesTotal)));
+			page.persistForClass(Cluster.VAR_promKeycloakProxySsl, Cluster.staticSetPromKeycloakProxySsl(siteRequest2, (String)result.get(Cluster.VAR_promKeycloakProxySsl)));
+			page.persistForClass(Cluster.VAR_promKeycloakProxyPort, Cluster.staticSetPromKeycloakProxyPort(siteRequest2, (String)result.get(Cluster.VAR_promKeycloakProxyPort)));
+			page.persistForClass(Cluster.VAR_promKeycloakProxyHostName, Cluster.staticSetPromKeycloakProxyHostName(siteRequest2, (String)result.get(Cluster.VAR_promKeycloakProxyHostName)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

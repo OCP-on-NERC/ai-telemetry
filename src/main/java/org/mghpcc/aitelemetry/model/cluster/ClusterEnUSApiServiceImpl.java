@@ -212,77 +212,79 @@ public class ClusterEnUSApiServiceImpl extends ClusterEnUSGenApiServiceImpl {
 	protected Future<Void> importData(Path pagePath, Vertx vertx, ComputateSiteRequest siteRequest, String classCanonicalName,
 			String classSimpleName, String classApiAddress, String classAuthResource, String varPageId, String varUserUrl, String varDownload) {
 		Promise<Void> promise = Promise.promise();
-		ZonedDateTime dateTimeStarted = ZonedDateTime.now();
-		super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload).onSuccess(a -> {
-			try {
-				String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
-				Integer authPort = config.getInteger(ConfigKeys.AUTH_PORT);
-				String authTokenUri = config.getString(ConfigKeys.AUTH_TOKEN_URI);
-				Boolean authSsl = config.getBoolean(ConfigKeys.AUTH_SSL);
-				String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
-				String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
-				MultiMap form = MultiMap.caseInsensitiveMultiMap();
-				String hubId = "moc";
-				form.add("grant_type", "client_credentials");
-				UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);
-				webClient.post(authPort, authHostName, authTokenUri).ssl(authSsl).authentication(credentials)
-						.putHeader("Content-Type", "application/json")
-						.sendForm(form)
-						.expecting(HttpResponseExpectation.SC_OK)
-						.onSuccess(requestAuthResponse -> {
-					try {
-						String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
-						queryAiNodesTotal(classSimpleName, accessToken).onSuccess(aiNodesTotal -> {
-							queryGpuDevicesTotal(classSimpleName, accessToken).onSuccess(gpuDevicesTotal -> {
-								List<JsonObject> clustersWithAiNodesTotal = aiNodesTotal.stream().filter(aiNodeResult -> !((JsonObject)aiNodeResult).getJsonArray("value").getString(1).equals("0")).map(aiNodeResult -> (JsonObject)aiNodeResult).collect(Collectors.toList());
-								List<Future<?>> futures = new ArrayList<>();
-								for(Integer i = 0; i < clustersWithAiNodesTotal.size(); i++) {
-									JsonObject aiNodeResult = clustersWithAiNodesTotal.get(i);
-									JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
-									futures.add(Future.future(promise1 -> {
-										importResult(hubId, classSimpleName, classApiAddress, aiNodeResult, gpuDeviceResult).onComplete(b -> {
-											promise1.complete();
-										}).onFailure(ex -> {
-											LOG.error(String.format(importDataFail, classSimpleName), ex);
-											promise1.fail(ex);
-										});
-									}));
-								}
-								Future.all(futures).onSuccess(b -> {
-									cleanupNonAiNodesTotal(siteRequest, dateTimeStarted, classSimpleName, accessToken).onSuccess(oldAiNodes -> {
-										promise.complete();
-									}).onFailure(ex -> {
-										LOG.error(String.format(importDataFail, classSimpleName), ex);
-										promise.fail(ex);
-									});
-								}).onFailure(ex -> {
-									LOG.error(String.format(importDataFail, classSimpleName), ex);
-									promise.fail(ex);
-								});
-							}).onFailure(ex -> {
-								LOG.error(String.format(importDataFail, classSimpleName), ex);
-								promise.fail(ex);
-							});
-						}).onFailure(ex -> {
-							LOG.error(String.format(importDataFail, classSimpleName), ex);
-							promise.fail(ex);
-						});
-					} catch(Throwable ex) {
-						LOG.error(String.format(importDataFail, classSimpleName), ex);
-						promise.fail(ex);
-					}
-				}).onFailure(ex -> {
-					LOG.error(String.format(importDataFail, classSimpleName), ex);
-					promise.fail(ex);
-				});
-			} catch(Throwable ex) {
-				LOG.error(String.format(importDataFail, classSimpleName), ex);
-				promise.fail(ex);
-			}
-		}).onFailure(ex -> {
-			LOG.error(String.format(importDataFail, classSimpleName), ex);
-			promise.fail(ex);
-		});
+		LOG.warn(String.format("%s import is not implemented directly from this API, only from the Hub API instead. ", Cluster.CLASS_SIMPLE_NAME));
+		promise.complete();
+		// ZonedDateTime dateTimeStarted = ZonedDateTime.now();
+		// super.importData(pagePath, vertx, siteRequest, classCanonicalName, classSimpleName, classApiAddress, classAuthResource, varPageId, varUserUrl, varDownload).onSuccess(a -> {
+		// 	try {
+		// 		String authHostName = config.getString(ConfigKeys.AUTH_HOST_NAME);
+		// 		Integer authPort = config.getInteger(ConfigKeys.AUTH_PORT);
+		// 		String authTokenUri = config.getString(ConfigKeys.AUTH_TOKEN_URI);
+		// 		Boolean authSsl = config.getBoolean(ConfigKeys.AUTH_SSL);
+		// 		String authClient = config.getString(ConfigKeys.AUTH_CLIENT_SA);
+		// 		String authSecret = config.getString(ConfigKeys.AUTH_SECRET_SA);
+		// 		MultiMap form = MultiMap.caseInsensitiveMultiMap();
+		// 		String hubId = "moc";
+		// 		form.add("grant_type", "client_credentials");
+		// 		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(authClient, authSecret);
+		// 		webClient.post(authPort, authHostName, authTokenUri).ssl(authSsl).authentication(credentials)
+		// 				.putHeader("Content-Type", "application/json")
+		// 				.sendForm(form)
+		// 				.expecting(HttpResponseExpectation.SC_OK)
+		// 				.onSuccess(requestAuthResponse -> {
+		// 			try {
+		// 				String accessToken = requestAuthResponse.bodyAsJsonObject().getString("access_token");
+		// 				queryAiNodesTotal(classSimpleName, accessToken).onSuccess(aiNodesTotal -> {
+		// 					queryGpuDevicesTotal(classSimpleName, accessToken).onSuccess(gpuDevicesTotal -> {
+		// 						List<JsonObject> clustersWithAiNodesTotal = aiNodesTotal.stream().filter(aiNodeResult -> !((JsonObject)aiNodeResult).getJsonArray("value").getString(1).equals("0")).map(aiNodeResult -> (JsonObject)aiNodeResult).collect(Collectors.toList());
+		// 						List<Future<?>> futures = new ArrayList<>();
+		// 						for(Integer i = 0; i < clustersWithAiNodesTotal.size(); i++) {
+		// 							JsonObject aiNodeResult = clustersWithAiNodesTotal.get(i);
+		// 							JsonObject gpuDeviceResult = gpuDevicesTotal.getJsonObject(i);
+		// 							futures.add(Future.future(promise1 -> {
+		// 								importResult(hubId, classSimpleName, classApiAddress, aiNodeResult, gpuDeviceResult).onComplete(b -> {
+		// 									promise1.complete();
+		// 								}).onFailure(ex -> {
+		// 									LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 									promise1.fail(ex);
+		// 								});
+		// 							}));
+		// 						}
+		// 						Future.all(futures).onSuccess(b -> {
+		// 							cleanupNonAiNodesTotal(siteRequest, dateTimeStarted, classSimpleName, accessToken).onSuccess(oldAiNodes -> {
+		// 								promise.complete();
+		// 							}).onFailure(ex -> {
+		// 								LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 								promise.fail(ex);
+		// 							});
+		// 						}).onFailure(ex -> {
+		// 							LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 							promise.fail(ex);
+		// 						});
+		// 					}).onFailure(ex -> {
+		// 						LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 						promise.fail(ex);
+		// 					});
+		// 				}).onFailure(ex -> {
+		// 					LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 					promise.fail(ex);
+		// 				});
+		// 			} catch(Throwable ex) {
+		// 				LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 				promise.fail(ex);
+		// 			}
+		// 		}).onFailure(ex -> {
+		// 			LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 			promise.fail(ex);
+		// 		});
+		// 	} catch(Throwable ex) {
+		// 		LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 		promise.fail(ex);
+		// 	}
+		// }).onFailure(ex -> {
+		// 	LOG.error(String.format(importDataFail, classSimpleName), ex);
+		// 	promise.fail(ex);
+		// });
 		return promise.future();
 	}
 

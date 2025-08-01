@@ -15744,7 +15744,17 @@ components:
                     type: string
                   gpuDevicesTotal:
                     type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
+                    type: string
                   grafanaUrl:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
                   modified:
                     type: string
@@ -15908,12 +15918,47 @@ components:
               type: string
             removeAllGpuDevicesTotal:
               type: string
+            setCpuCoresTotal:
+              type: string
+              nullable: true
+            removeCpuCoresTotal:
+              type: string
+            removeAllCpuCoresTotal:
+              type: string
+            setMemoryBytesTotal:
+              type: string
+              nullable: true
+            removeMemoryBytesTotal:
+              type: string
+            removeAllMemoryBytesTotal:
+              type: string
             setGrafanaUrl:
               type: string
               nullable: true
             removeGrafanaUrl:
               type: string
             removeAllGrafanaUrl:
+              type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
               type: string
             setModified:
               type: string
@@ -16082,12 +16127,47 @@ components:
               type: string
             removeAllGpuDevicesTotal:
               type: string
+            setCpuCoresTotal:
+              type: string
+              nullable: true
+            removeCpuCoresTotal:
+              type: string
+            removeAllCpuCoresTotal:
+              type: string
+            setMemoryBytesTotal:
+              type: string
+              nullable: true
+            removeMemoryBytesTotal:
+              type: string
+            removeAllMemoryBytesTotal:
+              type: string
             setGrafanaUrl:
               type: string
               nullable: true
             removeGrafanaUrl:
               type: string
             removeAllGrafanaUrl:
+              type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
               type: string
             setModified:
               type: string
@@ -16142,7 +16222,17 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -16192,7 +16282,17 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -16242,7 +16342,17 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -16297,7 +16407,17 @@ components:
                     type: string
                   gpuDevicesTotal:
                     type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
+                    type: string
                   grafanaUrl:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
                   modified:
                     type: string
@@ -16347,7 +16467,17 @@ components:
                     type: string
                   gpuDevicesTotal:
                     type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
+                    type: string
                   grafanaUrl:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
                   modified:
                     type: string
@@ -16397,7 +16527,17 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -16447,7 +16587,17 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -17168,6 +17318,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PATCHGpuDeviceRequest:
       allOf:
         - type: object
@@ -17349,6 +17505,27 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     PATCHGpuDeviceResponse:
       allOf:
         - type: object
@@ -17530,6 +17707,27 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     POSTGpuDeviceRequest:
       allOf:
         - type: object
@@ -17582,6 +17780,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     POSTGpuDeviceResponse:
       allOf:
         - type: object
@@ -17634,6 +17838,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEFilterGpuDeviceResponse:
       allOf:
         - type: object
@@ -17686,6 +17896,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     PUTImportGpuDeviceRequest:
       allOf:
         - type: object
@@ -17743,6 +17959,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PUTImportGpuDeviceResponse:
       allOf:
         - type: object
@@ -17795,6 +18017,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     GETGpuDeviceResponse:
       allOf:
         - type: object
@@ -17847,6 +18075,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEGpuDeviceResponse:
       allOf:
         - type: object
@@ -17899,6 +18133,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     EditPageGpuDeviceResponse:
       allOf:
         - type: string
@@ -17935,6 +18175,14 @@ components:
                   pageId:
                     type: string
                   description:
+                    type: string
+                  localClusterName:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
     PATCHHubRequest:
       allOf:
@@ -17975,6 +18223,34 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setLocalClusterName:
+              type: string
+              nullable: true
+            removeLocalClusterName:
+              type: string
+            removeAllLocalClusterName:
+              type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     PATCHHubResponse:
       allOf:
         - type: object
@@ -18014,6 +18290,34 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setLocalClusterName:
+              type: string
+              nullable: true
+            removeLocalClusterName:
+              type: string
+            removeAllLocalClusterName:
+              type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     POSTHubRequest:
       allOf:
         - type: object
@@ -18027,6 +18331,14 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     POSTHubResponse:
       allOf:
@@ -18042,6 +18354,14 @@ components:
               type: string
             description:
               type: string
+            localClusterName:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEFilterHubResponse:
       allOf:
         - type: object
@@ -18055,6 +18375,14 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     PUTImportHubRequest:
       allOf:
@@ -18075,6 +18403,14 @@ components:
                     type: string
                   description:
                     type: string
+                  localClusterName:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PUTImportHubResponse:
       allOf:
         - type: object
@@ -18088,6 +18424,14 @@ components:
                   pageId:
                     type: string
                   description:
+                    type: string
+                  localClusterName:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
     GETHubResponse:
       allOf:
@@ -18103,6 +18447,14 @@ components:
               type: string
             description:
               type: string
+            localClusterName:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEHubResponse:
       allOf:
         - type: object
@@ -18116,6 +18468,14 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     EditPageHubResponse:
       allOf:
@@ -18388,6 +18748,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PATCHAiNodeRequest:
       allOf:
         - type: object
@@ -18555,6 +18921,27 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     PATCHAiNodeResponse:
       allOf:
         - type: object
@@ -18722,6 +19109,27 @@ components:
               type: object
             removeAllNgsildData:
               type: object
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     POSTAiNodeRequest:
       allOf:
         - type: object
@@ -18770,6 +19178,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     POSTAiNodeResponse:
       allOf:
         - type: object
@@ -18818,6 +19232,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEFilterAiNodeResponse:
       allOf:
         - type: object
@@ -18866,6 +19286,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -18919,6 +19345,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PUTImportAiNodeResponse:
       allOf:
         - type: object
@@ -18967,6 +19399,12 @@ components:
                     type: string
                   ngsildData:
                     type: object
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     GETAiNodeResponse:
       allOf:
         - type: object
@@ -19015,6 +19453,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEAiNodeResponse:
       allOf:
         - type: object
@@ -19063,6 +19507,12 @@ components:
               type: string
             ngsildData:
               type: object
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     EditPageAiNodeResponse:
       allOf:
         - type: string
@@ -19105,6 +19555,12 @@ components:
                   projectDisplayName:
                     type: string
                   description:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
     PATCHProjectRequest:
       allOf:
@@ -19166,6 +19622,27 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     PATCHProjectResponse:
       allOf:
         - type: object
@@ -19226,6 +19703,27 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setPromKeycloakProxySsl:
+              type: boolean
+              nullable: true
+            removePromKeycloakProxySsl:
+              type: boolean
+            removeAllPromKeycloakProxySsl:
+              type: boolean
+            setPromKeycloakProxyPort:
+              type: string
+              nullable: true
+            removePromKeycloakProxyPort:
+              type: string
+            removeAllPromKeycloakProxyPort:
+              type: string
+            setPromKeycloakProxyHostName:
+              type: string
+              nullable: true
+            removePromKeycloakProxyHostName:
+              type: string
+            removeAllPromKeycloakProxyHostName:
+              type: string
     POSTProjectRequest:
       allOf:
         - type: object
@@ -19245,6 +19743,12 @@ components:
             projectDisplayName:
               type: string
             description:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     POSTProjectResponse:
       allOf:
@@ -19266,6 +19770,12 @@ components:
               type: string
             description:
               type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEFilterProjectResponse:
       allOf:
         - type: object
@@ -19285,6 +19795,12 @@ components:
             projectDisplayName:
               type: string
             description:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     PUTImportProjectRequest:
       allOf:
@@ -19311,6 +19827,12 @@ components:
                     type: string
                   description:
                     type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
+                    type: string
     PUTImportProjectResponse:
       allOf:
         - type: object
@@ -19330,6 +19852,12 @@ components:
                   projectDisplayName:
                     type: string
                   description:
+                    type: string
+                  promKeycloakProxySsl:
+                    type: boolean
+                  promKeycloakProxyPort:
+                    type: string
+                  promKeycloakProxyHostName:
                     type: string
     GETProjectResponse:
       allOf:
@@ -19351,6 +19879,12 @@ components:
               type: string
             description:
               type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
+              type: string
     DELETEProjectResponse:
       allOf:
         - type: object
@@ -19370,6 +19904,12 @@ components:
             projectDisplayName:
               type: string
             description:
+              type: string
+            promKeycloakProxySsl:
+              type: boolean
+            promKeycloakProxyPort:
+              type: string
+            promKeycloakProxyHostName:
               type: string
     EditPageProjectResponse:
       allOf:

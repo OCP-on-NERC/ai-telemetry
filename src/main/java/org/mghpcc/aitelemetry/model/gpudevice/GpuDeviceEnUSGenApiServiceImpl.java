@@ -872,7 +872,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						});
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(GpuDevice.VAR_archived + "=$" + num);
@@ -1029,6 +1029,30 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 							bSql.append(GpuDevice.VAR_ngsildData + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNgsildData());
+						break;
+					case "setPromKeycloakProxySsl":
+							o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_promKeycloakProxySsl + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
+					case "setPromKeycloakProxyPort":
+							o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_promKeycloakProxyPort + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case "setPromKeycloakProxyHostName":
+							o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(GpuDevice.VAR_promKeycloakProxyHostName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 				}
 			}
@@ -1479,7 +1503,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						});
 						break;
 					case GpuDevice.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1641,6 +1665,33 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 						bSql.append(GpuDevice.VAR_ngsildData + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNgsildData());
+						break;
+					case GpuDevice.VAR_promKeycloakProxySsl:
+						o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_promKeycloakProxySsl + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxySsl());
+						break;
+					case GpuDevice.VAR_promKeycloakProxyPort:
+						o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_promKeycloakProxyPort + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyPort());
+						break;
+					case GpuDevice.VAR_promKeycloakProxyHostName:
+						o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(GpuDevice.VAR_promKeycloakProxyHostName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 					}
 				}
@@ -3877,7 +3928,7 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, nodeName, nodeResource, gpuDeviceNumber, gpuDeviceResource, sessionId, userKey, gpuDeviceUtilization, description, objectTitle, displayPage, location, id, ngsildTenant, ngsildPath, ngsildContext, ngsildData FROM GpuDevice WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, nodeName, nodeResource, gpuDeviceNumber, gpuDeviceResource, sessionId, userKey, gpuDeviceUtilization, description, objectTitle, displayPage, location, id, ngsildTenant, ngsildPath, ngsildContext, ngsildData, promKeycloakProxySsl, promKeycloakProxyPort, promKeycloakProxyHostName FROM GpuDevice WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -4234,6 +4285,9 @@ public class GpuDeviceEnUSGenApiServiceImpl extends BaseApiServiceImpl implement
 			page.persistForClass(GpuDevice.VAR_ngsildPath, GpuDevice.staticSetNgsildPath(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildPath)));
 			page.persistForClass(GpuDevice.VAR_ngsildContext, GpuDevice.staticSetNgsildContext(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildContext)));
 			page.persistForClass(GpuDevice.VAR_ngsildData, GpuDevice.staticSetNgsildData(siteRequest2, (String)result.get(GpuDevice.VAR_ngsildData)));
+			page.persistForClass(GpuDevice.VAR_promKeycloakProxySsl, GpuDevice.staticSetPromKeycloakProxySsl(siteRequest2, (String)result.get(GpuDevice.VAR_promKeycloakProxySsl)));
+			page.persistForClass(GpuDevice.VAR_promKeycloakProxyPort, GpuDevice.staticSetPromKeycloakProxyPort(siteRequest2, (String)result.get(GpuDevice.VAR_promKeycloakProxyPort)));
+			page.persistForClass(GpuDevice.VAR_promKeycloakProxyHostName, GpuDevice.staticSetPromKeycloakProxyHostName(siteRequest2, (String)result.get(GpuDevice.VAR_promKeycloakProxyHostName)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {
