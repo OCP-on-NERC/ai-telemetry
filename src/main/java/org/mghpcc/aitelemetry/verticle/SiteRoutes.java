@@ -30,17 +30,18 @@ public class SiteRoutes {
 	protected static final Logger LOG = LoggerFactory.getLogger(SiteRoutes.class);
   
   public static void routes(Router router, ComputateOAuth2AuthHandlerImpl oauth2AuthHandler, JsonObject config, WebClient webClient, SiteUserEnUSApiServiceImpl apiSiteUser) {
-		router.getWithRegex("\\/prom-keycloak-proxy(?<uri>.*)").handler(oauth2AuthHandler).handler(handler -> {
+		router.getWithRegex("\\/prom-keycloak-proxy/(?<hub>[^/]+)(?<uri>/.*)").handler(oauth2AuthHandler).handler(handler -> {
 			String originalUri = handler.pathParam("uri");
 			ServiceRequest serviceRequest = apiSiteUser.generateServiceRequest(handler);
 			apiSiteUser.user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_ComputateSiteUser, "postSiteUserFuture", "patchSiteUserFuture", false).onSuccess(siteRequest -> {
 				try {
 
 					String uri = handler.pathParam("uri");
+					String hubId = handler.pathParam("hub");
 
-					Integer promKeycloakProxyPort = Integer.parseInt(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_PORT));
-					String promKeycloakProxyHostName = config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME);
-					Boolean promKeycloakProxySsl = Boolean.parseBoolean(config.getString(ConfigKeys.PROM_KEYCLOAK_PROXY_SSL));
+					Integer promKeycloakProxyPort = Integer.parseInt(config.getString(String.format("%s_%s", ConfigKeys.PROM_KEYCLOAK_PROXY_PORT, hubId.toUpperCase().replace("-", ""))));
+					String promKeycloakProxyHostName = config.getString(String.format("%s_%s", ConfigKeys.PROM_KEYCLOAK_PROXY_HOST_NAME, hubId.toUpperCase().replace("-", "")));
+					Boolean promKeycloakProxySsl = Boolean.parseBoolean(config.getString(String.format("%s_%s", ConfigKeys.PROM_KEYCLOAK_PROXY_SSL, hubId.toUpperCase().replace("-", ""))));
 
 					HttpRequest<Buffer> get = webClient.get(promKeycloakProxyPort, promKeycloakProxyHostName, uri).ssl(promKeycloakProxySsl);
 					for(Entry<String, String> entry : handler.queryParams()) {
