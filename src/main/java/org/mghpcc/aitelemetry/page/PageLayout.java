@@ -198,17 +198,31 @@ public class PageLayout extends PageLayoutGen<Object> {
 	}
 
 	/**
+	 * Description: The current user's groups
+	 */
+	protected void _userGroups(Wrap<List<String>> w) {
+		w.o(siteRequest_.getGroups().stream().filter(group -> group.startsWith("/")).collect(Collectors.toList()));
+	}
+
+	/**
+	 * Description: The user's default font size. 
+	 */
+	protected void _userFontSize(Wrap<String> w) {
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteFontSize()).orElse("m"));
+	}
+
+	/**
 	 * Description: The user's web components theme
 	 */
 	protected void _userWebComponentsTheme(Wrap<String> w) {
-		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getWebComponentsTheme()).orElse("tailspin"));
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getWebComponentsTheme()).orElse("glossy"));
 	}
 
 	/**
 	 * Description: The user's siteTheme
 	 */
 	protected void _userSiteTheme(Wrap<String> w) {
-		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteTheme()).orElse("light"));
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteTheme()).orElse("dark"));
 	}
 
 	/**

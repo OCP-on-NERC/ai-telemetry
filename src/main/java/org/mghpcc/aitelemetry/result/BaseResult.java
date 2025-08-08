@@ -1,6 +1,7 @@
 
 package org.mghpcc.aitelemetry.result;
 
+import java.net.URLEncoder;
 import java.text.Normalizer;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -22,7 +23,7 @@ import io.vertx.core.Promise;
  * Indexed: true
  * Keyword: classSimpleNameBaseResult
  * Description: A reusable base class for all non-model search classes
- * Order: 1
+ * Order: 0
  * Promise: true
  */
 public class BaseResult extends BaseResultGen<Object> implements ComputateBaseResult {
@@ -167,11 +168,11 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	protected void _displayPage(Wrap<String> w) {
 		String f = classStringFormatUrlDisplayPageForClass();
 		if(f != null) {
-			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), urlEncode(idForClass())));
 		} else {
 			f = classStringFormatUrlEditPageForClass();
 			if(f != null) {
-				w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+				w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), urlEncode(idForClass())));
 			}
 		}
 	}
@@ -179,18 +180,17 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	/**
 	 * {@inheritDoc}
 	 * DocValues: true
-	 * HtmColumn: 99
 	 * Facet: true
 	 * DisplayName: edit
 	 * Description: Edit this
 	 * Link: true
-	 * Icon: <i class="fa-regular fa-pen-to-square"></i>
+	 * Icon: <i class="fa-duotone fa-regular fa-pen-to-square"></i>
 	 * VarUrlEditPage: true
 	 */
 	protected void _editPage(Wrap<String> w) {
 		String f = classStringFormatUrlEditPageForClass();
 		if(f != null)
-			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), urlEncode(idForClass())));
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	protected void _userPage(Wrap<String> w) {
 		String f = classStringFormatUrlUserPageForClass();
 		if(f != null)
-			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), urlEncode(idForClass())));
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	protected void _download(Wrap<String> w) {
 		String f = classStringFormatUrlDownloadForClass();
 		if(f != null)
-			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), idForClass()));
+			w.o(String.format(f, siteRequest_.getConfig().getString(ComputateConfigKeys.SITE_BASE_URL), urlEncode(idForClass())));
 	}
 
 	/**
@@ -265,5 +265,14 @@ public class BaseResult extends BaseResultGen<Object> implements ComputateBaseRe
 	protected void _solrId(Wrap<String> w) {
 		String objectId = idForClass();
 		w.o(String.format("%s_%s_%s", getSiteRequest_().getConfig().getString(ComputateConfigKeys.SOLR_COLLECTION), getClass().getSimpleName(), objectId));
+	}
+
+	public static String urlEncode(String str) {
+		try {
+			return URLEncoder.encode(str, "UTF-8");
+		} catch(Throwable ex) {
+			ExceptionUtils.rethrow(ex);
+			return null;
+		}
 	}
 }

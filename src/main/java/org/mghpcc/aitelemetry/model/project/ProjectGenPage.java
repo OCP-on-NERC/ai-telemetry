@@ -2,8 +2,6 @@ package org.mghpcc.aitelemetry.model.project;
 
 import org.mghpcc.aitelemetry.model.project.Project;
 import java.lang.String;
-import java.lang.Boolean;
-import java.lang.Integer;
 import org.mghpcc.aitelemetry.page.PageLayout;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 import org.mghpcc.aitelemetry.user.SiteUser;
@@ -346,7 +344,7 @@ public class ProjectGenPage extends ProjectGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeGap(Wrap<String> w) {
-    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1DAY")));
+    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1HOUR")));
   }
 
   @Override

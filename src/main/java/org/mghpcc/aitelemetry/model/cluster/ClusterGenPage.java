@@ -7,7 +7,6 @@ import io.vertx.pgclient.data.Point;
 import io.vertx.core.json.JsonObject;
 import java.lang.Integer;
 import java.lang.Long;
-import java.lang.Boolean;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -347,7 +346,7 @@ public class ClusterGenPage extends ClusterGenPageGen<PageLayout> {
 
   @Override
   protected void _defaultRangeGap(Wrap<String> w) {
-    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1DAY")));
+    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1HOUR")));
   }
 
   @Override

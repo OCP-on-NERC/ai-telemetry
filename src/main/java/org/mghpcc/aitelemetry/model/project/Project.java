@@ -43,18 +43,10 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   ProjectAdmin:
- *     POST:
- *     PATCH:
+ *   HubAdmin:
  *     GET:
- *     DELETE:
- *     Admin:
  *   Admin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:
@@ -172,37 +164,4 @@ public class Project extends ProjectGen<BaseModel> {
 	 * Multiline: true
 	 **/
 	protected void _description(Wrap<String> w) {}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * DisplayName: proxy SSL
-	 * Description: Whether to enable SSL for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
-	 * Facet: true
-	 **/
-	protected void _promKeycloakProxySsl(Wrap<Boolean> w) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * DisplayName: proxy Port
-	 * Description: The port for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
-	 * Facet: true
-	 **/
-	protected void _promKeycloakProxyPort(Wrap<Integer> w) {
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * DocValues: true
-	 * Persist: true
-	 * DisplayName: proxy host name
-	 * Description: The host name for accessing the Prometheus Keycloak Proxy for this ACM Hub. 
-	 * Facet: true
-	 **/
-	protected void _promKeycloakProxyHostName(Wrap<String> w) {
-	}
 }

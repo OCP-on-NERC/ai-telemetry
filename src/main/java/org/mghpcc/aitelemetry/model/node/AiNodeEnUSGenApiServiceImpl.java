@@ -989,30 +989,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 							num++;
 							bParams.add(o2.sqlNgsildData());
 						break;
-					case "setPromKeycloakProxySsl":
-							o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_promKeycloakProxySsl + "=$" + num);
-							num++;
-							bParams.add(o2.sqlPromKeycloakProxySsl());
-						break;
-					case "setPromKeycloakProxyPort":
-							o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_promKeycloakProxyPort + "=$" + num);
-							num++;
-							bParams.add(o2.sqlPromKeycloakProxyPort());
-						break;
-					case "setPromKeycloakProxyHostName":
-							o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(AiNode.VAR_promKeycloakProxyHostName + "=$" + num);
-							num++;
-							bParams.add(o2.sqlPromKeycloakProxyHostName());
-						break;
 				}
 			}
 			bSql.append(" WHERE pk=$" + num);
@@ -1595,33 +1571,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						bSql.append(AiNode.VAR_ngsildData + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNgsildData());
-						break;
-					case AiNode.VAR_promKeycloakProxySsl:
-						o2.setPromKeycloakProxySsl(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_promKeycloakProxySsl + "=$" + num);
-						num++;
-						bParams.add(o2.sqlPromKeycloakProxySsl());
-						break;
-					case AiNode.VAR_promKeycloakProxyPort:
-						o2.setPromKeycloakProxyPort(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_promKeycloakProxyPort + "=$" + num);
-						num++;
-						bParams.add(o2.sqlPromKeycloakProxyPort());
-						break;
-					case AiNode.VAR_promKeycloakProxyHostName:
-						o2.setPromKeycloakProxyHostName(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(AiNode.VAR_promKeycloakProxyHostName + "=$" + num);
-						num++;
-						bParams.add(o2.sqlPromKeycloakProxyHostName());
 						break;
 					}
 				}
@@ -3767,7 +3716,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)
@@ -3817,7 +3766,7 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, nodeName, nodeResource, description, sessionId, userKey, location, objectTitle, gpuDevicesTotal, displayPage, id, ngsildTenant, ngsildPath, ngsildContext, ngsildData, promKeycloakProxySsl, promKeycloakProxyPort, promKeycloakProxyHostName FROM AiNode WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubId, hubResource, created, clusterName, clusterResource, archived, nodeName, nodeResource, description, sessionId, userKey, location, objectTitle, gpuDevicesTotal, displayPage, id, ngsildTenant, ngsildPath, ngsildContext, ngsildData FROM AiNode WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -4137,9 +4086,6 @@ public class AiNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl implements A
 			page.persistForClass(AiNode.VAR_ngsildPath, AiNode.staticSetNgsildPath(siteRequest2, (String)result.get(AiNode.VAR_ngsildPath)));
 			page.persistForClass(AiNode.VAR_ngsildContext, AiNode.staticSetNgsildContext(siteRequest2, (String)result.get(AiNode.VAR_ngsildContext)));
 			page.persistForClass(AiNode.VAR_ngsildData, AiNode.staticSetNgsildData(siteRequest2, (String)result.get(AiNode.VAR_ngsildData)));
-			page.persistForClass(AiNode.VAR_promKeycloakProxySsl, AiNode.staticSetPromKeycloakProxySsl(siteRequest2, (String)result.get(AiNode.VAR_promKeycloakProxySsl)));
-			page.persistForClass(AiNode.VAR_promKeycloakProxyPort, AiNode.staticSetPromKeycloakProxyPort(siteRequest2, (String)result.get(AiNode.VAR_promKeycloakProxyPort)));
-			page.persistForClass(AiNode.VAR_promKeycloakProxyHostName, AiNode.staticSetPromKeycloakProxyHostName(siteRequest2, (String)result.get(AiNode.VAR_promKeycloakProxyHostName)));
 
 			page.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(a -> {
 				try {

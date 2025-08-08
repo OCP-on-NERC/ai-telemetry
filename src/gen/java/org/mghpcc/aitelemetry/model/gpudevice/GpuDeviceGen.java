@@ -53,7 +53,6 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
 import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
-import java.lang.Boolean;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -64,9 +63,6 @@ import org.computate.search.response.solr.SolrResponse;
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class GpuDeviceGen into the class GpuDevice. 
- * </li><li>You can add a class comment "Rows: 100" if you wish the GpuDevice API to return more or less than 10 records by default. 
- * In this case, the API will return 100 records from the API instead of 10 by default. 
- * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
  * </li>
  * <h3>About the GpuDevice class and it's generated class GpuDeviceGen&lt;BaseModel&gt;: </h3>extends GpuDeviceGen
  * <p>
@@ -131,7 +127,10 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>{@inheritDoc}</h2>
  * <p>By adding a class comment "{@inheritDoc}", the GpuDevice class will inherit the helpful inherited class comments from the super class GpuDeviceGen. 
  * </p>
- * <h2>Rows: null</h2>
+ * <h2>Rows: 100</h2>
+ * <p>This class contains a comment <b>"Rows: 100"</b>, which means the GpuDevice API will return a default of 100 records instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </p>
  * <h2>Order: 7</h2>
  * <p>This class contains a comment <b>"Order: 7"</b>, which means this class will be sorted by the given number 7 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
@@ -248,6 +247,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
 
 	public static final String Icon = "<i class=\"fa-regular fa-memory\"></i>";
+	public static final Integer Rows = 100;
 
 	///////////
 	// hubId //
@@ -755,6 +755,62 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String staticSearchFqGpuDeviceDisplayName(SiteRequest siteRequest_, String o) {
 		return GpuDevice.staticSearchGpuDeviceDisplayName(siteRequest_, GpuDevice.staticSetGpuDeviceDisplayName(siteRequest_, o)).toString();
+	}
+
+	///////////////
+	// modelName //
+	///////////////
+
+
+	/**	 The entity modelName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String modelName;
+
+	/**	<br> The entity modelName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:modelName">Find the entity modelName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _modelName(Wrap<String> w);
+
+	public String getModelName() {
+		return modelName;
+	}
+	public void setModelName(String o) {
+		this.modelName = GpuDevice.staticSetModelName(siteRequest_, o);
+	}
+	public static String staticSetModelName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuDevice modelNameInit() {
+		Wrap<String> modelNameWrap = new Wrap<String>().var("modelName");
+		if(modelName == null) {
+			_modelName(modelNameWrap);
+			Optional.ofNullable(modelNameWrap.getO()).ifPresent(o -> {
+				setModelName(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static String staticSearchModelName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrModelName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqModelName(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchModelName(siteRequest_, GpuDevice.staticSetModelName(siteRequest_, o)).toString();
+	}
+
+	public String sqlModelName() {
+		return modelName;
 	}
 
 	//////////////////////////
@@ -1547,187 +1603,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		return ngsildData;
 	}
 
-	//////////////////////////
-	// promKeycloakProxySsl //
-	//////////////////////////
-
-
-	/**	 The entity promKeycloakProxySsl
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected Boolean promKeycloakProxySsl;
-
-	/**	<br> The entity promKeycloakProxySsl
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:promKeycloakProxySsl">Find the entity promKeycloakProxySsl in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxySsl(Wrap<Boolean> w);
-
-	public Boolean getPromKeycloakProxySsl() {
-		return promKeycloakProxySsl;
-	}
-
-	public void setPromKeycloakProxySsl(Boolean promKeycloakProxySsl) {
-		this.promKeycloakProxySsl = promKeycloakProxySsl;
-	}
-	@JsonIgnore
-	public void setPromKeycloakProxySsl(String o) {
-		this.promKeycloakProxySsl = GpuDevice.staticSetPromKeycloakProxySsl(siteRequest_, o);
-	}
-	public static Boolean staticSetPromKeycloakProxySsl(SiteRequest siteRequest_, String o) {
-		return Boolean.parseBoolean(o);
-	}
-	protected GpuDevice promKeycloakProxySslInit() {
-		Wrap<Boolean> promKeycloakProxySslWrap = new Wrap<Boolean>().var("promKeycloakProxySsl");
-		if(promKeycloakProxySsl == null) {
-			_promKeycloakProxySsl(promKeycloakProxySslWrap);
-			Optional.ofNullable(promKeycloakProxySslWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxySsl(o);
-			});
-		}
-		return (GpuDevice)this;
-	}
-
-	public static Boolean staticSearchPromKeycloakProxySsl(SiteRequest siteRequest_, Boolean o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxySsl(SiteRequest siteRequest_, Boolean o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxySsl(SiteRequest siteRequest_, String o) {
-		return GpuDevice.staticSearchPromKeycloakProxySsl(siteRequest_, GpuDevice.staticSetPromKeycloakProxySsl(siteRequest_, o)).toString();
-	}
-
-	public Boolean sqlPromKeycloakProxySsl() {
-		return promKeycloakProxySsl;
-	}
-
-	///////////////////////////
-	// promKeycloakProxyPort //
-	///////////////////////////
-
-
-	/**	 The entity promKeycloakProxyPort
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonInclude(Include.NON_NULL)
-	protected Integer promKeycloakProxyPort;
-
-	/**	<br> The entity promKeycloakProxyPort
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:promKeycloakProxyPort">Find the entity promKeycloakProxyPort in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxyPort(Wrap<Integer> w);
-
-	public Integer getPromKeycloakProxyPort() {
-		return promKeycloakProxyPort;
-	}
-
-	public void setPromKeycloakProxyPort(Integer promKeycloakProxyPort) {
-		this.promKeycloakProxyPort = promKeycloakProxyPort;
-	}
-	@JsonIgnore
-	public void setPromKeycloakProxyPort(String o) {
-		this.promKeycloakProxyPort = GpuDevice.staticSetPromKeycloakProxyPort(siteRequest_, o);
-	}
-	public static Integer staticSetPromKeycloakProxyPort(SiteRequest siteRequest_, String o) {
-		if(NumberUtils.isParsable(o))
-			return Integer.parseInt(o);
-		return null;
-	}
-	protected GpuDevice promKeycloakProxyPortInit() {
-		Wrap<Integer> promKeycloakProxyPortWrap = new Wrap<Integer>().var("promKeycloakProxyPort");
-		if(promKeycloakProxyPort == null) {
-			_promKeycloakProxyPort(promKeycloakProxyPortWrap);
-			Optional.ofNullable(promKeycloakProxyPortWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxyPort(o);
-			});
-		}
-		return (GpuDevice)this;
-	}
-
-	public static Integer staticSearchPromKeycloakProxyPort(SiteRequest siteRequest_, Integer o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxyPort(SiteRequest siteRequest_, Integer o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxyPort(SiteRequest siteRequest_, String o) {
-		return GpuDevice.staticSearchPromKeycloakProxyPort(siteRequest_, GpuDevice.staticSetPromKeycloakProxyPort(siteRequest_, o)).toString();
-	}
-
-	public Integer sqlPromKeycloakProxyPort() {
-		return promKeycloakProxyPort;
-	}
-
-	///////////////////////////////
-	// promKeycloakProxyHostName //
-	///////////////////////////////
-
-
-	/**	 The entity promKeycloakProxyHostName
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String promKeycloakProxyHostName;
-
-	/**	<br> The entity promKeycloakProxyHostName
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:promKeycloakProxyHostName">Find the entity promKeycloakProxyHostName in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxyHostName(Wrap<String> w);
-
-	public String getPromKeycloakProxyHostName() {
-		return promKeycloakProxyHostName;
-	}
-	public void setPromKeycloakProxyHostName(String o) {
-		this.promKeycloakProxyHostName = GpuDevice.staticSetPromKeycloakProxyHostName(siteRequest_, o);
-	}
-	public static String staticSetPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected GpuDevice promKeycloakProxyHostNameInit() {
-		Wrap<String> promKeycloakProxyHostNameWrap = new Wrap<String>().var("promKeycloakProxyHostName");
-		if(promKeycloakProxyHostName == null) {
-			_promKeycloakProxyHostName(promKeycloakProxyHostNameWrap);
-			Optional.ofNullable(promKeycloakProxyHostNameWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxyHostName(o);
-			});
-		}
-		return (GpuDevice)this;
-	}
-
-	public static String staticSearchPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return GpuDevice.staticSearchPromKeycloakProxyHostName(siteRequest_, GpuDevice.staticSetPromKeycloakProxyHostName(siteRequest_, o)).toString();
-	}
-
-	public String sqlPromKeycloakProxyHostName() {
-		return promKeycloakProxyHostName;
-	}
-
 	//////////////
 	// initDeep //
 	//////////////
@@ -1766,6 +1641,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				gpuDeviceNumberInit();
 				gpuDeviceResourceInit();
 				gpuDeviceDisplayNameInit();
+				modelNameInit();
 				gpuDeviceUtilizationInit();
 				descriptionInit();
 				locationColorsInit();
@@ -1778,9 +1654,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				ngsildPathInit();
 				ngsildContextInit();
 				ngsildDataInit();
-				promKeycloakProxySslInit();
-				promKeycloakProxyPortInit();
-				promKeycloakProxyHostNameInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -1852,6 +1725,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return oGpuDevice.gpuDeviceResource;
 			case "gpuDeviceDisplayName":
 				return oGpuDevice.gpuDeviceDisplayName;
+			case "modelName":
+				return oGpuDevice.modelName;
 			case "gpuDeviceUtilization":
 				return oGpuDevice.gpuDeviceUtilization;
 			case "description":
@@ -1876,12 +1751,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return oGpuDevice.ngsildContext;
 			case "ngsildData":
 				return oGpuDevice.ngsildData;
-			case "promKeycloakProxySsl":
-				return oGpuDevice.promKeycloakProxySsl;
-			case "promKeycloakProxyPort":
-				return oGpuDevice.promKeycloakProxyPort;
-			case "promKeycloakProxyHostName":
-				return oGpuDevice.promKeycloakProxyHostName;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1957,6 +1826,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSetGpuDeviceResource(siteRequest_, v);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSetGpuDeviceDisplayName(siteRequest_, v);
+		case "modelName":
+			return GpuDevice.staticSetModelName(siteRequest_, v);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, v);
 		case "description":
@@ -1981,12 +1852,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSetNgsildContext(siteRequest_, v);
 		case "ngsildData":
 			return GpuDevice.staticSetNgsildData(siteRequest_, v);
-		case "promKeycloakProxySsl":
-			return GpuDevice.staticSetPromKeycloakProxySsl(siteRequest_, v);
-		case "promKeycloakProxyPort":
-			return GpuDevice.staticSetPromKeycloakProxyPort(siteRequest_, v);
-		case "promKeycloakProxyHostName":
-			return GpuDevice.staticSetPromKeycloakProxyHostName(siteRequest_, v);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
@@ -2019,6 +1884,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchGpuDeviceResource(siteRequest_, (String)o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchGpuDeviceDisplayName(siteRequest_, (String)o);
+		case "modelName":
+			return GpuDevice.staticSearchModelName(siteRequest_, (String)o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
@@ -2043,12 +1910,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchNgsildContext(siteRequest_, (String)o);
 		case "ngsildData":
 			return GpuDevice.staticSearchNgsildData(siteRequest_, (JsonObject)o);
-		case "promKeycloakProxySsl":
-			return GpuDevice.staticSearchPromKeycloakProxySsl(siteRequest_, (Boolean)o);
-		case "promKeycloakProxyPort":
-			return GpuDevice.staticSearchPromKeycloakProxyPort(siteRequest_, (Integer)o);
-		case "promKeycloakProxyHostName":
-			return GpuDevice.staticSearchPromKeycloakProxyHostName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -2081,6 +1942,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchStrGpuDeviceResource(siteRequest_, (String)o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchStrGpuDeviceDisplayName(siteRequest_, (String)o);
+		case "modelName":
+			return GpuDevice.staticSearchStrModelName(siteRequest_, (String)o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchStrGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
@@ -2105,12 +1968,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchStrNgsildContext(siteRequest_, (String)o);
 		case "ngsildData":
 			return GpuDevice.staticSearchStrNgsildData(siteRequest_, (String)o);
-		case "promKeycloakProxySsl":
-			return GpuDevice.staticSearchStrPromKeycloakProxySsl(siteRequest_, (Boolean)o);
-		case "promKeycloakProxyPort":
-			return GpuDevice.staticSearchStrPromKeycloakProxyPort(siteRequest_, (Integer)o);
-		case "promKeycloakProxyHostName":
-			return GpuDevice.staticSearchStrPromKeycloakProxyHostName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -2143,6 +2000,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchFqGpuDeviceResource(siteRequest_, o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchFqGpuDeviceDisplayName(siteRequest_, o);
+		case "modelName":
+			return GpuDevice.staticSearchFqModelName(siteRequest_, o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchFqGpuDeviceUtilization(siteRequest_, o);
 		case "description":
@@ -2167,12 +2026,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchFqNgsildContext(siteRequest_, o);
 		case "ngsildData":
 			return GpuDevice.staticSearchFqNgsildData(siteRequest_, o);
-		case "promKeycloakProxySsl":
-			return GpuDevice.staticSearchFqPromKeycloakProxySsl(siteRequest_, o);
-		case "promKeycloakProxyPort":
-			return GpuDevice.staticSearchFqPromKeycloakProxyPort(siteRequest_, o);
-		case "promKeycloakProxyHostName":
-			return GpuDevice.staticSearchFqPromKeycloakProxyHostName(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -2249,6 +2102,12 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				}
 				saves.add("gpuDeviceResource");
 				return val;
+			} else if("modelname".equals(varLower)) {
+				if(val instanceof String) {
+					setModelName((String)val);
+				}
+				saves.add("modelName");
+				return val;
 			} else if("gpudeviceutilization".equals(varLower)) {
 				if(val instanceof Integer) {
 					setGpuDeviceUtilization((Integer)val);
@@ -2302,28 +2161,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 					setNgsildData((JsonObject)val);
 				}
 				saves.add("ngsildData");
-				return val;
-			} else if("promkeycloakproxyssl".equals(varLower)) {
-				if(val instanceof Boolean) {
-					setPromKeycloakProxySsl((Boolean)val);
-				} else {
-					setPromKeycloakProxySsl(val == null ? null : val.toString());
-				}
-				saves.add("promKeycloakProxySsl");
-				return val;
-			} else if("promkeycloakproxyport".equals(varLower)) {
-				if(val instanceof Integer) {
-					setPromKeycloakProxyPort((Integer)val);
-				} else {
-					setPromKeycloakProxyPort(val == null ? null : val.toString());
-				}
-				saves.add("promKeycloakProxyPort");
-				return val;
-			} else if("promkeycloakproxyhostname".equals(varLower)) {
-				if(val instanceof String) {
-					setPromKeycloakProxyHostName((String)val);
-				}
-				saves.add("promKeycloakProxyHostName");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -2388,6 +2225,12 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				String gpuDeviceDisplayName = (String)doc.get("gpuDeviceDisplayName_docvalues_string");
 				if(gpuDeviceDisplayName != null)
 					oGpuDevice.setGpuDeviceDisplayName(gpuDeviceDisplayName);
+			}
+
+			if(saves.contains("modelName")) {
+				String modelName = (String)doc.get("modelName_docvalues_string");
+				if(modelName != null)
+					oGpuDevice.setModelName(modelName);
 			}
 
 			if(saves.contains("gpuDeviceUtilization")) {
@@ -2470,24 +2313,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				if(ngsildData != null)
 					oGpuDevice.setNgsildData(ngsildData);
 			}
-
-			if(saves.contains("promKeycloakProxySsl")) {
-				Boolean promKeycloakProxySsl = (Boolean)doc.get("promKeycloakProxySsl_docvalues_boolean");
-				if(promKeycloakProxySsl != null)
-					oGpuDevice.setPromKeycloakProxySsl(promKeycloakProxySsl);
-			}
-
-			if(saves.contains("promKeycloakProxyPort")) {
-				Integer promKeycloakProxyPort = (Integer)doc.get("promKeycloakProxyPort_docvalues_int");
-				if(promKeycloakProxyPort != null)
-					oGpuDevice.setPromKeycloakProxyPort(promKeycloakProxyPort);
-			}
-
-			if(saves.contains("promKeycloakProxyHostName")) {
-				String promKeycloakProxyHostName = (String)doc.get("promKeycloakProxyHostName_docvalues_string");
-				if(promKeycloakProxyHostName != null)
-					oGpuDevice.setPromKeycloakProxyHostName(promKeycloakProxyHostName);
-			}
 		}
 
 		super.populateBaseModel(doc);
@@ -2520,6 +2345,9 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		}
 		if(gpuDeviceDisplayName != null) {
 			doc.put("gpuDeviceDisplayName_docvalues_string", gpuDeviceDisplayName);
+		}
+		if(modelName != null) {
+			doc.put("modelName_docvalues_string", modelName);
 		}
 		if(gpuDeviceUtilization != null) {
 			doc.put("gpuDeviceUtilization_docvalues_int", gpuDeviceUtilization);
@@ -2569,15 +2397,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		if(ngsildData != null) {
 			doc.put("ngsildData_docvalues_string", ngsildData.encode());
 		}
-		if(promKeycloakProxySsl != null) {
-			doc.put("promKeycloakProxySsl_docvalues_boolean", promKeycloakProxySsl);
-		}
-		if(promKeycloakProxyPort != null) {
-			doc.put("promKeycloakProxyPort_docvalues_int", promKeycloakProxyPort);
-		}
-		if(promKeycloakProxyHostName != null) {
-			doc.put("promKeycloakProxyHostName_docvalues_string", promKeycloakProxyHostName);
-		}
 		super.indexBaseModel(doc);
 
 	}
@@ -2602,6 +2421,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource_docvalues_string";
 			case "gpuDeviceDisplayName":
 				return "gpuDeviceDisplayName_docvalues_string";
+			case "modelName":
+				return "modelName_docvalues_string";
 			case "gpuDeviceUtilization":
 				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
@@ -2626,12 +2447,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "ngsildContext_docvalues_string";
 			case "ngsildData":
 				return "ngsildData_docvalues_string";
-			case "promKeycloakProxySsl":
-				return "promKeycloakProxySsl_docvalues_boolean";
-			case "promKeycloakProxyPort":
-				return "promKeycloakProxyPort_docvalues_int";
-			case "promKeycloakProxyHostName":
-				return "promKeycloakProxyHostName_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -2657,6 +2472,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource_docvalues_string";
 			case "gpuDeviceDisplayName":
 				return "gpuDeviceDisplayName_docvalues_string";
+			case "modelName":
+				return "modelName_docvalues_string";
 			case "gpuDeviceUtilization":
 				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
@@ -2681,12 +2498,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "ngsildContext_docvalues_string";
 			case "ngsildData":
 				return "ngsildData_docvalues_string";
-			case "promKeycloakProxySsl":
-				return "promKeycloakProxySsl_docvalues_boolean";
-			case "promKeycloakProxyPort":
-				return "promKeycloakProxyPort_docvalues_int";
-			case "promKeycloakProxyHostName":
-				return "promKeycloakProxyHostName_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -2712,6 +2523,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource";
 			case "gpuDeviceDisplayName_docvalues_string":
 				return "gpuDeviceDisplayName";
+			case "modelName_docvalues_string":
+				return "modelName";
 			case "gpuDeviceUtilization_docvalues_int":
 				return "gpuDeviceUtilization";
 			case "description_docvalues_string":
@@ -2736,12 +2549,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "ngsildContext";
 			case "ngsildData_docvalues_string":
 				return "ngsildData";
-			case "promKeycloakProxySsl_docvalues_boolean":
-				return "promKeycloakProxySsl";
-			case "promKeycloakProxyPort_docvalues_int":
-				return "promKeycloakProxyPort";
-			case "promKeycloakProxyHostName_docvalues_string":
-				return "promKeycloakProxyHostName";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -2781,6 +2588,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		oGpuDevice.setGpuDeviceNumber(Optional.ofNullable(doc.get("gpuDeviceNumber_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceResource(Optional.ofNullable(doc.get("gpuDeviceResource_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceDisplayName(Optional.ofNullable(doc.get("gpuDeviceDisplayName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setModelName(Optional.ofNullable(doc.get("modelName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceUtilization(Optional.ofNullable(doc.get("gpuDeviceUtilization_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
@@ -2799,9 +2607,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		oGpuDevice.setNgsildPath(Optional.ofNullable(doc.get("ngsildPath_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oGpuDevice.setPromKeycloakProxySsl(Optional.ofNullable(doc.get("promKeycloakProxySsl_docvalues_boolean")).map(v -> v.toString()).orElse(null));
-		oGpuDevice.setPromKeycloakProxyPort(Optional.ofNullable(doc.get("promKeycloakProxyPort_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oGpuDevice.setPromKeycloakProxyHostName(Optional.ofNullable(doc.get("promKeycloakProxyHostName_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -2833,6 +2638,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				apiRequest.addVars("gpuDeviceResource");
 			if(!Objects.equals(gpuDeviceDisplayName, original.getGpuDeviceDisplayName()))
 				apiRequest.addVars("gpuDeviceDisplayName");
+			if(!Objects.equals(modelName, original.getModelName()))
+				apiRequest.addVars("modelName");
 			if(!Objects.equals(gpuDeviceUtilization, original.getGpuDeviceUtilization()))
 				apiRequest.addVars("gpuDeviceUtilization");
 			if(!Objects.equals(description, original.getDescription()))
@@ -2857,12 +2664,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				apiRequest.addVars("ngsildContext");
 			if(!Objects.equals(ngsildData, original.getNgsildData()))
 				apiRequest.addVars("ngsildData");
-			if(!Objects.equals(promKeycloakProxySsl, original.getPromKeycloakProxySsl()))
-				apiRequest.addVars("promKeycloakProxySsl");
-			if(!Objects.equals(promKeycloakProxyPort, original.getPromKeycloakProxyPort()))
-				apiRequest.addVars("promKeycloakProxyPort");
-			if(!Objects.equals(promKeycloakProxyHostName, original.getPromKeycloakProxyHostName()))
-				apiRequest.addVars("promKeycloakProxyHostName");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -2883,6 +2684,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(gpuDeviceNumber).map(v -> "gpuDeviceNumber: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceResource).map(v -> "gpuDeviceResource: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceDisplayName).map(v -> "gpuDeviceDisplayName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(modelName).map(v -> "modelName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceUtilization).map(v -> "gpuDeviceUtilization: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
@@ -2895,9 +2697,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(ngsildPath).map(v -> "ngsildPath: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(ngsildContext).map(v -> "ngsildContext: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxySsl).map(v -> "promKeycloakProxySsl: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxyPort).map(v -> "promKeycloakProxyPort: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxyHostName).map(v -> "promKeycloakProxyHostName: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -2917,6 +2716,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String VAR_gpuDeviceNumber = "gpuDeviceNumber";
 	public static final String VAR_gpuDeviceResource = "gpuDeviceResource";
 	public static final String VAR_gpuDeviceDisplayName = "gpuDeviceDisplayName";
+	public static final String VAR_modelName = "modelName";
 	public static final String VAR_gpuDeviceUtilization = "gpuDeviceUtilization";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
@@ -2929,9 +2729,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String VAR_ngsildPath = "ngsildPath";
 	public static final String VAR_ngsildContext = "ngsildContext";
 	public static final String VAR_ngsildData = "ngsildData";
-	public static final String VAR_promKeycloakProxySsl = "promKeycloakProxySsl";
-	public static final String VAR_promKeycloakProxyPort = "promKeycloakProxyPort";
-	public static final String VAR_promKeycloakProxyHostName = "promKeycloakProxyHostName";
 
 	public static List<String> varsQForClass() {
 		return GpuDevice.varsQGpuDevice(new ArrayList<String>());
@@ -2954,6 +2751,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		vars.add(VAR_gpuDeviceNumber);
 		vars.add(VAR_gpuDeviceResource);
 		vars.add(VAR_gpuDeviceDisplayName);
+		vars.add(VAR_modelName);
 		vars.add(VAR_gpuDeviceUtilization);
 		vars.add(VAR_description);
 		vars.add(VAR_location);
@@ -2963,9 +2761,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		vars.add(VAR_ngsildPath);
 		vars.add(VAR_ngsildContext);
 		vars.add(VAR_ngsildData);
-		vars.add(VAR_promKeycloakProxySsl);
-		vars.add(VAR_promKeycloakProxyPort);
-		vars.add(VAR_promKeycloakProxyHostName);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -2978,7 +2773,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		vars.add(VAR_gpuDeviceUtilization);
 		vars.add(VAR_location);
 		vars.add(VAR_ngsildData);
-		vars.add(VAR_promKeycloakProxyPort);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -2992,6 +2786,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_gpuDeviceNumber = "GPU device number";
 	public static final String DISPLAY_NAME_gpuDeviceResource = "GPU device auth resource";
 	public static final String DISPLAY_NAME_gpuDeviceDisplayName = "GPU device display name";
+	public static final String DISPLAY_NAME_modelName = "model name";
 	public static final String DISPLAY_NAME_gpuDeviceUtilization = "GPU device utilization";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
@@ -3004,9 +2799,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_ngsildPath = "NGSILD-Path";
 	public static final String DISPLAY_NAME_ngsildContext = "NGSILD context";
 	public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
-	public static final String DISPLAY_NAME_promKeycloakProxySsl = "proxy SSL";
-	public static final String DISPLAY_NAME_promKeycloakProxyPort = "proxy Port";
-	public static final String DISPLAY_NAME_promKeycloakProxyHostName = "proxy host name";
 
 	@Override
 	public String idForClass() {
@@ -3076,6 +2868,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_gpuDeviceResource;
 		case VAR_gpuDeviceDisplayName:
 			return DISPLAY_NAME_gpuDeviceDisplayName;
+		case VAR_modelName:
+			return DISPLAY_NAME_modelName;
 		case VAR_gpuDeviceUtilization:
 			return DISPLAY_NAME_gpuDeviceUtilization;
 		case VAR_description:
@@ -3100,12 +2894,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_ngsildContext;
 		case VAR_ngsildData:
 			return DISPLAY_NAME_ngsildData;
-		case VAR_promKeycloakProxySsl:
-			return DISPLAY_NAME_promKeycloakProxySsl;
-		case VAR_promKeycloakProxyPort:
-			return DISPLAY_NAME_promKeycloakProxyPort;
-		case VAR_promKeycloakProxyHostName:
-			return DISPLAY_NAME_promKeycloakProxyHostName;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -3133,6 +2921,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "The unique authorization resource for the GPU device for multi-tenancy";
 		case VAR_gpuDeviceDisplayName:
 			return "The display name of this GPU device";
+		case VAR_modelName:
+			return "The GPU model";
 		case VAR_gpuDeviceUtilization:
 			return "Current utilization of the GPU device. ";
 		case VAR_description:
@@ -3157,12 +2947,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "The NGSILD context URL for @context data";
 		case VAR_ngsildData:
 			return "The NGSILD data with @context from the context broker";
-		case VAR_promKeycloakProxySsl:
-			return "Whether to enable SSL for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
-		case VAR_promKeycloakProxyPort:
-			return "The port for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
-		case VAR_promKeycloakProxyHostName:
-			return "The host name for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -3188,6 +2972,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_gpuDeviceDisplayName:
 			return "String";
+		case VAR_modelName:
+			return "String";
 		case VAR_gpuDeviceUtilization:
 			return "Integer";
 		case VAR_description:
@@ -3212,12 +2998,6 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_ngsildData:
 			return "JsonObject";
-		case VAR_promKeycloakProxySsl:
-			return "Boolean";
-		case VAR_promKeycloakProxyPort:
-			return "Integer";
-		case VAR_promKeycloakProxyHostName:
-			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -3247,6 +3027,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		case VAR_nodeName:
 			return 3;
 		case VAR_gpuDeviceNumber:
+			return 3;
+		case VAR_modelName:
 			return 3;
 		case VAR_gpuDeviceUtilization:
 			return 4;
@@ -3279,6 +3061,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_gpuDeviceNumber:
 			return 4;
+		case VAR_modelName:
+			return 5;
 		case VAR_gpuDeviceUtilization:
 			return 1;
 		case VAR_description:

@@ -33,9 +33,6 @@ ALTER TABLE Hub ADD COLUMN IF NOT EXISTS hubResource text UNIQUE;
 ALTER TABLE Hub ADD COLUMN IF NOT EXISTS pageId text;
 ALTER TABLE Hub ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE Hub ADD COLUMN IF NOT EXISTS localClusterName text;
-ALTER TABLE Hub ADD COLUMN IF NOT EXISTS promKeycloakProxySsl boolean;
-ALTER TABLE Hub ADD COLUMN IF NOT EXISTS promKeycloakProxyPort integer;
-ALTER TABLE Hub ADD COLUMN IF NOT EXISTS promKeycloakProxyHostName text;
 
 CREATE TABLE IF NOT EXISTS Cluster();
 ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -60,9 +57,6 @@ ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS aiNodesTotal integer;
 ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS gpuDevicesTotal integer;
 ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS cpuCoresTotal integer;
 ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS memoryBytesTotal bigint;
-ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS promKeycloakProxySsl boolean;
-ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS promKeycloakProxyPort integer;
-ALTER TABLE Cluster ADD COLUMN IF NOT EXISTS promKeycloakProxyHostName text;
 
 CREATE TABLE IF NOT EXISTS AiNode();
 ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -86,9 +80,6 @@ ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS ngsildTenant text;
 ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS ngsildPath text;
 ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS ngsildContext text;
 ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS ngsildData jsonb;
-ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS promKeycloakProxySsl boolean;
-ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS promKeycloakProxyPort integer;
-ALTER TABLE AiNode ADD COLUMN IF NOT EXISTS promKeycloakProxyHostName text;
 
 CREATE TABLE IF NOT EXISTS GpuDevice();
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -106,6 +97,7 @@ ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS nodeName text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS nodeResource text references AiNode(nodeResource);
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS gpuDeviceNumber integer;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS gpuDeviceResource text UNIQUE;
+ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS modelName text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS gpuDeviceUtilization integer;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS description text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS location point;
@@ -114,9 +106,6 @@ ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS ngsildTenant text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS ngsildPath text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS ngsildContext text;
 ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS ngsildData jsonb;
-ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS promKeycloakProxySsl boolean;
-ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS promKeycloakProxyPort integer;
-ALTER TABLE GpuDevice ADD COLUMN IF NOT EXISTS promKeycloakProxyHostName text;
 
 CREATE TABLE IF NOT EXISTS Project();
 ALTER TABLE Project ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -133,9 +122,19 @@ ALTER TABLE Project ADD COLUMN IF NOT EXISTS clusterResource text references Clu
 ALTER TABLE Project ADD COLUMN IF NOT EXISTS projectName text;
 ALTER TABLE Project ADD COLUMN IF NOT EXISTS projectResource text UNIQUE;
 ALTER TABLE Project ADD COLUMN IF NOT EXISTS description text;
-ALTER TABLE Project ADD COLUMN IF NOT EXISTS promKeycloakProxySsl boolean;
-ALTER TABLE Project ADD COLUMN IF NOT EXISTS promKeycloakProxyPort integer;
-ALTER TABLE Project ADD COLUMN IF NOT EXISTS promKeycloakProxyHostName text;
+
+CREATE TABLE IF NOT EXISTS ClusterTemplate();
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS archived boolean;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS sessionId text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS userKey bigint;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS objectTitle text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS displayPage text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text UNIQUE;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text UNIQUE;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
+ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
 
 CREATE TABLE IF NOT EXISTS ClusterOrder();
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS pk bigserial primary key;
@@ -149,19 +148,6 @@ ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS id text UNIQUE;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS templateId text references ClusterTemplate(id);
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS state text;
 ALTER TABLE ClusterOrder ADD COLUMN IF NOT EXISTS clusterId text;
-
-CREATE TABLE IF NOT EXISTS ClusterTemplate();
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS pk bigserial primary key;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS created timestamp with time zone;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS archived boolean;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS sessionId text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS userKey bigint;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS objectTitle text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS displayPage text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS id text UNIQUE;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS title text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS description text;
-ALTER TABLE ClusterTemplate ADD COLUMN IF NOT EXISTS parameters jsonb;
 
 CREATE TABLE IF NOT EXISTS ManagedCluster();
 ALTER TABLE ManagedCluster ADD COLUMN IF NOT EXISTS pk bigserial primary key;

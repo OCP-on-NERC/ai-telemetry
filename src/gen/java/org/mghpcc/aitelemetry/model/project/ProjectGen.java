@@ -38,8 +38,6 @@ import java.util.Map;
 import java.lang.String;
 import org.mghpcc.aitelemetry.model.hub.Hub;
 import org.mghpcc.aitelemetry.model.cluster.Cluster;
-import java.lang.Boolean;
-import java.lang.Integer;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -681,187 +679,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		return description;
 	}
 
-	//////////////////////////
-	// promKeycloakProxySsl //
-	//////////////////////////
-
-
-	/**	 The entity promKeycloakProxySsl
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected Boolean promKeycloakProxySsl;
-
-	/**	<br> The entity promKeycloakProxySsl
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.Project&fq=entiteVar_enUS_indexed_string:promKeycloakProxySsl">Find the entity promKeycloakProxySsl in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxySsl(Wrap<Boolean> w);
-
-	public Boolean getPromKeycloakProxySsl() {
-		return promKeycloakProxySsl;
-	}
-
-	public void setPromKeycloakProxySsl(Boolean promKeycloakProxySsl) {
-		this.promKeycloakProxySsl = promKeycloakProxySsl;
-	}
-	@JsonIgnore
-	public void setPromKeycloakProxySsl(String o) {
-		this.promKeycloakProxySsl = Project.staticSetPromKeycloakProxySsl(siteRequest_, o);
-	}
-	public static Boolean staticSetPromKeycloakProxySsl(SiteRequest siteRequest_, String o) {
-		return Boolean.parseBoolean(o);
-	}
-	protected Project promKeycloakProxySslInit() {
-		Wrap<Boolean> promKeycloakProxySslWrap = new Wrap<Boolean>().var("promKeycloakProxySsl");
-		if(promKeycloakProxySsl == null) {
-			_promKeycloakProxySsl(promKeycloakProxySslWrap);
-			Optional.ofNullable(promKeycloakProxySslWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxySsl(o);
-			});
-		}
-		return (Project)this;
-	}
-
-	public static Boolean staticSearchPromKeycloakProxySsl(SiteRequest siteRequest_, Boolean o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxySsl(SiteRequest siteRequest_, Boolean o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxySsl(SiteRequest siteRequest_, String o) {
-		return Project.staticSearchPromKeycloakProxySsl(siteRequest_, Project.staticSetPromKeycloakProxySsl(siteRequest_, o)).toString();
-	}
-
-	public Boolean sqlPromKeycloakProxySsl() {
-		return promKeycloakProxySsl;
-	}
-
-	///////////////////////////
-	// promKeycloakProxyPort //
-	///////////////////////////
-
-
-	/**	 The entity promKeycloakProxyPort
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonSerialize(using = ToStringSerializer.class)
-	@JsonInclude(Include.NON_NULL)
-	protected Integer promKeycloakProxyPort;
-
-	/**	<br> The entity promKeycloakProxyPort
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.Project&fq=entiteVar_enUS_indexed_string:promKeycloakProxyPort">Find the entity promKeycloakProxyPort in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxyPort(Wrap<Integer> w);
-
-	public Integer getPromKeycloakProxyPort() {
-		return promKeycloakProxyPort;
-	}
-
-	public void setPromKeycloakProxyPort(Integer promKeycloakProxyPort) {
-		this.promKeycloakProxyPort = promKeycloakProxyPort;
-	}
-	@JsonIgnore
-	public void setPromKeycloakProxyPort(String o) {
-		this.promKeycloakProxyPort = Project.staticSetPromKeycloakProxyPort(siteRequest_, o);
-	}
-	public static Integer staticSetPromKeycloakProxyPort(SiteRequest siteRequest_, String o) {
-		if(NumberUtils.isParsable(o))
-			return Integer.parseInt(o);
-		return null;
-	}
-	protected Project promKeycloakProxyPortInit() {
-		Wrap<Integer> promKeycloakProxyPortWrap = new Wrap<Integer>().var("promKeycloakProxyPort");
-		if(promKeycloakProxyPort == null) {
-			_promKeycloakProxyPort(promKeycloakProxyPortWrap);
-			Optional.ofNullable(promKeycloakProxyPortWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxyPort(o);
-			});
-		}
-		return (Project)this;
-	}
-
-	public static Integer staticSearchPromKeycloakProxyPort(SiteRequest siteRequest_, Integer o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxyPort(SiteRequest siteRequest_, Integer o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxyPort(SiteRequest siteRequest_, String o) {
-		return Project.staticSearchPromKeycloakProxyPort(siteRequest_, Project.staticSetPromKeycloakProxyPort(siteRequest_, o)).toString();
-	}
-
-	public Integer sqlPromKeycloakProxyPort() {
-		return promKeycloakProxyPort;
-	}
-
-	///////////////////////////////
-	// promKeycloakProxyHostName //
-	///////////////////////////////
-
-
-	/**	 The entity promKeycloakProxyHostName
-	 *	 is defined as null before being initialized. 
-	 */
-	@JsonProperty
-	@JsonInclude(Include.NON_NULL)
-	protected String promKeycloakProxyHostName;
-
-	/**	<br> The entity promKeycloakProxyHostName
-	 *  is defined as null before being initialized. 
-	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.project.Project&fq=entiteVar_enUS_indexed_string:promKeycloakProxyHostName">Find the entity promKeycloakProxyHostName in Solr</a>
-	 * <br>
-	 * @param w is for wrapping a value to assign to this entity during initialization. 
-	 **/
-	protected abstract void _promKeycloakProxyHostName(Wrap<String> w);
-
-	public String getPromKeycloakProxyHostName() {
-		return promKeycloakProxyHostName;
-	}
-	public void setPromKeycloakProxyHostName(String o) {
-		this.promKeycloakProxyHostName = Project.staticSetPromKeycloakProxyHostName(siteRequest_, o);
-	}
-	public static String staticSetPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-	protected Project promKeycloakProxyHostNameInit() {
-		Wrap<String> promKeycloakProxyHostNameWrap = new Wrap<String>().var("promKeycloakProxyHostName");
-		if(promKeycloakProxyHostName == null) {
-			_promKeycloakProxyHostName(promKeycloakProxyHostNameWrap);
-			Optional.ofNullable(promKeycloakProxyHostNameWrap.getO()).ifPresent(o -> {
-				setPromKeycloakProxyHostName(o);
-			});
-		}
-		return (Project)this;
-	}
-
-	public static String staticSearchPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o;
-	}
-
-	public static String staticSearchStrPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return o == null ? null : o.toString();
-	}
-
-	public static String staticSearchFqPromKeycloakProxyHostName(SiteRequest siteRequest_, String o) {
-		return Project.staticSearchPromKeycloakProxyHostName(siteRequest_, Project.staticSetPromKeycloakProxyHostName(siteRequest_, o)).toString();
-	}
-
-	public String sqlPromKeycloakProxyHostName() {
-		return promKeycloakProxyHostName;
-	}
-
 	//////////////
 	// initDeep //
 	//////////////
@@ -899,9 +716,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				projectResourceInit();
 				projectDisplayNameInit();
 				descriptionInit();
-				promKeycloakProxySslInit();
-				promKeycloakProxyPortInit();
-				promKeycloakProxyHostNameInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -971,12 +785,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				return oProject.projectDisplayName;
 			case "description":
 				return oProject.description;
-			case "promKeycloakProxySsl":
-				return oProject.promKeycloakProxySsl;
-			case "promKeycloakProxyPort":
-				return oProject.promKeycloakProxyPort;
-			case "promKeycloakProxyHostName":
-				return oProject.promKeycloakProxyHostName;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -1044,12 +852,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return Project.staticSetProjectDisplayName(siteRequest_, v);
 		case "description":
 			return Project.staticSetDescription(siteRequest_, v);
-		case "promKeycloakProxySsl":
-			return Project.staticSetPromKeycloakProxySsl(siteRequest_, v);
-		case "promKeycloakProxyPort":
-			return Project.staticSetPromKeycloakProxyPort(siteRequest_, v);
-		case "promKeycloakProxyHostName":
-			return Project.staticSetPromKeycloakProxyHostName(siteRequest_, v);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
@@ -1080,12 +882,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return Project.staticSearchProjectDisplayName(siteRequest_, (String)o);
 		case "description":
 			return Project.staticSearchDescription(siteRequest_, (String)o);
-		case "promKeycloakProxySsl":
-			return Project.staticSearchPromKeycloakProxySsl(siteRequest_, (Boolean)o);
-		case "promKeycloakProxyPort":
-			return Project.staticSearchPromKeycloakProxyPort(siteRequest_, (Integer)o);
-		case "promKeycloakProxyHostName":
-			return Project.staticSearchPromKeycloakProxyHostName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1116,12 +912,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return Project.staticSearchStrProjectDisplayName(siteRequest_, (String)o);
 		case "description":
 			return Project.staticSearchStrDescription(siteRequest_, (String)o);
-		case "promKeycloakProxySsl":
-			return Project.staticSearchStrPromKeycloakProxySsl(siteRequest_, (Boolean)o);
-		case "promKeycloakProxyPort":
-			return Project.staticSearchStrPromKeycloakProxyPort(siteRequest_, (Integer)o);
-		case "promKeycloakProxyHostName":
-			return Project.staticSearchStrPromKeycloakProxyHostName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1152,12 +942,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return Project.staticSearchFqProjectDisplayName(siteRequest_, o);
 		case "description":
 			return Project.staticSearchFqDescription(siteRequest_, o);
-		case "promKeycloakProxySsl":
-			return Project.staticSearchFqPromKeycloakProxySsl(siteRequest_, o);
-		case "promKeycloakProxyPort":
-			return Project.staticSearchFqPromKeycloakProxyPort(siteRequest_, o);
-		case "promKeycloakProxyHostName":
-			return Project.staticSearchFqPromKeycloakProxyHostName(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -1226,28 +1010,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				}
 				saves.add("description");
 				return val;
-			} else if("promkeycloakproxyssl".equals(varLower)) {
-				if(val instanceof Boolean) {
-					setPromKeycloakProxySsl((Boolean)val);
-				} else {
-					setPromKeycloakProxySsl(val == null ? null : val.toString());
-				}
-				saves.add("promKeycloakProxySsl");
-				return val;
-			} else if("promkeycloakproxyport".equals(varLower)) {
-				if(val instanceof Integer) {
-					setPromKeycloakProxyPort((Integer)val);
-				} else {
-					setPromKeycloakProxyPort(val == null ? null : val.toString());
-				}
-				saves.add("promKeycloakProxyPort");
-				return val;
-			} else if("promkeycloakproxyhostname".equals(varLower)) {
-				if(val instanceof String) {
-					setPromKeycloakProxyHostName((String)val);
-				}
-				saves.add("promKeycloakProxyHostName");
-				return val;
 		} else {
 			return super.persistBaseModel(var, val);
 		}
@@ -1308,24 +1070,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				if(description != null)
 					oProject.setDescription(description);
 			}
-
-			if(saves.contains("promKeycloakProxySsl")) {
-				Boolean promKeycloakProxySsl = (Boolean)doc.get("promKeycloakProxySsl_docvalues_boolean");
-				if(promKeycloakProxySsl != null)
-					oProject.setPromKeycloakProxySsl(promKeycloakProxySsl);
-			}
-
-			if(saves.contains("promKeycloakProxyPort")) {
-				Integer promKeycloakProxyPort = (Integer)doc.get("promKeycloakProxyPort_docvalues_int");
-				if(promKeycloakProxyPort != null)
-					oProject.setPromKeycloakProxyPort(promKeycloakProxyPort);
-			}
-
-			if(saves.contains("promKeycloakProxyHostName")) {
-				String promKeycloakProxyHostName = (String)doc.get("promKeycloakProxyHostName_docvalues_string");
-				if(promKeycloakProxyHostName != null)
-					oProject.setPromKeycloakProxyHostName(promKeycloakProxyHostName);
-			}
 		}
 
 		super.populateBaseModel(doc);
@@ -1356,15 +1100,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
 		}
-		if(promKeycloakProxySsl != null) {
-			doc.put("promKeycloakProxySsl_docvalues_boolean", promKeycloakProxySsl);
-		}
-		if(promKeycloakProxyPort != null) {
-			doc.put("promKeycloakProxyPort_docvalues_int", promKeycloakProxyPort);
-		}
-		if(promKeycloakProxyHostName != null) {
-			doc.put("promKeycloakProxyHostName_docvalues_string", promKeycloakProxyHostName);
-		}
 		super.indexBaseModel(doc);
 
 	}
@@ -1387,12 +1122,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				return "projectDisplayName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
-			case "promKeycloakProxySsl":
-				return "promKeycloakProxySsl_docvalues_boolean";
-			case "promKeycloakProxyPort":
-				return "promKeycloakProxyPort_docvalues_int";
-			case "promKeycloakProxyHostName":
-				return "promKeycloakProxyHostName_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -1416,12 +1145,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				return "projectDisplayName_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
-			case "promKeycloakProxySsl":
-				return "promKeycloakProxySsl_docvalues_boolean";
-			case "promKeycloakProxyPort":
-				return "promKeycloakProxyPort_docvalues_int";
-			case "promKeycloakProxyHostName":
-				return "promKeycloakProxyHostName_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -1445,12 +1168,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				return "projectDisplayName";
 			case "description_docvalues_string":
 				return "description";
-			case "promKeycloakProxySsl_docvalues_boolean":
-				return "promKeycloakProxySsl";
-			case "promKeycloakProxyPort_docvalues_int":
-				return "promKeycloakProxyPort";
-			case "promKeycloakProxyHostName_docvalues_string":
-				return "promKeycloakProxyHostName";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -1489,9 +1206,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		oProject.setProjectResource(Optional.ofNullable(doc.get("projectResource_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oProject.setProjectDisplayName(Optional.ofNullable(doc.get("projectDisplayName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oProject.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
-		oProject.setPromKeycloakProxySsl(Optional.ofNullable(doc.get("promKeycloakProxySsl_docvalues_boolean")).map(v -> v.toString()).orElse(null));
-		oProject.setPromKeycloakProxyPort(Optional.ofNullable(doc.get("promKeycloakProxyPort_docvalues_int")).map(v -> v.toString()).orElse(null));
-		oProject.setPromKeycloakProxyHostName(Optional.ofNullable(doc.get("promKeycloakProxyHostName_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -1521,12 +1235,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 				apiRequest.addVars("projectDisplayName");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
-			if(!Objects.equals(promKeycloakProxySsl, original.getPromKeycloakProxySsl()))
-				apiRequest.addVars("promKeycloakProxySsl");
-			if(!Objects.equals(promKeycloakProxyPort, original.getPromKeycloakProxyPort()))
-				apiRequest.addVars("promKeycloakProxyPort");
-			if(!Objects.equals(promKeycloakProxyHostName, original.getPromKeycloakProxyHostName()))
-				apiRequest.addVars("promKeycloakProxyHostName");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -1546,9 +1254,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(projectResource).map(v -> "projectResource: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(projectDisplayName).map(v -> "projectDisplayName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxySsl).map(v -> "promKeycloakProxySsl: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxyPort).map(v -> "promKeycloakProxyPort: " + v + "\n").orElse(""));
-		sb.append(Optional.ofNullable(promKeycloakProxyHostName).map(v -> "promKeycloakProxyHostName: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -1567,9 +1272,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 	public static final String VAR_projectResource = "projectResource";
 	public static final String VAR_projectDisplayName = "projectDisplayName";
 	public static final String VAR_description = "description";
-	public static final String VAR_promKeycloakProxySsl = "promKeycloakProxySsl";
-	public static final String VAR_promKeycloakProxyPort = "promKeycloakProxyPort";
-	public static final String VAR_promKeycloakProxyHostName = "promKeycloakProxyHostName";
 
 	public static List<String> varsQForClass() {
 		return Project.varsQProject(new ArrayList<String>());
@@ -1591,9 +1293,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		vars.add(VAR_projectResource);
 		vars.add(VAR_projectDisplayName);
 		vars.add(VAR_description);
-		vars.add(VAR_promKeycloakProxySsl);
-		vars.add(VAR_promKeycloakProxyPort);
-		vars.add(VAR_promKeycloakProxyHostName);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1602,7 +1301,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		return Project.varsRangeProject(new ArrayList<String>());
 	}
 	public static List<String> varsRangeProject(List<String> vars) {
-		vars.add(VAR_promKeycloakProxyPort);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -1615,9 +1313,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_projectResource = "project auth resource";
 	public static final String DISPLAY_NAME_projectDisplayName = "project display name";
 	public static final String DISPLAY_NAME_description = "description";
-	public static final String DISPLAY_NAME_promKeycloakProxySsl = "proxy SSL";
-	public static final String DISPLAY_NAME_promKeycloakProxyPort = "proxy Port";
-	public static final String DISPLAY_NAME_promKeycloakProxyHostName = "proxy host name";
 
 	@Override
 	public String idForClass() {
@@ -1685,12 +1380,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_projectDisplayName;
 		case VAR_description:
 			return DISPLAY_NAME_description;
-		case VAR_promKeycloakProxySsl:
-			return DISPLAY_NAME_promKeycloakProxySsl;
-		case VAR_promKeycloakProxyPort:
-			return DISPLAY_NAME_promKeycloakProxyPort;
-		case VAR_promKeycloakProxyHostName:
-			return DISPLAY_NAME_promKeycloakProxyHostName;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1716,12 +1405,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 			return "The display name of this project";
 		case VAR_description:
 			return "A description of this project";
-		case VAR_promKeycloakProxySsl:
-			return "Whether to enable SSL for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
-		case VAR_promKeycloakProxyPort:
-			return "The port for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
-		case VAR_promKeycloakProxyHostName:
-			return "The host name for accessing the Prometheus Keycloak Proxy for this ACM Hub. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1744,12 +1427,6 @@ public abstract class ProjectGen<DEV> extends BaseModel {
 		case VAR_projectDisplayName:
 			return "String";
 		case VAR_description:
-			return "String";
-		case VAR_promKeycloakProxySsl:
-			return "Boolean";
-		case VAR_promKeycloakProxyPort:
-			return "Integer";
-		case VAR_promKeycloakProxyHostName:
 			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);

@@ -179,7 +179,7 @@ public class BareMetalResourceClassGenPage extends BareMetalResourceClassGenPage
           max = max.plus(2, ChronoUnit.DAYS);
         }
         Duration duration = Duration.between(min, max);
-        String gap = "DAY";
+        String gap = "HOUR";
         if(duration.toDays() >= 365)
           gap = "YEAR";
         else if(duration.toDays() >= 28)
@@ -344,7 +344,7 @@ public class BareMetalResourceClassGenPage extends BareMetalResourceClassGenPage
 
   @Override
   protected void _defaultRangeGap(Wrap<String> w) {
-    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1DAY")));
+    w.o(Optional.ofNullable(rangeGap).orElse(Optional.ofNullable(defaultRangeStats).map(s -> s.getString("defaultRangeGap")).orElse("+1HOUR")));
   }
 
   @Override

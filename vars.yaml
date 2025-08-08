@@ -668,12 +668,3 @@ ENABLE_FEATURE_ORDER_BARE_METAL: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_BARE_ME
 ENABLE_FEATURE_ORDER_CLUSTER: "{{ lookup('env', 'ENABLE_FEATURE_ORDER_CLUSTER') | default('false', true) | bool }}"
 ENABLE_FEATURE_OBSERVE_BARE_METAL: "{{ lookup('env', 'ENABLE_FEATURE_OBSERVE_BARE_METAL') | default('true', true) | bool }}"
 ENABLE_FEATURE_OBSERVE_CLUSTER: "{{ lookup('env', 'ENABLE_FEATURE_OBSERVE_CLUSTER') | default('false', true) | bool }}"
-
-AUTH_TENANTS:
-  MOC:
-    PROM_KEYCLOAK_PROXY_SSL: "{{ (lookup('env', 'PROM_KEYCLOAK_PROXY_SSL') | lower) != 'false' }}"
-    PROM_KEYCLOAK_PROXY_HOST_NAME: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_HOST_NAME') | default('prom-keycloak-proxy.' + OPENSHIFT_APPS_DOMAIN, true) }}"
-    PROM_KEYCLOAK_PROXY_PORT: "{{ lookup('env', 'PROM_KEYCLOAK_PROXY_PORT') | default('443', true) }}"
-    AUTH_CLIENT_SA: "{{ lookup('env', 'AUTH_CLIENT_SA') | default(SITE_NAME + '-sa', true) }}"
-    AUTH_OPENSHIFT_SECRET_SA: "{{ lookup('env', 'AUTH_OPENSHIFT_SECRET_SA') | default('keycloak-client-' + AUTH_CLIENT_SA, true) }}"
-    AUTH_SECRET_SA: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name=AUTH_OPENSHIFT_SECRET_SA, namespace=SITE_NAMESPACE)[0].data.clientSecret | b64decode }}"

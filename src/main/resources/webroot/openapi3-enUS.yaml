@@ -635,6 +635,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -1466,6 +1506,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -2227,6 +2307,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -3096,6 +3216,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -3923,6 +4083,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -4800,6 +5000,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -5615,6 +5855,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -6480,6 +6760,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -6759,7 +7079,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -7055,7 +7375,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -7259,7 +7579,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -7307,6 +7627,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -7398,7 +7758,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -8184,6 +8544,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -9149,6 +9549,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -9432,7 +9872,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -9728,7 +10168,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -9932,7 +10372,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -9980,6 +10420,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -10071,7 +10551,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -10857,6 +11337,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -11182,7 +11702,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -11556,6 +12076,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -11643,7 +12203,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -12139,6 +12699,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -15750,12 +16350,6 @@ components:
                     type: string
                   grafanaUrl:
                     type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
                   modified:
                     type: string
     PATCHClusterRequest:
@@ -15938,27 +16532,6 @@ components:
             removeGrafanaUrl:
               type: string
             removeAllGrafanaUrl:
-              type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
               type: string
             setModified:
               type: string
@@ -16148,27 +16721,6 @@ components:
               type: string
             removeAllGrafanaUrl:
               type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
             setModified:
               type: string
               nullable: true
@@ -16228,12 +16780,6 @@ components:
               type: string
             grafanaUrl:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
             modified:
               type: string
     POSTClusterResponse:
@@ -16288,12 +16834,6 @@ components:
               type: string
             grafanaUrl:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
             modified:
               type: string
     DELETEFilterClusterResponse:
@@ -16347,12 +16887,6 @@ components:
             memoryBytesTotal:
               type: string
             grafanaUrl:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -16413,12 +16947,6 @@ components:
                     type: string
                   grafanaUrl:
                     type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
                   modified:
                     type: string
     PUTImportClusterResponse:
@@ -16472,12 +17000,6 @@ components:
                   memoryBytesTotal:
                     type: string
                   grafanaUrl:
-                    type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
                     type: string
                   modified:
                     type: string
@@ -16533,12 +17055,6 @@ components:
               type: string
             grafanaUrl:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
             modified:
               type: string
     DELETEClusterResponse:
@@ -16592,12 +17108,6 @@ components:
             memoryBytesTotal:
               type: string
             grafanaUrl:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
             modified:
               type: string
@@ -17288,6 +17798,8 @@ components:
                     type: string
                   gpuDeviceDisplayName:
                     type: string
+                  modelName:
+                    type: string
                   gpuDeviceUtilization:
                     type: string
                   description:
@@ -17318,12 +17830,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PATCHGpuDeviceRequest:
       allOf:
         - type: object
@@ -17391,6 +17897,13 @@ components:
               type: string
             removeAllGpuDeviceDisplayName:
               type: string
+            setModelName:
+              type: string
+              nullable: true
+            removeModelName:
+              type: string
+            removeAllModelName:
+              type: string
             setGpuDeviceUtilization:
               type: string
               nullable: true
@@ -17505,27 +18018,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     PATCHGpuDeviceResponse:
       allOf:
         - type: object
@@ -17593,6 +18085,13 @@ components:
               type: string
             removeAllGpuDeviceDisplayName:
               type: string
+            setModelName:
+              type: string
+              nullable: true
+            removeModelName:
+              type: string
+            removeAllModelName:
+              type: string
             setGpuDeviceUtilization:
               type: string
               nullable: true
@@ -17707,27 +18206,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     POSTGpuDeviceRequest:
       allOf:
         - type: object
@@ -17750,6 +18228,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17780,12 +18260,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     POSTGpuDeviceResponse:
       allOf:
         - type: object
@@ -17808,6 +18282,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17838,12 +18314,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEFilterGpuDeviceResponse:
       allOf:
         - type: object
@@ -17866,6 +18336,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17896,12 +18368,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     PUTImportGpuDeviceRequest:
       allOf:
         - type: object
@@ -17929,6 +18395,8 @@ components:
                     type: string
                   gpuDeviceDisplayName:
                     type: string
+                  modelName:
+                    type: string
                   gpuDeviceUtilization:
                     type: string
                   description:
@@ -17959,12 +18427,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PUTImportGpuDeviceResponse:
       allOf:
         - type: object
@@ -17987,6 +18449,8 @@ components:
                     type: string
                   gpuDeviceDisplayName:
                     type: string
+                  modelName:
+                    type: string
                   gpuDeviceUtilization:
                     type: string
                   description:
@@ -18017,12 +18481,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     GETGpuDeviceResponse:
       allOf:
         - type: object
@@ -18045,6 +18503,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -18075,12 +18535,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEGpuDeviceResponse:
       allOf:
         - type: object
@@ -18103,6 +18557,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -18133,12 +18589,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     EditPageGpuDeviceResponse:
       allOf:
         - type: string
@@ -18177,12 +18627,6 @@ components:
                   description:
                     type: string
                   localClusterName:
-                    type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
                     type: string
     PATCHHubRequest:
       allOf:
@@ -18230,27 +18674,6 @@ components:
               type: string
             removeAllLocalClusterName:
               type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     PATCHHubResponse:
       allOf:
         - type: object
@@ -18297,27 +18720,6 @@ components:
               type: string
             removeAllLocalClusterName:
               type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     POSTHubRequest:
       allOf:
         - type: object
@@ -18333,12 +18735,6 @@ components:
             description:
               type: string
             localClusterName:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     POSTHubResponse:
       allOf:
@@ -18356,12 +18752,6 @@ components:
               type: string
             localClusterName:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEFilterHubResponse:
       allOf:
         - type: object
@@ -18377,12 +18767,6 @@ components:
             description:
               type: string
             localClusterName:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     PUTImportHubRequest:
       allOf:
@@ -18405,12 +18789,6 @@ components:
                     type: string
                   localClusterName:
                     type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PUTImportHubResponse:
       allOf:
         - type: object
@@ -18426,12 +18804,6 @@ components:
                   description:
                     type: string
                   localClusterName:
-                    type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
                     type: string
     GETHubResponse:
       allOf:
@@ -18449,12 +18821,6 @@ components:
               type: string
             localClusterName:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEHubResponse:
       allOf:
         - type: object
@@ -18470,12 +18836,6 @@ components:
             description:
               type: string
             localClusterName:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     EditPageHubResponse:
       allOf:
@@ -18748,12 +19108,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PATCHAiNodeRequest:
       allOf:
         - type: object
@@ -18921,27 +19275,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     PATCHAiNodeResponse:
       allOf:
         - type: object
@@ -19109,27 +19442,6 @@ components:
               type: object
             removeAllNgsildData:
               type: object
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     POSTAiNodeRequest:
       allOf:
         - type: object
@@ -19178,12 +19490,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     POSTAiNodeResponse:
       allOf:
         - type: object
@@ -19232,12 +19538,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEFilterAiNodeResponse:
       allOf:
         - type: object
@@ -19286,12 +19586,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     PUTImportAiNodeRequest:
       allOf:
         - type: object
@@ -19345,12 +19639,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PUTImportAiNodeResponse:
       allOf:
         - type: object
@@ -19399,12 +19687,6 @@ components:
                     type: string
                   ngsildData:
                     type: object
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     GETAiNodeResponse:
       allOf:
         - type: object
@@ -19453,12 +19735,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEAiNodeResponse:
       allOf:
         - type: object
@@ -19507,12 +19783,6 @@ components:
               type: string
             ngsildData:
               type: object
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     EditPageAiNodeResponse:
       allOf:
         - type: string
@@ -19555,12 +19825,6 @@ components:
                   projectDisplayName:
                     type: string
                   description:
-                    type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
                     type: string
     PATCHProjectRequest:
       allOf:
@@ -19622,27 +19886,6 @@ components:
               type: string
             removeAllDescription:
               type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     PATCHProjectResponse:
       allOf:
         - type: object
@@ -19703,27 +19946,6 @@ components:
               type: string
             removeAllDescription:
               type: string
-            setPromKeycloakProxySsl:
-              type: boolean
-              nullable: true
-            removePromKeycloakProxySsl:
-              type: boolean
-            removeAllPromKeycloakProxySsl:
-              type: boolean
-            setPromKeycloakProxyPort:
-              type: string
-              nullable: true
-            removePromKeycloakProxyPort:
-              type: string
-            removeAllPromKeycloakProxyPort:
-              type: string
-            setPromKeycloakProxyHostName:
-              type: string
-              nullable: true
-            removePromKeycloakProxyHostName:
-              type: string
-            removeAllPromKeycloakProxyHostName:
-              type: string
     POSTProjectRequest:
       allOf:
         - type: object
@@ -19743,12 +19965,6 @@ components:
             projectDisplayName:
               type: string
             description:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     POSTProjectResponse:
       allOf:
@@ -19770,12 +19986,6 @@ components:
               type: string
             description:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEFilterProjectResponse:
       allOf:
         - type: object
@@ -19795,12 +20005,6 @@ components:
             projectDisplayName:
               type: string
             description:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     PUTImportProjectRequest:
       allOf:
@@ -19827,12 +20031,6 @@ components:
                     type: string
                   description:
                     type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
-                    type: string
     PUTImportProjectResponse:
       allOf:
         - type: object
@@ -19852,12 +20050,6 @@ components:
                   projectDisplayName:
                     type: string
                   description:
-                    type: string
-                  promKeycloakProxySsl:
-                    type: boolean
-                  promKeycloakProxyPort:
-                    type: string
-                  promKeycloakProxyHostName:
                     type: string
     GETProjectResponse:
       allOf:
@@ -19879,12 +20071,6 @@ components:
               type: string
             description:
               type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
-              type: string
     DELETEProjectResponse:
       allOf:
         - type: object
@@ -19904,12 +20090,6 @@ components:
             projectDisplayName:
               type: string
             description:
-              type: string
-            promKeycloakProxySsl:
-              type: boolean
-            promKeycloakProxyPort:
-              type: string
-            promKeycloakProxyHostName:
               type: string
     EditPageProjectResponse:
       allOf:
@@ -19966,7 +20146,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -19982,6 +20166,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     PATCHSitePageRequest:
       allOf:
         - type: object
@@ -20084,12 +20280,26 @@ components:
               type: string
             removeAllName:
               type: string
-            setAuthor:
+            setDescription:
               type: string
               nullable: true
-            removeAuthor:
+            removeDescription:
               type: string
-            removeAllAuthor:
+            removeAllDescription:
+              type: string
+            setAuthorName:
+              type: string
+              nullable: true
+            removeAuthorName:
+              type: string
+            removeAllAuthorName:
+              type: string
+            setAuthorUrl:
+              type: string
+              nullable: true
+            removeAuthorUrl:
+              type: string
+            removeAllAuthorUrl:
               type: string
             setPageId:
               type: string
@@ -20140,6 +20350,45 @@ components:
               type: string
             removeAllPageImageType:
               type: string
+            setPageImageAlt:
+              type: string
+              nullable: true
+            removePageImageAlt:
+              type: string
+            removeAllPageImageAlt:
+              type: string
+            setRelatedArticleIds:
+              type: string
+              nullable: true
+            removeRelatedArticleIds:
+              type: string
+            removeAllRelatedArticleIds:
+              type: string
+            setRelatedArticles:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     PATCHSitePageResponse:
       allOf:
         - type: object
@@ -20242,12 +20491,26 @@ components:
               type: string
             removeAllName:
               type: string
-            setAuthor:
+            setDescription:
               type: string
               nullable: true
-            removeAuthor:
+            removeDescription:
               type: string
-            removeAllAuthor:
+            removeAllDescription:
+              type: string
+            setAuthorName:
+              type: string
+              nullable: true
+            removeAuthorName:
+              type: string
+            removeAllAuthorName:
+              type: string
+            setAuthorUrl:
+              type: string
+              nullable: true
+            removeAuthorUrl:
+              type: string
+            removeAllAuthorUrl:
               type: string
             setPageId:
               type: string
@@ -20298,6 +20561,45 @@ components:
               type: string
             removeAllPageImageType:
               type: string
+            setPageImageAlt:
+              type: string
+              nullable: true
+            removePageImageAlt:
+              type: string
+            removeAllPageImageAlt:
+              type: string
+            setRelatedArticleIds:
+              type: string
+              nullable: true
+            removeRelatedArticleIds:
+              type: string
+            removeAllRelatedArticleIds:
+              type: string
+            setRelatedArticles:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     POSTSitePageRequest:
       allOf:
         - type: object
@@ -20330,7 +20632,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -20346,6 +20652,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     POSTSitePageResponse:
       allOf:
         - type: object
@@ -20378,7 +20696,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -20394,6 +20716,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     PUTImportSitePageRequest:
       allOf:
         - type: object
@@ -20431,7 +20765,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -20447,6 +20785,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     PUTImportSitePageResponse:
       allOf:
         - type: object
@@ -20479,7 +20829,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -20495,6 +20849,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     GETSitePageResponse:
       allOf:
         - type: object
@@ -20527,7 +20893,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -20543,6 +20913,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     EditPageSitePageResponse:
       allOf:
         - type: string
