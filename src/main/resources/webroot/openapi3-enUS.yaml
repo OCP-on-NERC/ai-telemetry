@@ -8505,7 +8505,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEHubResponse'
-  /en-us/edit/hub/{authResource}:
+  /en-us/edit/hub/{hubId}:
     get:
       operationId: editpageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8538,7 +8538,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true
@@ -8783,7 +8783,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageHubResponse'
-  /en-us/user/hub/{authResource}:
+  /en-us/user/hub/{hubId}:
     get:
       operationId: userpageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8816,7 +8816,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true
@@ -8829,7 +8829,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/UserPageHubResponse'
-  /en-us/view/hub/{authResource}:
+  /en-us/view/hub/{hubId}:
     get:
       operationId: displaypageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8858,7 +8858,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true

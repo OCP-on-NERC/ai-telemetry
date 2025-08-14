@@ -197,7 +197,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no hub found";
 	public static final String ApiUri_enUS = "/en-us/api/hub";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/hub";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/hub/{authResource}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/hub/{hubId}";
 	public static final String OfName_enUS = "of hub";
 	public static final String ANameAdjective_enUS = "an hub";
 	public static final String NameAdjectiveSingular_enUS = "hub";
@@ -223,13 +223,13 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/hub";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/hub";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/hub";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/hub/{authResource}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/hub/{hubId}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/hub/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/hub/%s";
-	public static final String DisplayPage_enUS_OpenApiUri = "/en-us/view/hub/{authResource}";
+	public static final String DisplayPage_enUS_OpenApiUri = "/en-us/view/hub/{hubId}";
 	public static final String DisplayPage_enUS_StringFormatUri = "/en-us/view/hub/%s";
 	public static final String DisplayPage_enUS_StringFormatUrl = "%s/en-us/view/hub/%s";
-	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/hub/{authResource}";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/hub/{hubId}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/hub/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/hub/%s";
 	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/hub";
@@ -1127,7 +1127,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_hubResource = "hub auth resource";
 	public static final String DISPLAY_NAME_pageId = "Page ID";
 	public static final String DISPLAY_NAME_description = "description";
-	public static final String DISPLAY_NAME_localClusterName = "local cluster name";
+	public static final String DISPLAY_NAME_localClusterName = "ACM cluster name";
 
 	@Override
 	public String idForClass() {
@@ -1240,10 +1240,10 @@ public abstract class HubGen<DEV> extends BaseModel {
 		switch(var) {
 		case VAR_hubName:
 			return 1;
-		case VAR_hubId:
-			return 2;
 		case VAR_description:
 			return 3;
+		case VAR_localClusterName:
+			return 2;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}

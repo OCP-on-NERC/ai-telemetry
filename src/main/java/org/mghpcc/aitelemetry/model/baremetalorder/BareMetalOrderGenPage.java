@@ -183,7 +183,7 @@ public class BareMetalOrderGenPage extends BareMetalOrderGenPageGen<PageLayout> 
           max = max.plus(2, ChronoUnit.DAYS);
         }
         Duration duration = Duration.between(min, max);
-        String gap = "HOUR";
+        String gap = "DAY";
         if(duration.toDays() >= 365)
           gap = "YEAR";
         else if(duration.toDays() >= 28)

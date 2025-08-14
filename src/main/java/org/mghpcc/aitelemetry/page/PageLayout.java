@@ -222,7 +222,7 @@ public class PageLayout extends PageLayoutGen<Object> {
 	 * Description: The user's siteTheme
 	 */
 	protected void _userSiteTheme(Wrap<String> w) {
-		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteTheme()).orElse("dark"));
+		w.o(Optional.ofNullable(siteRequest_.getSiteUser_()).map(user -> user.getSiteTheme()).orElse("light"));
 	}
 
 	/**

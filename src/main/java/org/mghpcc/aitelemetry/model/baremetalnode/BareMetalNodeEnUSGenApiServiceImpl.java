@@ -699,14 +699,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							num++;
 							bParams.add(o2.sqlNetworkInfo());
 						break;
-					case "setNodeId":
-							o2.setNodeId(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalNode.VAR_nodeId + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNodeId());
-						break;
 					case "setCreated":
 							o2.setCreated(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -714,6 +706,14 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							bSql.append(BareMetalNode.VAR_created + "=$" + num);
 							num++;
 							bParams.add(o2.sqlCreated());
+						break;
+					case "setNodeId":
+							o2.setNodeId(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNode.VAR_nodeId + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNodeId());
 						break;
 					case "setNodeIsMaintenance":
 							o2.setNodeIsMaintenance(jsonObject.getString(entityVar));
@@ -723,6 +723,14 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							num++;
 							bParams.add(o2.sqlNodeIsMaintenance());
 						break;
+					case "setArchived":
+							o2.setArchived(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNode.VAR_archived + "=$" + num);
+							num++;
+							bParams.add(o2.sqlArchived());
+						break;
 					case "setNodeLinks":
 							o2.setNodeLinks(jsonObject.getJsonArray(entityVar));
 							if(bParams.size() > 0)
@@ -730,14 +738,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							bSql.append(BareMetalNode.VAR_nodeLinks + "=$" + num);
 							num++;
 							bParams.add(o2.sqlNodeLinks());
-						break;
-					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalNode.VAR_archived + "=$" + num);
-							num++;
-							bParams.add(o2.sqlArchived());
 						break;
 					case "setNodeName":
 							o2.setNodeName(jsonObject.getString(entityVar));
@@ -763,14 +763,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							num++;
 							bParams.add(o2.sqlNodeProvisionState());
 						break;
-					case "setNodeResourceClass":
-							o2.setNodeResourceClass(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNodeResourceClass());
-						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -778,6 +770,14 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 							bSql.append(BareMetalNode.VAR_sessionId + "=$" + num);
 							num++;
 							bParams.add(o2.sqlSessionId());
+						break;
+					case "setNodeResourceClass":
+							o2.setNodeResourceClass(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNodeResourceClass());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
@@ -1170,15 +1170,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						num++;
 						bParams.add(o2.sqlNetworkInfo());
 						break;
-					case BareMetalNode.VAR_nodeId:
-						o2.setNodeId(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalNode.VAR_nodeId + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeId());
-						break;
 					case BareMetalNode.VAR_created:
 						o2.setCreated(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1187,6 +1178,15 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						bSql.append(BareMetalNode.VAR_created + "=$" + num);
 						num++;
 						bParams.add(o2.sqlCreated());
+						break;
+					case BareMetalNode.VAR_nodeId:
+						o2.setNodeId(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNode.VAR_nodeId + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNodeId());
 						break;
 					case BareMetalNode.VAR_nodeIsMaintenance:
 						o2.setNodeIsMaintenance(jsonObject.getString(entityVar));
@@ -1197,6 +1197,15 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						num++;
 						bParams.add(o2.sqlNodeIsMaintenance());
 						break;
+					case BareMetalNode.VAR_archived:
+						o2.setArchived(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNode.VAR_archived + "=$" + num);
+						num++;
+						bParams.add(o2.sqlArchived());
+						break;
 					case BareMetalNode.VAR_nodeLinks:
 						o2.setNodeLinks(jsonObject.getJsonArray(entityVar));
 						if(bParams.size() > 0) {
@@ -1205,15 +1214,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						bSql.append(BareMetalNode.VAR_nodeLinks + "=$" + num);
 						num++;
 						bParams.add(o2.sqlNodeLinks());
-						break;
-					case BareMetalNode.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalNode.VAR_archived + "=$" + num);
-						num++;
-						bParams.add(o2.sqlArchived());
 						break;
 					case BareMetalNode.VAR_nodeName:
 						o2.setNodeName(jsonObject.getString(entityVar));
@@ -1242,15 +1242,6 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						num++;
 						bParams.add(o2.sqlNodeProvisionState());
 						break;
-					case BareMetalNode.VAR_nodeResourceClass:
-						o2.setNodeResourceClass(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNodeResourceClass());
-						break;
 					case BareMetalNode.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1259,6 +1250,15 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 						bSql.append(BareMetalNode.VAR_sessionId + "=$" + num);
 						num++;
 						bParams.add(o2.sqlSessionId());
+						break;
+					case BareMetalNode.VAR_nodeResourceClass:
+						o2.setNodeResourceClass(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalNode.VAR_nodeResourceClass + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNodeResourceClass());
 						break;
 					case BareMetalNode.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
@@ -3019,7 +3019,7 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT leaseInfo, networkInfo, nodeId, created, nodeIsMaintenance, nodeLinks, archived, nodeName, nodePowerState, nodeProvisionState, nodeResourceClass, sessionId, userKey, objectTitle, displayPage FROM BareMetalNode WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT leaseInfo, networkInfo, created, nodeId, nodeIsMaintenance, archived, nodeLinks, nodeName, nodePowerState, nodeProvisionState, sessionId, nodeResourceClass, userKey, objectTitle, displayPage FROM BareMetalNode WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3225,16 +3225,16 @@ public class BareMetalNodeEnUSGenApiServiceImpl extends BaseApiServiceImpl imple
 
 			page.persistForClass(BareMetalNode.VAR_leaseInfo, BareMetalNode.staticSetLeaseInfo(siteRequest2, (String)result.get(BareMetalNode.VAR_leaseInfo)));
 			page.persistForClass(BareMetalNode.VAR_networkInfo, BareMetalNode.staticSetNetworkInfo(siteRequest2, (String)result.get(BareMetalNode.VAR_networkInfo)));
-			page.persistForClass(BareMetalNode.VAR_nodeId, BareMetalNode.staticSetNodeId(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeId)));
 			page.persistForClass(BareMetalNode.VAR_created, BareMetalNode.staticSetCreated(siteRequest2, (String)result.get(BareMetalNode.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+			page.persistForClass(BareMetalNode.VAR_nodeId, BareMetalNode.staticSetNodeId(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeId)));
 			page.persistForClass(BareMetalNode.VAR_nodeIsMaintenance, BareMetalNode.staticSetNodeIsMaintenance(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeIsMaintenance)));
-			page.persistForClass(BareMetalNode.VAR_nodeLinks, BareMetalNode.staticSetNodeLinks(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeLinks)));
 			page.persistForClass(BareMetalNode.VAR_archived, BareMetalNode.staticSetArchived(siteRequest2, (String)result.get(BareMetalNode.VAR_archived)));
+			page.persistForClass(BareMetalNode.VAR_nodeLinks, BareMetalNode.staticSetNodeLinks(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeLinks)));
 			page.persistForClass(BareMetalNode.VAR_nodeName, BareMetalNode.staticSetNodeName(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeName)));
 			page.persistForClass(BareMetalNode.VAR_nodePowerState, BareMetalNode.staticSetNodePowerState(siteRequest2, (String)result.get(BareMetalNode.VAR_nodePowerState)));
 			page.persistForClass(BareMetalNode.VAR_nodeProvisionState, BareMetalNode.staticSetNodeProvisionState(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeProvisionState)));
-			page.persistForClass(BareMetalNode.VAR_nodeResourceClass, BareMetalNode.staticSetNodeResourceClass(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeResourceClass)));
 			page.persistForClass(BareMetalNode.VAR_sessionId, BareMetalNode.staticSetSessionId(siteRequest2, (String)result.get(BareMetalNode.VAR_sessionId)));
+			page.persistForClass(BareMetalNode.VAR_nodeResourceClass, BareMetalNode.staticSetNodeResourceClass(siteRequest2, (String)result.get(BareMetalNode.VAR_nodeResourceClass)));
 			page.persistForClass(BareMetalNode.VAR_userKey, BareMetalNode.staticSetUserKey(siteRequest2, (String)result.get(BareMetalNode.VAR_userKey)));
 			page.persistForClass(BareMetalNode.VAR_objectTitle, BareMetalNode.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalNode.VAR_objectTitle)));
 			page.persistForClass(BareMetalNode.VAR_displayPage, BareMetalNode.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalNode.VAR_displayPage)));

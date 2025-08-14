@@ -2080,6 +2080,7 @@ public abstract class SiteRequestGen<DEV> extends Object {
 
 	public static final String CLASS_SIMPLE_NAME = "SiteRequest";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.request.SiteRequest";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_config = "config";
 	public static final String VAR_i18n = "i18n";
 	public static final String VAR_siteRequest_ = "siteRequest_";

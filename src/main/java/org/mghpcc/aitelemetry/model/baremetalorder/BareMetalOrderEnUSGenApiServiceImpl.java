@@ -698,6 +698,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlDescription());
 						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
+						break;
 					case "setNetworkId":
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
@@ -729,16 +737,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}));
 						});
 						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
-						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalOrder.VAR_archived + "=$" + num);
@@ -761,14 +761,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlNumberOfFc830());
 						break;
-					case "setNumberOfR730xd":
-							o2.setNumberOfR730xd(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
-							num++;
-							bParams.add(o2.sqlNumberOfR730xd());
-						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -777,13 +769,13 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlSessionId());
 						break;
-					case "setNumberOfWhiteboxFlax1":
-							o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+					case "setNumberOfR730xd":
+							o2.setNumberOfR730xd(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+							bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
 							num++;
-							bParams.add(o2.sqlNumberOfWhiteboxFlax1());
+							bParams.add(o2.sqlNumberOfR730xd());
 						break;
 					case "setUserKey":
 							o2.setUserKey(jsonObject.getString(entityVar));
@@ -792,6 +784,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 							num++;
 							bParams.add(o2.sqlUserKey());
+						break;
+					case "setNumberOfWhiteboxFlax1":
+							o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+							num++;
+							bParams.add(o2.sqlNumberOfWhiteboxFlax1());
 						break;
 					case "setNumberOfLenovoSd650nv2A100":
 							o2.setNumberOfLenovoSd650nv2A100(jsonObject.getString(entityVar));
@@ -809,14 +809,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							num++;
 							bParams.add(o2.sqlNumberOfLenovoSd665nv3H100());
 						break;
-					case "setImage":
-							o2.setImage(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(BareMetalOrder.VAR_image + "=$" + num);
-							num++;
-							bParams.add(o2.sqlImage());
-						break;
 					case "setObjectTitle":
 							o2.setObjectTitle(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -824,6 +816,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bSql.append(BareMetalOrder.VAR_objectTitle + "=$" + num);
 							num++;
 							bParams.add(o2.sqlObjectTitle());
+						break;
+					case "setImage":
+							o2.setImage(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(BareMetalOrder.VAR_image + "=$" + num);
+							num++;
+							bParams.add(o2.sqlImage());
 						break;
 					case "setDisplayPage":
 							o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -842,7 +842,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bParams.add(o2.sqlSshPublicKey());
 						break;
 					case "setFloatingIp":
-							o2.setFloatingIp(jsonObject.getBoolean(entityVar));
+							o2.setFloatingIp(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalOrder.VAR_floatingIp + "=$" + num);
@@ -1218,6 +1218,15 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlDescription());
 						break;
+					case BareMetalOrder.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_created + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreated());
+						break;
 					case BareMetalOrder.VAR_networkId:
 						Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
 							futures1.add(Future.future(promise2 -> {
@@ -1238,17 +1247,8 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							}));
 						});
 						break;
-					case BareMetalOrder.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalOrder.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
-						break;
 					case BareMetalOrder.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1274,15 +1274,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlNumberOfFc830());
 						break;
-					case BareMetalOrder.VAR_numberOfR730xd:
-						o2.setNumberOfR730xd(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
-						num++;
-						bParams.add(o2.sqlNumberOfR730xd());
-						break;
 					case BareMetalOrder.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1292,14 +1283,14 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlSessionId());
 						break;
-					case BareMetalOrder.VAR_numberOfWhiteboxFlax1:
-						o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+					case BareMetalOrder.VAR_numberOfR730xd:
+						o2.setNumberOfR730xd(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
-						bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+						bSql.append(BareMetalOrder.VAR_numberOfR730xd + "=$" + num);
 						num++;
-						bParams.add(o2.sqlNumberOfWhiteboxFlax1());
+						bParams.add(o2.sqlNumberOfR730xd());
 						break;
 					case BareMetalOrder.VAR_userKey:
 						o2.setUserKey(jsonObject.getString(entityVar));
@@ -1309,6 +1300,15 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_userKey + "=$" + num);
 						num++;
 						bParams.add(o2.sqlUserKey());
+						break;
+					case BareMetalOrder.VAR_numberOfWhiteboxFlax1:
+						o2.setNumberOfWhiteboxFlax1(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_numberOfWhiteboxFlax1 + "=$" + num);
+						num++;
+						bParams.add(o2.sqlNumberOfWhiteboxFlax1());
 						break;
 					case BareMetalOrder.VAR_numberOfLenovoSd650nv2A100:
 						o2.setNumberOfLenovoSd650nv2A100(jsonObject.getString(entityVar));
@@ -1328,15 +1328,6 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						num++;
 						bParams.add(o2.sqlNumberOfLenovoSd665nv3H100());
 						break;
-					case BareMetalOrder.VAR_image:
-						o2.setImage(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(BareMetalOrder.VAR_image + "=$" + num);
-						num++;
-						bParams.add(o2.sqlImage());
-						break;
 					case BareMetalOrder.VAR_objectTitle:
 						o2.setObjectTitle(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1345,6 +1336,15 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bSql.append(BareMetalOrder.VAR_objectTitle + "=$" + num);
 						num++;
 						bParams.add(o2.sqlObjectTitle());
+						break;
+					case BareMetalOrder.VAR_image:
+						o2.setImage(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(BareMetalOrder.VAR_image + "=$" + num);
+						num++;
+						bParams.add(o2.sqlImage());
 						break;
 					case BareMetalOrder.VAR_displayPage:
 						o2.setDisplayPage(jsonObject.getString(entityVar));
@@ -1365,7 +1365,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bParams.add(o2.sqlSshPublicKey());
 						break;
 					case BareMetalOrder.VAR_floatingIp:
-						o2.setFloatingIp(jsonObject.getBoolean(entityVar));
+						o2.setFloatingIp(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -3004,7 +3004,7 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT description, networkId, created, archived, numberOfFc430, numberOfFc830, numberOfR730xd, sessionId, numberOfWhiteboxFlax1, userKey, numberOfLenovoSd650nv2A100, numberOfLenovoSd665nv3H100, image, objectTitle, displayPage, sshPublicKey, floatingIp, status FROM BareMetalOrder WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT description, created, networkId, archived, numberOfFc430, numberOfFc830, sessionId, numberOfR730xd, userKey, numberOfWhiteboxFlax1, numberOfLenovoSd650nv2A100, numberOfLenovoSd665nv3H100, objectTitle, image, displayPage, sshPublicKey, floatingIp, status FROM BareMetalOrder WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3270,19 +3270,19 @@ public class BareMetalOrderEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			page.setSiteRequest_((SiteRequest)siteRequest);
 
 			page.persistForClass(BareMetalOrder.VAR_description, BareMetalOrder.staticSetDescription(siteRequest2, (String)result.get(BareMetalOrder.VAR_description)));
-			page.persistForClass(BareMetalOrder.VAR_networkId, BareMetalOrder.staticSetNetworkId(siteRequest2, (String)result.get(BareMetalOrder.VAR_networkId)));
 			page.persistForClass(BareMetalOrder.VAR_created, BareMetalOrder.staticSetCreated(siteRequest2, (String)result.get(BareMetalOrder.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+			page.persistForClass(BareMetalOrder.VAR_networkId, BareMetalOrder.staticSetNetworkId(siteRequest2, (String)result.get(BareMetalOrder.VAR_networkId)));
 			page.persistForClass(BareMetalOrder.VAR_archived, BareMetalOrder.staticSetArchived(siteRequest2, (String)result.get(BareMetalOrder.VAR_archived)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfFc430, BareMetalOrder.staticSetNumberOfFc430(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfFc430)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfFc830, BareMetalOrder.staticSetNumberOfFc830(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfFc830)));
-			page.persistForClass(BareMetalOrder.VAR_numberOfR730xd, BareMetalOrder.staticSetNumberOfR730xd(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfR730xd)));
 			page.persistForClass(BareMetalOrder.VAR_sessionId, BareMetalOrder.staticSetSessionId(siteRequest2, (String)result.get(BareMetalOrder.VAR_sessionId)));
-			page.persistForClass(BareMetalOrder.VAR_numberOfWhiteboxFlax1, BareMetalOrder.staticSetNumberOfWhiteboxFlax1(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfWhiteboxFlax1)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfR730xd, BareMetalOrder.staticSetNumberOfR730xd(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfR730xd)));
 			page.persistForClass(BareMetalOrder.VAR_userKey, BareMetalOrder.staticSetUserKey(siteRequest2, (String)result.get(BareMetalOrder.VAR_userKey)));
+			page.persistForClass(BareMetalOrder.VAR_numberOfWhiteboxFlax1, BareMetalOrder.staticSetNumberOfWhiteboxFlax1(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfWhiteboxFlax1)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100, BareMetalOrder.staticSetNumberOfLenovoSd650nv2A100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd650nv2A100)));
 			page.persistForClass(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100, BareMetalOrder.staticSetNumberOfLenovoSd665nv3H100(siteRequest2, (String)result.get(BareMetalOrder.VAR_numberOfLenovoSd665nv3H100)));
-			page.persistForClass(BareMetalOrder.VAR_image, BareMetalOrder.staticSetImage(siteRequest2, (String)result.get(BareMetalOrder.VAR_image)));
 			page.persistForClass(BareMetalOrder.VAR_objectTitle, BareMetalOrder.staticSetObjectTitle(siteRequest2, (String)result.get(BareMetalOrder.VAR_objectTitle)));
+			page.persistForClass(BareMetalOrder.VAR_image, BareMetalOrder.staticSetImage(siteRequest2, (String)result.get(BareMetalOrder.VAR_image)));
 			page.persistForClass(BareMetalOrder.VAR_displayPage, BareMetalOrder.staticSetDisplayPage(siteRequest2, (String)result.get(BareMetalOrder.VAR_displayPage)));
 			page.persistForClass(BareMetalOrder.VAR_sshPublicKey, BareMetalOrder.staticSetSshPublicKey(siteRequest2, (String)result.get(BareMetalOrder.VAR_sshPublicKey)));
 			page.persistForClass(BareMetalOrder.VAR_floatingIp, BareMetalOrder.staticSetFloatingIp(siteRequest2, (String)result.get(BareMetalOrder.VAR_floatingIp)));
