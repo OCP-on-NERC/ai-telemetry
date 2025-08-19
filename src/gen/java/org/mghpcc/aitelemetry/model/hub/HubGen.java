@@ -197,7 +197,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String NoNameFound_enUS = "no hub found";
 	public static final String ApiUri_enUS = "/en-us/api/hub";
 	public static final String ApiUriSearchPage_enUS = "/en-us/search/hub";
-	public static final String ApiUriEditPage_enUS = "/en-us/edit/hub/{authResource}";
+	public static final String ApiUriEditPage_enUS = "/en-us/edit/hub/{hubId}";
 	public static final String OfName_enUS = "of hub";
 	public static final String ANameAdjective_enUS = "an hub";
 	public static final String NameAdjectiveSingular_enUS = "hub";
@@ -223,13 +223,13 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String SearchPage_enUS_OpenApiUri = "/en-us/search/hub";
 	public static final String SearchPage_enUS_StringFormatUri = "/en-us/search/hub";
 	public static final String SearchPage_enUS_StringFormatUrl = "%s/en-us/search/hub";
-	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/hub/{authResource}";
+	public static final String EditPage_enUS_OpenApiUri = "/en-us/edit/hub/{hubId}";
 	public static final String EditPage_enUS_StringFormatUri = "/en-us/edit/hub/%s";
 	public static final String EditPage_enUS_StringFormatUrl = "%s/en-us/edit/hub/%s";
-	public static final String DisplayPage_enUS_OpenApiUri = "/en-us/view/hub/{authResource}";
+	public static final String DisplayPage_enUS_OpenApiUri = "/en-us/view/hub/{hubId}";
 	public static final String DisplayPage_enUS_StringFormatUri = "/en-us/view/hub/%s";
 	public static final String DisplayPage_enUS_StringFormatUrl = "%s/en-us/view/hub/%s";
-	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/hub/{authResource}";
+	public static final String UserPage_enUS_OpenApiUri = "/en-us/user/hub/{hubId}";
 	public static final String UserPage_enUS_StringFormatUri = "/en-us/user/hub/%s";
 	public static final String UserPage_enUS_StringFormatUrl = "%s/en-us/user/hub/%s";
 	public static final String DELETEFilter_enUS_OpenApiUri = "/en-us/api/hub";
@@ -518,6 +518,62 @@ public abstract class HubGen<DEV> extends BaseModel {
 		return description;
 	}
 
+	//////////////////////
+	// localClusterName //
+	//////////////////////
+
+
+	/**	 The entity localClusterName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String localClusterName;
+
+	/**	<br> The entity localClusterName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.hub.Hub&fq=entiteVar_enUS_indexed_string:localClusterName">Find the entity localClusterName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _localClusterName(Wrap<String> w);
+
+	public String getLocalClusterName() {
+		return localClusterName;
+	}
+	public void setLocalClusterName(String o) {
+		this.localClusterName = Hub.staticSetLocalClusterName(siteRequest_, o);
+	}
+	public static String staticSetLocalClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected Hub localClusterNameInit() {
+		Wrap<String> localClusterNameWrap = new Wrap<String>().var("localClusterName");
+		if(localClusterName == null) {
+			_localClusterName(localClusterNameWrap);
+			Optional.ofNullable(localClusterNameWrap.getO()).ifPresent(o -> {
+				setLocalClusterName(o);
+			});
+		}
+		return (Hub)this;
+	}
+
+	public static String staticSearchLocalClusterName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrLocalClusterName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqLocalClusterName(SiteRequest siteRequest_, String o) {
+		return Hub.staticSearchLocalClusterName(siteRequest_, Hub.staticSetLocalClusterName(siteRequest_, o)).toString();
+	}
+
+	public String sqlLocalClusterName() {
+		return localClusterName;
+	}
+
 	//////////////
 	// initDeep //
 	//////////////
@@ -552,6 +608,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 				hubResourceInit();
 				pageIdInit();
 				descriptionInit();
+				localClusterNameInit();
 				promise2.complete();
 			} catch(Exception ex) {
 				promise2.fail(ex);
@@ -615,6 +672,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 				return oHub.pageId;
 			case "description":
 				return oHub.description;
+			case "localClusterName":
+				return oHub.localClusterName;
 			default:
 				return super.obtainBaseModel(var);
 		}
@@ -664,6 +723,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return Hub.staticSetPageId(siteRequest_, v);
 		case "description":
 			return Hub.staticSetDescription(siteRequest_, v);
+		case "localClusterName":
+			return Hub.staticSetLocalClusterName(siteRequest_, v);
 			default:
 				return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
 		}
@@ -688,6 +749,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return Hub.staticSearchPageId(siteRequest_, (String)o);
 		case "description":
 			return Hub.staticSearchDescription(siteRequest_, (String)o);
+		case "localClusterName":
+			return Hub.staticSearchLocalClusterName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -712,6 +775,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return Hub.staticSearchStrPageId(siteRequest_, (String)o);
 		case "description":
 			return Hub.staticSearchStrDescription(siteRequest_, (String)o);
+		case "localClusterName":
+			return Hub.staticSearchStrLocalClusterName(siteRequest_, (String)o);
 			default:
 				return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -736,6 +801,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return Hub.staticSearchFqPageId(siteRequest_, o);
 		case "description":
 			return Hub.staticSearchFqDescription(siteRequest_, o);
+		case "localClusterName":
+			return Hub.staticSearchFqLocalClusterName(siteRequest_, o);
 			default:
 				return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
 		}
@@ -792,6 +859,12 @@ public abstract class HubGen<DEV> extends BaseModel {
 				}
 				saves.add("description");
 				return val;
+			} else if("localclustername".equals(varLower)) {
+				if(val instanceof String) {
+					setLocalClusterName((String)val);
+				}
+				saves.add("localClusterName");
+				return val;
 		} else {
 			return super.persistBaseModel(var, val);
 		}
@@ -838,6 +911,12 @@ public abstract class HubGen<DEV> extends BaseModel {
 				if(description != null)
 					oHub.setDescription(description);
 			}
+
+			if(saves.contains("localClusterName")) {
+				String localClusterName = (String)doc.get("localClusterName_docvalues_string");
+				if(localClusterName != null)
+					oHub.setLocalClusterName(localClusterName);
+			}
 		}
 
 		super.populateBaseModel(doc);
@@ -859,6 +938,9 @@ public abstract class HubGen<DEV> extends BaseModel {
 		if(description != null) {
 			doc.put("description_docvalues_string", description);
 		}
+		if(localClusterName != null) {
+			doc.put("localClusterName_docvalues_string", localClusterName);
+		}
 		super.indexBaseModel(doc);
 
 	}
@@ -875,6 +957,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 				return "pageId_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
+			case "localClusterName":
+				return "localClusterName_docvalues_string";
 			default:
 				return BaseModel.varStoredBaseModel(entityVar);
 		}
@@ -892,6 +976,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 				return "pageId_docvalues_string";
 			case "description":
 				return "description_docvalues_string";
+			case "localClusterName":
+				return "localClusterName_docvalues_string";
 			default:
 				return BaseModel.varIndexedBaseModel(entityVar);
 		}
@@ -909,6 +995,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 				return "pageId";
 			case "description_docvalues_string":
 				return "description";
+			case "localClusterName_docvalues_string":
+				return "localClusterName";
 			default:
 				return BaseModel.searchVarBaseModel(searchVar);
 		}
@@ -944,6 +1032,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 		oHub.setHubResource(Optional.ofNullable(doc.get("hubResource_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oHub.setPageId(Optional.ofNullable(doc.get("pageId_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oHub.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oHub.setLocalClusterName(Optional.ofNullable(doc.get("localClusterName_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
 	}
@@ -967,6 +1056,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 				apiRequest.addVars("pageId");
 			if(!Objects.equals(description, original.getDescription()))
 				apiRequest.addVars("description");
+			if(!Objects.equals(localClusterName, original.getLocalClusterName()))
+				apiRequest.addVars("localClusterName");
 			super.apiRequestBaseModel();
 		}
 	}
@@ -983,6 +1074,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(hubResource).map(v -> "hubResource: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(pageId).map(v -> "pageId: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(localClusterName).map(v -> "localClusterName: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
 
@@ -998,6 +1090,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String VAR_hubResource = "hubResource";
 	public static final String VAR_pageId = "pageId";
 	public static final String VAR_description = "description";
+	public static final String VAR_localClusterName = "localClusterName";
 
 	public static List<String> varsQForClass() {
 		return Hub.varsQHub(new ArrayList<String>());
@@ -1016,6 +1109,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 		vars.add(VAR_hubResource);
 		vars.add(VAR_pageId);
 		vars.add(VAR_description);
+		vars.add(VAR_localClusterName);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
 	}
@@ -1033,6 +1127,7 @@ public abstract class HubGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_hubResource = "hub auth resource";
 	public static final String DISPLAY_NAME_pageId = "Page ID";
 	public static final String DISPLAY_NAME_description = "description";
+	public static final String DISPLAY_NAME_localClusterName = "ACM cluster name";
 
 	@Override
 	public String idForClass() {
@@ -1094,6 +1189,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_pageId;
 		case VAR_description:
 			return DISPLAY_NAME_description;
+		case VAR_localClusterName:
+			return DISPLAY_NAME_localClusterName;
 		default:
 			return BaseModel.displayNameBaseModel(var);
 		}
@@ -1113,6 +1210,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return "The ID for this page. ";
 		case VAR_description:
 			return "A description of this hub";
+		case VAR_localClusterName:
+			return "The actual name of the ACM local cluster. ";
 			default:
 				return BaseModel.descriptionBaseModel(var);
 		}
@@ -1130,6 +1229,8 @@ public abstract class HubGen<DEV> extends BaseModel {
 			return "String";
 		case VAR_description:
 			return "String";
+		case VAR_localClusterName:
+			return "String";
 			default:
 				return BaseModel.classSimpleNameBaseModel(var);
 		}
@@ -1139,10 +1240,10 @@ public abstract class HubGen<DEV> extends BaseModel {
 		switch(var) {
 		case VAR_hubName:
 			return 1;
-		case VAR_hubId:
-			return 2;
 		case VAR_description:
 			return 3;
+		case VAR_localClusterName:
+			return 2;
 			default:
 				return BaseModel.htmColumnBaseModel(var);
 		}

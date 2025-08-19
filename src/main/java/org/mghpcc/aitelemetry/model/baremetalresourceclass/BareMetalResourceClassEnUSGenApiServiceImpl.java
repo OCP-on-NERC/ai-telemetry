@@ -314,6 +314,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -326,7 +327,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "PATCH"));
+				form.add("permission", String.format("%s#%s", name, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -633,7 +634,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 							bParams.add(o2.sqlCreated());
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalResourceClass.VAR_archived + "=$" + num);
@@ -739,6 +740,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -751,7 +753,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "POST"));
+				form.add("permission", String.format("%s#%s", name, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1048,7 +1050,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 						bParams.add(o2.sqlCreated());
 						break;
 					case BareMetalResourceClass.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1158,6 +1160,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1170,7 +1173,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "DELETE"));
+				form.add("permission", String.format("%s#%s", name, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1508,6 +1511,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1520,7 +1524,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "PUT"));
+				form.add("permission", String.format("%s#%s", name, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1955,6 +1959,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1967,7 +1972,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "GET"));
+				form.add("permission", String.format("%s#%s", name, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2116,6 +2121,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 		Boolean classPublicRead = true;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String name = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("name");
+			String BAREMETALRESOURCECLASS = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALRESOURCECLASS");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2128,7 +2134,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, "PUT"));
 			if(name != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalResourceClass.CLASS_AUTH_RESOURCE, name, "DELETE"));
+				form.add("permission", String.format("%s#%s", name, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2733,7 +2739,7 @@ public class BareMetalResourceClassEnUSGenApiServiceImpl extends BaseApiServiceI
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)

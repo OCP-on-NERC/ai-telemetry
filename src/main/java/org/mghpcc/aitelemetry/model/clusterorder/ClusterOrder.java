@@ -4,7 +4,7 @@ import org.computate.search.wrap.Wrap;
 import org.mghpcc.aitelemetry.model.BaseModel;
 
 /**
- * Order: 9
+ * Order: 10
  * Description: Manage your own Red Hat OpenShift cluster in the cloud. 
  * AName: an OpenShift cluster order
  * Icon: <i class="fa-regular fa-server"></i>

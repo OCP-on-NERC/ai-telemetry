@@ -121,6 +121,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -133,7 +134,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -284,6 +285,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -296,7 +298,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -386,6 +388,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -398,7 +401,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "PATCH"));
+				form.add("permission", String.format("%s#%s", id, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -721,7 +724,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 							bParams.add(o2.sqlConsoleUrl());
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(ManagedCluster.VAR_archived + "=$" + num);
@@ -827,6 +830,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -839,7 +843,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "POST"));
+				form.add("permission", String.format("%s#%s", id, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1154,7 +1158,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						bParams.add(o2.sqlConsoleUrl());
 						break;
 					case ManagedCluster.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1264,6 +1268,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1276,7 +1281,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "DELETE"));
+				form.add("permission", String.format("%s#%s", id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1614,6 +1619,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1626,7 +1632,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "PUT"));
+				form.add("permission", String.format("%s#%s", id, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1937,6 +1943,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1949,7 +1956,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2044,6 +2051,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2056,7 +2064,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2204,6 +2212,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2216,7 +2225,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2365,6 +2374,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String MANAGEDCLUSTER = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("MANAGEDCLUSTER");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2377,7 +2387,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", ManagedCluster.CLASS_AUTH_RESOURCE, id, "DELETE"));
+				form.add("permission", String.format("%s#%s", id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2982,7 +2992,7 @@ public class ManagedClusterEnUSGenApiServiceImpl extends BaseApiServiceImpl impl
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)

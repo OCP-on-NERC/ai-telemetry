@@ -121,6 +121,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -133,7 +134,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -284,6 +285,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -296,7 +298,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -386,6 +388,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -398,7 +401,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "PATCH"));
+				form.add("permission", String.format("%s#%s", id, "PATCH"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -721,7 +724,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlAvailabilityZoneHints());
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_archived + "=$" + num);
@@ -881,7 +884,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlUpdatedAt());
 						break;
 					case "setIsAdminStateUp":
-							o2.setIsAdminStateUp(jsonObject.getBoolean(entityVar));
+							o2.setIsAdminStateUp(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isAdminStateUp + "=$" + num);
@@ -889,7 +892,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsAdminStateUp());
 						break;
 					case "setIsDefault":
-							o2.setIsDefault(jsonObject.getBoolean(entityVar));
+							o2.setIsDefault(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isDefault + "=$" + num);
@@ -897,7 +900,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsDefault());
 						break;
 					case "setIsPortSecurityEnabled":
-							o2.setIsPortSecurityEnabled(jsonObject.getBoolean(entityVar));
+							o2.setIsPortSecurityEnabled(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isPortSecurityEnabled + "=$" + num);
@@ -905,7 +908,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsPortSecurityEnabled());
 						break;
 					case "setIsRouterExternal":
-							o2.setIsRouterExternal(jsonObject.getBoolean(entityVar));
+							o2.setIsRouterExternal(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isRouterExternal + "=$" + num);
@@ -913,7 +916,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsRouterExternal());
 						break;
 					case "setIsShared":
-							o2.setIsShared(jsonObject.getBoolean(entityVar));
+							o2.setIsShared(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isShared + "=$" + num);
@@ -921,7 +924,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsShared());
 						break;
 					case "setIsVlanQueing":
-							o2.setIsVlanQueing(jsonObject.getBoolean(entityVar));
+							o2.setIsVlanQueing(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isVlanQueing + "=$" + num);
@@ -929,7 +932,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsVlanQueing());
 						break;
 					case "setIsVlanTransparent":
-							o2.setIsVlanTransparent(jsonObject.getBoolean(entityVar));
+							o2.setIsVlanTransparent(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_isVlanTransparent + "=$" + num);
@@ -937,7 +940,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 							bParams.add(o2.sqlIsVlanTransparent());
 						break;
 					case "setL2Adjacency":
-							o2.setL2Adjacency(jsonObject.getBoolean(entityVar));
+							o2.setL2Adjacency(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(BareMetalNetwork.VAR_l2Adjacency + "=$" + num);
@@ -1067,6 +1070,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1079,7 +1083,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "POST"));
+				form.add("permission", String.format("%s#%s", id, "POST"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1394,7 +1398,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlAvailabilityZoneHints());
 						break;
 					case BareMetalNetwork.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1574,7 +1578,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlUpdatedAt());
 						break;
 					case BareMetalNetwork.VAR_isAdminStateUp:
-						o2.setIsAdminStateUp(jsonObject.getBoolean(entityVar));
+						o2.setIsAdminStateUp(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1583,7 +1587,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsAdminStateUp());
 						break;
 					case BareMetalNetwork.VAR_isDefault:
-						o2.setIsDefault(jsonObject.getBoolean(entityVar));
+						o2.setIsDefault(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1592,7 +1596,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsDefault());
 						break;
 					case BareMetalNetwork.VAR_isPortSecurityEnabled:
-						o2.setIsPortSecurityEnabled(jsonObject.getBoolean(entityVar));
+						o2.setIsPortSecurityEnabled(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1601,7 +1605,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsPortSecurityEnabled());
 						break;
 					case BareMetalNetwork.VAR_isRouterExternal:
-						o2.setIsRouterExternal(jsonObject.getBoolean(entityVar));
+						o2.setIsRouterExternal(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1610,7 +1614,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsRouterExternal());
 						break;
 					case BareMetalNetwork.VAR_isShared:
-						o2.setIsShared(jsonObject.getBoolean(entityVar));
+						o2.setIsShared(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1619,7 +1623,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsShared());
 						break;
 					case BareMetalNetwork.VAR_isVlanQueing:
-						o2.setIsVlanQueing(jsonObject.getBoolean(entityVar));
+						o2.setIsVlanQueing(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1628,7 +1632,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsVlanQueing());
 						break;
 					case BareMetalNetwork.VAR_isVlanTransparent:
-						o2.setIsVlanTransparent(jsonObject.getBoolean(entityVar));
+						o2.setIsVlanTransparent(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1637,7 +1641,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						bParams.add(o2.sqlIsVlanTransparent());
 						break;
 					case BareMetalNetwork.VAR_l2Adjacency:
-						o2.setL2Adjacency(jsonObject.getBoolean(entityVar));
+						o2.setL2Adjacency(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -1774,6 +1778,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -1786,7 +1791,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "DELETE"));
+				form.add("permission", String.format("%s#%s", id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2124,6 +2129,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2136,7 +2142,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "PUT"));
+				form.add("permission", String.format("%s#%s", id, "PUT"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2447,6 +2453,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2459,7 +2466,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2607,6 +2614,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2619,7 +2627,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "GET"));
+				form.add("permission", String.format("%s#%s", id, "GET"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2768,6 +2776,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 		Boolean classPublicRead = false;
 		user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
 			String id = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("id");
+			String BAREMETALNETWORK = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("BAREMETALNETWORK");
 			MultiMap form = MultiMap.caseInsensitiveMultiMap();
 			form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
 			form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
@@ -2780,7 +2789,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PATCH"));
 			form.add("permission", String.format("%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, "PUT"));
 			if(id != null)
-				form.add("permission", String.format("%s-%s#%s", BareMetalNetwork.CLASS_AUTH_RESOURCE, id, "DELETE"));
+				form.add("permission", String.format("%s#%s", id, "DELETE"));
 			webClient.post(
 					config.getInteger(ComputateConfigKeys.AUTH_PORT)
 					, config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -3385,7 +3394,7 @@ public class BareMetalNetworkEnUSGenApiServiceImpl extends BaseApiServiceImpl im
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)

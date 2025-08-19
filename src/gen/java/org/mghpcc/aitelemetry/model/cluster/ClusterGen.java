@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
 import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import java.lang.Integer;
+import java.lang.Long;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -1387,6 +1388,134 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		return gpuDevicesTotal;
 	}
 
+	///////////////////
+	// cpuCoresTotal //
+	///////////////////
+
+
+	/**	 The entity cpuCoresTotal
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Integer cpuCoresTotal;
+
+	/**	<br> The entity cpuCoresTotal
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:cpuCoresTotal">Find the entity cpuCoresTotal in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _cpuCoresTotal(Wrap<Integer> w);
+
+	public Integer getCpuCoresTotal() {
+		return cpuCoresTotal;
+	}
+
+	public void setCpuCoresTotal(Integer cpuCoresTotal) {
+		this.cpuCoresTotal = cpuCoresTotal;
+	}
+	@JsonIgnore
+	public void setCpuCoresTotal(String o) {
+		this.cpuCoresTotal = Cluster.staticSetCpuCoresTotal(siteRequest_, o);
+	}
+	public static Integer staticSetCpuCoresTotal(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Integer.parseInt(o);
+		return null;
+	}
+	protected Cluster cpuCoresTotalInit() {
+		Wrap<Integer> cpuCoresTotalWrap = new Wrap<Integer>().var("cpuCoresTotal");
+		if(cpuCoresTotal == null) {
+			_cpuCoresTotal(cpuCoresTotalWrap);
+			Optional.ofNullable(cpuCoresTotalWrap.getO()).ifPresent(o -> {
+				setCpuCoresTotal(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static Integer staticSearchCpuCoresTotal(SiteRequest siteRequest_, Integer o) {
+		return o;
+	}
+
+	public static String staticSearchStrCpuCoresTotal(SiteRequest siteRequest_, Integer o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqCpuCoresTotal(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchCpuCoresTotal(siteRequest_, Cluster.staticSetCpuCoresTotal(siteRequest_, o)).toString();
+	}
+
+	public Integer sqlCpuCoresTotal() {
+		return cpuCoresTotal;
+	}
+
+	//////////////////////
+	// memoryBytesTotal //
+	//////////////////////
+
+
+	/**	 The entity memoryBytesTotal
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonSerialize(using = ToStringSerializer.class)
+	@JsonInclude(Include.NON_NULL)
+	protected Long memoryBytesTotal;
+
+	/**	<br> The entity memoryBytesTotal
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.cluster.Cluster&fq=entiteVar_enUS_indexed_string:memoryBytesTotal">Find the entity memoryBytesTotal in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _memoryBytesTotal(Wrap<Long> w);
+
+	public Long getMemoryBytesTotal() {
+		return memoryBytesTotal;
+	}
+
+	public void setMemoryBytesTotal(Long memoryBytesTotal) {
+		this.memoryBytesTotal = memoryBytesTotal;
+	}
+	@JsonIgnore
+	public void setMemoryBytesTotal(String o) {
+		this.memoryBytesTotal = Cluster.staticSetMemoryBytesTotal(siteRequest_, o);
+	}
+	public static Long staticSetMemoryBytesTotal(SiteRequest siteRequest_, String o) {
+		if(NumberUtils.isParsable(o))
+			return Long.parseLong(o);
+		return null;
+	}
+	protected Cluster memoryBytesTotalInit() {
+		Wrap<Long> memoryBytesTotalWrap = new Wrap<Long>().var("memoryBytesTotal");
+		if(memoryBytesTotal == null) {
+			_memoryBytesTotal(memoryBytesTotalWrap);
+			Optional.ofNullable(memoryBytesTotalWrap.getO()).ifPresent(o -> {
+				setMemoryBytesTotal(o);
+			});
+		}
+		return (Cluster)this;
+	}
+
+	public static Long staticSearchMemoryBytesTotal(SiteRequest siteRequest_, Long o) {
+		return o;
+	}
+
+	public static String staticSearchStrMemoryBytesTotal(SiteRequest siteRequest_, Long o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqMemoryBytesTotal(SiteRequest siteRequest_, String o) {
+		return Cluster.staticSearchMemoryBytesTotal(siteRequest_, Cluster.staticSetMemoryBytesTotal(siteRequest_, o)).toString();
+	}
+
+	public Long sqlMemoryBytesTotal() {
+		return memoryBytesTotal;
+	}
+
 	////////////////
 	// grafanaUrl //
 	////////////////
@@ -1486,6 +1615,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				ngsildDataInit();
 				aiNodesTotalInit();
 				gpuDevicesTotalInit();
+				cpuCoresTotalInit();
+				memoryBytesTotalInit();
 				grafanaUrlInit();
 				promise2.complete();
 			} catch(Exception ex) {
@@ -1576,6 +1707,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				return oCluster.aiNodesTotal;
 			case "gpuDevicesTotal":
 				return oCluster.gpuDevicesTotal;
+			case "cpuCoresTotal":
+				return oCluster.cpuCoresTotal;
+			case "memoryBytesTotal":
+				return oCluster.memoryBytesTotal;
 			case "grafanaUrl":
 				return oCluster.grafanaUrl;
 			default:
@@ -1659,6 +1794,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return Cluster.staticSetAiNodesTotal(siteRequest_, v);
 		case "gpuDevicesTotal":
 			return Cluster.staticSetGpuDevicesTotal(siteRequest_, v);
+		case "cpuCoresTotal":
+			return Cluster.staticSetCpuCoresTotal(siteRequest_, v);
+		case "memoryBytesTotal":
+			return Cluster.staticSetMemoryBytesTotal(siteRequest_, v);
 		case "grafanaUrl":
 			return Cluster.staticSetGrafanaUrl(siteRequest_, v);
 			default:
@@ -1711,6 +1850,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return Cluster.staticSearchAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
 			return Cluster.staticSearchGpuDevicesTotal(siteRequest_, (Integer)o);
+		case "cpuCoresTotal":
+			return Cluster.staticSearchCpuCoresTotal(siteRequest_, (Integer)o);
+		case "memoryBytesTotal":
+			return Cluster.staticSearchMemoryBytesTotal(siteRequest_, (Long)o);
 		case "grafanaUrl":
 			return Cluster.staticSearchGrafanaUrl(siteRequest_, (String)o);
 			default:
@@ -1763,6 +1906,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return Cluster.staticSearchStrAiNodesTotal(siteRequest_, (Integer)o);
 		case "gpuDevicesTotal":
 			return Cluster.staticSearchStrGpuDevicesTotal(siteRequest_, (Integer)o);
+		case "cpuCoresTotal":
+			return Cluster.staticSearchStrCpuCoresTotal(siteRequest_, (Integer)o);
+		case "memoryBytesTotal":
+			return Cluster.staticSearchStrMemoryBytesTotal(siteRequest_, (Long)o);
 		case "grafanaUrl":
 			return Cluster.staticSearchStrGrafanaUrl(siteRequest_, (String)o);
 			default:
@@ -1815,6 +1962,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return Cluster.staticSearchFqAiNodesTotal(siteRequest_, o);
 		case "gpuDevicesTotal":
 			return Cluster.staticSearchFqGpuDevicesTotal(siteRequest_, o);
+		case "cpuCoresTotal":
+			return Cluster.staticSearchFqCpuCoresTotal(siteRequest_, o);
+		case "memoryBytesTotal":
+			return Cluster.staticSearchFqMemoryBytesTotal(siteRequest_, o);
 		case "grafanaUrl":
 			return Cluster.staticSearchFqGrafanaUrl(siteRequest_, o);
 			default:
@@ -1928,6 +2079,22 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 					setGpuDevicesTotal(val == null ? null : val.toString());
 				}
 				saves.add("gpuDevicesTotal");
+				return val;
+			} else if("cpucorestotal".equals(varLower)) {
+				if(val instanceof Integer) {
+					setCpuCoresTotal((Integer)val);
+				} else {
+					setCpuCoresTotal(val == null ? null : val.toString());
+				}
+				saves.add("cpuCoresTotal");
+				return val;
+			} else if("memorybytestotal".equals(varLower)) {
+				if(val instanceof Long) {
+					setMemoryBytesTotal((Long)val);
+				} else {
+					setMemoryBytesTotal(val == null ? null : val.toString());
+				}
+				saves.add("memoryBytesTotal");
 				return val;
 		} else {
 			return super.persistBaseModel(var, val);
@@ -2061,6 +2228,18 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 					oCluster.setGpuDevicesTotal(gpuDevicesTotal);
 			}
 
+			if(saves.contains("cpuCoresTotal")) {
+				Integer cpuCoresTotal = (Integer)doc.get("cpuCoresTotal_docvalues_int");
+				if(cpuCoresTotal != null)
+					oCluster.setCpuCoresTotal(cpuCoresTotal);
+			}
+
+			if(saves.contains("memoryBytesTotal")) {
+				Long memoryBytesTotal = (Long)doc.get("memoryBytesTotal_docvalues_long");
+				if(memoryBytesTotal != null)
+					oCluster.setMemoryBytesTotal(memoryBytesTotal);
+			}
+
 			if(saves.contains("grafanaUrl")) {
 				String grafanaUrl = (String)doc.get("grafanaUrl_docvalues_string");
 				if(grafanaUrl != null)
@@ -2138,6 +2317,12 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		if(gpuDevicesTotal != null) {
 			doc.put("gpuDevicesTotal_docvalues_int", gpuDevicesTotal);
 		}
+		if(cpuCoresTotal != null) {
+			doc.put("cpuCoresTotal_docvalues_int", cpuCoresTotal);
+		}
+		if(memoryBytesTotal != null) {
+			doc.put("memoryBytesTotal_docvalues_long", memoryBytesTotal);
+		}
 		if(grafanaUrl != null) {
 			doc.put("grafanaUrl_docvalues_string", grafanaUrl);
 		}
@@ -2183,6 +2368,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				return "aiNodesTotal_docvalues_int";
 			case "gpuDevicesTotal":
 				return "gpuDevicesTotal_docvalues_int";
+			case "cpuCoresTotal":
+				return "cpuCoresTotal_docvalues_int";
+			case "memoryBytesTotal":
+				return "memoryBytesTotal_docvalues_long";
 			case "grafanaUrl":
 				return "grafanaUrl_docvalues_string";
 			default:
@@ -2228,6 +2417,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				return "aiNodesTotal_docvalues_int";
 			case "gpuDevicesTotal":
 				return "gpuDevicesTotal_docvalues_int";
+			case "cpuCoresTotal":
+				return "cpuCoresTotal_docvalues_int";
+			case "memoryBytesTotal":
+				return "memoryBytesTotal_docvalues_long";
 			case "grafanaUrl":
 				return "grafanaUrl_docvalues_string";
 			default:
@@ -2273,6 +2466,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				return "aiNodesTotal";
 			case "gpuDevicesTotal_docvalues_int":
 				return "gpuDevicesTotal";
+			case "cpuCoresTotal_docvalues_int":
+				return "cpuCoresTotal";
+			case "memoryBytesTotal_docvalues_long":
+				return "memoryBytesTotal";
 			case "grafanaUrl_docvalues_string":
 				return "grafanaUrl";
 			default:
@@ -2329,6 +2526,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		oCluster.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oCluster.setAiNodesTotal(Optional.ofNullable(doc.get("aiNodesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oCluster.setGpuDevicesTotal(Optional.ofNullable(doc.get("gpuDevicesTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oCluster.setCpuCoresTotal(Optional.ofNullable(doc.get("cpuCoresTotal_docvalues_int")).map(v -> v.toString()).orElse(null));
+		oCluster.setMemoryBytesTotal(Optional.ofNullable(doc.get("memoryBytesTotal_docvalues_long")).map(v -> v.toString()).orElse(null));
 		oCluster.setGrafanaUrl(Optional.ofNullable(doc.get("grafanaUrl_docvalues_string")).map(v -> v.toString()).orElse(null));
 
 		super.storeBaseModel(doc);
@@ -2379,6 +2578,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 				apiRequest.addVars("aiNodesTotal");
 			if(!Objects.equals(gpuDevicesTotal, original.getGpuDevicesTotal()))
 				apiRequest.addVars("gpuDevicesTotal");
+			if(!Objects.equals(cpuCoresTotal, original.getCpuCoresTotal()))
+				apiRequest.addVars("cpuCoresTotal");
+			if(!Objects.equals(memoryBytesTotal, original.getMemoryBytesTotal()))
+				apiRequest.addVars("memoryBytesTotal");
 			if(!Objects.equals(grafanaUrl, original.getGrafanaUrl()))
 				apiRequest.addVars("grafanaUrl");
 			super.apiRequestBaseModel();
@@ -2410,6 +2613,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(aiNodesTotal).map(v -> "aiNodesTotal: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(gpuDevicesTotal).map(v -> "gpuDevicesTotal: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(cpuCoresTotal).map(v -> "cpuCoresTotal: " + v + "\n").orElse(""));
+		sb.append(Optional.ofNullable(memoryBytesTotal).map(v -> "memoryBytesTotal: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(grafanaUrl).map(v -> "grafanaUrl: \"" + v + "\"\n" ).orElse(""));
 		return sb.toString();
 	}
@@ -2439,6 +2644,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 	public static final String VAR_ngsildData = "ngsildData";
 	public static final String VAR_aiNodesTotal = "aiNodesTotal";
 	public static final String VAR_gpuDevicesTotal = "gpuDevicesTotal";
+	public static final String VAR_cpuCoresTotal = "cpuCoresTotal";
+	public static final String VAR_memoryBytesTotal = "memoryBytesTotal";
 	public static final String VAR_grafanaUrl = "grafanaUrl";
 
 	public static List<String> varsQForClass() {
@@ -2467,6 +2674,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		vars.add(VAR_ngsildData);
 		vars.add(VAR_aiNodesTotal);
 		vars.add(VAR_gpuDevicesTotal);
+		vars.add(VAR_cpuCoresTotal);
+		vars.add(VAR_memoryBytesTotal);
 		vars.add(VAR_grafanaUrl);
 		BaseModel.varsFqBaseModel(vars);
 		return vars;
@@ -2480,6 +2689,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 		vars.add(VAR_ngsildData);
 		vars.add(VAR_aiNodesTotal);
 		vars.add(VAR_gpuDevicesTotal);
+		vars.add(VAR_cpuCoresTotal);
+		vars.add(VAR_memoryBytesTotal);
 		BaseModel.varsRangeBaseModel(vars);
 		return vars;
 	}
@@ -2502,6 +2713,8 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
 	public static final String DISPLAY_NAME_aiNodesTotal = "AI nodes total";
 	public static final String DISPLAY_NAME_gpuDevicesTotal = "GPU devices total";
+	public static final String DISPLAY_NAME_cpuCoresTotal = "CPU cores total";
+	public static final String DISPLAY_NAME_memoryBytesTotal = "memory bytes total";
 	public static final String DISPLAY_NAME_grafanaUrl = "Grafana GPU utilization";
 
 	@Override
@@ -2590,6 +2803,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_aiNodesTotal;
 		case VAR_gpuDevicesTotal:
 			return DISPLAY_NAME_gpuDevicesTotal;
+		case VAR_cpuCoresTotal:
+			return DISPLAY_NAME_cpuCoresTotal;
+		case VAR_memoryBytesTotal:
+			return DISPLAY_NAME_memoryBytesTotal;
 		case VAR_grafanaUrl:
 			return DISPLAY_NAME_grafanaUrl;
 		default:
@@ -2637,6 +2854,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return "The total number of AI nodes on this cluster. ";
 		case VAR_gpuDevicesTotal:
 			return "The total number of GPU devices on this cluster. ";
+		case VAR_cpuCoresTotal:
+			return "The total number of CPU cores on this cluster. ";
+		case VAR_memoryBytesTotal:
+			return "The total number of memory bytes on this cluster. ";
 		case VAR_grafanaUrl:
 			return "Explore this cluster's GPU utilization in Grafana. ";
 			default:
@@ -2682,6 +2903,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return "Integer";
 		case VAR_gpuDevicesTotal:
 			return "Integer";
+		case VAR_cpuCoresTotal:
+			return "Integer";
+		case VAR_memoryBytesTotal:
+			return "Long";
 		case VAR_grafanaUrl:
 			return "String";
 			default:
@@ -2726,6 +2951,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return 4;
 		case VAR_gpuDevicesTotal:
 			return 4;
+		case VAR_cpuCoresTotal:
+			return 4;
+		case VAR_memoryBytesTotal:
+			return 4;
 		case VAR_grafanaUrl:
 			return 4;
 			default:
@@ -2759,6 +2988,10 @@ public abstract class ClusterGen<DEV> extends BaseModel {
 			return 1;
 		case VAR_gpuDevicesTotal:
 			return 2;
+		case VAR_cpuCoresTotal:
+			return 4;
+		case VAR_memoryBytesTotal:
+			return 4;
 		case VAR_grafanaUrl:
 			return 3;
 			default:

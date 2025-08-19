@@ -1884,6 +1884,7 @@ public abstract class BaseResultGen<DEV> extends Object {
 
 	public static final String CLASS_SIMPLE_NAME = "BaseResult";
 	public static final String CLASS_CANONICAL_NAME = "org.mghpcc.aitelemetry.result.BaseResult";
+	public static final String CLASS_AUTH_RESOURCE = "";
 	public static final String VAR_siteRequest_ = "siteRequest_";
 	public static final String VAR_created = "created";
 	public static final String VAR_modified = "modified";
@@ -2108,8 +2109,6 @@ public abstract class BaseResultGen<DEV> extends Object {
 
 	public static Integer htmColumnBaseResult(String var) {
 		switch(var) {
-		case VAR_editPage:
-			return 99;
 			default:
 				return null;
 		}

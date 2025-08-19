@@ -777,14 +777,6 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 							num++;
 							bParams.add(o2.sqlHubId());
 						break;
-					case "setCreated":
-							o2.setCreated(jsonObject.getString(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(Hub.VAR_created + "=$" + num);
-							num++;
-							bParams.add(o2.sqlCreated());
-						break;
 					case "setHubResource":
 							o2.setHubResource(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -792,6 +784,14 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 							bSql.append(Hub.VAR_hubResource + "=$" + num);
 							num++;
 							bParams.add(o2.sqlHubResource());
+						break;
+					case "setCreated":
+							o2.setCreated(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Hub.VAR_created + "=$" + num);
+							num++;
+							bParams.add(o2.sqlCreated());
 						break;
 					case "setPageId":
 							o2.setPageId(jsonObject.getString(entityVar));
@@ -801,14 +801,6 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 							num++;
 							bParams.add(o2.sqlPageId());
 						break;
-					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
-							if(bParams.size() > 0)
-								bSql.append(", ");
-							bSql.append(Hub.VAR_archived + "=$" + num);
-							num++;
-							bParams.add(o2.sqlArchived());
-						break;
 					case "setDescription":
 							o2.setDescription(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
@@ -816,6 +808,22 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 							bSql.append(Hub.VAR_description + "=$" + num);
 							num++;
 							bParams.add(o2.sqlDescription());
+						break;
+					case "setArchived":
+							o2.setArchived(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Hub.VAR_archived + "=$" + num);
+							num++;
+							bParams.add(o2.sqlArchived());
+						break;
+					case "setLocalClusterName":
+							o2.setLocalClusterName(jsonObject.getString(entityVar));
+							if(bParams.size() > 0)
+								bSql.append(", ");
+							bSql.append(Hub.VAR_localClusterName + "=$" + num);
+							num++;
+							bParams.add(o2.sqlLocalClusterName());
 						break;
 					case "setSessionId":
 							o2.setSessionId(jsonObject.getString(entityVar));
@@ -1242,15 +1250,6 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 						num++;
 						bParams.add(o2.sqlHubId());
 						break;
-					case Hub.VAR_created:
-						o2.setCreated(jsonObject.getString(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(Hub.VAR_created + "=$" + num);
-						num++;
-						bParams.add(o2.sqlCreated());
-						break;
 					case Hub.VAR_hubResource:
 						o2.setHubResource(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1259,6 +1258,15 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 						bSql.append(Hub.VAR_hubResource + "=$" + num);
 						num++;
 						bParams.add(o2.sqlHubResource());
+						break;
+					case Hub.VAR_created:
+						o2.setCreated(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Hub.VAR_created + "=$" + num);
+						num++;
+						bParams.add(o2.sqlCreated());
 						break;
 					case Hub.VAR_pageId:
 						o2.setPageId(jsonObject.getString(entityVar));
@@ -1269,15 +1277,6 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 						num++;
 						bParams.add(o2.sqlPageId());
 						break;
-					case Hub.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
-						if(bParams.size() > 0) {
-							bSql.append(", ");
-						}
-						bSql.append(Hub.VAR_archived + "=$" + num);
-						num++;
-						bParams.add(o2.sqlArchived());
-						break;
 					case Hub.VAR_description:
 						o2.setDescription(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
@@ -1286,6 +1285,24 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 						bSql.append(Hub.VAR_description + "=$" + num);
 						num++;
 						bParams.add(o2.sqlDescription());
+						break;
+					case Hub.VAR_archived:
+						o2.setArchived(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Hub.VAR_archived + "=$" + num);
+						num++;
+						bParams.add(o2.sqlArchived());
+						break;
+					case Hub.VAR_localClusterName:
+						o2.setLocalClusterName(jsonObject.getString(entityVar));
+						if(bParams.size() > 0) {
+							bSql.append(", ");
+						}
+						bSql.append(Hub.VAR_localClusterName + "=$" + num);
+						num++;
+						bParams.add(o2.sqlLocalClusterName());
 						break;
 					case Hub.VAR_sessionId:
 						o2.setSessionId(jsonObject.getString(entityVar));
@@ -3535,7 +3552,7 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)
@@ -3585,7 +3602,7 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 			SiteRequest siteRequest = o.getSiteRequest_();
 			SqlConnection sqlConnection = siteRequest.getSqlConnection();
 			Long pk = o.getPk();
-			sqlConnection.preparedQuery("SELECT hubName, hubId, created, hubResource, pageId, archived, description, sessionId, userKey, objectTitle, displayPage FROM Hub WHERE pk=$1")
+			sqlConnection.preparedQuery("SELECT hubName, hubId, hubResource, created, pageId, description, archived, localClusterName, sessionId, userKey, objectTitle, displayPage FROM Hub WHERE pk=$1")
 					.collecting(Collectors.toList())
 					.execute(Tuple.of(pk)
 					).onSuccess(result -> {
@@ -3791,11 +3808,12 @@ public class HubEnUSGenApiServiceImpl extends BaseApiServiceImpl implements HubE
 
 			page.persistForClass(Hub.VAR_hubName, Hub.staticSetHubName(siteRequest2, (String)result.get(Hub.VAR_hubName)));
 			page.persistForClass(Hub.VAR_hubId, Hub.staticSetHubId(siteRequest2, (String)result.get(Hub.VAR_hubId)));
-			page.persistForClass(Hub.VAR_created, Hub.staticSetCreated(siteRequest2, (String)result.get(Hub.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(Hub.VAR_hubResource, Hub.staticSetHubResource(siteRequest2, (String)result.get(Hub.VAR_hubResource)));
+			page.persistForClass(Hub.VAR_created, Hub.staticSetCreated(siteRequest2, (String)result.get(Hub.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
 			page.persistForClass(Hub.VAR_pageId, Hub.staticSetPageId(siteRequest2, (String)result.get(Hub.VAR_pageId)));
-			page.persistForClass(Hub.VAR_archived, Hub.staticSetArchived(siteRequest2, (String)result.get(Hub.VAR_archived)));
 			page.persistForClass(Hub.VAR_description, Hub.staticSetDescription(siteRequest2, (String)result.get(Hub.VAR_description)));
+			page.persistForClass(Hub.VAR_archived, Hub.staticSetArchived(siteRequest2, (String)result.get(Hub.VAR_archived)));
+			page.persistForClass(Hub.VAR_localClusterName, Hub.staticSetLocalClusterName(siteRequest2, (String)result.get(Hub.VAR_localClusterName)));
 			page.persistForClass(Hub.VAR_sessionId, Hub.staticSetSessionId(siteRequest2, (String)result.get(Hub.VAR_sessionId)));
 			page.persistForClass(Hub.VAR_userKey, Hub.staticSetUserKey(siteRequest2, (String)result.get(Hub.VAR_userKey)));
 			page.persistForClass(Hub.VAR_objectTitle, Hub.staticSetObjectTitle(siteRequest2, (String)result.get(Hub.VAR_objectTitle)));

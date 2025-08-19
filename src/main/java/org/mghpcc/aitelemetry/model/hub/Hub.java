@@ -27,9 +27,9 @@ import io.vertx.pgclient.data.Polygon;
  * Icon: <i class="fa-regular fa-sitemap"></i>
  *
  * SearchPageUri: /en-us/search/hub
- * EditPageUri: /en-us/edit/hub/{authResource}
- * DisplayPageUri: /en-us/view/hub/{authResource}
- * UserPageUri: /en-us/user/hub/{authResource}
+ * EditPageUri: /en-us/edit/hub/{hubId}
+ * DisplayPageUri: /en-us/view/hub/{hubId}
+ * UserPageUri: /en-us/user/hub/{hubId}
  * ApiUri: /en-us/api/hub
  * ApiMethod:
  *   Search:
@@ -41,17 +41,9 @@ import io.vertx.pgclient.data.Polygon;
  * 
  * AuthGroup:
  *   HubAdmin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   Admin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:
@@ -86,7 +78,6 @@ public class Hub extends HubGen<BaseModel> {
 	 * Description: The ID of this hub
 	 * HtmRow: 3
 	 * HtmCell: 2
-	 * HtmColumn: 2
 	 * Facet: true
 	 **/
 	protected void _hubId(Wrap<String> w) {
@@ -135,5 +126,17 @@ public class Hub extends HubGen<BaseModel> {
 	 * VarDescription: true
 	 **/
 	protected void _description(Wrap<String> w) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: ACM cluster name
+	 * Description: The actual name of the ACM local cluster. 
+	 * Facet: true
+	 * HtmColumn: 2
+	 **/
+	protected void _localClusterName(Wrap<String> w) {
 	}
 }

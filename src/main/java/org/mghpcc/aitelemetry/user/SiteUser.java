@@ -9,7 +9,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import org.mghpcc.aitelemetry.request.SiteRequest;
 
 /**
- * Order: 3
+ * Order: 1
  * Description: A user record for each site user
  * AName: a site user
  * Icon: <i class="fa-regular fa-user-gear"></i>
@@ -43,6 +43,7 @@ public class SiteUser extends SiteUserGen<BaseModel> implements ComputateSiteUse
 	 * Persist: true
 	 * Description: The unique user ID from the SSO server
 	 * VarId: true
+	 * Unique: true
 	 */
 	protected void _userId(Wrap<String> c) {
 	}

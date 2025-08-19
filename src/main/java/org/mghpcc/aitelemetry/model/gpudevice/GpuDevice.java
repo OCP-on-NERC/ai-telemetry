@@ -29,6 +29,7 @@ import io.vertx.pgclient.data.Polygon;
  * Sort.asc: clusterName
  * Sort.asc: nodeName
  * Sort.asc: gpuDeviceNumber
+ * Rows: 100
  *
  * SearchPageUri: /en-us/search/gpu-device
  * EditPageUri: /en-us/edit/gpu-device/{gpuDeviceResource}
@@ -43,13 +44,10 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   Admin:
- *     POST:
- *     PATCH:
+ *   HubAdmin:
  *     GET:
- *     PUT:
- *     DELETE:
- *     Admin:
+ *   Admin:
+ *     GET:
  *   SuperAdmin:
  *     POST:
  *     PATCH:
@@ -177,6 +175,19 @@ public class GpuDevice extends GpuDeviceGen<BaseModel> {
 	 **/
 	protected void _gpuDeviceDisplayName(Wrap<String> w) {
 	  w.o(String.format("device %s in %s node in the %s cluster of %s hub", gpuDeviceNumber, nodeName, clusterName, hubId));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: model name
+	 * Description: The GPU model
+	 * HtmRow: 3
+	 * HtmCell: 5
+	 * Facet: true
+	 **/
+	protected void _modelName(Wrap<String> w) {
 	}
 
 	/**

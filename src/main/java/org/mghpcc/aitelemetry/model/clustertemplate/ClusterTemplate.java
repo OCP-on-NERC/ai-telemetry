@@ -6,7 +6,7 @@ import org.mghpcc.aitelemetry.model.BaseModel;
 import io.vertx.core.json.JsonArray;
 
 /**
- * Order: 10
+ * Order: 9
  * Description: An OpenShift cluster template
  * AName: an OpenShift cluster template
  * Icon: <i class="fa-regular fa-server"></i>
@@ -60,6 +60,7 @@ public class ClusterTemplate extends ClusterTemplateGen<BaseModel> {
 	 * HtmCell: 2
 	 * HtmColumn: 1
 	 * Facet: true
+	 * Unique: true
 	 **/
 	protected void _title(Wrap<String> w) {}
 

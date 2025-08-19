@@ -27,6 +27,7 @@ import io.vertx.pgclient.data.Polygon;
  * Sort.asc: hubId
  * Sort.asc: clusterName
  * Sort.asc: nodeName
+ * Rows: 100
  *
  * SearchPageUri: /en-us/search/ai-node
  * EditPageUri: /en-us/edit/ai-node/{nodeResource}
@@ -41,18 +42,10 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   ClusterAdmin:
- *     POST:
- *     PATCH:
+ *   HubAdmin:
  *     GET:
- *     DELETE:
- *     Admin:
  *   Admin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:

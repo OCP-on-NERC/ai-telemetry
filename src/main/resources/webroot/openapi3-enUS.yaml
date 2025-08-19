@@ -635,6 +635,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -1466,6 +1506,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -2227,6 +2307,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -3096,6 +3216,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -3923,6 +4083,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -4800,6 +5000,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -5615,6 +5855,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -6480,6 +6760,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -6759,7 +7079,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -7055,7 +7375,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -7259,7 +7579,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -7307,6 +7627,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -7398,7 +7758,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -8145,7 +8505,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DELETEHubResponse'
-  /en-us/edit/hub/{authResource}:
+  /en-us/edit/hub/{hubId}:
     get:
       operationId: editpageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8178,12 +8538,52 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -8383,7 +8783,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/SearchPageHubResponse'
-  /en-us/user/hub/{authResource}:
+  /en-us/user/hub/{hubId}:
     get:
       operationId: userpageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8416,7 +8816,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true
@@ -8429,7 +8829,7 @@ paths:
             text/html; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/UserPageHubResponse'
-  /en-us/view/hub/{authResource}:
+  /en-us/view/hub/{hubId}:
     get:
       operationId: displaypageHub
       x-vertx-event-bus: ai-telemetry-enUS-Hub
@@ -8458,7 +8858,7 @@ paths:
           in: cookie
           schema:
             type: string
-        - name: authResource
+        - name: hubId
           in: path
           description: >+
           required: true
@@ -9149,6 +9549,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -9432,7 +9872,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -9728,7 +10168,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -9932,7 +10372,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
       responses:
         '200':
@@ -9980,6 +10420,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -10071,7 +10551,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -10857,6 +11337,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -11182,7 +11702,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -11556,6 +12076,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -11643,7 +12203,7 @@ paths:
           required: false
           schema:
             type: integer
-            default: 10
+            default: 100
             minimum: 0
         - in: query
           name: facet
@@ -12139,6 +12699,46 @@ paths:
           required: true
           schema:
             type: string
+        - in: query
+          name: facet.range.start
+          description: 'The facet.range.start parameter specifies the lower bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.end
+          description: 'The facet.range.end specifies the upper bound of the ranges. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range.gap
+          description: 'The span of each range expressed as a value to be added to the lower bound. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.pivot
+          description: 'The facet.pivot parameter defines the fields to use for the pivot. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: facet.range
+          description: 'The facet.range parameter defines the field for which Solr should create range facets. '
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: >+
@@ -15744,6 +16344,10 @@ components:
                     type: string
                   gpuDevicesTotal:
                     type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
+                    type: string
                   grafanaUrl:
                     type: string
                   modified:
@@ -15907,6 +16511,20 @@ components:
             removeGpuDevicesTotal:
               type: string
             removeAllGpuDevicesTotal:
+              type: string
+            setCpuCoresTotal:
+              type: string
+              nullable: true
+            removeCpuCoresTotal:
+              type: string
+            removeAllCpuCoresTotal:
+              type: string
+            setMemoryBytesTotal:
+              type: string
+              nullable: true
+            removeMemoryBytesTotal:
+              type: string
+            removeAllMemoryBytesTotal:
               type: string
             setGrafanaUrl:
               type: string
@@ -16082,6 +16700,20 @@ components:
               type: string
             removeAllGpuDevicesTotal:
               type: string
+            setCpuCoresTotal:
+              type: string
+              nullable: true
+            removeCpuCoresTotal:
+              type: string
+            removeAllCpuCoresTotal:
+              type: string
+            setMemoryBytesTotal:
+              type: string
+              nullable: true
+            removeMemoryBytesTotal:
+              type: string
+            removeAllMemoryBytesTotal:
+              type: string
             setGrafanaUrl:
               type: string
               nullable: true
@@ -16142,6 +16774,10 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
               type: string
             modified:
@@ -16192,6 +16828,10 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
               type: string
             modified:
@@ -16241,6 +16881,10 @@ components:
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
+              type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
               type: string
             grafanaUrl:
               type: string
@@ -16297,6 +16941,10 @@ components:
                     type: string
                   gpuDevicesTotal:
                     type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
+                    type: string
                   grafanaUrl:
                     type: string
                   modified:
@@ -16346,6 +16994,10 @@ components:
                   aiNodesTotal:
                     type: string
                   gpuDevicesTotal:
+                    type: string
+                  cpuCoresTotal:
+                    type: string
+                  memoryBytesTotal:
                     type: string
                   grafanaUrl:
                     type: string
@@ -16397,6 +17049,10 @@ components:
               type: string
             gpuDevicesTotal:
               type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
+              type: string
             grafanaUrl:
               type: string
             modified:
@@ -16446,6 +17102,10 @@ components:
             aiNodesTotal:
               type: string
             gpuDevicesTotal:
+              type: string
+            cpuCoresTotal:
+              type: string
+            memoryBytesTotal:
               type: string
             grafanaUrl:
               type: string
@@ -17138,6 +17798,8 @@ components:
                     type: string
                   gpuDeviceDisplayName:
                     type: string
+                  modelName:
+                    type: string
                   gpuDeviceUtilization:
                     type: string
                   description:
@@ -17234,6 +17896,13 @@ components:
             removeGpuDeviceDisplayName:
               type: string
             removeAllGpuDeviceDisplayName:
+              type: string
+            setModelName:
+              type: string
+              nullable: true
+            removeModelName:
+              type: string
+            removeAllModelName:
               type: string
             setGpuDeviceUtilization:
               type: string
@@ -17416,6 +18085,13 @@ components:
               type: string
             removeAllGpuDeviceDisplayName:
               type: string
+            setModelName:
+              type: string
+              nullable: true
+            removeModelName:
+              type: string
+            removeAllModelName:
+              type: string
             setGpuDeviceUtilization:
               type: string
               nullable: true
@@ -17552,6 +18228,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17604,6 +18282,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17655,6 +18335,8 @@ components:
             gpuDeviceResource:
               type: string
             gpuDeviceDisplayName:
+              type: string
+            modelName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -17713,6 +18395,8 @@ components:
                     type: string
                   gpuDeviceDisplayName:
                     type: string
+                  modelName:
+                    type: string
                   gpuDeviceUtilization:
                     type: string
                   description:
@@ -17764,6 +18448,8 @@ components:
                   gpuDeviceResource:
                     type: string
                   gpuDeviceDisplayName:
+                    type: string
+                  modelName:
                     type: string
                   gpuDeviceUtilization:
                     type: string
@@ -17817,6 +18503,8 @@ components:
               type: string
             gpuDeviceDisplayName:
               type: string
+            modelName:
+              type: string
             gpuDeviceUtilization:
               type: string
             description:
@@ -17868,6 +18556,8 @@ components:
             gpuDeviceResource:
               type: string
             gpuDeviceDisplayName:
+              type: string
+            modelName:
               type: string
             gpuDeviceUtilization:
               type: string
@@ -17936,6 +18626,8 @@ components:
                     type: string
                   description:
                     type: string
+                  localClusterName:
+                    type: string
     PATCHHubRequest:
       allOf:
         - type: object
@@ -17974,6 +18666,13 @@ components:
             removeDescription:
               type: string
             removeAllDescription:
+              type: string
+            setLocalClusterName:
+              type: string
+              nullable: true
+            removeLocalClusterName:
+              type: string
+            removeAllLocalClusterName:
               type: string
     PATCHHubResponse:
       allOf:
@@ -18014,6 +18713,13 @@ components:
               type: string
             removeAllDescription:
               type: string
+            setLocalClusterName:
+              type: string
+              nullable: true
+            removeLocalClusterName:
+              type: string
+            removeAllLocalClusterName:
+              type: string
     POSTHubRequest:
       allOf:
         - type: object
@@ -18027,6 +18733,8 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
               type: string
     POSTHubResponse:
       allOf:
@@ -18042,6 +18750,8 @@ components:
               type: string
             description:
               type: string
+            localClusterName:
+              type: string
     DELETEFilterHubResponse:
       allOf:
         - type: object
@@ -18055,6 +18765,8 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
               type: string
     PUTImportHubRequest:
       allOf:
@@ -18075,6 +18787,8 @@ components:
                     type: string
                   description:
                     type: string
+                  localClusterName:
+                    type: string
     PUTImportHubResponse:
       allOf:
         - type: object
@@ -18088,6 +18802,8 @@ components:
                   pageId:
                     type: string
                   description:
+                    type: string
+                  localClusterName:
                     type: string
     GETHubResponse:
       allOf:
@@ -18103,6 +18819,8 @@ components:
               type: string
             description:
               type: string
+            localClusterName:
+              type: string
     DELETEHubResponse:
       allOf:
         - type: object
@@ -18116,6 +18834,8 @@ components:
             pageId:
               type: string
             description:
+              type: string
+            localClusterName:
               type: string
     EditPageHubResponse:
       allOf:
@@ -19426,7 +20146,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -19442,6 +20166,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     PATCHSitePageRequest:
       allOf:
         - type: object
@@ -19544,12 +20280,26 @@ components:
               type: string
             removeAllName:
               type: string
-            setAuthor:
+            setDescription:
               type: string
               nullable: true
-            removeAuthor:
+            removeDescription:
               type: string
-            removeAllAuthor:
+            removeAllDescription:
+              type: string
+            setAuthorName:
+              type: string
+              nullable: true
+            removeAuthorName:
+              type: string
+            removeAllAuthorName:
+              type: string
+            setAuthorUrl:
+              type: string
+              nullable: true
+            removeAuthorUrl:
+              type: string
+            removeAllAuthorUrl:
               type: string
             setPageId:
               type: string
@@ -19600,6 +20350,45 @@ components:
               type: string
             removeAllPageImageType:
               type: string
+            setPageImageAlt:
+              type: string
+              nullable: true
+            removePageImageAlt:
+              type: string
+            removeAllPageImageAlt:
+              type: string
+            setRelatedArticleIds:
+              type: string
+              nullable: true
+            removeRelatedArticleIds:
+              type: string
+            removeAllRelatedArticleIds:
+              type: string
+            setRelatedArticles:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     PATCHSitePageResponse:
       allOf:
         - type: object
@@ -19702,12 +20491,26 @@ components:
               type: string
             removeAllName:
               type: string
-            setAuthor:
+            setDescription:
               type: string
               nullable: true
-            removeAuthor:
+            removeDescription:
               type: string
-            removeAllAuthor:
+            removeAllDescription:
+              type: string
+            setAuthorName:
+              type: string
+              nullable: true
+            removeAuthorName:
+              type: string
+            removeAllAuthorName:
+              type: string
+            setAuthorUrl:
+              type: string
+              nullable: true
+            removeAuthorUrl:
+              type: string
+            removeAllAuthorUrl:
               type: string
             setPageId:
               type: string
@@ -19758,6 +20561,45 @@ components:
               type: string
             removeAllPageImageType:
               type: string
+            setPageImageAlt:
+              type: string
+              nullable: true
+            removePageImageAlt:
+              type: string
+            removeAllPageImageAlt:
+              type: string
+            setRelatedArticleIds:
+              type: string
+              nullable: true
+            removeRelatedArticleIds:
+              type: string
+            removeAllRelatedArticleIds:
+              type: string
+            setRelatedArticles:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllRelatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     POSTSitePageRequest:
       allOf:
         - type: object
@@ -19790,7 +20632,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -19806,6 +20652,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     POSTSitePageResponse:
       allOf:
         - type: object
@@ -19838,7 +20696,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -19854,6 +20716,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     PUTImportSitePageRequest:
       allOf:
         - type: object
@@ -19891,7 +20765,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -19907,6 +20785,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     PUTImportSitePageResponse:
       allOf:
         - type: object
@@ -19939,7 +20829,11 @@ components:
                     type: string
                   name:
                     type: string
-                  author:
+                  description:
+                    type: string
+                  authorName:
+                    type: string
+                  authorUrl:
                     type: string
                   pageId:
                     type: string
@@ -19955,6 +20849,18 @@ components:
                     type: string
                   pageImageType:
                     type: string
+                  pageImageAlt:
+                    type: string
+                  relatedArticleIds:
+                    type: string
+                  relatedArticles:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
     GETSitePageResponse:
       allOf:
         - type: object
@@ -19987,7 +20893,11 @@ components:
               type: string
             name:
               type: string
-            author:
+            description:
+              type: string
+            authorName:
+              type: string
+            authorUrl:
               type: string
             pageId:
               type: string
@@ -20003,6 +20913,18 @@ components:
               type: string
             pageImageType:
               type: string
+            pageImageAlt:
+              type: string
+            relatedArticleIds:
+              type: string
+            relatedArticles:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
     EditPageSitePageResponse:
       allOf:
         - type: string

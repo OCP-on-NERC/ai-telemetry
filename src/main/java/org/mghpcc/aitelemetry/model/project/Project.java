@@ -43,18 +43,10 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   ProjectAdmin:
- *     POST:
- *     PATCH:
+ *   HubAdmin:
  *     GET:
- *     DELETE:
- *     Admin:
  *   Admin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:

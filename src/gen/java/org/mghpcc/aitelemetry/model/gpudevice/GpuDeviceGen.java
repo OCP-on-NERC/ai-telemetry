@@ -63,9 +63,6 @@ import org.computate.search.response.solr.SolrResponse;
  * <ol>
 <h3>Suggestions that can generate more code for you: </h3> * </ol>
  * <li>You can add a class comment "{@inheritDoc}" if you wish to inherit the helpful inherited class comments from class GpuDeviceGen into the class GpuDevice. 
- * </li><li>You can add a class comment "Rows: 100" if you wish the GpuDevice API to return more or less than 10 records by default. 
- * In this case, the API will return 100 records from the API instead of 10 by default. 
- * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
  * </li>
  * <h3>About the GpuDevice class and it's generated class GpuDeviceGen&lt;BaseModel&gt;: </h3>extends GpuDeviceGen
  * <p>
@@ -130,7 +127,10 @@ import org.computate.search.response.solr.SolrResponse;
  * <h2>{@inheritDoc}</h2>
  * <p>By adding a class comment "{@inheritDoc}", the GpuDevice class will inherit the helpful inherited class comments from the super class GpuDeviceGen. 
  * </p>
- * <h2>Rows: null</h2>
+ * <h2>Rows: 100</h2>
+ * <p>This class contains a comment <b>"Rows: 100"</b>, which means the GpuDevice API will return a default of 100 records instead of 10 by default. 
+ * Each API has built in pagination of the search records to ensure a user can query all the data a page at a time without running the application out of memory. 
+ * </p>
  * <h2>Order: 7</h2>
  * <p>This class contains a comment <b>"Order: 7"</b>, which means this class will be sorted by the given number 7 ascending when code that relates to multiple classes at the same time is generated. 
  * </p>
@@ -247,6 +247,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DELETEFilter_enUS_StringFormatUrl = "%s/en-us/api/gpu-device";
 
 	public static final String Icon = "<i class=\"fa-regular fa-memory\"></i>";
+	public static final Integer Rows = 100;
 
 	///////////
 	// hubId //
@@ -754,6 +755,62 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 
 	public static String staticSearchFqGpuDeviceDisplayName(SiteRequest siteRequest_, String o) {
 		return GpuDevice.staticSearchGpuDeviceDisplayName(siteRequest_, GpuDevice.staticSetGpuDeviceDisplayName(siteRequest_, o)).toString();
+	}
+
+	///////////////
+	// modelName //
+	///////////////
+
+
+	/**	 The entity modelName
+	 *	 is defined as null before being initialized. 
+	 */
+	@JsonProperty
+	@JsonInclude(Include.NON_NULL)
+	protected String modelName;
+
+	/**	<br> The entity modelName
+	 *  is defined as null before being initialized. 
+	 * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.mghpcc.aitelemetry.model.gpudevice.GpuDevice&fq=entiteVar_enUS_indexed_string:modelName">Find the entity modelName in Solr</a>
+	 * <br>
+	 * @param w is for wrapping a value to assign to this entity during initialization. 
+	 **/
+	protected abstract void _modelName(Wrap<String> w);
+
+	public String getModelName() {
+		return modelName;
+	}
+	public void setModelName(String o) {
+		this.modelName = GpuDevice.staticSetModelName(siteRequest_, o);
+	}
+	public static String staticSetModelName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+	protected GpuDevice modelNameInit() {
+		Wrap<String> modelNameWrap = new Wrap<String>().var("modelName");
+		if(modelName == null) {
+			_modelName(modelNameWrap);
+			Optional.ofNullable(modelNameWrap.getO()).ifPresent(o -> {
+				setModelName(o);
+			});
+		}
+		return (GpuDevice)this;
+	}
+
+	public static String staticSearchModelName(SiteRequest siteRequest_, String o) {
+		return o;
+	}
+
+	public static String staticSearchStrModelName(SiteRequest siteRequest_, String o) {
+		return o == null ? null : o.toString();
+	}
+
+	public static String staticSearchFqModelName(SiteRequest siteRequest_, String o) {
+		return GpuDevice.staticSearchModelName(siteRequest_, GpuDevice.staticSetModelName(siteRequest_, o)).toString();
+	}
+
+	public String sqlModelName() {
+		return modelName;
 	}
 
 	//////////////////////////
@@ -1584,6 +1641,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				gpuDeviceNumberInit();
 				gpuDeviceResourceInit();
 				gpuDeviceDisplayNameInit();
+				modelNameInit();
 				gpuDeviceUtilizationInit();
 				descriptionInit();
 				locationColorsInit();
@@ -1667,6 +1725,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return oGpuDevice.gpuDeviceResource;
 			case "gpuDeviceDisplayName":
 				return oGpuDevice.gpuDeviceDisplayName;
+			case "modelName":
+				return oGpuDevice.modelName;
 			case "gpuDeviceUtilization":
 				return oGpuDevice.gpuDeviceUtilization;
 			case "description":
@@ -1766,6 +1826,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSetGpuDeviceResource(siteRequest_, v);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSetGpuDeviceDisplayName(siteRequest_, v);
+		case "modelName":
+			return GpuDevice.staticSetModelName(siteRequest_, v);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSetGpuDeviceUtilization(siteRequest_, v);
 		case "description":
@@ -1822,6 +1884,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchGpuDeviceResource(siteRequest_, (String)o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchGpuDeviceDisplayName(siteRequest_, (String)o);
+		case "modelName":
+			return GpuDevice.staticSearchModelName(siteRequest_, (String)o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
@@ -1878,6 +1942,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchStrGpuDeviceResource(siteRequest_, (String)o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchStrGpuDeviceDisplayName(siteRequest_, (String)o);
+		case "modelName":
+			return GpuDevice.staticSearchStrModelName(siteRequest_, (String)o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchStrGpuDeviceUtilization(siteRequest_, (Integer)o);
 		case "description":
@@ -1934,6 +2000,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return GpuDevice.staticSearchFqGpuDeviceResource(siteRequest_, o);
 		case "gpuDeviceDisplayName":
 			return GpuDevice.staticSearchFqGpuDeviceDisplayName(siteRequest_, o);
+		case "modelName":
+			return GpuDevice.staticSearchFqModelName(siteRequest_, o);
 		case "gpuDeviceUtilization":
 			return GpuDevice.staticSearchFqGpuDeviceUtilization(siteRequest_, o);
 		case "description":
@@ -2033,6 +2101,12 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 					setGpuDeviceResource((String)val);
 				}
 				saves.add("gpuDeviceResource");
+				return val;
+			} else if("modelname".equals(varLower)) {
+				if(val instanceof String) {
+					setModelName((String)val);
+				}
+				saves.add("modelName");
 				return val;
 			} else if("gpudeviceutilization".equals(varLower)) {
 				if(val instanceof Integer) {
@@ -2153,6 +2227,12 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 					oGpuDevice.setGpuDeviceDisplayName(gpuDeviceDisplayName);
 			}
 
+			if(saves.contains("modelName")) {
+				String modelName = (String)doc.get("modelName_docvalues_string");
+				if(modelName != null)
+					oGpuDevice.setModelName(modelName);
+			}
+
 			if(saves.contains("gpuDeviceUtilization")) {
 				Integer gpuDeviceUtilization = (Integer)doc.get("gpuDeviceUtilization_docvalues_int");
 				if(gpuDeviceUtilization != null)
@@ -2266,6 +2346,9 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		if(gpuDeviceDisplayName != null) {
 			doc.put("gpuDeviceDisplayName_docvalues_string", gpuDeviceDisplayName);
 		}
+		if(modelName != null) {
+			doc.put("modelName_docvalues_string", modelName);
+		}
 		if(gpuDeviceUtilization != null) {
 			doc.put("gpuDeviceUtilization_docvalues_int", gpuDeviceUtilization);
 		}
@@ -2338,6 +2421,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource_docvalues_string";
 			case "gpuDeviceDisplayName":
 				return "gpuDeviceDisplayName_docvalues_string";
+			case "modelName":
+				return "modelName_docvalues_string";
 			case "gpuDeviceUtilization":
 				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
@@ -2387,6 +2472,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource_docvalues_string";
 			case "gpuDeviceDisplayName":
 				return "gpuDeviceDisplayName_docvalues_string";
+			case "modelName":
+				return "modelName_docvalues_string";
 			case "gpuDeviceUtilization":
 				return "gpuDeviceUtilization_docvalues_int";
 			case "description":
@@ -2436,6 +2523,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				return "gpuDeviceResource";
 			case "gpuDeviceDisplayName_docvalues_string":
 				return "gpuDeviceDisplayName";
+			case "modelName_docvalues_string":
+				return "modelName";
 			case "gpuDeviceUtilization_docvalues_int":
 				return "gpuDeviceUtilization";
 			case "description_docvalues_string":
@@ -2499,6 +2588,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		oGpuDevice.setGpuDeviceNumber(Optional.ofNullable(doc.get("gpuDeviceNumber_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceResource(Optional.ofNullable(doc.get("gpuDeviceResource_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceDisplayName(Optional.ofNullable(doc.get("gpuDeviceDisplayName_docvalues_string")).map(v -> v.toString()).orElse(null));
+		oGpuDevice.setModelName(Optional.ofNullable(doc.get("modelName_docvalues_string")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setGpuDeviceUtilization(Optional.ofNullable(doc.get("gpuDeviceUtilization_docvalues_int")).map(v -> v.toString()).orElse(null));
 		oGpuDevice.setDescription(Optional.ofNullable(doc.get("description_docvalues_string")).map(v -> v.toString()).orElse(null));
 		Optional.ofNullable((List<?>)doc.get("locationColors_indexedstored_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
@@ -2548,6 +2638,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 				apiRequest.addVars("gpuDeviceResource");
 			if(!Objects.equals(gpuDeviceDisplayName, original.getGpuDeviceDisplayName()))
 				apiRequest.addVars("gpuDeviceDisplayName");
+			if(!Objects.equals(modelName, original.getModelName()))
+				apiRequest.addVars("modelName");
 			if(!Objects.equals(gpuDeviceUtilization, original.getGpuDeviceUtilization()))
 				apiRequest.addVars("gpuDeviceUtilization");
 			if(!Objects.equals(description, original.getDescription()))
@@ -2592,6 +2684,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		sb.append(Optional.ofNullable(gpuDeviceNumber).map(v -> "gpuDeviceNumber: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceResource).map(v -> "gpuDeviceResource: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceDisplayName).map(v -> "gpuDeviceDisplayName: \"" + v + "\"\n" ).orElse(""));
+		sb.append(Optional.ofNullable(modelName).map(v -> "modelName: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(gpuDeviceUtilization).map(v -> "gpuDeviceUtilization: " + v + "\n").orElse(""));
 		sb.append(Optional.ofNullable(description).map(v -> "description: \"" + v + "\"\n" ).orElse(""));
 		sb.append(Optional.ofNullable(locationColors).map(v -> "locationColors: " + v + "\n").orElse(""));
@@ -2623,6 +2716,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String VAR_gpuDeviceNumber = "gpuDeviceNumber";
 	public static final String VAR_gpuDeviceResource = "gpuDeviceResource";
 	public static final String VAR_gpuDeviceDisplayName = "gpuDeviceDisplayName";
+	public static final String VAR_modelName = "modelName";
 	public static final String VAR_gpuDeviceUtilization = "gpuDeviceUtilization";
 	public static final String VAR_description = "description";
 	public static final String VAR_locationColors = "locationColors";
@@ -2657,6 +2751,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		vars.add(VAR_gpuDeviceNumber);
 		vars.add(VAR_gpuDeviceResource);
 		vars.add(VAR_gpuDeviceDisplayName);
+		vars.add(VAR_modelName);
 		vars.add(VAR_gpuDeviceUtilization);
 		vars.add(VAR_description);
 		vars.add(VAR_location);
@@ -2691,6 +2786,7 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 	public static final String DISPLAY_NAME_gpuDeviceNumber = "GPU device number";
 	public static final String DISPLAY_NAME_gpuDeviceResource = "GPU device auth resource";
 	public static final String DISPLAY_NAME_gpuDeviceDisplayName = "GPU device display name";
+	public static final String DISPLAY_NAME_modelName = "model name";
 	public static final String DISPLAY_NAME_gpuDeviceUtilization = "GPU device utilization";
 	public static final String DISPLAY_NAME_description = "description";
 	public static final String DISPLAY_NAME_locationColors = "area served colors";
@@ -2772,6 +2868,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return DISPLAY_NAME_gpuDeviceResource;
 		case VAR_gpuDeviceDisplayName:
 			return DISPLAY_NAME_gpuDeviceDisplayName;
+		case VAR_modelName:
+			return DISPLAY_NAME_modelName;
 		case VAR_gpuDeviceUtilization:
 			return DISPLAY_NAME_gpuDeviceUtilization;
 		case VAR_description:
@@ -2823,6 +2921,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return "The unique authorization resource for the GPU device for multi-tenancy";
 		case VAR_gpuDeviceDisplayName:
 			return "The display name of this GPU device";
+		case VAR_modelName:
+			return "The GPU model";
 		case VAR_gpuDeviceUtilization:
 			return "Current utilization of the GPU device. ";
 		case VAR_description:
@@ -2871,6 +2971,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 		case VAR_gpuDeviceResource:
 			return "String";
 		case VAR_gpuDeviceDisplayName:
+			return "String";
+		case VAR_modelName:
 			return "String";
 		case VAR_gpuDeviceUtilization:
 			return "Integer";
@@ -2926,6 +3028,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_gpuDeviceNumber:
 			return 3;
+		case VAR_modelName:
+			return 3;
 		case VAR_gpuDeviceUtilization:
 			return 4;
 		case VAR_description:
@@ -2957,6 +3061,8 @@ public abstract class GpuDeviceGen<DEV> extends BaseModel {
 			return 3;
 		case VAR_gpuDeviceNumber:
 			return 4;
+		case VAR_modelName:
+			return 5;
 		case VAR_gpuDeviceUtilization:
 			return 1;
 		case VAR_description:

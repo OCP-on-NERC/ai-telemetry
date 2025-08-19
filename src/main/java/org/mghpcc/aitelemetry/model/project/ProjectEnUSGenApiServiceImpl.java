@@ -888,7 +888,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						});
 						break;
 					case "setArchived":
-							o2.setArchived(jsonObject.getBoolean(entityVar));
+							o2.setArchived(jsonObject.getString(entityVar));
 							if(bParams.size() > 0)
 								bSql.append(", ");
 							bSql.append(Project.VAR_archived + "=$" + num);
@@ -1406,7 +1406,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						});
 						break;
 					case Project.VAR_archived:
-						o2.setArchived(jsonObject.getBoolean(entityVar));
+						o2.setArchived(jsonObject.getString(entityVar));
 						if(bParams.size() > 0) {
 							bSql.append(", ");
 						}
@@ -3657,7 +3657,7 @@ public class ProjectEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 						max = max.plus(2, ChronoUnit.DAYS);
 					}
 					Duration duration = Duration.between(min, max);
-					String gap = "DAY";
+					String gap = "HOUR";
 					if(duration.toDays() >= 365)
 						gap = "YEAR";
 					else if(duration.toDays() >= 28)

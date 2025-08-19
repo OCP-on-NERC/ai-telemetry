@@ -44,18 +44,10 @@ import io.vertx.pgclient.data.Polygon;
  *   PUTImport:
  * 
  * AuthGroup:
- *   ClusterAdmin:
- *     POST:
- *     PATCH:
+ *   HubAdmin:
  *     GET:
- *     DELETE:
- *     Admin:
  *   Admin:
- *     POST:
- *     PATCH:
  *     GET:
- *     DELETE:
- *     Admin:
  *   SuperAdmin:
  *     POST:
  *     PATCH:
@@ -310,6 +302,30 @@ public class Cluster extends ClusterGen<BaseModel> {
 	 * Facet: true
 	 */
 	protected void _gpuDevicesTotal(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: CPU cores total
+	 * Description: The total number of CPU cores on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 4
+	 * Facet: true
+	 */
+	protected void _cpuCoresTotal(Wrap<Integer> w) {}
+
+	/**
+	 * {@inheritDoc}
+	 * DocValues: true
+	 * Persist: true
+	 * DisplayName: memory bytes total
+	 * Description: The total number of memory bytes on this cluster. 
+	 * HtmRow: 4
+	 * HtmCell: 4
+	 * Facet: true
+	 */
+	protected void _memoryBytesTotal(Wrap<Long> w) {}
 
 	/**
 	 * {@inheritDoc}
